@@ -1,0 +1,28 @@
+# Object files
+*.o
+# Build directories
+*build/
+# backups
+*~
+*.orig
+.*.swp
+\#*\#
+# IDE files
+# Eclipse workspace files
+.project
+.cproject
+.settings
+# Jetbrains
+.idea
+# KDevelop4 project files
+.kdev4
+*.kdev4
+# Codelite (among others) project files
+*.project
+# Visual Studio Code user settings
+.vscode/
+# clangd language server
+.clangd/
+# exported compilation commands from cmake
+compile_commands.json
+compile_flags.txt
