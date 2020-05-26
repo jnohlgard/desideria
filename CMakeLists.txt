@@ -8,9 +8,16 @@ endif()
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/bsp/${BOARD}/cmake" "${CMAKE_MODULE_PATH}")
 include(deri_platform)
 
-SET(BARE_METAL_FLAGS "-ffreestanding -nostdlib -fno-common")
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${BARE_METAL_FLAGS}" CACHE STRING "" FORCE)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${BARE_METAL_FLAGS}" CACHE STRING "" FORCE)
+if (MSVC)
+  # warning level 4 and all warnings as errors
+  add_compile_options(/W4 /WX)
+else()
+  # lots of warnings and all warnings as errors
+  add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
+add_compile_options(-ffreestanding -nostdlib -fno-common)
+add_link_options(-nostdlib)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
