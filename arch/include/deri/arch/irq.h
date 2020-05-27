@@ -16,6 +16,8 @@ class ScopedCriticalSection {
 public:
   __attribute__((always_inline)) inline ScopedCriticalSection() : mask(irq_disable()) {}
   __attribute__((always_inline)) inline ~ScopedCriticalSection() { irq_restore(mask); }
+  ScopedCriticalSection(const ScopedCriticalSection &) = delete;
+  ScopedCriticalSection& operator=(const ScopedCriticalSection &) = delete;
 
 private:
   const unsigned long mask;
