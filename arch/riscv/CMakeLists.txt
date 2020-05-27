@@ -1,6 +1,7 @@
-add_library(arch_riscv STATIC
+add_library(deri_arch_riscv STATIC
   startup.c
-  include/riscv/asm.h
+  include/deri/arch/impl/irq_impl.h
   )
-target_include_directories(arch_riscv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(arch_riscv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/vendor/include)
+target_include_directories(deri_arch_riscv PUBLIC include)
+target_include_directories(deri_arch_riscv PUBLIC vendor/include)
+target_link_libraries(deri_arch_riscv PUBLIC deri_arch_iface)

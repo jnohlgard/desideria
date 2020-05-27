@@ -1,8 +1,8 @@
 /*
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
-#ifndef DESIDERIA_ARCH_RISCV_ASM_H_
-#define DESIDERIA_ARCH_RISCV_ASM_H_
+#ifndef DERI_ARCH_ASM_H_
+#define DERI_ARCH_ASM_H_
 
 /**
  * Shorthand notation for better readability
@@ -12,4 +12,4 @@
  */
 #define asm __asm__
 
-#endif // DESIDERIA_ARCH_RISCV_ASM_H_
+#endif // DERI_ARCH_ASM_H_

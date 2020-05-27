@@ -29,5 +29,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CTest)
 
+set(DERI_ARCH_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/arch)
+
 add_subdirectory(arch)
 add_subdirectory(core)

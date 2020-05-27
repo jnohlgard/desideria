@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
-#include "riscv/asm.h"
+#include "deri/arch/asm.h"
 #include "riscv/csr/encoding.h"
 
 __attribute__((naked, noreturn)) void _start() {
