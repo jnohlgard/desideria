@@ -12,14 +12,14 @@
 /**
  * Scoped IRQ disabling lock
  */
-class ScopedCriticalSection {
+class InterruptGuard {
 public:
-  __attribute__((always_inline)) inline ScopedCriticalSection() : mask(irq_disable()) {}
-  __attribute__((always_inline)) inline ~ScopedCriticalSection() { irq_restore(mask); }
-  ScopedCriticalSection(const ScopedCriticalSection &) = delete;
-  ScopedCriticalSection(ScopedCriticalSection &&) = delete;
-  ScopedCriticalSection &operator=(const ScopedCriticalSection &) = delete;
-  ScopedCriticalSection &operator=(ScopedCriticalSection &&) = delete;
+  __attribute__((always_inline)) inline InterruptGuard() : mask(irq_disable()) {}
+  __attribute__((always_inline)) inline ~InterruptGuard() { irq_restore(mask); }
+  InterruptGuard(const InterruptGuard &) = delete;
+  InterruptGuard(InterruptGuard &&) = delete;
+  InterruptGuard &operator=(const InterruptGuard &) = delete;
+  InterruptGuard &operator=(InterruptGuard &&) = delete;
 
 private:
   const unsigned long mask;

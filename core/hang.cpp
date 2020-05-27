@@ -12,7 +12,7 @@ void hang() {
     ++bss_var;
     ++global_var;
     {
-      const ScopedCriticalSection irq_lock;
+      const InterruptGuard irq_lock;
       global_arr[0]++;
     }
   }
