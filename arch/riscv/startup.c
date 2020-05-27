@@ -18,7 +18,7 @@ __attribute__((__naked__, __noreturn__)) void _start() {
   __asm__ volatile("la sp, _stack_end");
 
   /* Jump to kernel start */
-  __asm__ volatile("j hang");
+  __asm__ volatile("tail hang");
 
   /* we should never end up here, but spin if we do */
   __asm__ volatile("1:\nj 1b\n");
