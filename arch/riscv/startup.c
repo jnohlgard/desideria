@@ -9,10 +9,10 @@ __attribute__((__naked__, __noreturn__)) void _start() {
   /* Set up the global pointer register, the linker assumes that the gp
    * register always contains the address of the __global_pointer$
    * symbol, so be careful if refactoring this. */
-  __asm__ volatile(".option push\n"
-                   ".option norelax\n"
-                   "la gp, __global_pointer$\n"
-                   ".option pop\n");
+  __asm__ volatile(".option push;"
+                   ".option norelax;"
+                   "la gp, __global_pointer$;"
+                   ".option pop;");
 
   /* Set the default stack pointer */
   __asm__ volatile("la sp, _stack_end");
