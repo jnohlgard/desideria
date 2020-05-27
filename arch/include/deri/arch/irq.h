@@ -18,7 +18,7 @@ public:
   __attribute__((always_inline)) inline ~ScopedCriticalSection() { irq_restore(mask); }
 
 private:
-  unsigned long mask;
+  const unsigned long mask;
 };
 
 #endif // __cplusplus
