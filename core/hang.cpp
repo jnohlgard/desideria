@@ -1,3 +1,7 @@
+#include "deri/arch/irq.h"
+
+extern "C" void hang();
+
 const int const_data[2] = {999, 1123456};
 int bss_var;
 int global_var = 1;
@@ -7,6 +11,9 @@ void hang() {
   while (1) {
     ++bss_var;
     ++global_var;
-    global_arr[0]++;
+    {
+      ScopedCriticalSection irq_lock;
+      global_arr[0]++;
+    }
   }
 }

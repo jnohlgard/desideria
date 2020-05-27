@@ -1,5 +1,5 @@
 #target_include_directories(CodeKata PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-add_executable(hang hang.c)
+add_executable(hang hang.cpp)
 target_link_libraries(hang PRIVATE deri_arch_${ARCH})
 set_target_properties(hang PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
 
