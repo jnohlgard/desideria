@@ -7,12 +7,12 @@
 #include "deri/arch/asm.h"
 #include "riscv/csr/encoding.h"
 
-static inline unsigned long irq_disable(void) {
+__attribute__((always_inline)) static inline unsigned long irq_disable(void) {
   unsigned long previous = __extension__ clear_csr(mstatus, MSTATUS_MIE);
   return previous & MSTATUS_MIE;
 }
 
-static inline void irq_restore(unsigned long saved) {
+__attribute__((always_inline)) static inline void irq_restore(unsigned long saved) {
   __extension__ set_csr(mstatus, saved & MSTATUS_MIE);
 }
 
