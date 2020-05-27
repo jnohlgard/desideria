@@ -4,6 +4,7 @@
 #ifndef DERI_ARCH_ASM_H_
 #define DERI_ARCH_ASM_H_
 
+#ifndef __cplusplus
 /**
  * Shorthand notation for better readability
  *
@@ -12,4 +13,5 @@
  */
 #define asm __asm__
 
+#endif // !defined(__cplusplus)
 #endif // DERI_ARCH_ASM_H_
