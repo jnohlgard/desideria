@@ -14,8 +14,8 @@
  */
 class ScopedCriticalSection {
 public:
-  inline ScopedCriticalSection() : mask(irq_disable()) {}
-  inline ~ScopedCriticalSection() { irq_restore(mask); }
+  __attribute__((always_inline)) inline ScopedCriticalSection() : mask(irq_disable()) {}
+  __attribute__((always_inline)) inline ~ScopedCriticalSection() { irq_restore(mask); }
 
 private:
   unsigned long mask;
