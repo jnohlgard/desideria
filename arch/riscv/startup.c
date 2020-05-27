@@ -2,8 +2,12 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 #include "riscv/asm.h"
+#include "riscv/csr/encoding.h"
 
 __attribute__((naked, noreturn )) void _start() {
+  /* Disable interrupts globally */
+  asm volatile("csrc mstatus, %0" :: "I"(MSTATUS_MIE) : );
+
   /* Clear the return address register to be able to detect the end of 
    * a backtrace. */
   asm volatile(".cfi_undefined ra");
