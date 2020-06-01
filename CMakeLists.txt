@@ -19,6 +19,7 @@ endif()
 add_compile_options(-ffreestanding -nostdlib)
 add_compile_options(-fno-common -fdata-sections -ffunction-sections)
 add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>)
+add_compile_options(-finline-small-functions -findirect-inlining)
 add_link_options(-nostdlib -Wl,--gc-sections)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
