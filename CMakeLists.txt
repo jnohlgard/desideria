@@ -32,6 +32,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CTest)
 
 set(DERI_ARCH_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/arch)
+set(DERI_BSP_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/bsp)
 
+add_library(deri INTERFACE)
 add_subdirectory(arch)
+add_subdirectory(bsp)
 add_subdirectory(core)
+target_link_libraries(deri INTERFACE
+  deri_arch_${ARCH}
+  deri_bsp_${BOARD}
+  )

@@ -23,6 +23,8 @@ SECTIONS
   .text : {
     *(.reset_trampoline)
     *(.text .text.* .gnu.linkonce.t.*)
+    . = ALIGN(128);
+    *(.vectors_array)
   } >flash AT>flash :text
 
   .preinit_array : {
@@ -86,16 +88,23 @@ SECTIONS
     _sdata_begin = .;
     *(.sdata .sdata.*)
     _data_end = .;
+    . = ALIGN(8);
   } >ram AT>flash :data
+  _edata = .;
+  _data_load = LOADADDR(.data);
+
   /* keeping .sdata and .sbss close together */
   .bss (NOLOAD) : {
+    . = ALIGN(8);
     _bss_begin = .;
     *(.sbss .sbss.*)
     *(.bss .bss.*)
     _bss_end = .;
+    . = ALIGN(8);
     PROVIDE(__global_pointer$ = MIN(_sdata_begin + 0x800,
-      MAX(_data_begin + 0x800, _bss_end - 0x800)));
+      MAX(_data_begin + 0x800, . - 0x800)));
   } >ram AT>ram :bss
+  _end = .;
 
   PROVIDE(_memory_begin = ORIGIN(ram));
   PROVIDE(_memory_end = ORIGIN(ram) + LENGTH(ram));

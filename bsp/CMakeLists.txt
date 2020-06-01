@@ -1,0 +1,5 @@
+if(NOT BOARD)
+  message(FATAL_ERROR "BOARD is not defined")
+endif()
+set(DERI_BSP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${BOARD})
+add_subdirectory(${DERI_BSP_DIR})
