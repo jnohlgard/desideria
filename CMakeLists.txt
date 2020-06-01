@@ -41,6 +41,7 @@ add_subdirectory(core)
 target_link_libraries(deri INTERFACE
   deri_arch_${ARCH}
   deri_bsp_${BOARD}
+  deri_core
   )
 
 add_subdirectory(examples)
