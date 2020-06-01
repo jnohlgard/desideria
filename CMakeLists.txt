@@ -19,6 +19,8 @@ endif()
 add_compile_options(-ffreestanding -nostdlib -fno-common)
 add_link_options(-nostdlib)
 
+set(CMAKE_EXECUTABLE_SUFFIX .elf)
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
