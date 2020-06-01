@@ -20,18 +20,18 @@ public:
   /**
    * Power off the virtual device and exit qemu with exit code 0
    */
-  __attribute__((noreturn)) void poweroff();
+  [[noreturn]] void poweroff();
 
   /**
    * Signal QEMU to trigger a reset of the emulated hardware
    */
-  __attribute__((noreturn)) void reset();
+  [[noreturn]] void reset();
 
   /**
    * Power off the virtual device and exit qemu with the given exit code
    * @param code Code to pass back to the parent process
    */
-  __attribute__((noreturn)) void fatal_error(unsigned int code);
+  [[noreturn]] void fatal_error(unsigned int code);
 
 private:
   SiFiveTestRegs *dev;
