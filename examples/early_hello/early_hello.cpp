@@ -6,7 +6,7 @@
 #include <deri/bsp/memory_map.h>
 
 int main() {
-  deri::dev::SifiveUart uart(UART0);
+  deri::dev::SiFiveUart uart(UART0);
   uart.init();
   const char msg[] = "Hello world\n";
   uart.write(msg, sizeof(msg), 0);

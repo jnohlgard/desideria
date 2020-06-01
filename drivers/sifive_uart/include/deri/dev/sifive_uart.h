@@ -8,19 +8,19 @@
 #include <deri/dev/char.h>
 #include <stdint.h>
 
-struct SifiveUartRegs;
+struct SiFiveUartRegs;
 
 #ifdef __cplusplus
 namespace deri::dev {
 
-class SifiveUart : public CharDev {
+class SiFiveUart : public CharDev {
 public:
-  SifiveUart(SifiveUartRegs *dev);
+  SiFiveUart(SiFiveUartRegs *dev);
   void init();
   long write(const char *buf, long len, long off); //override;
 
 private:
-  SifiveUartRegs *dev;
+  SiFiveUartRegs *dev;
 };
 
 } // namespace deri::dev

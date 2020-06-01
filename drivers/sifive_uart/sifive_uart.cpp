@@ -5,7 +5,7 @@
 #include <deri/dev/char.h>
 #include <deri/dev/sifive_uart.h>
 
-struct SifiveUartRegs {
+struct SiFiveUartRegs {
   volatile uint32_t txdata;
   volatile uint32_t rxdata;
   volatile uint32_t txctrl;
@@ -17,14 +17,14 @@ struct SifiveUartRegs {
 
 namespace deri::dev {
 
-SifiveUart::SifiveUart(SifiveUartRegs *dev) : dev(dev) {}
-void SifiveUart::init() {
+SiFiveUart::SiFiveUart(SiFiveUartRegs *dev) : dev(dev) {}
+void SiFiveUart::init() {
   // disable interrupts
   dev->ie = 0;
   // set divisor
   dev->div = 0;
 }
-long SifiveUart::write(const char *buf, long len, long off) {
+long SiFiveUart::write(const char *buf, long len, long off) {
   long count = 0;
   for (long k = off; k < len; ++k) {
     dev->txdata = buf[k];

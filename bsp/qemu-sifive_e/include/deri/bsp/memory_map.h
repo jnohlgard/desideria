@@ -6,6 +6,6 @@
 #define DERI_BSP_MEMORY_MAP_H_
 
 #define UART0_BASE 0x10013000
-#define UART0 ((SifiveUartRegs*)UART0_BASE)
+#define UART0 ((SiFiveUartRegs*)UART0_BASE)
 
 #endif // DERI_BSP_MEMORY_MAP_H_
