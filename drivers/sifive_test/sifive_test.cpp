@@ -36,7 +36,7 @@ void SiFiveTest::reset() {
   __builtin_unreachable();
 }
 
-void SiFiveTest::fail(uint16_t code) {
+void SiFiveTest::fatal_error(unsigned int code) {
   dev->cmd = (code << 16) | FINISHER_FAIL;
   __builtin_unreachable();
 }
