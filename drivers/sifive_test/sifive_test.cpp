@@ -8,6 +8,10 @@ struct SiFiveTestRegs {
   volatile uint32_t cmd;
 };
 
+namespace deri::dev {
+
+namespace {
+
 /**
  * Possible commands
  *
@@ -19,7 +23,7 @@ enum {
   FINISHER_RESET = 0x7777
 };
 
-namespace deri::dev {
+}
 
 SiFiveTest::SiFiveTest(SiFiveTestRegs *dev) : dev(dev) {}
 
