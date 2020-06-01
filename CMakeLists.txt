@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(desideria LANGUAGES C CXX)
+project(desideria LANGUAGES C CXX ASM)
 
 if(NOT BOARD)
   message(FATAL_ERROR "Define BOARD to select platform: cmake -DBOARD=foo")

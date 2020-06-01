@@ -3,7 +3,7 @@
  */
 OUTPUT_ARCH( "riscv" )
 
-ENTRY( _start )
+ENTRY( _reset_trampoline )
 
 MEMORY
 {
@@ -21,6 +21,7 @@ PHDRS
 SECTIONS
 {
   .text : {
+    *(.reset_trampoline)
     *(.text .text.* .gnu.linkonce.t.*)
   } >flash AT>flash :text
 

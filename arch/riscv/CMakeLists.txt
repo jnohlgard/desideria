@@ -1,5 +1,6 @@
 add_library(deri_arch_riscv STATIC
   startup.c
+  reset.S
   include/deri/arch/impl/irq_impl.h
   )
 target_include_directories(deri_arch_riscv PUBLIC include)
