@@ -3,9 +3,10 @@
  */
 
 #include <deri/dev/sifive_uart.h>
+#include <deri/bsp/memory_map.h>
 
 int main() {
-  deri::dev::SifiveUart uart((deri::dev::SifiveUartRegs *)0x10013000);
+  deri::dev::SifiveUart uart(UART0);
   uart.init();
   const char msg[] = "Hello world\n";
   uart.write(msg, sizeof(msg), 0);

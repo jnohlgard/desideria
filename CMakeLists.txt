@@ -44,4 +44,6 @@ target_link_libraries(deri INTERFACE
   deri_core
   )
 
+add_subdirectory(drivers)
+
 add_subdirectory(examples)

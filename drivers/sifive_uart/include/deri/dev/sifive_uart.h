@@ -8,10 +8,10 @@
 #include <deri/dev/char.h>
 #include <stdint.h>
 
+struct SifiveUartRegs;
+
 #ifdef __cplusplus
 namespace deri::dev {
-
-struct SifiveUartRegs;
 
 class SifiveUart : public CharDev {
 public:

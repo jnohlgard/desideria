@@ -5,22 +5,17 @@
 #include <deri/dev/char.h>
 #include <deri/dev/sifive_uart.h>
 
-namespace deri::dev {
-
-// TODO refactor register definitions
-#define _IO volatile
-#define _I volatile
-#define _O volatile
-
 struct SifiveUartRegs {
-  _IO uint32_t txdata;
-  _IO uint32_t rxdata;
-  _IO uint32_t txctrl;
-  _IO uint32_t rxctrl;
-  _IO uint32_t ie;
-  _IO uint32_t ip;
-  _IO uint32_t div;
+  volatile uint32_t txdata;
+  volatile uint32_t rxdata;
+  volatile uint32_t txctrl;
+  volatile uint32_t rxctrl;
+  volatile uint32_t ie;
+  volatile uint32_t ip;
+  volatile uint32_t div;
 };
+
+namespace deri::dev {
 
 SifiveUart::SifiveUart(SifiveUartRegs *dev) : dev(dev) {}
 void SifiveUart::init() {
