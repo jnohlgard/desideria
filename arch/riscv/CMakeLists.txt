@@ -2,6 +2,7 @@ add_library(deri_arch_${ARCH} STATIC
   startup.c
   reset.S
   include/deri/arch/impl/irq_impl.h
+  trap.cpp
   )
 target_include_directories(deri_arch_${ARCH} PUBLIC include)
 target_include_directories(deri_arch_${ARCH} PUBLIC vendor/include)

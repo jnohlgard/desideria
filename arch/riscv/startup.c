@@ -5,10 +5,14 @@
 #include "deri/arch/asm.h"
 #include "riscv/csr/encoding.h"
 
+void early_trap();
+
 __attribute__((naked, noreturn)) void _start() {
   /* Disable interrupts globally */
   asm volatile("csrc mstatus, %0" ::"I"(MSTATUS_MIE) :);
 
+  /* Set up an exception vector for any machine exceptions in early boot */
+  asm volatile("csrw mtvec, %0" :: "r"(early_trap));
   /* Clear the return address register to be able to detect the end of
    * a backtrace. */
   asm volatile(".cfi_undefined ra");
