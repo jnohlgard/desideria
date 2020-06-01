@@ -16,8 +16,10 @@ else()
   add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
-add_compile_options(-ffreestanding -nostdlib -fno-common)
-add_link_options(-nostdlib)
+add_compile_options(-ffreestanding -nostdlib)
+add_compile_options(-fno-common -fdata-sections -ffunction-sections)
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>)
+add_link_options(-nostdlib -Wl,--gc-sections)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
