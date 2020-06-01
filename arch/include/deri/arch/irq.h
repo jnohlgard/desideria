@@ -9,12 +9,15 @@
 
 #ifdef __cplusplus
 
+namespace deri::arch {
+
 /**
  * Scoped IRQ disabling lock
  */
 class InterruptGuard {
 public:
-  __attribute__((always_inline)) inline InterruptGuard() : mask(irq_disable()) {}
+  __attribute__((always_inline)) inline InterruptGuard()
+      : mask(irq_disable()) {}
   __attribute__((always_inline)) inline ~InterruptGuard() { irq_restore(mask); }
   InterruptGuard(const InterruptGuard &) = delete;
   InterruptGuard(InterruptGuard &&) = delete;
@@ -24,6 +27,8 @@ public:
 private:
   const unsigned long mask;
 };
+
+}
 
 #endif // __cplusplus
 
