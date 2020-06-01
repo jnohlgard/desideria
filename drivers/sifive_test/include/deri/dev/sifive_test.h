@@ -37,6 +37,11 @@ private:
   SiFiveTestRegs *dev;
 };
 
+/**
+ * Global handle for the test interface
+ */
+extern SiFiveTest sifive_test;
+
 } // namespace deri::dev
 
 #endif // __cplusplus

@@ -52,3 +52,5 @@ target_link_libraries(deri_testing INTERFACE
 add_subdirectory(drivers)
 
 add_subdirectory(examples)
+
+add_subdirectory(test)
