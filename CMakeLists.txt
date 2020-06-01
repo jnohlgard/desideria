@@ -44,6 +44,11 @@ target_link_libraries(deri INTERFACE
   deri_core
   )
 
+add_library(deri_testing INTERFACE)
+target_link_libraries(deri_testing INTERFACE
+  deri_bsp_${BOARD}_testing
+  )
+
 add_subdirectory(drivers)
 
 add_subdirectory(examples)
