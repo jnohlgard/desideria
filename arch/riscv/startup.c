@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
+
 #include "deri/arch/asm.h"
 #include "riscv/csr/encoding.h"
 
@@ -16,15 +17,15 @@ __attribute__((naked, noreturn)) void _start() {
    * register always contains the address of the __global_pointer$
    * symbol, so be careful if refactoring this. */
   asm volatile(".option push;"
-                   ".option norelax;"
-                   "la gp, __global_pointer$;"
-                   ".option pop;");
+               ".option norelax;"
+               "la gp, __global_pointer$;"
+               ".option pop;");
 
   /* Set the default stack pointer */
   asm volatile("la sp, _stack_end");
 
   /* Jump to kernel start */
-  asm volatile("tail hang");
+  asm volatile("tail deri_init");
 
   /* we should never end up here, but spin if we do */
   asm volatile("1:\nj 1b\n");
