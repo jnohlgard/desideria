@@ -4,3 +4,7 @@ add_library(deri_core STATIC
   die.cpp
   )
 target_include_directories(deri_core PUBLIC include)
+
+add_subdirectory(cxxabi)
+
+target_link_libraries(deri_core PUBLIC deri_cxxabi)
