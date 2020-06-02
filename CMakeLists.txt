@@ -5,7 +5,9 @@ project(desideria LANGUAGES C CXX ASM)
 if(NOT BOARD)
   message(FATAL_ERROR "Define BOARD to select platform: cmake -DBOARD=foo")
 endif()
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/bsp/${BOARD}/cmake" "${CMAKE_MODULE_PATH}")
+set(DERI_ARCH_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/arch)
+set(DERI_BSP_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/bsp)
+set(CMAKE_MODULE_PATH "${DERI_BSP_BASEDIR}/${BOARD}/cmake" "${CMAKE_MODULE_PATH}")
 include(deri_platform)
 
 if (MSVC)
@@ -36,11 +38,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(CTest)
 
-set(DERI_ARCH_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/arch)
-set(DERI_BSP_BASEDIR ${CMAKE_CURRENT_SOURCE_DIR}/bsp)
-
-add_library(deri INTERFACE)
 add_subdirectory(arch)
+add_library(deri INTERFACE)
 add_subdirectory(bsp)
 add_subdirectory(core)
 target_link_libraries(deri INTERFACE
