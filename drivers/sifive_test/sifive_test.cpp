@@ -29,18 +29,13 @@ SiFiveTest::SiFiveTest(SiFiveTestRegs *dev) : dev(dev) {}
 
 // See https://github.com/qemu/qemu/blob/master/hw/riscv/sifive_test.c
 
-void SiFiveTest::poweroff() {
+void SiFiveTest::pass() {
   // Writing to the test device will power off the virtual machine
   dev->cmd = FINISHER_PASS;
   __builtin_unreachable();
 }
 
-void SiFiveTest::reset() {
-  dev->cmd = FINISHER_RESET;
-  __builtin_unreachable();
-}
-
-void SiFiveTest::fatal_error(unsigned int code) {
+void SiFiveTest::fail(unsigned int code) {
   dev->cmd = (code << 16) | FINISHER_FAIL;
   __builtin_unreachable();
 }

@@ -2,10 +2,10 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/dev/sifive_test.h"
+#include "deri/testing/finish.h"
 
 int main() {
-  deri::dev::sifive_test.poweroff();
+  deri::testing::finish->pass();
 
   return 0;
 }
