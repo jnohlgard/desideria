@@ -1,0 +1,2 @@
+add_library(deri_core_testing INTERFACE)
+target_include_directories(deri_core_testing INTERFACE include)
