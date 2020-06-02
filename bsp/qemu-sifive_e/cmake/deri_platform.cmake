@@ -1,3 +1,4 @@
+set(CMAKE_CROSSCOMPILING_EMULATOR qemu-system-riscv32 -nographic -machine sifive_e -kernel)
 set(ARCH riscv)
 set(CPU_C_FLAGS -march=rv32imac -mabi=ilp32)
 set(CODE_MODEL_C_FLAGS -mcmodel=medany -mexplicit-relocs)
