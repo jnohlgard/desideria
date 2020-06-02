@@ -6,7 +6,7 @@
 #define DERI_DEV_SIFIVE_UART_H_
 
 #include <deri/dev/char.h>
-#include <stdint.h>
+#include <cstddef>
 
 struct SiFiveUartRegs;
 
@@ -17,7 +17,7 @@ class SiFiveUart : public CharDev {
 public:
   SiFiveUart(SiFiveUartRegs *dev);
   void init();
-  long write(const char *buf, long len, long off); //override;
+  long write(const char *buf, long len) override;
 
 private:
   SiFiveUartRegs *dev;

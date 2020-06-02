@@ -9,7 +9,7 @@ int main() {
   deri::dev::SiFiveUart uart(UART0);
   uart.init();
   const char msg[] = "Hello world\n";
-  uart.write(msg, sizeof(msg), 0);
+  uart.write(msg, sizeof(msg));
   while (1) {
     asm volatile("" ::: "memory");
   }

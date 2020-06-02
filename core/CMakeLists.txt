@@ -2,6 +2,8 @@ add_library(deri_core STATIC
   init.cpp
   include/deri/die.h
   die.cpp
+  include/deri/dev/charnull.h
+  charnull.cpp
   )
 target_include_directories(deri_core PUBLIC include)
 

@@ -5,18 +5,16 @@
 #ifndef DERI_DEV_CHAR_H_
 #define DERI_DEV_CHAR_H_
 
-#include <stddef.h>
-
 #ifdef __cplusplus
 
 namespace deri::dev {
 
 class CharDev {
 public:
-//  virtual long write(const char *buf, long len, long off) = 0;
+  virtual long write(const char *buf, long len) = 0;
 };
 
-}
+} // namespace deri::dev
 
 #endif // __cplusplus
 

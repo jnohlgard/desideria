@@ -2,6 +2,8 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
+#include <cstddef>
+#include <cstdint>
 #include <deri/dev/char.h>
 #include <deri/dev/sifive_uart.h>
 
@@ -18,18 +20,21 @@ struct SiFiveUartRegs {
 namespace deri::dev {
 
 SiFiveUart::SiFiveUart(SiFiveUartRegs *dev) : dev(dev) {}
+
 void SiFiveUart::init() {
   // disable interrupts
   dev->ie = 0;
   // set divisor
   dev->div = 0;
 }
-long SiFiveUart::write(const char *buf, long len, long off) {
+
+long SiFiveUart::write(const char *buf, long len) {
   long count = 0;
-  for (long k = off; k < len; ++k) {
+  for (long k = 0; k < len; ++k) {
     dev->txdata = buf[k];
     while (dev->txdata) {
-      // waiting for transmission buffer to free
+      // waiting for transmission buffer space to become available
+      asm volatile("" ::: "memory");
     }
     ++count;
   }
