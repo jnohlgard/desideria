@@ -1,0 +1,7 @@
+set(CMAKE_CROSSCOMPILING_EMULATOR qemu-system-riscv64 -nographic -machine sifive_e -kernel)
+set(ARCH riscv)
+set(CPU_C_FLAGS -march=rv64imac -mabi=lp64)
+set(CODE_MODEL_C_FLAGS -mcmodel=medany -mexplicit-relocs)
+add_compile_options(${CODE_MODEL_C_FLAGS} ${CPU_C_FLAGS})
+set(LINKER_SCRIPT "${DERI_ARCH_BASEDIR}/riscv/ld/sifive_u.lds")
+add_link_options(${CPU_C_FLAGS} -T ${LINKER_SCRIPT} -L "${DERI_ARCH_BASEDIR}/common/ld")
