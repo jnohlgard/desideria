@@ -1,3 +1,2 @@
 add_library(deri_core_testing INTERFACE)
 target_include_directories(deri_core_testing INTERFACE include)
-target_link_libraries(deri_core_testing INTERFACE deri_cxxabi)
