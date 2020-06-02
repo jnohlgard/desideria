@@ -3,6 +3,7 @@
  */
 
 #include <cstdint>
+#include "deri/bsp_init.h"
 
 extern "C" void deri_init();
 
@@ -43,6 +44,8 @@ void deri_init() {
        init_func < &__init_array_end[0]; ++init_func) {
     (*init_func)();
   }
+
+  deri::bsp::init();
 
   __extension__ main();
 }
