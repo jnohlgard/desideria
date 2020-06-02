@@ -1,5 +1,5 @@
 set(ARCH riscv)
-set(CPU_C_FLAGS -march=rv64imac -mabi=lp64)
+set(CPU_C_FLAGS -march=rv32imac -mabi=ilp32)
 set(CODE_MODEL_C_FLAGS -mcmodel=medany -mexplicit-relocs)
 add_compile_options(${CODE_MODEL_C_FLAGS} ${CPU_C_FLAGS})
 set(LINKER_SCRIPT "${DERI_ARCH_BASEDIR}/riscv/ld/sifive_e.lds")
