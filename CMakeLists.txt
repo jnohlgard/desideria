@@ -22,7 +22,7 @@ add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>)
 add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
 add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
 add_compile_options(-finline-small-functions -findirect-inlining)
-add_link_options(-nostdlib -Wl,--gc-sections)
+add_link_options(-nostdlib LINKER:--gc-sections)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
