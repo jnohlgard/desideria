@@ -1,4 +1,4 @@
-set(CMAKE_CROSSCOMPILING_EMULATOR qemu-system-riscv64 -nographic -machine sifive_e,start-in-flash=1 -bios none -kernel)
+set(CMAKE_CROSSCOMPILING_EMULATOR qemu-system-riscv64 -nographic -machine sifive_u,start-in-flash=on -bios none -kernel)
 set(ARCH riscv)
 set(CPU_C_FLAGS -march=rv64imac -mabi=lp64)
 set(CODE_MODEL_C_FLAGS -mcmodel=medany -mexplicit-relocs)
