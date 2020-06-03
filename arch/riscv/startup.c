@@ -29,7 +29,13 @@ __attribute__((naked)) void _start() {
 #else
   asm volatile("lw sp, _initial_sp");
 #endif
-  /* Jump to kernel start */
+
+  // TODO Add multi core support
+  // Check hart id, only allow one hart to proceed
+  asm volatile("csrr t0, mhartid;"
+               "1: bne t0, zero, 1b;");
+
+  // Jump to kernel start
   asm volatile("tail deri_init");
 
   // we should never end up here, but spin if we do
