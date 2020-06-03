@@ -10,3 +10,4 @@ MEMORY
 }
 
 INCLUDE deri-base.ld
+INCLUDE global_pointer.ld
