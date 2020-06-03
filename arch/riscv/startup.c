@@ -8,6 +8,33 @@
 void early_trap();
 extern long _stack_end[];
 
+/**
+ * Trap for machine exceptions early in the boot process
+ */
+__attribute__((naked, optimize("align-functions=16"))) void early_trap() {
+#if 0
+// check stack pointer for corruption first
+  asm volatile("la t0, _stack_end;"
+               "blt t0, sp, 1f;"
+               "la t0, _memory_begin;"
+               "blt sp, t0, 1f;"
+               "j 2f;"
+               "1:;"
+  // Restore initial stack pointer if it has been corrupted
+#if __LP64__
+               "ld sp, _initial_sp;"
+#else
+               "lw sp, _initial_sp;"
+#endif
+               "2:;");
+#endif
+  // Read exception cause registers
+  asm volatile("csrr t0, mcause;"
+               "csrr t1, mepc;"
+               "csrr t2, mtval;"
+               "1: j 1b;");
+}
+
 __attribute__((naked)) void _start() {
   // Disable interrupts globally
   asm volatile("csrc mstatus, %0" ::"rI"(MSTATUS_MIE) :);
