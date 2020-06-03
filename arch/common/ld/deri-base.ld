@@ -84,7 +84,7 @@ SECTIONS
     . = ALIGN(8);
   } >ram AT>rom :data
   _edata = .;
-  _data_load = LOADADDR(.data);
+  _data_load = LOADADDR(.data) + (_data_begin - ADDR(.data));
 
   /* keeping .sdata and .sbss close together */
   .bss (NOLOAD) : {
