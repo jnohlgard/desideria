@@ -26,6 +26,7 @@ add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
 add_compile_options(-finline-small-functions -findirect-inlining)
 add_link_options(-fno-rtti -fno-exceptions)
 add_link_options(-nostdlib LINKER:--gc-sections)
+add_link_options(LINKER:-Map=desideria.map)
 
 set(CMAKE_EXECUTABLE_SUFFIX .elf)
 
