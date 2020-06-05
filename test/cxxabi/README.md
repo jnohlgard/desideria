@@ -1,3 +1,4 @@
-# Minimal test
+# C++ ABI basic test
 
-This test only checks that the system has initialized the kernel.
+This test checks that global constructors have been executed when the main 
+function is called.
