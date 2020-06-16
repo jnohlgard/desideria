@@ -51,7 +51,7 @@ __attribute__((naked)) void _start() {
                ".option pop;");
 
   // Set the initial stack pointer, using the proper width depending on the ABI
-#if __LP64__
+#ifdef __LP64__
   asm volatile("ld sp, _initial_sp");
 #else
   asm volatile("lw sp, _initial_sp");
@@ -69,7 +69,7 @@ __attribute__((naked)) void _start() {
   asm volatile("1: j 1b");
 
   // initial stack pointer value
-#if __LP64__
+#ifdef __LP64__
   asm volatile("_initial_sp:\n.8byte %0" ::"i"(&_stack_end));
 #else
   asm volatile("_initial_sp:\n.4byte %0" ::"i"(&_stack_end));
