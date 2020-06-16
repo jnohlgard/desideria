@@ -57,6 +57,7 @@ target_link_libraries(deri_testing INTERFACE
   )
 
 add_subdirectory(dev)
+add_subdirectory(lib)
 
 add_subdirectory(examples)
 
