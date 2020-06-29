@@ -5,7 +5,7 @@
 #ifndef DERI_BSP_INIT_H_
 #define DERI_BSP_INIT_H_
 
-#include "deri/dev/char.h"
+#include "deri/dev/char.hpp"
 
 namespace deri::bsp {
 /**

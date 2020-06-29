@@ -5,7 +5,7 @@
 #ifndef DERI_DEV_CHARNULL_H_
 #define DERI_DEV_CHARNULL_H_
 
-#include "char.h"
+#include "char.hpp"
 
 #ifdef __cplusplus
 
@@ -16,7 +16,7 @@ namespace deri::dev {
  */
 class CharNull : public CharDev {
 public:
-  long write(const char *buf, long len) override;
+  size_t write(const char *buf, size_t len) override;
 };
 
 } // namespace deri::dev

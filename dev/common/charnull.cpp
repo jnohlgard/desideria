@@ -6,6 +6,6 @@
 
 namespace deri::dev {
 
-long CharNull::write(const char *, long len) { return len; }
+size_t CharNull::write(const char *, size_t len) { return len; }
 
 } // namespace deri::dev

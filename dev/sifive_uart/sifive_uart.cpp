@@ -4,7 +4,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <deri/dev/char.h>
 #include <deri/dev/sifive_uart.h>
 
 struct SiFiveUartRegs {
@@ -28,9 +27,9 @@ void SiFiveUart::init() {
   dev->div = 0;
 }
 
-long SiFiveUart::write(const char *buf, long len) {
-  long count = 0;
-  for (long k = 0; k < len; ++k) {
+size_t SiFiveUart::write(const char *buf, size_t len) {
+  size_t count = 0;
+  for (size_t k = 0; k < len; ++k) {
     dev->txdata = buf[k];
     while (dev->txdata) {
       // waiting for transmission buffer space to become available

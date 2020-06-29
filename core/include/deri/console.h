@@ -5,7 +5,7 @@
 #ifndef DERI_DEV_CONSOLE_H_
 #define DERI_DEV_CONSOLE_H_
 
-#include "deri/dev/char.h"
+#include "deri/dev/char.hpp"
 
 namespace deri {
 /**
