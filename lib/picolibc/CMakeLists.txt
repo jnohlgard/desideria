@@ -65,3 +65,14 @@ add_dependencies(m picolibc)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include)
 target_include_directories(c INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/include)
 target_include_directories(m INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/include)
+
+add_library(deri_iob OBJECT iob.cpp)
+target_link_libraries(deri_iob PUBLIC deri_dev_common)
+target_link_libraries(deri_iob PUBLIC c)
+#target_link_libraries(c INTERFACE deri_iob)
+# Does not work:
+#target_link_options(deri_iob BEFORE PUBLIC LINKER:--whole-archive)
+#target_link_options(deri_iob PUBLIC LINKER:--no-whole-archive)
+#target_link_libraries(c PUBLIC -Wl,--whole-archive deri_iob -Wl,--no-whole-archive )
+
+set(DERI_STARTFILES "${DERI_STARTFILES};deri_iob" CACHE INTERNAL "")
