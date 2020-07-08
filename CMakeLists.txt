@@ -1,3 +1,5 @@
+# This CMakeLists is meant to be used as a subdirectory of the application
+
 enable_language(C)
 enable_language(CXX)
 enable_language(ASM)
