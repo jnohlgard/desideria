@@ -1,8 +1,10 @@
 add_library(deri_core STATIC
-  init.cpp
-  include/deri/die.h
-  die.cpp
+  assert.cpp
+  include/deri/assert.h
   include/deri/console.h
+  die.cpp
+  include/deri/die.h
+  init.cpp
   syscalls.cpp
   )
 target_include_directories(deri_core PUBLIC include)
