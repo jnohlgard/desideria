@@ -48,31 +48,11 @@ ExternalProject_Add(picolibc
     ${CMAKE_CURRENT_BINARY_DIR}/include/stdlib.h
   )
 
-add_library(c STATIC IMPORTED GLOBAL)
-set_target_properties(c PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a)
-add_library(m STATIC IMPORTED GLOBAL)
-set_target_properties(m PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/lib/libm.a)
-#set_target_properties(c PROPERTIES LINKER_LANGUAGE "C")
-#set_target_properties(m PROPERTIES LINKER_LANGUAGE "C")
-#add_library(c INTERFACE)
-#target_link_libraries(c PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a)
-add_dependencies(c picolibc)
-add_dependencies(m picolibc)
-#add_library(m INTERFACE)
-#target_link_libraries(m PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/lib/libm.a)
-
-# CMake complains if the directory does not exist at generation when it is used by an imported target
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include)
-target_include_directories(c INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/include)
-target_include_directories(m INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/include)
+set(CMAKE_C_STANDARD_LIBRARIES " -L${CMAKE_CURRENT_BINARY_DIR}/lib ${CMAKE_CXX_LINKER_WRAPPER_FLAG}--start-group -lc -lm -lgcc ${CMAKE_CXX_LINKER_WRAPPER_FLAG}--end-group" CACHE STRING "" FORCE)
+set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE STRING "" FORCE)
+set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" CACHE STRING "" FORCE)
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}" CACHE STRING "" FORCE)
 
 add_library(deri_iob OBJECT iob.cpp)
 target_link_libraries(deri_iob PUBLIC deri_dev_common)
-target_link_libraries(deri_iob PUBLIC c)
-#target_link_libraries(c INTERFACE deri_iob)
-# Does not work:
-#target_link_options(deri_iob BEFORE PUBLIC LINKER:--whole-archive)
-#target_link_options(deri_iob PUBLIC LINKER:--no-whole-archive)
-#target_link_libraries(c PUBLIC -Wl,--whole-archive deri_iob -Wl,--no-whole-archive )
-
 set(DERI_STARTFILES "${DERI_STARTFILES};deri_iob" CACHE INTERNAL "")

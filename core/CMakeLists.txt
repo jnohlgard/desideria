@@ -6,7 +6,6 @@ add_library(deri_core STATIC
   syscalls.cpp
   )
 target_include_directories(deri_core PUBLIC include)
-target_link_libraries(deri_core PUBLIC c)
 
 add_subdirectory(cxxabi)
 add_subdirectory(testing)
