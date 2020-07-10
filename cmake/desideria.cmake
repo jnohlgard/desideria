@@ -12,7 +12,6 @@ macro(deri_configure_target name)
   target_link_libraries(${name} PRIVATE desideria ${DERI_STARTFILES})
   set_target_properties(${name} PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
   target_link_options(${name} PRIVATE LINKER:-Map=$<TARGET_FILE_BASE_NAME:${name}>.map)
-  target_link_options(${name} PRIVATE -nostdlib)
 endmacro()
 
 # Load board specific CMake settings

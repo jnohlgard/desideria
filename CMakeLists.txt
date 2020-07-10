@@ -19,7 +19,6 @@ else()
   add_compile_options(-Wformat=2 -Wformat-truncation -Wformat-signedness)
 endif()
 
-add_compile_options(-ffreestanding -nostdlib)
 add_compile_options(-fno-common -fdata-sections -ffunction-sections)
 add_compile_options(-fstack-usage)
 add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>)
