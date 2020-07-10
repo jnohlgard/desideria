@@ -6,9 +6,11 @@ add_library(deri_core STATIC
   include/deri/die.h
   init.cpp
   syscalls.cpp
+  include/deri/allocator.h
   )
 target_include_directories(deri_core PUBLIC include)
 
+add_subdirectory(allocator)
 add_subdirectory(cxxabi)
 add_subdirectory(testing)
 

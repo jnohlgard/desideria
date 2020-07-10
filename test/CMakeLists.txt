@@ -5,5 +5,6 @@ list(APPEND CMAKE_MODULE_PATH "${DERI_BASEDIR}/cmake" "${CMAKE_MODULE_PATH}")
 include(desideria)
 include(CTest)
 
+add_subdirectory(allocator)
 add_subdirectory(minimal)
 add_subdirectory(cxxabi)

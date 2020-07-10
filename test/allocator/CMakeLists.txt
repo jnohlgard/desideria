@@ -1,0 +1,5 @@
+add_executable(test_allocator main.cpp)
+deri_configure_target(test_allocator)
+target_link_libraries(test_allocator PRIVATE deri_core_allocator)
+target_link_libraries(test_allocator PRIVATE deri_testing)
+add_test(NAME allocator COMMAND test_allocator)
