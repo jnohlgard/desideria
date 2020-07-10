@@ -15,7 +15,9 @@ namespace deri::dev {
 
 class SiFiveUart : public CharDev {
 public:
-  SiFiveUart(SiFiveUartRegs *dev);
+  explicit SiFiveUart(SiFiveUartRegs *dev);
+  SiFiveUart(const SiFiveUart&) = default;
+  SiFiveUart& operator=(const SiFiveUart&) = default;
   void init();
   size_t write(const char *buf, size_t len) override;
 

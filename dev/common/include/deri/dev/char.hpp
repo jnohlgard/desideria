@@ -12,6 +12,7 @@ namespace deri::dev {
 class CharDev {
 public:
   virtual size_t write(const char *buf, size_t len) = 0;
+  virtual ~CharDev() {}
 };
 
 } // namespace deri::dev

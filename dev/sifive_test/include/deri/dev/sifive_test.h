@@ -16,7 +16,9 @@ namespace deri::dev {
 
 class SiFiveTest : public deri::testing::Finisher {
 public:
-  SiFiveTest(SiFiveTestRegs *dev);
+  explicit SiFiveTest(SiFiveTestRegs *dev);
+  SiFiveTest(const SiFiveTest&) = default;
+  SiFiveTest& operator=(const SiFiveTest&) = default;
 
   /**
    * Power off the virtual device and exit qemu with exit code 0

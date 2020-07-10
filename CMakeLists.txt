@@ -17,6 +17,8 @@ else()
   add_compile_options(-Wswitch-enum)
   add_compile_options(-Wuninitialized -Winit-self)
   add_compile_options(-Wformat=2 -Wformat-truncation -Wformat-signedness)
+  add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Woverloaded-virtual>)
+  add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Weffc++>)
 endif()
 
 add_compile_options(-fno-common -fdata-sections -ffunction-sections)
