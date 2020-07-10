@@ -62,7 +62,8 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
          map_count);
   printf("split_map: %p (%u elements)\n", static_cast<void *>(split_map),
          map_count);
-  init_free_blocks_list(area_end);
+  init_free_blocks_list(reinterpret_cast<uint8_t *>(split_map + map_count)
+      , area_end);
 }
 
 void *Allocator::allocate(size_t) { return aligned_base; }
@@ -83,25 +84,26 @@ unsigned int Allocator::calc_order(uint8_t *ptr) {
   return order;
 }
 
-void Allocator::init_free_blocks_list() {
+void Allocator::init_free_blocks_list(uint8_t *free_begin, uint8_t *free_end) {
   size_t map_count = (block_count + (1 << MAX_ORDER) - 1) >> MAX_ORDER;
   printf("map_count = %u\n", map_count);
   for (unsigned int k = 0; k <= MAX_ORDER; ++k) {
     free_blocks[k] = nullptr;
   }
-
-  // NB: this initial block address depends on the ordering of *split_map vs
-  // *free_map
-  uint8_t *block =
-      align_up(reinterpret_cast<uint8_t *>(split_map + map_count), block_size);
-  uint8_t *end = aligned_base + block_count * block_size;
+  uint8_t *block = align_up(free_begin, block_size);
 
   // Scan the free space and add as large blocks as possible to the free blocks
   // lists
-  while (block < end) {
+  while (block < free_end) {
     FreeBlock *free_block = new (static_cast<void *>(block)) FreeBlock();
     printf("next free: %p\n", static_cast<void *>(free_block));
     unsigned int order = calc_order(reinterpret_cast<uint8_t *>(free_block));
+    while (order > 0 && block + (block_size << order) >= free_end) {
+      --order;
+    }
+    if (order == 0 && block + block_size >= free_end) {
+      break;
+    }
     printf("next free block order: %u\n", order);
     free_block->next = free_blocks[order];
     free_blocks[order] = free_block;

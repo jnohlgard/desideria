@@ -40,7 +40,7 @@ public:
 private:
   void reserve_oob_blocks();
   unsigned int calc_order(uint8_t *ptr);
-  void init_free_blocks_list();
+  void init_free_blocks_list(uint8_t *free_begin, uint8_t *free_end);
 
   struct FreeBlock;
   size_t block_size;

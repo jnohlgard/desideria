@@ -10,7 +10,7 @@ extern "C" {
 }
 #include <cstring>
 
-#define TEST_ALLOCATOR_SIZE 8192
+#define TEST_ALLOCATOR_SIZE 11111
 
 static uint8_t scratch[TEST_ALLOCATOR_SIZE];
 
