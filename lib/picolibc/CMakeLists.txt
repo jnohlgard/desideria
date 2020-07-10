@@ -54,5 +54,6 @@ set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" C
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}" CACHE STRING "" FORCE)
 
 add_library(deri_iob OBJECT iob.cpp)
+add_dependencies(deri_iob picolibc)
 target_link_libraries(deri_iob PUBLIC deri_dev_common)
 set(DERI_STARTFILES "${DERI_STARTFILES};deri_iob" CACHE INTERNAL "")
