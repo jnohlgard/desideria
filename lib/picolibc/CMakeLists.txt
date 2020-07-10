@@ -30,7 +30,7 @@ ExternalProject_Add(picolibc
   CONFIGURE_COMMAND
     meson setup <SOURCE_DIR>
     --prefix <INSTALL_DIR>
-    "-Dspecsdir=<INSTALL_DIR>"
+    "-Dspecsdir=<INSTALL_DIR>/lib"
     -Dincludedir=include
     -Dlibdir=lib
     -Dmultilib=false
