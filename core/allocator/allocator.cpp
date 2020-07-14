@@ -11,27 +11,22 @@ extern "C" {
 namespace deri {
 
 namespace {
-
-// Internal helper functions
-
-inline uint8_t *align_down(uint8_t *ptr, size_t alignment) {
-  return ptr - ((ptr - static_cast<uint8_t *>(nullptr)) & (alignment - 1u));
+template <typename T, typename U> T *aligned_ptr(U *possibly_unaligned_ptr) {
+  return reinterpret_cast<T *>(
+      static_cast<uint8_t *>(nullptr) +
+      ((static_cast<uint8_t *>(possibly_unaligned_ptr) + alignof(T) - 1 -
+        static_cast<uint8_t *>(nullptr)) &
+       ~(alignof(T) - 1)));
 }
-
-inline uint8_t *align_up(uint8_t *ptr, size_t alignment) {
-  ptr += (alignment - 1u);
-  return align_down(ptr, alignment);
 }
-
-} // namespace
 
 struct Allocator::FreeBlock {
   FreeBlock *next;
 };
 
 Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
-    : block_size{block_size}, aligned_base{nullptr},
-      block_count{0}, free_map{nullptr}, split_map{nullptr}, free_blocks{0} {
+    : aligned_base{nullptr}, free_map{nullptr}, split_map{nullptr},
+      free_blocks{0}, block_size{block_size}, map_count{0}, map_stride_log2{0} {
   deri::assert((block_size > 0) && (block_size & (block_size - 1u)) == 0,
                "block_size must be a power of 2");
   size_t max_block_size = (block_size << MAX_ORDER);
@@ -42,69 +37,77 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
          static_cast<unsigned long>(max_block_size),
          static_cast<unsigned long>(max_block_size));
   deri::assert(max_block_size >= block_size, "max_block_size overflow");
-  // aligned_base, aligned_end may point outside of the designated area, but we
+  for (size_t k = block_size; k > 0; k >>= 1) {
+    ++map_stride_log2;
+  }
+  map_stride_log2 += MAX_ORDER - 1;
+  // aligned_base, aligned_size may point outside of the designated area, but we
   // will mark as used all blocks which are out of bounds.
-  uint8_t *area_end = static_cast<uint8_t *>(area_base) + area_size;
-  uint8_t *aligned_end = align_up(area_end, max_block_size);
-  aligned_base = align_down(static_cast<uint8_t *>(area_base), max_block_size);
+  aligned_base =
+      static_cast<uint8_t *>(nullptr) +
+      ((static_cast<uint8_t *>(area_base) - static_cast<uint8_t *>(nullptr)) &
+       ~(max_block_size - 1u));
+  uintptr_t aligned_size = (static_cast<uint8_t *>(area_base) + area_size -
+                            aligned_base + max_block_size - 1u) &
+                           ~(max_block_size - 1u);
   printf("area_base: %p\n", static_cast<void *>(area_base));
-  printf("area_end:  %p\n", static_cast<void *>(area_end));
+  printf("area_size: %lu\n", static_cast<unsigned long>(area_size));
   printf("aligned_base: %p\n", static_cast<void *>(aligned_base));
-  printf("aligned_end:  %p\n", static_cast<void *>(aligned_end));
-  block_count = (aligned_end - aligned_base) / block_size;
-  size_t map_count = (aligned_end - aligned_base) / max_block_size;
+  printf("aligned_size: %6lu (0x%04lx)\n",
+         static_cast<unsigned long>(aligned_size),
+         static_cast<unsigned long>(aligned_size));
+  map_count = aligned_size >> map_stride_log2;
 
   // NB: ensure alignment before casting byte pointer into wider type pointer!
   free_map = reinterpret_cast<bitmap_type *>(
-      align_up(static_cast<uint8_t *>(area_base), alignof(bitmap_type)));
+      static_cast<uint8_t *>(nullptr) +
+      ((static_cast<uint8_t *>(area_base) + alignof(bitmap_type) - 1 -
+        static_cast<uint8_t *>(nullptr)) &
+       ~(alignof(bitmap_type) - 1)));
   split_map = free_map + map_count;
   printf("free_map:  %p (%u elements)\n", static_cast<void *>(free_map),
          map_count);
   printf("split_map: %p (%u elements)\n", static_cast<void *>(split_map),
          map_count);
-  init_free_blocks_list(reinterpret_cast<uint8_t *>(split_map + map_count)
-      , area_end);
+  printf("map_stride = %u (2**%u)\n",
+         static_cast<unsigned int>(1u << map_stride_log2),
+         static_cast<unsigned int>(map_stride_log2));
+  init_free_blocks_list(
+      reinterpret_cast<uint8_t *>(split_map + map_count) - aligned_base,
+      static_cast<uint8_t *>(area_base) + area_size - aligned_base);
 }
 
 void *Allocator::allocate(size_t) { return aligned_base; }
 
-void Allocator::reserve_oob_blocks() {
-  //  uint8_t *end_reserved = aligned_base;
-}
-
-unsigned int Allocator::calc_order(uint8_t *ptr) {
-  unsigned int order = 1;
-  while (order <= MAX_ORDER) {
-    if (align_down(ptr, (block_size << order)) != ptr) {
-      break;
-    }
-    ++order;
-  }
-  --order;
-  return order;
-}
-
-void Allocator::init_free_blocks_list(uint8_t *free_begin, uint8_t *free_end) {
-  size_t map_count = (block_count + (1 << MAX_ORDER) - 1) >> MAX_ORDER;
+void Allocator::init_free_blocks_list(uintptr_t free_begin,
+                                      uintptr_t free_end) {
   printf("map_count = %u\n", map_count);
   for (unsigned int k = 0; k <= MAX_ORDER; ++k) {
     free_blocks[k] = nullptr;
   }
-  uint8_t *block = align_up(free_begin, block_size);
+
+  // Round up to find the first free block
+  uintptr_t block = (free_begin + block_size - 1) & ~(block_size - 1);
 
   // Scan the free space and add as large blocks as possible to the free blocks
   // lists
+  unsigned int order = 0;
   while (block < free_end) {
-    FreeBlock *free_block = new (static_cast<void *>(block)) FreeBlock();
+    FreeBlock *free_block = ::new (aligned_base + block) FreeBlock();
     printf("next free: %p\n", static_cast<void *>(free_block));
-    unsigned int order = calc_order(reinterpret_cast<uint8_t *>(free_block));
-    while (order > 0 && block + (block_size << order) >= free_end) {
+    while (order < MAX_ORDER && !(block & ((block_size << (order + 1)) - 1))) {
+      ++order;
+    }
+    while (order > 0 && (block + (block_size << order)) >= free_end) {
       --order;
     }
-    if (order == 0 && block + block_size >= free_end) {
+    if (order == 0 && (block + block_size) >= free_end) {
       break;
     }
     printf("next free block order: %u\n", order);
+    size_t map_idx = block >> map_stride_log2;
+    printf("map_idx = %u\n", map_idx);
+    //    free_map[map_idx] =
     free_block->next = free_blocks[order];
     free_blocks[order] = free_block;
     block += block_size << order;
@@ -126,8 +129,7 @@ Allocator *create_allocator(void *area_base, size_t area_size,
                             size_t block_size) {
   uint8_t *area_end = static_cast<uint8_t *>(area_base) + area_size;
   // Align object placement pointer first, rounding up
-  Allocator *object_ptr = reinterpret_cast<Allocator *>(
-      align_up(static_cast<uint8_t *>(area_base), alignof(Allocator)));
+  Allocator *object_ptr = aligned_ptr<Allocator>(area_base);
   // trim leading area to allow space for storing the Allocator instance
   area_base = static_cast<void *>(object_ptr + 1);
   deri::assert(area_base < area_end, "area too small");

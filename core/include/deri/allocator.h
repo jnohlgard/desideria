@@ -15,8 +15,8 @@ public:
   /**
    * Maximum contiguous allocation request allowed
    */
-  static const unsigned int MAX_ORDER = 5;
-  using bitmap_type = uint32_t; // (1 << MAX_ORDER)
+  static const unsigned int MAX_ORDER = 4;
+  using bitmap_type = uint32_t; // (2 << MAX_ORDER) bits
   /**
    * Initialize an allocator for the designated memory area.
    *
@@ -38,19 +38,21 @@ public:
   void *allocate(size_t size);
 
 private:
-  void reserve_oob_blocks();
-  unsigned int calc_order(uint8_t *ptr);
-  void init_free_blocks_list(uint8_t *free_begin, uint8_t *free_end);
+  void init_free_blocks_list(uintptr_t free_begin, uintptr_t free_end);
 
   struct FreeBlock;
-  size_t block_size;
   uint8_t *aligned_base;
-  size_t block_count;
   /// Bitmap of free blocks
   bitmap_type *free_map;
   /// Bitmap of split blocks
   bitmap_type *split_map;
+  /// Lists of unallocated blocks, one list per level
   FreeBlock *free_blocks[MAX_ORDER + 1];
+  size_t block_size;
+  /// Number of bitmap array elements
+  size_t map_count;
+  /// Log2 of bytes per highest level block (corresponding to one bitmap array element)
+  size_t map_stride_log2;
 };
 
 /**
