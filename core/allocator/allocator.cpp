@@ -34,7 +34,8 @@ struct Allocator::FreeBlock {
 
 Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
     : aligned_base{nullptr}, free_map{nullptr}, split_map{nullptr},
-      free_blocks{0}, block_size{block_size}, map_count{0}, map_stride_log2{0} {
+      free_blocks{0}, block_size{block_size}, block_size_log2{0}, map_count{0},
+      map_stride_log2{0} {
   deri::assert((block_size > 0) && (block_size & (block_size - 1u)) == 0,
                "block_size must be a power of 2");
   size_t max_block_size = (block_size << MAX_ORDER);
@@ -45,10 +46,12 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
          static_cast<unsigned long>(max_block_size),
          static_cast<unsigned long>(max_block_size));
   deri::assert(max_block_size >= block_size, "max_block_size overflow");
-  for (size_t k = block_size; k > 0; k >>= 1) {
-    ++map_stride_log2;
+  for (size_t k = block_size >> 1; k > 0; k >>= 1) {
+    ++block_size_log2;
   }
-  map_stride_log2 += MAX_ORDER - 1;
+  map_stride_log2 = block_size_log2 + MAX_ORDER;
+  printf("block_size_log2 = %u\n", block_size_log2);
+  printf("map_stride_log2 = %u\n", map_stride_log2);
   // aligned_base, aligned_size may point outside of the designated area, but we
   // will mark as used all blocks which are out of bounds.
   aligned_base =
@@ -56,8 +59,8 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
       ((static_cast<uint8_t *>(area_base) - static_cast<uint8_t *>(nullptr)) &
        ~(max_block_size - 1u));
   offset_type aligned_size = (static_cast<uint8_t *>(area_base) + area_size -
-                            aligned_base + max_block_size - 1u) &
-                           ~(max_block_size - 1u);
+                              aligned_base + max_block_size - 1u) &
+                             ~(max_block_size - 1u);
   printf("area_base: %p\n", static_cast<void *>(area_base));
   printf("area_size: %lu\n", static_cast<unsigned long>(area_size));
   printf("aligned_base: %p\n", static_cast<void *>(aligned_base));
@@ -80,9 +83,19 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
   printf("map_stride = %u (2**%u)\n",
          static_cast<unsigned int>(1u << map_stride_log2),
          static_cast<unsigned int>(map_stride_log2));
-  init_free_blocks_list(
-      reinterpret_cast<uint8_t *>(split_map + map_count) - aligned_base,
-      static_cast<uint8_t *>(area_base) + area_size - aligned_base);
+  // Round up to find the first completely free block
+  offset_type first_free_block =
+      (((reinterpret_cast<uint8_t *>(split_map + map_count) - aligned_base) +
+        block_size - 1) &
+       ~(block_size - 1)) >>
+      block_size_log2;
+  // Round down for the past-the-end block
+  offset_type end_block =
+      ((static_cast<uint8_t *>(area_base) + area_size - aligned_base) &
+       ~(block_size - 1)) >>
+      block_size_log2;
+
+  init_free_blocks_list(first_free_block, end_block);
 }
 
 void *Allocator::allocate(size_t) { return aligned_base; }
@@ -94,32 +107,36 @@ void Allocator::init_free_blocks_list(offset_type free_begin,
     free_blocks[k] = nullptr;
   }
 
-  // Round up to find the first free block
-  offset_type block = (free_begin + block_size - 1) & ~(block_size - 1);
-
   // Scan the free space and add as large blocks as possible to the free blocks
   // lists
+  offset_type block = free_begin;
   unsigned int order = 0;
   while (block < free_end) {
-    FreeBlock *free_block = ::new (aligned_base + block) FreeBlock();
+    FreeBlock *free_block =
+        ::new (aligned_base + (block << block_size_log2)) FreeBlock();
     printf("next free: %p\n", static_cast<void *>(free_block));
-    while (order < MAX_ORDER && !(block & ((block_size << (order + 1)) - 1))) {
+    for (offset_type k = block >> order; order < MAX_ORDER && (k & 1u) == 0; k >>= 1u) {
       ++order;
     }
-    while (order > 0 && (block + (block_size << order)) >= free_end) {
+    while (order > 0 && (block + (1u << order)) > free_end) {
       --order;
     }
-    if (order == 0 && (block + block_size) >= free_end) {
-      break;
-    }
-    printf("next free block order: %u\n", order);
-    size_t map_idx = block >> map_stride_log2;
+    printf("next free block order: %u (0x%04x)\n", order,
+           (block_size << order));
+    size_t map_idx = block >> MAX_ORDER;
     printf("map_idx = %u\n", map_idx);
-    bitmap_type order_mask = ~static_cast<bitmap_type>(0) << order;
-    //    free_map[map_idx] =
+    size_t block_sub =
+        (block >> order) & ((1u << (MAX_ORDER + 1 - order)) - 1u);
+    printf("block_sub = %u (0x%04x)\n", static_cast<unsigned>(block_sub),
+           static_cast<unsigned>(block_sub << (block_size_log2 + order)));
+    bitmap_type block_mask =
+        block_sub << (sizeof(bitmap_type) * 8 - (1u << (MAX_ORDER - order)));
+    printf("block_mask = 0x%08x\n", static_cast<unsigned>(block_mask));
+    //    bitmap_type order_mask = block >> map_stride_log2 - order;
+    //        free_map[map_idx] =
     free_block->next = free_blocks[order];
     free_blocks[order] = free_block;
-    block += block_size << order;
+    block += 1u << order;
   }
 
   printf("free blocks table:\n");

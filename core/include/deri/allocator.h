@@ -53,6 +53,7 @@ private:
   /// Lists of unallocated blocks, one list per level
   FreeBlock *free_blocks[MAX_ORDER + 1];
   size_t block_size;
+  size_t block_size_log2;
   /// Number of bitmap array elements
   size_t map_count;
   /// Log2 of bytes per highest level block (corresponding to one bitmap array element)
