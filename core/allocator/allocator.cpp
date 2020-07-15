@@ -55,7 +55,7 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
       static_cast<uint8_t *>(nullptr) +
       ((static_cast<uint8_t *>(area_base) - static_cast<uint8_t *>(nullptr)) &
        ~(max_block_size - 1u));
-  uintptr_t aligned_size = (static_cast<uint8_t *>(area_base) + area_size -
+  offset_type aligned_size = (static_cast<uint8_t *>(area_base) + area_size -
                             aligned_base + max_block_size - 1u) &
                            ~(max_block_size - 1u);
   printf("area_base: %p\n", static_cast<void *>(area_base));
@@ -87,15 +87,15 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
 
 void *Allocator::allocate(size_t) { return aligned_base; }
 
-void Allocator::init_free_blocks_list(uintptr_t free_begin,
-                                      uintptr_t free_end) {
+void Allocator::init_free_blocks_list(offset_type free_begin,
+                                      offset_type free_end) {
   printf("map_count = %u\n", map_count);
   for (unsigned int k = 0; k <= MAX_ORDER; ++k) {
     free_blocks[k] = nullptr;
   }
 
   // Round up to find the first free block
-  uintptr_t block = (free_begin + block_size - 1) & ~(block_size - 1);
+  offset_type block = (free_begin + block_size - 1) & ~(block_size - 1);
 
   // Scan the free space and add as large blocks as possible to the free blocks
   // lists

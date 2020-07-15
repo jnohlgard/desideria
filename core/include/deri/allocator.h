@@ -18,6 +18,10 @@ public:
   static const unsigned int MAX_ORDER = 4;
   using bitmap_type = uint32_t; // (2 << MAX_ORDER) bits
   /**
+   * Type used internally for offset from base pointer
+   */
+  using offset_type = uintptr_t;
+  /**
    * Initialize an allocator for the designated memory area.
    *
    * @param area_base Beginning of designated area
