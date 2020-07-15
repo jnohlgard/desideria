@@ -18,6 +18,14 @@ template <typename T, typename U> T *aligned_ptr(U *possibly_unaligned_ptr) {
         static_cast<uint8_t *>(nullptr)) &
        ~(alignof(T) - 1)));
 }
+
+static const Allocator::bitmap_type order_masks[Allocator::MAX_ORDER + 1] = {
+    0x0000ffff, // ~0 << 16 >> 16, 16 = 1 << MAX_ORDER - order, 16 = sizeof(bitmap_type) * 8 - 16
+    0x00ff0000, // ~0 << 24 >> 8,   8 = 1 << MAX_ORDER - order, 24 = sizeof(bitmap_type) * 8 - 8
+    0x0f000000, // ~0 << 28 >> 4,   4 = 1 << MAX_ORDER - order, 28 = sizeof(bitmap_type) * 8 - 4
+    0x30000000, // ~0 << 30 >> 2,   2 = 1 << MAX_ORDER - order, 30 = sizeof(bitmap_type) * 8 - 2
+    0x40000000, // ~0 << 31 >> 1,   1 = 1 << MAX_ORDER - order, 31 = sizeof(bitmap_type) * 8 - 1
+};
 }
 
 struct Allocator::FreeBlock {
@@ -107,6 +115,7 @@ void Allocator::init_free_blocks_list(uintptr_t free_begin,
     printf("next free block order: %u\n", order);
     size_t map_idx = block >> map_stride_log2;
     printf("map_idx = %u\n", map_idx);
+    bitmap_type order_mask = ~static_cast<bitmap_type>(0) << order;
     //    free_map[map_idx] =
     free_block->next = free_blocks[order];
     free_blocks[order] = free_block;
