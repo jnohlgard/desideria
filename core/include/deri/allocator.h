@@ -15,8 +15,8 @@ public:
   /**
    * Maximum contiguous allocation request allowed
    */
-  static const unsigned int MAX_ORDER = 4;
-  using bitmap_type = uint32_t; // (2 << MAX_ORDER) bits
+  static const unsigned int MAX_ORDER = 5;
+  using bitmap_type = uint32_t; // (1 << MAX_ORDER) bits
   /**
    * Type used internally for offset from base pointer
    */
@@ -39,12 +39,56 @@ public:
    * @return pointer to allocated memory on success
    * @return nullptr on failure
    */
-  void *allocate(size_t size);
+  [[nodiscard]] void *allocate(size_t size);
 
 private:
-  void init_free_blocks_list(uintptr_t free_begin, uintptr_t free_end);
-
+  /**
+   * Class representing a free block ready to be allocated
+   */
   struct FreeBlock;
+
+  /**
+   * Marks all blocks that are outside of the given range as allocated
+   *
+   * @param free_begin first block inside the valid region
+   * @param free_end past-the-end block number
+   */
+  void init_free_blocks_list(offset_type free_begin, offset_type free_end);
+
+  /**
+   * Take one block of @p order from the free list, or split a higher order block if no free block is available
+   *
+   * If no higher order blocks are available @c nullptr is returned to indicate
+   * failure.
+   * The returned block will be marked as allocated in @c free_map.
+   *
+   * @param order the order of the block to allocate
+   * @return pointer allocated block
+   * @return nullptr on failure
+   */
+  void *allocate_block(unsigned int order);
+
+  /**
+   * Get the block offset given a regular pointer
+   * @param ptr pointer to a block
+   * @return offset to the block containing the pointed to memory location
+   */
+  offset_type block_from_ptr(void *ptr);
+
+  /**
+   * Convert a block index into a pointer value
+   *
+   * @param block the block index
+   * @return pointer to the beginning of the block
+   */
+  void *ptr_from_block(offset_type block);
+
+  // Free list handling
+  // TODO use std::optional<offset_type> or something related instead of void *
+  void *pop_free_block(unsigned int order);
+  void push_free_block(void *ptr, unsigned int order);
+
+  /// Base of allocatable area, aligned to fit block size boundaries
   uint8_t *aligned_base;
   /// Bitmap of free blocks
   bitmap_type *free_map;
@@ -52,7 +96,12 @@ private:
   bitmap_type *split_map;
   /// Lists of unallocated blocks, one list per level
   FreeBlock *free_blocks[MAX_ORDER + 1];
+  /// offset of the first block that is entirely inside the assigned area
+  /// (distance from aligned_base to actual base)
+  offset_type first_usable_block;
+  /// size of a block, in bytes
   size_t block_size;
+  /// block_size as a power of two (block_size = 1 << block_size_log2)
   size_t block_size_log2;
   /// Number of bitmap array elements
   size_t map_count;
