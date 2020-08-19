@@ -263,6 +263,82 @@ void *Allocator::ptr_from_block(Allocator::offset_type block) const {
   return static_cast<void *>(aligned_base + (block << block_size_log2));
 }
 
+void Allocator::visualize_split_block(Allocator::offset_type block) const {
+  offset_type map_idx = map_index_from_block(block);
+  offset_type base_block = (map_idx << MAX_ORDER);
+  if (map_idx >= map_count) {
+    // Out of bounds
+    return;
+  }
+//  bitmap_type free_bits = free_map[map_idx];
+  bitmap_type split_bits = split_map[map_idx];
+  fflush(stdout);
+  printf("      |%-18p%46p|\n", ptr_from_block(base_block),
+         ptr_from_block(base_block + (1 << MAX_ORDER)));
+  printf("order ");
+  unsigned int width = 2 << MAX_ORDER;
+  putchar('+');
+  for (size_t k = 2; k < (2 << MAX_ORDER); ++k) {
+    putchar('-');
+  }
+  putchar('+');
+  putchar('\n');
+  for (int k = MAX_ORDER; k >= 0; --k) {
+    unsigned int order = k;
+    printf("%5u |", order);
+    // bitmap_type free_mask = block_mask_from_block(0, order - 1);
+    for (offset_type offset = 0; offset < (1 << MAX_ORDER);
+         offset += (1 << order)) {
+      int filler = ' ';
+      if (order > 0) {
+        bitmap_type block_mask =
+            block_mask_from_block(base_block + offset, order - 1);
+        if (split_bits & block_mask) {
+          // This block is split
+          filler = 'v';
+        }
+      }
+      if (filler == ' ') {
+        bitmap_type block_mask =
+            block_mask_from_block(base_block + offset, order);
+        if (split_bits & block_mask) {
+          // The higher order block above this one is split, visualize here
+          FreeBlock *free_block = free_blocks[order];
+          void *this_block = ptr_from_block(base_block + offset);
+          filler = 'A';
+          while (free_block) {
+            if (static_cast<void *>(free_block) == this_block) {
+              filler = 'F';
+              break;
+            }
+            free_block = free_block->next;
+          }
+        }
+      }
+      for (unsigned int k = 1; k < width; ++k) {
+        putchar(filler);
+      }
+      putchar('|');
+    }
+    putchar('\n');
+    width >>= 1;
+  }
+  printf("      ");
+  putchar('+');
+  for (size_t k = 2; k < (2 << MAX_ORDER); ++k) {
+    putchar('-');
+  }
+  putchar('+');
+  putchar('\n');
+}
+
+void Allocator::visualize_split_block(void *ptr) const {
+  if (ptr < aligned_base) {
+    return;
+  }
+  visualize_split_block(block_from_ptr(ptr));
+}
+
 Allocator *create_allocator(void *area_base, size_t area_size,
                             size_t block_size) {
   uint8_t *area_end = static_cast<uint8_t *>(area_base) + area_size;

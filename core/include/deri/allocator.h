@@ -93,6 +93,24 @@ private:
    */
   void print_block_map() const;
 
+  /**
+   * Draw an ascii art diagram of the highest order block containing the given
+   * block
+   *
+   * @param block which block to visualize
+   */
+  void visualize_split_block(offset_type block) const;
+
+public:
+  /**
+   * Draw an ascii art diagram of the highest order block containing the given
+   * pointer address
+   *
+   * @param ptr  which block to visualize
+   */
+  void visualize_split_block(void *ptr) const;
+
+private:
   /// Base of allocatable area, aligned to fit block size boundaries
   uint8_t *aligned_base;
   /// Bitmap of free blocks
