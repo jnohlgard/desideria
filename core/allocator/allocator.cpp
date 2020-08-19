@@ -163,12 +163,13 @@ void Allocator::init_free_blocks_list(offset_type free_begin,
          k >>= 1u) {
       ++order;
     }
+    size_t map_idx = map_index_from_block(block);
     while (order > 0 && (block + (1u << order)) > free_end) {
+      split_map[map_idx] |= block_mask_from_block(block, order);
       --order;
     }
     printf("next free block order: %u (0x%04x)\n", order,
            (block_size << order));
-    size_t map_idx = map_index_from_block(block);
     bitmap_type block_mask = block_mask_from_block(block, order);
     printf("map_idx = %u\n", static_cast<unsigned>(map_idx));
     printf("block_mask = 0x%08lx\n", static_cast<unsigned long>(block_mask));
