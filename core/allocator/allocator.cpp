@@ -179,6 +179,11 @@ void Allocator::init_free_blocks_list(offset_type free_begin,
     block += 1u << order;
   }
 
+  print_block_map();
+}
+
+void Allocator::print_block_map() const {
+  fflush(stdout);
   printf("free blocks table:\n");
   for (unsigned int k = 0; k <= MAX_ORDER; ++k) {
     printf("  [%u] (%5lu)", k, static_cast<unsigned long>(block_size << k));
@@ -197,6 +202,7 @@ void Allocator::init_free_blocks_list(offset_type free_begin,
   for (unsigned int k = 0; k < map_count; ++k) {
     printf("  [%u] 0x%08lx\n", k, static_cast<unsigned long>(split_map[k]));
   }
+  fflush(stdout);
 }
 
 void *Allocator::allocate_block(unsigned int order) {

@@ -88,6 +88,11 @@ private:
   void *pop_free_block(unsigned int order);
   void push_free_block(void *ptr, unsigned int order);
 
+  /**
+   * Debug helper, print the free_map and split_map to stdout
+   */
+  void print_block_map() const;
+
   /// Base of allocatable area, aligned to fit block size boundaries
   uint8_t *aligned_base;
   /// Bitmap of free blocks
