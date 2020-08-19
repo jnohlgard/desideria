@@ -73,7 +73,7 @@ private:
    * @param ptr pointer to a block
    * @return offset to the block containing the pointed to memory location
    */
-  offset_type block_from_ptr(void *ptr);
+  offset_type block_from_ptr(void *ptr) const;
 
   /**
    * Convert a block index into a pointer value
@@ -81,7 +81,7 @@ private:
    * @param block the block index
    * @return pointer to the beginning of the block
    */
-  void *ptr_from_block(offset_type block);
+  void *ptr_from_block(offset_type block) const;
 
   // Free list handling
   // TODO use std::optional<offset_type> or something related instead of void *

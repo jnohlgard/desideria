@@ -137,7 +137,7 @@ void *Allocator::allocate(size_t requested_size) {
   return free_block;
 }
 
-Allocator::offset_type Allocator::block_from_ptr(void *ptr) {
+Allocator::offset_type Allocator::block_from_ptr(void *ptr) const {
   ptrdiff_t diff = static_cast<uint8_t *>(ptr) - aligned_base;
   //  if (diff < 0) {
   //    // ptr does not point inside this Allocator's region
@@ -252,7 +252,7 @@ void *Allocator::pop_free_block(unsigned int order) {
   return static_cast<void *>(head);
 }
 
-void *Allocator::ptr_from_block(Allocator::offset_type block) {
+void *Allocator::ptr_from_block(Allocator::offset_type block) const {
   return static_cast<void *>(aligned_base + (block << block_size_log2));
 }
 
