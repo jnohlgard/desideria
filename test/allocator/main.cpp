@@ -59,6 +59,7 @@ void testAllocator_allocate_many_small_blocks_should_return_valid_pointers() {
   for (size_t k = 0; k < TEST_ALLOCATOR_SIZE / block_size; ++k) {
     void *ptr = sut.allocate(block_size);
     printf("allocation %u, tried to allocate %5u bytes, got block %p\n", k + 1, block_size, ptr);
+    sut.visualize_split_block(ptr);
     if (!check_allocated_block_inside_test_bounds(ptr, block_size)) {
       if (k > (TEST_ALLOCATOR_SIZE / block_size) - 2) {
         printf("Out of free blocks, overhead is %u blocks\n", (TEST_ALLOCATOR_SIZE / block_size) - k);

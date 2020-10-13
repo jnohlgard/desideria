@@ -39,6 +39,12 @@ Allocator::offset_type map_index_from_block(Allocator::offset_type block) {
   return map_idx;
 }
 
+/**
+ * Compute the bit mask for the split/free bits of the given block
+ * @param block (order 0) block offset from the aligned base
+ * @param order
+ * @return
+ */
 Allocator::bitmap_type block_mask_from_block(Allocator::offset_type block,
                                              unsigned int order) {
   // each buddy pair has one bit in the bitmap
@@ -237,7 +243,7 @@ void *Allocator::allocate_block(unsigned int order) {
 
 void Allocator::push_free_block(void *ptr, unsigned int order) {
   FreeBlock *free_block = ::new (ptr) FreeBlock();
-  printf("free block^%u @ %p\n", order, static_cast<void *>(free_block));
+  printf("push free block^%u @ %p\n", order, static_cast<void *>(free_block));
   FreeBlock *free_head = free_blocks[order];
   free_block->next = free_head;
   if (free_head) {
