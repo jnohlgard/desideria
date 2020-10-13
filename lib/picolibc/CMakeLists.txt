@@ -34,11 +34,12 @@ ExternalProject_Add(picolibc
     -Dincludedir=include
     -Dlibdir=lib
     -Dmultilib=false
-    -Dtests=true
+    -Dtests=false
     --cross-file "${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt"
   BUILD_COMMAND     meson compile
   INSTALL_COMMAND   meson install
   TEST_COMMAND      meson test
+  UPDATE_COMMAND    ""
   TEST_EXCLUDE_FROM_MAIN YES
   BUILD_BYPRODUCTS
     ${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a
