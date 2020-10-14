@@ -1,10 +1,47 @@
-# This CMakeLists is meant to be used as a subdirectory of the application
+cmake_minimum_required(VERSION 3.14)
+project(desideria
+  VERSION 0.1.0
+  HOMEPAGE_URL https://github.com/gebart/desideria
+  LANGUAGES C CXX ASM
+  )
 
-enable_language(C)
-enable_language(CXX)
-enable_language(ASM)
+if(NOT BOARD)
+  message(FATAL_ERROR "Define BOARD to select platform: cmake -DBOARD=foo")
+endif()
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  include(CTest)
+  option(BUILD_EXAMPLES "Build all Desideria examples" ON)
+endif()
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # This internal cache variable is required to pass the list of object library files to the top level CMakeLists
 set(DERI_STARTFILES "" CACHE INTERNAL "Linker dependencies that must be explicitly linked with any executable")
+
+# Path configuration
+set(DERI_BASEDIR ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "Path to the Desidera source tree root")
+set(DERI_ARCH_BASEDIR ${DERI_BASEDIR}/arch CACHE PATH "Path to arch component of the Desidera tree")
+set(DERI_BSP_BASEDIR ${DERI_BASEDIR}/bsp CACHE PATH "Path to bsp component of the Desidera tree")
+set(DERI_BSP_DIR ${DERI_BSP_BASEDIR}/${BOARD} CACHE PATH "Path to board specific code")
+
+# Use deri_configure_target to set all required linker options and libraries for building an executable
+macro(deri_configure_target name)
+  target_link_libraries(${name} PRIVATE desideria ${DERI_STARTFILES})
+  set_target_properties(${name} PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
+  target_link_options(${name} PRIVATE LINKER:-Map=$<TARGET_FILE_BASE_NAME:${name}>.map)
+endmacro()
+
+# Load board specific CMake settings
+list(APPEND CMAKE_MODULE_PATH "${DERI_BSP_DIR}/cmake" "${DERI_BASEDIR}/cmake")
+include(deri_platform)
+include(deri_common_options)
 
 if (MSVC)
   # warning level 4 and all warnings as errors
@@ -20,21 +57,6 @@ else()
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Woverloaded-virtual>)
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Weffc++>)
 endif()
-
-add_compile_options(-fno-common -fdata-sections -ffunction-sections)
-add_compile_options(-fstack-usage)
-add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>)
-add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
-add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>)
-add_compile_options(-finline-small-functions -findirect-inlining)
-
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(arch)
 add_library(desideria INTERFACE)
@@ -54,3 +76,10 @@ target_link_libraries(deri_testing INTERFACE
 
 add_subdirectory(dev)
 add_subdirectory(lib)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+  add_subdirectory(test)
+endif()
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
+
