@@ -26,9 +26,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(DERI_STARTFILES "" CACHE INTERNAL "Linker dependencies that must be explicitly linked with any executable")
 
 # Path configuration
-set(DERI_BASEDIR ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "Path to the Desidera source tree root")
-set(DERI_ARCH_BASEDIR ${DERI_BASEDIR}/arch CACHE PATH "Path to arch component of the Desidera tree")
-set(DERI_BSP_BASEDIR ${DERI_BASEDIR}/bsp CACHE PATH "Path to bsp component of the Desidera tree")
+set(DERI_BASEDIR ${CMAKE_CURRENT_LIST_DIR} CACHE PATH "Path to the Desideria source tree root")
+set(DERI_ARCH_BASEDIR ${DERI_BASEDIR}/arch CACHE PATH "Path to arch component of the Desideria tree")
+set(DERI_BSP_BASEDIR ${DERI_BASEDIR}/bsp CACHE PATH "Path to bsp component of the Desideria tree")
 set(DERI_BSP_DIR ${DERI_BSP_BASEDIR}/${BOARD} CACHE PATH "Path to board specific code")
 
 # Use deri_configure_target to set all required linker options and libraries for building an executable
