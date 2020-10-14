@@ -57,14 +57,14 @@ set(picolibc_clean_files
   )
 set_target_properties(picolibc PROPERTIES ADDITIONAL_CLEAN_FILES "${picolibc_clean_files}")
 
+set(picolibc_link_flags "-L${CMAKE_CURRENT_BINARY_DIR}/lib")
 if (CMAKE_C_COMPILER_ID STREQUAL GNU)
-  set(CMAKE_C_STANDARD_LIBRARIES "-L${CMAKE_CURRENT_BINARY_DIR}/lib -specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs" CACHE INTERNAL "")
+  string(APPEND picolibc_link_flags " -specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs")
 endif()
 set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" CACHE INTERNAL "")
-if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-  set(CMAKE_CXX_STANDARD_LIBRARIES "-L${CMAKE_CURRENT_BINARY_DIR}/lib -specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs" CACHE INTERNAL "")
-endif()
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}" CACHE INTERNAL "")
+set(CMAKE_C_STANDARD_LIBRARIES "${picolibc_link_flags}" CACHE INTERNAL "")
+set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE INTERNAL "")
 
 add_library(deri_iob OBJECT iob.cpp)
 add_dependencies(deri_iob picolibc)
