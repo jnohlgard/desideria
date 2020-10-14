@@ -2,7 +2,7 @@ if (CMAKE_CROSSCOMPILING)
   set(CMAKE_EXECUTABLE_SUFFIX .elf)
 endif()
 
-add_link_options(LINKER:--gc-sections -specs=nosys.specs -nostartfiles)
+add_link_options(LINKER:--gc-sections -nostartfiles)
 
 add_compile_options(-fno-common)
 add_compile_options(-fdata-sections -ffunction-sections)
