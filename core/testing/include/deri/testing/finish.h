@@ -19,7 +19,7 @@ namespace deri::testing {
  */
 class Finisher {
 public:
-  virtual ~Finisher() {}
+  virtual ~Finisher() = default;
 
   /**
    * Power off the system and signal a test pass
