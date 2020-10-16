@@ -13,6 +13,26 @@ string(CONFIGURE "${meson_cross_in}" meson_cross_out)
 # picolibc only requires C
 file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt CONTENT "${meson_cross_out}" CONDITION $<COMPILE_LANGUAGE:C>)
 
+if (ARCH STREQUAL hosted)
+  set(picolibc_extra_config_default
+    -Dtls-model=global-dynamic
+    -Dposix-console=true
+    -Dnewlib-global-atexit=true
+    )
+  set(picolibc_cross_options
+    -Dspecsdir=none
+    )
+else()
+  set(picolibc_extra_config_default )
+  set(picolibc_cross_options
+    "-Dspecsdir=<INSTALL_DIR>/lib"
+    --cross-file "${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt"
+    )
+endif()
+
+set(PICOLIBC_EXTRA_CONFIG ${picolibc_extra_config_default}
+  CACHE STRING "Extra command line options to pass to meson setup in picolibc")
+
 include(ExternalProject)
 ExternalProject_Add(picolibc
   URL               ${CMAKE_CURRENT_SOURCE_DIR}/picolibc/
@@ -30,12 +50,14 @@ ExternalProject_Add(picolibc
   CONFIGURE_COMMAND
     meson setup <SOURCE_DIR>
     --prefix <INSTALL_DIR>
-    "-Dspecsdir=<INSTALL_DIR>/lib"
     -Dincludedir=include
     -Dlibdir=lib
     -Dmultilib=false
     -Dtests=false
-    --cross-file "${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt"
+    -Dpicolib=false
+    -Dpicocrt=false
+    ${PICOLIBC_EXTRA_CONFIG}
+    ${picolibc_cross_options}
   BUILD_COMMAND     meson compile
   INSTALL_COMMAND   meson install
   TEST_COMMAND      meson test
@@ -58,7 +80,7 @@ set(picolibc_clean_files
 set_target_properties(picolibc PROPERTIES ADDITIONAL_CLEAN_FILES "${picolibc_clean_files}")
 
 set(picolibc_link_flags "-L${CMAKE_CURRENT_BINARY_DIR}/lib")
-if (CMAKE_C_COMPILER_ID STREQUAL GNU)
+if (CMAKE_CROSSCOMPILING AND CMAKE_C_COMPILER_ID STREQUAL GNU)
   string(APPEND picolibc_link_flags " -specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs")
 endif()
 set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" CACHE INTERNAL "")

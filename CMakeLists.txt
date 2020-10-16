@@ -34,9 +34,14 @@ set(DERI_BSP_DIR ${DERI_BSP_BASEDIR}/${BOARD} CACHE PATH "Path to board specific
 # Use deri_configure_target to set all required linker options and libraries for building an executable
 macro(deri_configure_target name)
   target_link_libraries(${name} PRIVATE desideria ${DERI_STARTFILES})
-  set_target_properties(${name} PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
-  target_link_options(${name} PRIVATE LINKER:-Map=$<TARGET_FILE_BASE_NAME:${name}>.map)
-endmacro()
+  if (LINKER_SCRIPT)
+    set_target_properties(${name} PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
+  endif()
+  if (NOT ARCH STREQUAL hosted OR NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
+    # Xcode ld64 does not support -Map
+    target_link_options(${name} PRIVATE LINKER:-Map=$<TARGET_FILE_BASE_NAME:${name}>.map)
+  endif ()
+endmacro ()
 
 # Load board specific CMake settings
 list(APPEND CMAKE_MODULE_PATH "${DERI_BSP_DIR}/cmake" "${DERI_BASEDIR}/cmake")
