@@ -55,7 +55,7 @@ off_t lseek(int, off_t, int) { return 0; }
 
 int open(const char *, int, mode_t) { return -1; }
 
-ssize_t read(int, void *, size_t) { return 0; }
+_READ_WRITE_RETURN_TYPE read(int, void *, size_t) { return 0; }
 
 int stat(const char *, struct stat *st) {
   st->st_mode = S_IFCHR;
@@ -72,6 +72,6 @@ pid_t wait(int *) {
   return -1;
 }
 
-ssize_t write(int, const void *ptr, size_t len) {
-  return static_cast<ssize_t>(deri::console->write(static_cast<const char *>(ptr), len));
+_READ_WRITE_RETURN_TYPE write(int, const void *ptr, size_t len) {
+  return static_cast<_READ_WRITE_RETURN_TYPE>(deri::console->write(static_cast<const char *>(ptr), len));
 }
