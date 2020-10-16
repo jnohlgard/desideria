@@ -5,14 +5,14 @@ project(desideria
   LANGUAGES C CXX ASM
   )
 
-if(NOT BOARD)
+if (NOT BOARD)
   message(FATAL_ERROR "Define BOARD to select platform: cmake -DBOARD=foo")
-endif()
+endif ()
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   include(CTest)
   option(BUILD_EXAMPLES "Build all Desideria examples" ON)
-endif()
+endif ()
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -31,17 +31,19 @@ set(DERI_ARCH_BASEDIR ${DERI_BASEDIR}/arch CACHE PATH "Path to arch component of
 set(DERI_BSP_BASEDIR ${DERI_BASEDIR}/bsp CACHE PATH "Path to bsp component of the Desideria tree")
 set(DERI_BSP_DIR ${DERI_BSP_BASEDIR}/${BOARD} CACHE PATH "Path to board specific code")
 
+option(DERI_WERROR "Build with all warnings as errors" ON)
+
 # Use deri_configure_target to set all required linker options and libraries for building an executable
 macro(deri_configure_target name)
   target_link_libraries(${name} PRIVATE desideria ${DERI_STARTFILES})
   if (LINKER_SCRIPT)
     set_target_properties(${name} PROPERTIES LINK_DEPENDS ${LINKER_SCRIPT})
-  endif()
+  endif ()
   if (NOT ARCH STREQUAL hosted OR NOT CMAKE_SYSTEM_NAME STREQUAL Darwin)
     # Xcode ld64 does not support -Map
     target_link_options(${name} PRIVATE LINKER:-Map=$<TARGET_FILE_BASE_NAME:${name}>.map)
   endif ()
-endmacro ()
+endmacro()
 
 # Load board specific CMake settings
 list(APPEND CMAKE_MODULE_PATH "${DERI_BSP_DIR}/cmake" "${DERI_BASEDIR}/cmake")
@@ -49,22 +51,27 @@ include(deri_platform)
 include(deri_common_options)
 
 if (MSVC)
-  # warning level 4 and all warnings as errors
-  add_compile_options(/W4 /WX)
-else()
+  add_compile_options(/W4)
+  if (DERI_WERROR)
+    add_compile_options(/WX)
+  endif ()
+else ()
   # lots of warnings and all warnings as errors
   #-Wshadow -Wundef
-  add_compile_options(-Wall -Wextra -pedantic -Werror)
+  add_compile_options(-Wall -Wextra -pedantic)
+  if (DERI_WERROR)
+    add_compile_options(-Werror)
+  endif ()
   add_compile_options(-Wdouble-promotion -Wconversion)
   add_compile_options(-Wswitch-enum)
   add_compile_options(-Wuninitialized -Winit-self)
   add_compile_options(-Wformat=2)
   if (CMAKE_C_COMPILER_ID STREQUAL GNU)
     add_compile_options(-Wformat-truncation -Wformat-signedness)
-  endif()
+  endif ()
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Woverloaded-virtual>)
   add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Weffc++>)
-endif()
+endif ()
 
 add_subdirectory(arch)
 add_library(desideria INTERFACE)
@@ -84,10 +91,10 @@ target_link_libraries(deri_testing INTERFACE
 
 add_subdirectory(dev)
 add_subdirectory(lib)
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
   add_subdirectory(test)
-endif()
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_EXAMPLES)
+endif ()
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_EXAMPLES)
   add_subdirectory(examples)
-endif()
+endif ()
 
