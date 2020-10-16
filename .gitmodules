@@ -1,0 +1,3 @@
+[submodule "lib/picolibc/picolibc"]
+	path = lib/picolibc/picolibc
+	url = https://github.com/picolibc/picolibc.git

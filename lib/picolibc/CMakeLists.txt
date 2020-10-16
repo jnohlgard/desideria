@@ -15,11 +15,11 @@ file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt CONTENT "${me
 
 include(ExternalProject)
 ExternalProject_Add(picolibc
-  GIT_REPOSITORY    https://github.com/gebart/picolibc.git
-  GIT_TAG           f25efe360f61ec65dafe23b299e60ae53447f9d4
-  GIT_PROGRESS      YES
-  GIT_CONFIG        advice.detachedHead=false
+  URL               ${CMAKE_CURRENT_SOURCE_DIR}/picolibc/
   PREFIX            ${CMAKE_CURRENT_BINARY_DIR}
+  SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/picolibc/
+  BINARY_DIR        ${CMAKE_CURRENT_BINARY_DIR}/picolibc-build/
+  STAMP_DIR         ${CMAKE_CURRENT_BINARY_DIR}/picolibc-stamp/
   INSTALL_DIR       ${CMAKE_CURRENT_BINARY_DIR}
   LOG_DIR           ${CMAKE_CURRENT_BINARY_DIR}
   LOG_OUTPUT_ON_FAILURE YES
@@ -39,6 +39,7 @@ ExternalProject_Add(picolibc
   BUILD_COMMAND     meson compile
   INSTALL_COMMAND   meson install
   TEST_COMMAND      meson test
+  DOWNLOAD_COMMAND  ""
   UPDATE_COMMAND    ""
   TEST_EXCLUDE_FROM_MAIN YES
   BUILD_BYPRODUCTS
@@ -49,10 +50,21 @@ ExternalProject_Add(picolibc
     ${CMAKE_CURRENT_BINARY_DIR}/include/stdlib.h
   )
 
-set(CMAKE_C_STANDARD_LIBRARIES "-L${CMAKE_CURRENT_BINARY_DIR}/lib" CACHE STRING "" FORCE)
-set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE STRING "" FORCE)
-set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" CACHE STRING "" FORCE)
-set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}" CACHE STRING "" FORCE)
+set(picolibc_clean_files
+  "${CMAKE_CURRENT_BINARY_DIR}/picolibc-build"
+  "${CMAKE_CURRENT_BINARY_DIR}/lib"
+  "${CMAKE_CURRENT_BINARY_DIR}/include"
+  )
+set_target_properties(picolibc PROPERTIES ADDITIONAL_CLEAN_FILES "${picolibc_clean_files}")
+
+set(picolibc_link_flags "-L${CMAKE_CURRENT_BINARY_DIR}/lib")
+if (CMAKE_C_COMPILER_ID STREQUAL GNU)
+  string(APPEND picolibc_link_flags " -specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs")
+endif()
+set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/include" CACHE INTERNAL "")
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORIES}" CACHE INTERNAL "")
+set(CMAKE_C_STANDARD_LIBRARIES "${picolibc_link_flags}" CACHE INTERNAL "")
+set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE INTERNAL "")
 
 add_library(deri_iob OBJECT iob.cpp)
 add_dependencies(deri_iob picolibc)
