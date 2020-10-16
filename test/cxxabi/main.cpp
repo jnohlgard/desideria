@@ -12,10 +12,10 @@ long canary = 0x12345678l;
 
 int main() {
   if (test::sut.verify(&test::canary)) {
-    deri::testing::finish->pass();
+    deri::testing::finish.pass();
   }
 
-  deri::testing::finish->fail(1);
+  deri::testing::finish.fail(1);
 
   return 0;
 }

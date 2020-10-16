@@ -5,7 +5,7 @@
 #include "deri/testing/finish.h"
 
 int main() {
-  deri::testing::finish->pass();
+  deri::testing::finish.pass();
 
   return 0;
 }

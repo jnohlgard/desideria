@@ -7,9 +7,9 @@
 #include "deri/dev/sifive_test.h"
 
 namespace deri::dev {
-SiFiveTest sifive_test(SIFIVE_TEST_REG);
+SiFiveTest sifive_test{SIFIVE_TEST_REG};
 } // namespace deri::dev
 
 namespace deri::testing {
-Finisher *finish = &deri::dev::sifive_test;
+Finisher &finish{deri::dev::sifive_test};
 }

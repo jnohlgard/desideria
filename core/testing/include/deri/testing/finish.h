@@ -38,7 +38,7 @@ public:
 };
 
 /// Global testing interface handle
-extern Finisher *finish;
+extern Finisher &finish;
 } // namespace deri::testing
 #endif // DERI_TESTING_FINISH_H_
 

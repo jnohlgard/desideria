@@ -37,7 +37,7 @@ void testAllocator_allocate_single_block_should_return_valid_pointer() {
   void *ptr = sut.allocate(block_size);
   printf("allocated %5u bytes at %p\n", block_size, ptr);
   if (!check_allocated_block_inside_test_bounds(ptr, block_size)) {
-    finish->fail(1);
+    finish.fail(1);
   }
 }
 
@@ -48,7 +48,7 @@ void testAllocator_allocate_too_big_block_should_return_nullptr() {
   void *ptr = sut.allocate(block_size * 32 + 1);
   printf("tried to allocate %5u bytes, received %p\n", block_size, ptr);
   if (ptr != nullptr) {
-    finish->fail(1);
+    finish.fail(1);
   }
 }
 
@@ -65,7 +65,7 @@ void testAllocator_allocate_many_small_blocks_should_return_valid_pointers() {
         printf("Out of free blocks, overhead is %u blocks\n", (TEST_ALLOCATOR_SIZE / block_size) - k);
       }
       else {
-        finish->fail(1);
+        finish.fail(1);
       }
     }
   }
@@ -83,10 +83,10 @@ void testAllocator_self_allocate() {
   printf("allocated %5u bytes at %p\n", block_size, ptr);
   if (overlap(ptr, block_size, static_cast<void *>(allocator),
               sizeof(Allocator))) {
-    finish->fail(2);
+    finish.fail(2);
   }
   if (!check_allocated_block_inside_test_bounds(ptr, block_size)) {
-    finish->fail(1);
+    finish.fail(1);
   }
 }
 
@@ -98,7 +98,7 @@ int main() {
   testAllocator_allocate_single_block_should_return_valid_pointer();
   testAllocator_allocate_too_big_block_should_return_nullptr();
   testAllocator_allocate_many_small_blocks_should_return_valid_pointers();
-  finish->pass();
+  finish.pass();
 
   return 0;
 }

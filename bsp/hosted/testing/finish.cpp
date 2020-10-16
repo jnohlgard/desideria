@@ -7,10 +7,10 @@
 
 namespace deri::dev {
 namespace {
-HostedFinisher hosted_finisher;
+HostedFinisher hosted_finisher{};
 }
 }
 
 namespace deri::testing {
-Finisher *finish = &deri::dev::hosted_finisher;
+Finisher &finish{deri::dev::hosted_finisher};
 }
