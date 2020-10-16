@@ -30,7 +30,7 @@ void SiFiveUart::init() {
 size_t SiFiveUart::write(const char *buf, size_t len) {
   size_t count = 0;
   for (size_t k = 0; k < len; ++k) {
-    dev->txdata = buf[k];
+    dev->txdata = static_cast<uint32_t>(buf[k]);
     while (dev->txdata) {
       // waiting for transmission buffer space to become available
       asm volatile("" ::: "memory");
