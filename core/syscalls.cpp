@@ -62,8 +62,6 @@ int stat(const char *, struct stat *st) {
   return 0;
 }
 
-clock_t times(struct tms *) { return -1; }
-
 int unlink(const char *) {
   errno = ENOENT;
   return -1;
@@ -75,5 +73,5 @@ pid_t wait(int *) {
 }
 
 ssize_t write(int, const void *ptr, size_t len) {
-  return deri::console->write(reinterpret_cast<const char *>(ptr), len);
+  return static_cast<ssize_t>(deri::console->write(static_cast<const char *>(ptr), len));
 }
