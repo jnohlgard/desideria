@@ -1,6 +1,7 @@
 # picolibc subproject build
 
 set(picolibc_extra_config_default
+  -Datomic-ungetc=false
   -Dtests=false
   -Dpicolib=false
   -Dpicocrt=false
