@@ -14,3 +14,4 @@ target_link_libraries(deri_bsp_${BOARD} PUBLIC
 
 add_subdirectory(${DERI_BSP_BASEDIR}/common/sifive ${CMAKE_CURRENT_BINARY_DIR}/common)
 target_link_libraries(deri_bsp_${BOARD} PUBLIC deri_bsp_sifive_common)
+target_link_libraries(deri_bsp_${BOARD} PUBLIC deri_libc)

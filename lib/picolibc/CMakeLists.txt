@@ -67,6 +67,7 @@ ExternalProject_Add(picolibc
   DOWNLOAD_COMMAND  ""
   UPDATE_COMMAND    ""
   TEST_EXCLUDE_FROM_MAIN YES
+  STEP_TARGETS install
   BUILD_BYPRODUCTS
     ${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a
     ${CMAKE_CURRENT_BINARY_DIR}/lib/libm.a
@@ -92,6 +93,8 @@ set(CMAKE_C_STANDARD_LIBRARIES "${picolibc_link_flags}" CACHE INTERNAL "")
 set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE INTERNAL "")
 
 add_library(deri_iob OBJECT iob.cpp)
-add_dependencies(deri_iob picolibc)
+add_library(deri_libc INTERFACE)
+add_dependencies(deri_libc picolibc-install)
+add_dependencies(deri_iob deri_libc)
 target_link_libraries(deri_iob PUBLIC deri_dev_common)
 set(DERI_STARTFILES "${DERI_STARTFILES};deri_iob" CACHE INTERNAL "")
