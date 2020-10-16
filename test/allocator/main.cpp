@@ -56,7 +56,7 @@ void testAllocator_allocate_many_small_blocks_should_return_valid_pointers() {
   wipe_scratch();
   static const unsigned int block_size = 128u;
   Allocator sut(scratch, TEST_ALLOCATOR_SIZE, block_size);
-  for (size_t k = 0; k < TEST_ALLOCATOR_SIZE / block_size; ++k) {
+  for (unsigned int k = 0; k < TEST_ALLOCATOR_SIZE / block_size; ++k) {
     void *ptr = sut.allocate(block_size);
     printf("allocation %u, tried to allocate %5u bytes, got block %p\n", k + 1, block_size, ptr);
     sut.visualize_split_block(ptr);

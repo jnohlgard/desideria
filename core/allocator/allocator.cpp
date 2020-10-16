@@ -78,8 +78,8 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
     ++block_size_log2;
   }
   map_stride_log2 = block_size_log2 + MAX_ORDER;
-  printf("block_size_log2 = %u\n", block_size_log2);
-  printf("map_stride_log2 = %u\n", map_stride_log2);
+  printf("block_size_log2 = %zu\n", block_size_log2);
+  printf("map_stride_log2 = %zu\n", map_stride_log2);
   // aligned_base, aligned_size may point outside of the designated area, but we
   // will mark as used all blocks which are out of bounds.
   aligned_base =
@@ -106,9 +106,9 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
   split_map = free_map + map_count;
   memset(free_map, 0, map_count * sizeof(*free_map));
   memset(split_map, 0, map_count * sizeof(*split_map));
-  printf("free_map:  %p (%u elements)\n", static_cast<void *>(free_map),
+  printf("free_map:  %p (%zu elements)\n", static_cast<void *>(free_map),
          map_count);
-  printf("split_map: %p (%u elements)\n", static_cast<void *>(split_map),
+  printf("split_map: %p (%zu elements)\n", static_cast<void *>(split_map),
          map_count);
   printf("map_stride = %u (2**%u)\n",
          static_cast<unsigned int>(1u << map_stride_log2),
@@ -127,9 +127,9 @@ Allocator::Allocator(void *area_base, size_t area_size, size_t block_size)
 }
 
 void *Allocator::allocate(size_t requested_size) {
-  unsigned int requested_blocks =
+  size_t requested_blocks =
       (requested_size + block_size - 1) >> block_size_log2;
-  printf("requested %lu bytes (%u blocks)\n",
+  printf("requested %lu bytes (%zu blocks)\n",
          static_cast<unsigned long>(requested_size), requested_blocks);
   unsigned int order = 0;
   while (requested_blocks > 1u) {
@@ -155,7 +155,7 @@ Allocator::offset_type Allocator::block_from_ptr(void *ptr) const {
 
 void Allocator::init_free_blocks_list(offset_type free_begin,
                                       offset_type free_end) {
-  printf("map_count = %u\n", map_count);
+  printf("map_count = %zu\n", map_count);
   for (unsigned int k = 0; k <= MAX_ORDER; ++k) {
     free_blocks[k] = nullptr;
   }
@@ -174,7 +174,7 @@ void Allocator::init_free_blocks_list(offset_type free_begin,
       split_map[map_idx] |= block_mask_from_block(block, order);
       --order;
     }
-    printf("next free block order: %u (0x%04x)\n", order,
+    printf("next free block order: %u (0x%04zx)\n", order,
            (block_size << order));
     bitmap_type block_mask = block_mask_from_block(block, order);
     printf("map_idx = %u\n", static_cast<unsigned>(map_idx));
