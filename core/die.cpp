@@ -7,7 +7,7 @@ namespace deri {
 
 void die(unsigned int code) {
   (void)code;
-  while (1) {
+  while (true) {
     asm volatile("" ::: "memory");
   }
   __builtin_unreachable();
