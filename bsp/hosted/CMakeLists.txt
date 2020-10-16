@@ -8,3 +8,4 @@ target_link_libraries(deri_bsp_${BOARD} PUBLIC
   deri_arch_${ARCH}
   deri_bsp
   )
+add_subdirectory(testing)
