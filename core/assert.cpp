@@ -4,6 +4,10 @@
 
 #include "deri/assert.h"
 
+#include <cstdint>
+extern "C" {
+#include <stdio.h>
+}
 namespace deri {
 
 void failed_assertion(const char *msg) {
