@@ -5,13 +5,13 @@
 #include "deri/arch/asm.h"
 #include "riscv/csr/encoding.h"
 
-void early_trap();
+void early_trap(void);
 extern long _stack_end[];
 
 /**
  * Trap for machine exceptions early in the boot process
  */
-__attribute__((naked, optimize("align-functions=16"))) void early_trap() {
+__attribute__((naked, optimize("align-functions=16"))) void early_trap(void) {
 #if 0
 // check stack pointer for corruption first
   asm volatile("la t0, _stack_end;"
@@ -35,7 +35,7 @@ __attribute__((naked, optimize("align-functions=16"))) void early_trap() {
                "1: j 1b;");
 }
 
-__attribute__((naked)) void _start() {
+__attribute__((naked)) void _start(void) {
   // Disable interrupts globally
   asm volatile("csrc mstatus, %0" ::"rI"(MSTATUS_MIE) :);
 
