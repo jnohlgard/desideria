@@ -4,3 +4,4 @@ target_sources(deri_arch_common INTERFACE
   include/deri/arch/irq.h
   )
 target_include_directories(deri_arch_common INTERFACE include)
+deri_target_depends(deri_arch INTERFACE deri_arch_common)

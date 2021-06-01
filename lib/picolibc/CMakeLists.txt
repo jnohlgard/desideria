@@ -17,16 +17,10 @@ if (ARCH STREQUAL hosted)
     -Dspecsdir=none
     )
 else ()
-  # Get the CMake compile/link options lists and convert to Meson list format
-  get_directory_property(cflags COMPILE_OPTIONS)
-  # Newlib has a bunch of warnings, we need to disable -Werror
-  list(REMOVE_ITEM cflags -Werror)
-  set(MESON_COMPILE_OPTIONS "['$<JOIN:${cflags},', '>']")
   get_directory_property(linkflags LINK_OPTIONS)
-  set(MESON_LINK_OPTIONS "['$<JOIN:${linkflags},', '>']")
-
   file(READ "${CMAKE_CURRENT_SOURCE_DIR}/meson-cross-template.txt" meson_cross_in)
-  string(CONFIGURE "${meson_cross_in}" meson_cross_out)
+  # Populate the compiler
+  string(CONFIGURE "${meson_cross_in}" meson_cross_out @ONLY)
   # picolibc only requires C
   file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cross-${ARCH}.txt CONTENT "${meson_cross_out}" CONDITION $<COMPILE_LANGUAGE:C>)
 
@@ -41,13 +35,13 @@ set(PICOLIBC_EXTRA_CONFIG ${picolibc_extra_config_default}
 
 include(ExternalProject)
 ExternalProject_Add(picolibc
-  URL               ${CMAKE_CURRENT_SOURCE_DIR}/picolibc/
-  PREFIX            ${CMAKE_CURRENT_BINARY_DIR}
-  SOURCE_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/picolibc/
-  BINARY_DIR        ${CMAKE_CURRENT_BINARY_DIR}/picolibc-build/
-  STAMP_DIR         ${CMAKE_CURRENT_BINARY_DIR}/picolibc-stamp/
-  INSTALL_DIR       ${CMAKE_CURRENT_BINARY_DIR}
-  LOG_DIR           ${CMAKE_CURRENT_BINARY_DIR}
+  URL               "${CMAKE_CURRENT_SOURCE_DIR}/picolibc/"
+  PREFIX            "${CMAKE_CURRENT_BINARY_DIR}"
+  SOURCE_DIR        "${CMAKE_CURRENT_SOURCE_DIR}/picolibc/"
+  BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/picolibc-build/"
+  STAMP_DIR         "${CMAKE_CURRENT_BINARY_DIR}/picolibc-stamp/"
+  INSTALL_DIR       "${CMAKE_CURRENT_BINARY_DIR}"
+  LOG_DIR           "${CMAKE_CURRENT_BINARY_DIR}"
   LOG_OUTPUT_ON_FAILURE YES
   LOG_MERGED_STDOUTERR YES
   LOG_CONFIGURE     YES
@@ -69,11 +63,11 @@ ExternalProject_Add(picolibc
   TEST_EXCLUDE_FROM_MAIN YES
   STEP_TARGETS install
   BUILD_BYPRODUCTS
-    ${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a
-    ${CMAKE_CURRENT_BINARY_DIR}/lib/libm.a
-    ${CMAKE_CURRENT_BINARY_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}/include/math.h
-    ${CMAKE_CURRENT_BINARY_DIR}/include/stdlib.h
+    "${CMAKE_CURRENT_BINARY_DIR}/lib/libc.a"
+    "${CMAKE_CURRENT_BINARY_DIR}/lib/libm.a"
+    "${CMAKE_CURRENT_BINARY_DIR}/include"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/math.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/stdlib.h"
   )
 
 set(picolibc_clean_files
@@ -92,9 +86,9 @@ set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_C_STANDARD_INCLUDE_DIRECTORI
 set(CMAKE_C_STANDARD_LIBRARIES "${picolibc_link_flags}" CACHE INTERNAL "")
 set(CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}" CACHE INTERNAL "")
 
-add_library(deri_iob OBJECT iob.cpp)
-add_library(deri_libc INTERFACE)
 add_dependencies(deri_libc picolibc-install)
-add_dependencies(deri_iob deri_libc)
-target_link_libraries(deri_iob PUBLIC deri_dev_common)
-set(DERI_STARTFILES "${DERI_STARTFILES};deri_iob" CACHE INTERNAL "")
+add_dependencies(deri_flags picolibc-install)
+deri_add_library(deri_iob INTERFACE iob.cpp)
+deri_target_depends(deri_iob INTERFACE deri_libc)
+deri_target_depends(deri_iob INTERFACE deri_dev_common)
+deri_target_depends(deri_core INTERFACE deri_iob)

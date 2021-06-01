@@ -1,1 +1,1 @@
-add_subdirectory(picolibc)
+add_all_subdirectories()
