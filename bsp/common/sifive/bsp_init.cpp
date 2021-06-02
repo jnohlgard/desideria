@@ -9,7 +9,7 @@
 namespace deri::bsp {
 void init() {
   console_init();
-  static const char hello_msg[] = "Board init done\n";
-  deri::console->write(hello_msg, sizeof(hello_msg));
+  static constexpr char hello_msg[] = "Board init done\n";
+  console.write(std::as_bytes(std::span<const char>{hello_msg, sizeof hello_msg}));
 }
 } // namespace deri::bsp

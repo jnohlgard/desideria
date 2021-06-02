@@ -2,16 +2,12 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#ifndef DERI_BSP_MEMORY_MAP_H_
-#define DERI_BSP_MEMORY_MAP_H_
+#pragma once
 
-#define UART0_BASE 0x10013000
-#define UART0 ((SiFiveUartRegs*)UART0_BASE)
+#include <cstdint>
+constexpr static uintptr_t UART0_BASE = 0x10013000ul;
 
-#define UART1_BASE 0x10023000
-#define UART1 ((SiFiveUartRegs*)UART1_BASE)
+constexpr static uintptr_t UART1_BASE = 0x10023000ul;
 
-#define SIFIVE_TEST_REG_BASE 0x00100000
+constexpr static uintptr_t SIFIVE_TEST_REG_BASE = 0x00100000ul;
 #define SIFIVE_TEST_REG ((SiFiveTestRegs *)SIFIVE_TEST_REG_BASE)
-
-#endif // DERI_BSP_MEMORY_MAP_H_

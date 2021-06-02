@@ -73,5 +73,7 @@ pid_t wait(int *) {
 }
 
 _READ_WRITE_RETURN_TYPE write(int, const void *ptr, size_t len) {
-  return static_cast<_READ_WRITE_RETURN_TYPE>(deri::console->write(static_cast<const char *>(ptr), len));
+  std::span<const std::byte> buffer{static_cast<const std::byte *>(ptr), len};
+  deri::console.write(buffer);
+  return len;
 }

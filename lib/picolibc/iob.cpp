@@ -30,7 +30,9 @@ FILE *const __iob[3] = {&__stdio, &__stdio, &__stdio};
 namespace {
 
 int iob_console_put(char c, FILE *) {
-  return static_cast<int>(deri::console->write(&c, sizeof(c)));
+  std::span<const std::byte> buffer{reinterpret_cast<const std::byte *>(&c), sizeof c};
+  deri::console.write(buffer);
+  return sizeof c;
 }
 int iob_console_get(FILE *) { return 0; }
 

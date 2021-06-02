@@ -9,7 +9,7 @@ target_link_libraries(deri_bsp_${BOARD} PUBLIC
   deri_core
   deri_arch_${ARCH}
   deri_bsp
-  deri_dev_sifive_uart
+  deri_dev_uart_sifive
   )
 
 add_subdirectory(${DERI_BSP_BASEDIR}/common/sifive ${CMAKE_CURRENT_BINARY_DIR}/common)

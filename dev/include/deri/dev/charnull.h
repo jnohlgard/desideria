@@ -2,24 +2,17 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#ifndef DERI_DEV_CHARNULL_H_
-#define DERI_DEV_CHARNULL_H_
-
-#include "char.hpp"
-
-#ifdef __cplusplus
+#pragma once
 
 namespace deri::dev {
 
 /**
  * Black hole character device, a.k.a. @c /dev/null
  */
-class CharNull : public CharDev {
-public:
-  size_t write(const char *buf, size_t len) override;
+class CharNull {
+ public:
+  void write(const auto &) {}
 };
 
-} // namespace deri::dev
-
-#endif // __cplusplus
-#endif // DESIDERIA_CORE_INCLUDE_DERI_DEV_CHARNULL_H_
+inline CharNull null{};
+}  // namespace deri::dev
