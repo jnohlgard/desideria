@@ -5,9 +5,10 @@ OUTPUT_ARCH( "riscv" )
 
 MEMORY
 {
-  rom (rxai!w) : ORIGIN = 0x20400000, LENGTH = 4M
-  ram (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 16K
+  rom (rxai!w) : ORIGIN = 0x20000000, LENGTH = 32M
+  ram (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 128M
 }
 
 INCLUDE deri-base.ld
 INCLUDE global_pointer.ld
+INCLUDE sifive-fu540-periph.ld

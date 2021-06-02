@@ -5,9 +5,6 @@
 #pragma once
 
 #include <cstdint>
-constexpr static uintptr_t UART0_BASE = 0x10013000ul;
-
-constexpr static uintptr_t UART1_BASE = 0x10023000ul;
 
 constexpr static uintptr_t SIFIVE_TEST_REG_BASE = 0x00100000ul;
 #define SIFIVE_TEST_REG ((SiFiveTestRegs *)SIFIVE_TEST_REG_BASE)
