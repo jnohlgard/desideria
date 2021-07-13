@@ -68,18 +68,21 @@ ForEachMacros:
   - BOOST_FOREACH
 IncludeBlocks:   Regroup
 IncludeCategories:
-  - Regex:           '^<ext/.*\.h>'
-    Priority:        2
-    SortPriority:    0
-  - Regex:           '^<.*\.h>'
+  # Main project headers
+  - Regex:           '^["<]deri/.*[">]'
+    Priority:        4
+  # Third-party libraries
+  - Regex:           '^".*/.*"'
+    Priority:        6
+  # External libraries
+  - Regex:           '^<.*/.*>'
+    Priority:        7
+  # Local headers
+  - Regex:           '^".*"'
     Priority:        1
-    SortPriority:    0
-  - Regex:           '^<.*'
-    Priority:        2
-    SortPriority:    0
-  - Regex:           '.*'
-    Priority:        3
-    SortPriority:    0
+  # Standard library headers
+  - Regex:           '^<[a-z_0-9]*(\.h)?>'
+    Priority:        9
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
 IndentCaseLabels: true
@@ -165,4 +168,3 @@ TabWidth:        8
 UseCRLF:         false
 UseTab:          Never
 ...
-
