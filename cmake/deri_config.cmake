@@ -2,13 +2,6 @@ include_guard(GLOBAL)
 include(deri_functions)
 # Global configuration variables that can be assumed to be available in all Desideria project configurations
 
-# Check if we are the main project or if this CMake invocation is inside add_subdirectory(desideria)
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(DERI_STANDALONE_BUILD ON)
-else()
-  set(DERI_STANDALONE_BUILD OFF)
-endif()
-
 add_library(deri_flags INTERFACE)
 add_library(deri_base_flags INTERFACE)
 add_library(deri_bsp_flags INTERFACE)
@@ -35,18 +28,4 @@ set(DERI_ARCH_DIR "${DERI_ARCH_BASEDIR}/${ARCH}" CACHE PATH "Path to the archite
 list(PREPEND CMAKE_MODULE_PATH "${DERI_ARCH_DIR}/cmake")
 include(deri_arch)
 
-if (NOT BOARD STREQUAL "hosted")
-  set(CMAKE_EXECUTABLE_SUFFIX .elf)
-endif ()
-
-option(DERI_WERROR "Build with all warnings as errors" ON)
 option(DERI_DEVELHELP "Enable helpful developer settings. This will add some extra checks which indicate programmer mistakes and add some extra debug output in various places." OFF)
-
-# Compress debug info. This saves approximately 50% of disk usage.
-# It has no effect if debugging information is not emitted, so it can be left
-# on unconditionally.
-option(DERI_COMPRESS_DEBUG "Compress debug info" ON)
-mark_as_advanced(DERI_COMPRESS_DEBUG)
-
-option(DERI_CC_COLOR "Provide colored compiler output" ON)
-mark_as_advanced(DERI_CC_COLOR)

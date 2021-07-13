@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(desideria
   VERSION 0.1.0
-  HOMEPAGE_URL https://github.com/jnohlgard/desideria
+  HOMEPAGE_URL https://github.com/deri-g/desideria
   LANGUAGES C CXX ASM
   )
 
@@ -9,7 +9,16 @@ if (NOT BOARD)
   message(FATAL_ERROR "Define BOARD to select platform: cmake -DBOARD=foo")
 endif ()
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+# Check if we are the main project or if this CMake invocation is inside add_subdirectory(desideria)
+if (NOT DEFINED DERI_STANDALONE_BUILD)
+  if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    set(DERI_STANDALONE_BUILD ON)
+  else ()
+    set(DERI_STANDALONE_BUILD OFF)
+  endif ()
+endif ()
+
+if (DERI_STANDALONE_BUILD)
   include(CTest)
   option(BUILD_EXAMPLES "Build all Desideria examples" ON)
 endif ()
@@ -41,4 +50,3 @@ endif ()
 if (BUILD_EXAMPLES AND DERI_STANDALONE_BUILD)
   add_subdirectory(examples)
 endif ()
-
