@@ -9,10 +9,10 @@ namespace deri::dev {
 /**
  * Black hole character device, a.k.a. @c /dev/null
  */
-class CharNull {
+class BlackHole {
  public:
   void write(const auto &) {}
 };
 
-inline CharNull null{};
+inline BlackHole null{};
 }  // namespace deri::dev

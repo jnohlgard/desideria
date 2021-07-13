@@ -7,7 +7,7 @@
 #include "deri/dev/uart/sifive.h"
 
 namespace deri::bsp {
-using Console = dev::CharBuf<dev::uart::UartSiFive>;
+using Console = dev::BlockingDevice<dev::uart::UartSiFive>;
 /**
  * Initialize the console UART settings
  */
