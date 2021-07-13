@@ -15,7 +15,7 @@ namespace {
 /**
  * Possible commands
  *
- * @see https://github.com/qemu/qemu/blob/master/include/hw/riscv/sifive_test.h
+ * @see https://github.com/qemu/qemu/blob/master/include/hw/misc/sifive_test.h
  */
 enum class FinishCodes : uint32_t {
   FAIL = 0x3333,
@@ -27,7 +27,7 @@ enum class FinishCodes : uint32_t {
 
 SiFiveTest::SiFiveTest(SiFiveTestRegs *dev) : dev(dev) {}
 
-// See https://github.com/qemu/qemu/blob/master/hw/riscv/sifive_test.c
+// See https://github.com/qemu/qemu/blob/master/hw/misc/sifive_test.c
 
 void SiFiveTest::pass() {
   // Writing to the test device will power off the virtual machine

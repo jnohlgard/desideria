@@ -2,15 +2,12 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#ifndef DERI_DEV_SIFIVE_TEST_H_
-#define DERI_DEV_SIFIVE_TEST_H_
+#pragma once
 
 #include "deri/testing/finish.h"
 #include <stdint.h>
 
 struct SiFiveTestRegs;
-
-#ifdef __cplusplus
 
 namespace deri::dev {
 
@@ -46,7 +43,3 @@ private:
 extern SiFiveTest sifive_test;
 
 } // namespace deri::dev
-
-#endif // __cplusplus
-
-#endif // DERI_DEV_SIFIVE_TEST_H_
