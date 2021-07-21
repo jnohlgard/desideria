@@ -31,7 +31,7 @@ namespace {
 int iob_console_put(char c, FILE *) {
   std::span<const char, sizeof c> buffer{&c, sizeof c};
   deri::console.write(as_bytes(buffer));
-  return sizeof c;
+  return buffer.size();
 }
 int iob_console_get(FILE *) { return 0; }
 
