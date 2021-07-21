@@ -4,9 +4,8 @@
 
 #include <deri/console.h>
 
-extern "C" {
-#include <stdio.h>
-}
+#include <cstdio>
+
 namespace {
 int iob_console_put(char, FILE *);
 int iob_console_get(FILE *);
@@ -20,7 +19,7 @@ static FILE __stdio = {
     .get = iob_console_get,
     .flush = iob_console_flush,
 };
-} // namespace
+}  // namespace
 
 extern "C" {
 extern FILE *const __iob[];
@@ -30,11 +29,11 @@ FILE *const __iob[3] = {&__stdio, &__stdio, &__stdio};
 namespace {
 
 int iob_console_put(char c, FILE *) {
-  std::span<const std::byte> buffer{reinterpret_cast<const std::byte *>(&c), sizeof c};
-  deri::console.write(buffer);
+  std::span<const char, sizeof c> buffer{&c, sizeof c};
+  deri::console.write(as_bytes(buffer));
   return sizeof c;
 }
 int iob_console_get(FILE *) { return 0; }
 
 int iob_console_flush(FILE *) { return 0; }
-} // namespace
+}  // namespace
