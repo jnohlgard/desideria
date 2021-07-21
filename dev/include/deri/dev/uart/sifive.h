@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "deri/registers.h"
+
 #include <atomic>
 #include <cstddef>
 #include <cstdint>

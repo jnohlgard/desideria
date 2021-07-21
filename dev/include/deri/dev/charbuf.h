@@ -6,18 +6,19 @@
 #include <cstddef>
 #include <span>
 
-template <class T>
-concept Writable = requires(T a, std::span<const std::byte> buffer) {
-  { a.write(buffer) } -> std::convertible_to<decltype(buffer)>;
+template <class Device>
+concept SpanWritable = requires(Device device,
+                                std::span<const std::byte> buffer) {
+  { device.write(buffer) } -> std::convertible_to<decltype(buffer)>;
 };
 
 namespace deri::dev {
-template <Writable Device>
+template <SpanWritable LowlevelDevice>
 class BlockingDevice {
-  Device &dev;
+  LowlevelDevice &dev;
 
  public:
-  explicit constexpr BlockingDevice(Device &dev) : dev{dev} {}
+  explicit constexpr BlockingDevice(LowlevelDevice &dev) : dev{dev} {}
 
   void write(std::span<const std::byte> buffer) {
     while (!buffer.empty()) {
