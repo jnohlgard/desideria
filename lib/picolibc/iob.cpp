@@ -5,6 +5,7 @@
 #include <deri/console.h>
 
 #include <cstdio>
+#include <span>
 
 namespace {
 int iob_console_put(char, FILE *);
