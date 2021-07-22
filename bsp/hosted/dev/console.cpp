@@ -1,10 +1,14 @@
 /*
- * Copyright (c) 2020 Joakim Nohlgård
+ * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
+#include "deri/bsp/console.h"
+
 #include "deri/console.h"
-#include "deri/dev/charnull.h"
 
 namespace deri {
-dev::CharDev *console = &dev::null;
-} // namespace deri
+namespace bsp {
+void console_init() {}
+}  // namespace bsp
+bsp::Console console{};
+}  // namespace deri
