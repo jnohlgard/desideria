@@ -2,9 +2,9 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
+#include <algorithm>
 #include "deri/bsp_init.h"
 
-#include <algorithm>
 #include <cstdint>
 
 extern "C" void deri_init();

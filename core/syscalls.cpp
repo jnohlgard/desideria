@@ -1,11 +1,13 @@
 /*
  * Copyright (c) 2020 Joakim Nohlgård
  */
-extern "C" {
+#include <cerrno>
+#include <span>
 
-#include <errno.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+extern "C" {
 
 /*
 int close(int fildes);
