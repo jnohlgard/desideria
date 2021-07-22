@@ -3,6 +3,9 @@
  */
 
 #include "deri/console.h"
+
+#include <span>
+
 #include <stdio.h>
 
 using deri::console;
