@@ -74,15 +74,20 @@ IncludeCategories:
   # Third-party libraries
   - Regex:           '^".*/.*"'
     Priority:        6
+  # C++ standard library headers
+  - Regex:           '^<[a-z_0-9]*>'
+    Priority:        80
+  # C standard library headers
+  - Regex:           '^<sys/[a-z_0-9]*(\.h)>'
+    Priority:        90
+  - Regex:           '^<[a-z_0-9]*(\.h)>'
+    Priority:        90
   # External libraries
   - Regex:           '^<.*/.*>'
     Priority:        7
   # Local headers
   - Regex:           '^".*"'
     Priority:        1
-  # Standard library headers
-  - Regex:           '^<[a-z_0-9]*(\.h)?>'
-    Priority:        9
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
 IndentCaseLabels: true
