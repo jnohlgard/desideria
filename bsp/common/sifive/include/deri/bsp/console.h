@@ -12,4 +12,4 @@ using Console = dev::BlockingDevice<dev::uart::UartSiFive>;
  * Initialize the console UART settings
  */
 void console_init();
-} // namespace deri::bsp
+}  // namespace deri::bsp
