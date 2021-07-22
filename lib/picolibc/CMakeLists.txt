@@ -80,13 +80,17 @@ set_target_properties(picolibc PROPERTIES ADDITIONAL_CLEAN_FILES "${picolibc_cle
 target_link_directories(deri_libc INTERFACE "${CMAKE_CURRENT_BINARY_DIR}/lib")
 if (CMAKE_CROSSCOMPILING AND CMAKE_C_COMPILER_ID STREQUAL GNU)
   target_link_options(deri_libc INTERFACE "-specs=${CMAKE_CURRENT_BINARY_DIR}/lib/picolibc.specs")
-endif ()
-target_compile_options(deri_libc INTERFACE
   # Workaround to get #include_next <stdlib.h> in libstdc++ headers to find picolibc stdlib.h instead of the newlib one.
   # We hoist the C++ library headers include path to come before the picolibc include path.
-  -isystem=/include/c++/${CMAKE_CXX_COMPILER_VERSION}
-  -isystem "${CMAKE_CURRENT_BINARY_DIR}/include"
-  )
+  target_compile_options(deri_libc INTERFACE
+    -isystem=/include/c++/${CMAKE_CXX_COMPILER_VERSION}
+    -isystem "${CMAKE_CURRENT_BINARY_DIR}/include"
+    )
+else ()
+  target_compile_options(deri_libc INTERFACE
+    -isystem "${CMAKE_CURRENT_BINARY_DIR}/include"
+    )
+endif ()
 
 add_dependencies(deri_libc picolibc-install)
 add_dependencies(deri_flags picolibc-install)
