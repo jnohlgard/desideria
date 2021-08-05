@@ -1,5 +1,5 @@
 add_library(deri_arch_${ARCH} STATIC
-  startup.c
+  startup.S
   reset.S
   include/deri/arch/impl/irq_impl.h
   trap.cpp
