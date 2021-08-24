@@ -13,16 +13,17 @@ class Register {
   using UnderlyingBitsType = std::underlying_type_t<BitsType>;
 
  public:
+  // These objects are hardware constructs, a constructor in software does not
+  // make sense in the general case.
   Register() = delete;
   Register(const Register &) = delete;
   Register(Register &&) noexcept = delete;
   Register &operator=(const Register &) = delete;
   Register &operator=(Register &&) noexcept = delete;
 
-  BitsType load() { return static_cast<BitsType>(bits); }
-  void store(const BitsType op) {
-    bits = static_cast<StorageType>(op);
-  }
+  [[nodiscard]] BitsType load() const { return static_cast<BitsType>(bits); }
+
+  void store(const BitsType op) { bits = static_cast<StorageType>(op); }
 
   void operator|=(const BitsType op) { store(load() | op); }
   void operator&=(const BitsType op) { store(load() & op); }
