@@ -10,8 +10,8 @@ macro(add_all_subdirectories)
 endmacro()
 
 
-function(deri_add_library target_name library_kind) # ... ARGN dependencies
-  add_library(${target_name} ${library_kind})
+function(deri_add_library target_name library_kind) # ... ARGN sources
+  add_library(${target_name} ${library_kind} EXCLUDE_FROM_ALL)
   # INTERFACE libraries can be used to get conditional compilation and weak symbols
   # working better by propagating the sources all the way down to the main executable target.
   if (library_kind STREQUAL "INTERFACE")
