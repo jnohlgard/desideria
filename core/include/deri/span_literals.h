@@ -2,6 +2,7 @@
 
 #include <span>
 
+namespace deri::literals {
 constexpr std::span<const char> operator""_span(const char *literal,
                                                 std::size_t length) {
   return std::span<const char>{literal, length};
@@ -22,3 +23,4 @@ constexpr std::span<const char32_t> operator""_span(const char32_t *literal,
                                                     std::size_t length) {
   return std::span<const char32_t>{literal, length};
 }
+}  // namespace deri::literals
