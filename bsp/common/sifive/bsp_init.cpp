@@ -3,13 +3,15 @@
  */
 
 #include "deri/bsp_init.h"
+
 #include "deri/bsp/console.h"
 #include "deri/console.h"
+#include "deri/span_literals.h"
 
+using namespace deri::literals;
 namespace deri::bsp {
 void init() {
   console_init();
-  static constexpr char hello_msg[] = "Board init done\n";
-  console.write(std::as_bytes(std::span<const char>{hello_msg, sizeof hello_msg}));
+  console.write(std::as_bytes("Board init done\n"_span));
 }
-} // namespace deri::bsp
+}  // namespace deri::bsp
