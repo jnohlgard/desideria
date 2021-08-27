@@ -1,7 +1,5 @@
 if(NOT DERI_BSP_DIR)
   message(FATAL_ERROR "DERI_BSP_DIR is not defined")
 endif()
-add_library(deri_bsp INTERFACE)
-target_include_directories(deri_bsp INTERFACE include)
 add_subdirectory(${DERI_BSP_DIR} deri_bsp_${BOARD})
-deri_target_depends(deri_bsp INTERFACE deri_bsp_${BOARD})
+add_subdirectory(common)

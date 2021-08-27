@@ -79,3 +79,8 @@ _READ_WRITE_RETURN_TYPE write(int, const void *ptr, size_t len) {
   deri::console.write(buffer);
   return len;
 }
+
+[[noreturn]] void _exit(int code) {
+  while (true) {
+  }
+}

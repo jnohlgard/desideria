@@ -1,7 +1,5 @@
-add_library(deri_bsp_${BOARD}_testing STATIC
-  hosted_finisher.cpp
-  finish.cpp
-  include/deri/bsp/hosted_finisher.h
+deri_add_library(deri_bsp_testing INTERFACE)
+target_include_directories(deri_bsp_testing INTERFACE include)
+deri_target_depends(deri_bsp_testing INTERFACE
+  deri_core_testing_console_finisher
   )
-target_include_directories(deri_bsp_${BOARD}_testing PUBLIC include)
-target_link_libraries(deri_bsp_${BOARD}_testing PUBLIC deri_core_testing)

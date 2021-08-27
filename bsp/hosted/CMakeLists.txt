@@ -1,11 +1,9 @@
-add_library(deri_bsp_${BOARD} STATIC
+deri_add_library(deri_bsp STATIC
   dev/console.cpp
   )
-target_include_directories(deri_bsp_${BOARD} PUBLIC include)
-target_link_libraries(deri_bsp_${BOARD} PUBLIC deri_libc)
-target_link_libraries(deri_bsp_${BOARD} PUBLIC
+target_include_directories(deri_bsp PUBLIC include)
+deri_target_depends(deri_bsp PUBLIC
   deri_core
-  deri_arch_${ARCH}
-  deri_bsp
+  deri_arch
   )
 add_subdirectory(testing)

@@ -7,9 +7,9 @@ deri_add_library(deri_core INTERFACE
   init.cpp
   syscalls.cpp
   )
-add_library(deri_core_include INTERFACE)
+deri_add_library(deri_core_include INTERFACE)
 target_include_directories(deri_core_include INTERFACE include)
-target_link_libraries(deri_core INTERFACE deri_core_include)
+deri_target_depends(deri_core INTERFACE deri_core_include)
 
 add_subdirectory(cxxabi)
 add_subdirectory(testing)

@@ -1,6 +1,6 @@
-add_library(deri_arch_${ARCH} INTERFACE
+deri_add_library(deri_arch INTERFACE
   include/deri/arch/impl/irq_impl.h
   trap.cpp
   )
-target_include_directories(deri_arch_${ARCH} INTERFACE include)
-target_link_libraries(deri_arch_${ARCH} INTERFACE deri_arch_common deri_core)
+target_include_directories(deri_arch INTERFACE include)
+deri_target_depends(deri_arch INTERFACE deri_arch_common deri_core)
