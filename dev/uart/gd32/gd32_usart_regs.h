@@ -4,24 +4,24 @@
 
 #pragma once
 
-#include <cstdint>
-
 #include "deri/bitwise_enums.h"
+
+#include <cstdint>
 
 namespace deri::dev::gd32::usart {
 
 enum class STAT_bits : uint32_t {
-  CTSF = (1 << 9),
-  LBDF = (1 << 8),
-  TBE = (1 << 7),
-  TC = (1 << 6),
-  RBNE = (1 << 5),
-  IDLEF = (1 << 4),
-  ORERR = (1 << 3),
-  NERR = (1 << 2),
-  FERR = (1 << 1),
-  PERR = (1 << 0),
-  };
+  CTSF = (1 << 9),   ///< CTS change flag
+  LBDF = (1 << 8),   ///< LIN break detected flag
+  TBE = (1 << 7),    ///< Transmit data buffer empty
+  TC = (1 << 6),     ///< Transmission complete
+  RBNE = (1 << 5),   ///< Read data buffer not empty
+  IDLEF = (1 << 4),  ///< IDLE frame detected flag
+  ORERR = (1 << 3),  ///< Overrun error flag
+  NERR = (1 << 2),   ///< Noise error flag
+  FERR = (1 << 1),   ///< Frame error flag
+  PERR = (1 << 0),   ///< Parity error flag
+};
 void HasBitwiseOperators(STAT_bits);
 
 enum class DATA_bits : uint32_t {
@@ -48,11 +48,11 @@ enum class CTL0_bits : uint32_t {
   TCIE = (1 << 6),    ///< Transmission complete interrupt enable
   RBNEIE = (1 << 5),  ///< Read data buffer not empty interrupt and overrun
   ///< error interrupt enable
-  IDLEIE = (1 << 4),  ///< IDLE line detected interrupt enable
-  TEN = (1 << 3),     ///< Transmitter enable
-  REN = (1 << 2),     ///< Receiver enable
-  RWU = (1 << 1),     ///< Receiver wakes up from mute mode
-  SBC = (1 << 0),     ///< Send break command
+  IDLEIE = (1 << 4),            ///< IDLE line detected interrupt enable
+  TEN = (1 << 3),               ///< Transmitter enable
+  REN = (1 << 2),               ///< Receiver enable
+  RWU = (1 << 1),               ///< Receiver wakes up from mute mode
+  SBC = (1 << 0),               ///< Send break command
   Reserved_mask = (~0u << 13),  ///< All reserved bits selected
 };
 void HasBitwiseOperators(CTL0_bits);
@@ -97,4 +97,4 @@ enum class GP_bits : uint32_t {
 };
 void HasBitwiseOperators(GP_bits);
 
-}  // namespace deri::hal::periph::gd32::usart
+}  // namespace deri::dev::gd32::usart
