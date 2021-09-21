@@ -27,6 +27,7 @@ if(NOT ARCH)
 endif()
 set(DERI_ARCH_DIR "${DERI_ARCH_BASEDIR}/${ARCH}" CACHE PATH "Path to the architecture-specific code")
 list(PREPEND CMAKE_MODULE_PATH "${DERI_ARCH_DIR}/cmake")
+target_link_directories(deri_arch_flags INTERFACE "${DERI_ARCH_DIR}/ld" "${DERI_ARCH_BASEDIR}/common/ld")
 include(deri_arch)
 
 option(DERI_DEVELHELP "Enable helpful developer settings. This will add some extra checks which indicate programmer mistakes and add some extra debug output in various places." OFF)
