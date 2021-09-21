@@ -4,6 +4,8 @@
 
 /* Unused aliases do not need to refer to an existing symbol, so extraneous entries are not a concern in this file. */
 
+/* Mangled names are compatible with GCC on Linux */
+
 /* UART device names */
 PROVIDE(_ZN4deri3bsp5uart0E = UART0$);
 PROVIDE(_ZN4deri3bsp5uart1E = UART1$);
