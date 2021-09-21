@@ -1,0 +1,8 @@
+set(ARCH riscv)
+set(CPU_CORE bumblebee)
+set(CPU rv32)
+set(CPU_MODEL gd32vf103vbt6)
+set(CPU_C_FLAGS -march=rv32imac -mabi=ilp32)
+set(CODE_MODEL_C_FLAGS -mcmodel=medlow)
+target_compile_options(deri_bsp_flags INTERFACE ${CODE_MODEL_C_FLAGS} ${CPU_C_FLAGS})
+target_link_options(deri_bsp_flags INTERFACE ${CPU_C_FLAGS} -T "${CPU_MODEL}.ld")
