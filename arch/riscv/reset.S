@@ -5,4 +5,12 @@
 .section .reset_trampoline,"ax",@progbits
 .globl _reset_trampoline
 _reset_trampoline:
-j _start
+.cfi_startproc
+.cfi_undefined ra
+.option push
+.option norelax
+lui a0, %hi(_start)
+addi a0, a0, %lo(_start)
+jr a0
+.option pop
+.cfi_endproc
