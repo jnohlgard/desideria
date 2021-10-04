@@ -1,5 +1,5 @@
 [packages]
-cmsis-svd = {git = "https://github.com/posborne/cmsis-svd.git", subdirectory = "python", ref = "master"}
+pysvd = "*"
 
 [dev-packages]
 
