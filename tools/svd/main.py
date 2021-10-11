@@ -69,9 +69,19 @@ def strip_array_dimensions(name):
     return name
 
 
-def periph_typename(periph):
+def periph_struct(name):
     """Provide the struct type name for the given peripheral"""
-    return f'{strip_instance_numbering(periph.name)}_regs'
+    return f'{strip_array_dimensions(name)}_regs'
+
+
+def reg_enum(name):
+    """Provide the enum type name for the given register"""
+    return f'{strip_array_dimensions(name)}_bits'
+
+
+def reg_type_name(periph_type_names):
+    """Provide the full type name for the given nested struct names"""
+    return "::".join([periph_struct(name) for name in periph_type_names])
 
 
 def write_heading_comment(output):
@@ -92,33 +102,43 @@ def write_ldscript(output, device):
         output.write(f"PROVIDE({peripheral.name}$ = {peripheral.baseAddress:#08x})\n")
 
 
-def write_enum_definition(output, reg, enum_type_name, indent=''):
+def write_enum_definitions(output, periph, periph_type_names, indent=''):
     """
-    Generate all bit masks for a given register
+    Generate all bit masks for a given peripheral
 
-    :param reg: device register description
     :param output: Writable for the formatted text output
+    :param periph: device peripheral description
     """
-    output.write(f'{indent}/** {strip_instance_numbering(reg.name)} {reg.name} */\n')
-    output.write(f'{indent}enum class {enum_type_name} : uint{reg.size}_t {{\n')
-    indent = increase_indent(indent)
-    reserved_mask = (1 << reg.size) - 1
-    for field in reg.fields:
-        bitmask = '1'
-        field_name = field.name
-        if field.bitWidth > 1:
-            bitmask = f'{(1 << field.bitWidth) - 1:#x}'
-            field_name = f'{field.name}_mask'
-        # reflow description text to remove newlines and indentation
-        description = ' '.join([s.strip() for s in field.description.splitlines()])
-        output.write(f'{indent}{field_name:<10} = ({bitmask} << {field.bitOffset:>2}), ///< {description}\n')
-        reserved_mask &= ~(int(bitmask, 0) << field.bitOffset)
-    if reserved_mask != 0:
-        output.write(
-            f'{indent}Reserved_mask = {format(reserved_mask, f"#0{reg.size // 4 + 2}x")} ///< All reserved bits\n')
-    indent = decrease_indent(indent)
-    output.write(f'{indent}}};\n')
-    output.write(f'{indent}void HasBitwiseOperators({enum_type_name});\n')
+    for reg in sorted(periph.registers + periph.clusters, key=lambda obj: obj.addressOffset):
+        if hasattr(reg, 'registers'):
+            write_enum_definitions(output, reg, periph_type_names + [strip_array_dimensions(reg.name)])
+            continue
+        enum_type_name = f'{reg_type_name(periph_type_names)}::{reg_enum(reg.name)}'
+        output.write(f'{indent}/**\n')
+        output.write(f'{indent} * Bitmasks for {"_".join(periph_type_names)} {reg.name}\n')
+        if len(reg.description) > 0:
+            output.write(f'{indent} *\n')
+            output.write(f'{indent} * {reg.description}\n')
+        output.write(f'{indent} */\n')
+        output.write(f'{indent}enum class {enum_type_name} : uint{reg.size}_t {{\n')
+        indent = increase_indent(indent)
+        reserved_mask = (1 << reg.size) - 1
+        for field in reg.fields:
+            bitmask = '1'
+            field_name = field.name
+            if field.bitWidth > 1:
+                bitmask = f'{(1 << field.bitWidth) - 1:#x}'
+                field_name = f'{field.name}_mask'
+            # reflow description text to remove newlines and indentation
+            description = ' '.join([s.strip() for s in field.description.splitlines()])
+            output.write(f'{indent}{field_name:<10} = ({bitmask} << {field.bitOffset:>2}), ///< {description}\n')
+            reserved_mask &= ~(int(bitmask, 0) << field.bitOffset)
+        if reserved_mask != 0:
+            output.write(
+                f'{indent}Reserved_mask = {format(reserved_mask, f"#0{reg.size // 4 + 2}x")} ///< All reserved bits\n')
+        indent = decrease_indent(indent)
+        output.write(f'{indent}}};\n')
+        output.write(f'{indent}void HasBitwiseOperators({enum_type_name});\n\n')
 
 
 def write_field_accessors(output, enum_type_name, field, indent=''):
@@ -172,7 +192,7 @@ def write_periph_class(output, periph, name=None, indent=''):
     :param indent: current indentation
     """
     if name is None:
-        name = periph_typename(periph)
+        name = periph_struct(periph.name)
     output.write(f'{indent}struct {name} {{\n')
     indent = increase_indent(indent)
     periph_size_bytes = (periph.size + 7) // 8
@@ -186,12 +206,12 @@ def write_periph_class(output, periph, name=None, indent=''):
         (offset, reserved_count) = write_element_padding(output, offset, reg.addressOffset, periph.size, reg.size,
                                                          indent, reserved_count)
 
-        if hasattr(reg, 'clusters'):
-            cluster_type_name = periph_typename(reg)
+        if hasattr(reg, 'registers'):
+            cluster_type_name = periph_struct(strip_array_dimensions(reg.name))
             write_periph_class(output, reg, cluster_type_name, indent)
             output.write(f'{indent}{constness}{cluster_type_name} {reg.name};\n')
         else:
-            output.write(f'{indent}{constness}Register<{reg.name}_bits> {reg.name};\n')
+            output.write(f'{indent}{constness}Register<{reg_enum(reg.name)}> {reg.name};\n')
 
         offset += reg.size // 8
 
@@ -214,15 +234,22 @@ def write_enum_declaration(output, reg, indent=''):
     output.write(f'{indent}enum class {reg.name}_bits : uint{reg.size}_t;\n')
 
 
-def write_struct_offsetof_static_asserts(output, periph):
+def write_struct_offsetof_static_asserts(output, periph, periph_type_names):
     """Generate static asserts for ensuring the correct offset of each member element of a peripheral"""
     for reg in periph.registers + periph.clusters:
         output.write(
-            f'static_assert(offsetof({periph_typename(periph)}, {strip_array_dimensions(reg.name)}) == {reg.addressOffset:#x};\n')
+            f'static_assert(offsetof({reg_type_name(periph_type_names)}, {strip_array_dimensions(reg.name)}) == {reg.addressOffset:#x};\n')
+    for cluster in periph.clusters:
+        cluster_type_name = periph_struct(strip_array_dimensions(cluster.name))
+        write_struct_offsetof_static_asserts(output, cluster, periph_type_names + [strip_array_dimensions(reg.name)])
 
 
 def generate_all_files(device, basedir):
-    with open(os.path.join(basedir, f'{device.name}_mmio.ld'), 'w') as fd:
+    ld_path = os.path.join(basedir, 'ld')
+    include_path = os.path.join(basedir, 'include', 'deri', 'mmio')
+    bits_path = os.path.join(include_path, 'bits')
+    os.makedirs(ld_path, exist_ok=True)
+    with open(os.path.join(ld_path, f'{device.name}_mmio.ld'), 'w') as fd:
         write_ldscript(fd, device)
 
     periph_types = {}
@@ -245,25 +272,27 @@ def generate_all_files(device, basedir):
         periph_types.setdefault(name, baseperiph)
         baseperiph.deri_typename = name
 
+    os.makedirs(include_path, exist_ok=True)
+    os.makedirs(bits_path, exist_ok=True)
     for name, periph in periph_types.items():
         print(f'Generating class definition for {name} from {periph.name}')
-        with open(os.path.join(basedir, f'{name}.hpp'), 'w') as fd:
+        with open(os.path.join(include_path, f'{name}.hpp'), 'w') as fd:
             write_heading_comment(fd)
             fd.write(f'#include "deri/registers.h"\n')
             fd.write(f'#include <cstdint>\n')
             fd.write(f'\nnamespace deri::mmio {{\n')
             write_periph_class(fd, periph)
             fd.write(f'}}\n')
-        with open(os.path.join(basedir, f'{name}_bits.hpp'), 'w') as fd:
+        with open(os.path.join(bits_path, f'{name}_bits.hpp'), 'w') as fd:
             write_heading_comment(fd)
             fd.write(f'#include "deri/mmio/{name}.hpp"\n')
             fd.write(f'#include <cstdint>\n')
             fd.write(f'\nnamespace deri::mmio {{\n')
-            for reg in periph.registers:
-                write_enum_definition(fd, reg, f'{name}_regs::{reg.name}_bits')
+            write_enum_definitions(fd, periph, [name])
+            write_struct_offsetof_static_asserts(fd, periph, [name])
             fd.write(f'}}\n')
 
-    with open(os.path.join(basedir, f'peripherals.hpp'), 'w') as fd:
+    with open(os.path.join(include_path, f'peripherals.hpp'), 'w') as fd:
         write_heading_comment(fd)
         fd.write(f'\n// Forward declarations of MMIO peripheral register maps\n')
         for name, periph in periph_types.items():
@@ -288,7 +317,7 @@ def dir_argument(path):
 
 
 def main(argv):
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Generate C++ headers from an SVD file.')
     parser.add_argument('-i', '--input', type=argparse.FileType('r'),
                         default=(None if sys.stdin.isatty() else sys.stdin), required=sys.stdin.isatty())
     parser.add_argument('-p', '--path', type=dir_argument,
@@ -299,28 +328,6 @@ def main(argv):
     device = pysvd.element.Device(node)
 
     generate_all_files(device, args.path)
-    write_periph_class(args.output, device.find('ECLIC'))
-    write_struct_offsetof_static_asserts(args.output, device.find('ECLIC'))
-
-    for reg in sorted(device.find('ECLIC').registers,
-                      key=lambda obj: obj.addressOffset):
-        write_enum_definition(args.output, reg)
-
-    for periph in sorted(device.peripherals, key=lambda peripheral: peripheral.baseAddress):
-        for reg in periph.registers:
-            write_enum_definition(args.output, reg)
-    for periph in sorted(device.peripherals, key=lambda peripheral: peripheral.baseAddress):
-        write_periph_class(args.output, periph)
-
-    for periph in sorted(device.peripherals, key=lambda peripheral: peripheral.baseAddress):
-        write_periph_declaration(args.output, periph)
-
-    # for reg in parser.get_device().peripherals[22].registers:
-    #     write_enum_values(args.output, reg)
-
-    # write_periph_class(args.output, parser.get_device().peripherals[36])
-    write_struct_offsetof_static_asserts(args.output, device.find('CAN0'))
-
     return 0
 
 
