@@ -244,6 +244,22 @@ def write_struct_offsetof_static_asserts(output, periph, periph_type_names):
         write_struct_offsetof_static_asserts(output, cluster, periph_type_names + [strip_array_dimensions(reg.name)])
 
 
+def write_interrupts_enum(output, device):
+    interrupt_map = {}
+    indent = ''
+    for periph in device.peripherals:
+        for irq in periph.interrupts:
+            if irq.value in interrupt_map and interrupt_map[irq.value].name != irq.name:
+                raise RuntimeError(f'Duplicate IRQ {irq.value} {interrupt_map[irq.value].name} <-> {irq.name}')
+            interrupt_map[irq.value] = irq
+    output.write(f'{indent}enum class IRQ {{\n')
+    indent = increase_indent(indent)
+    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0] ):
+        output.write(f'{indent}{irq.name} = {num},\n')
+    indent = decrease_indent(indent)
+    output.write(f'{indent}}};\n')
+
+
 def generate_all_files(device, basedir):
     ld_path = os.path.join(basedir, 'ld')
     include_path = os.path.join(basedir, 'include', 'deri', 'mmio')
@@ -302,6 +318,12 @@ def generate_all_files(device, basedir):
         for periph in device.peripherals:
             basename = periph.derivedFrom.deri_typename if periph.derivedFrom is not None else periph.deri_typename
             write_periph_declaration(fd, basename, periph.name)
+
+    with open(os.path.join(include_path, f'interrupts.hpp'), 'w') as fd:
+        write_heading_comment(fd)
+        fd.write(f'\nnamespace deri::mmio {{\n')
+        write_interrupts_enum(fd, device)
+        fd.write(f'}}\n')
 
 
 def dir_argument(path):
