@@ -29634,7 +29634,7 @@
               <description>RTC prescaler value high</description>
               <bitOffset>0</bitOffset>
               <bitWidth>4</bitWidth>
-              <access>write</access>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -29652,7 +29652,7 @@
               <description>RTC prescaler value low</description>
               <bitOffset>0</bitOffset>
               <bitWidth>16</bitWidth>
-              <access>write</access>
+              <access>write-only</access>
             </field>
           </fields>
         </register>
@@ -29730,7 +29730,7 @@
           <description>Alarm high register</description>
           <addressOffset>0x20</addressOffset>
           <size>0x20</size>
-          <access>write</access>
+          <access>write-only</access>
           <resetValue>0x0000FFFF</resetValue>
           <fields>
             <field>
@@ -29747,7 +29747,7 @@
           <description>RTC alarm low register</description>
           <addressOffset>0x24</addressOffset>
           <size>0x20</size>
-          <access>write</access>
+          <access>write-only</access>
           <resetValue>0x0000FFFF</resetValue>
           <fields>
             <field>
