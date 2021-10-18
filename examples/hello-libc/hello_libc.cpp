@@ -3,16 +3,17 @@
  */
 
 #include "deri/console.h"
+#include "deri/span_literals.h"
 
 #include <span>
 
 #include <stdio.h>
 
 using deri::console;
+using namespace deri::literals;
 
 int main() {
-  static constexpr char msg[] = "Hello world\n";
-  std::span<const char> buffer_view{msg, sizeof msg};
+  auto buffer_view = "Hello world!\n"_span;
   console.write(std::as_bytes(buffer_view));
   puts("Hello world from puts\n");
   while (1) {
