@@ -8,21 +8,18 @@
   <version>1.0</version>
   <description>GD32VF103 RISC-V Microcontroller based device</description>
   <cpu>
-  <name>CM3</name>
-  <revision>r2p1</revision>
-  <endian>little</endian>
-  <mpuPresent>0</mpuPresent>
-  <fpuPresent>0</fpuPresent>
-  <nvicPrioBits>4</nvicPrioBits>
-  <vendorSystickConfig>0</vendorSystickConfig>
-</cpu> 
+    <name>other</name>
+    <revision>r1p0</revision>
+    <endian>little</endian>
+    <mpuPresent>1</mpuPresent>
+    <fpuPresent>0</fpuPresent>
+    <vendorSystickConfig>0</vendorSystickConfig>
+    <nvicPrioBits>4</nvicPrioBits>
+  </cpu>
+
   <addressUnitBits>8</addressUnitBits>
   <width>32</width>
-  <!--Bus Interface Properties-->
-  <!--the maximum data bit width accessible within a single transfer-->
-  <!--Cortex-M3 is byte addressable-->
-  <!--Register Default Properties-->
-  <size>0x20</size>
+  <size>32</size>
   <resetValue>0x0</resetValue>
   <resetMask>0xFFFFFFFF</resetMask>
    <peripherals>
