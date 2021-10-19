@@ -3,9 +3,9 @@ include_guard(GLOBAL)
 set(CMAKE_LINK_LIBRARY_SUFFIX "")
 set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
-set(CMAKE_SHARED_LIBRARY_PREFIX "lib")          # lib
-set(CMAKE_SHARED_LIBRARY_SUFFIX ".a")           # .a
-set(CMAKE_EXECUTABLE_SUFFIX ".elf")             # same suffix as if built using UseEcos.cmake
+set(CMAKE_SHARED_LIBRARY_PREFIX "lib")
+set(CMAKE_SHARED_LIBRARY_SUFFIX ".a")
+set(CMAKE_EXECUTABLE_SUFFIX ".elf")
 set(CMAKE_DL_LIBS "" )
 
 set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
