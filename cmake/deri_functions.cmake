@@ -6,7 +6,7 @@ macro(add_all_subdirectories)
   foreach (cmakelist IN LISTS subdirectory_cmakelists)
     get_filename_component(subdir "${cmakelist}" DIRECTORY)
     add_subdirectory(${subdir})
-  endforeach()
+  endforeach ()
 endmacro()
 
 
@@ -17,10 +17,10 @@ function(deri_add_library target_name library_kind) # ... ARGN sources
   if (library_kind STREQUAL "INTERFACE")
     set(source_type "INTERFACE")
     set(flags_type "INTERFACE")
-  else()
+  else ()
     set(source_type "PRIVATE")
     set(flags_type "PUBLIC")
-  endif()
+  endif ()
   target_sources(${target_name} ${source_type} ${ARGN})
   # Here we make sure we always have a dependency on the compile flags on all targets.
   target_link_libraries(${target_name} ${flags_type} deri_flags)
@@ -28,10 +28,10 @@ endfunction()
 
 function(deri_target_depends target_name dep_kind) # ... ARGN dependencies
   target_link_libraries(${target_name} ${dep_kind} ${ARGN})
-  foreach(dep IN LISTS ARGN)
+  foreach (dep IN LISTS ARGN)
     # propagate interface sources
     target_sources(${target_name} INTERFACE $<TARGET_PROPERTY:${dep},INTERFACE_SOURCES>)
-  endforeach()
+  endforeach ()
 endfunction()
 
 function(deri_configure_target target_name)
