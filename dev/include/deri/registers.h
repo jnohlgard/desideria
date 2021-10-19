@@ -9,6 +9,28 @@
 namespace deri::dev {
 
 /**
+ * Reserved register that should not be touched by the software
+ *
+ * Can be used as padding between fields to map a struct onto hardware
+ * registers.
+ *
+ * @tparam RegType Data type of the reserved field, typically some fixed-width
+ * integer
+ */
+template <typename RegType>
+class Reserved {
+ public:
+  Reserved() = delete;
+  Reserved(const Reserved &) = delete;
+  Reserved(Reserved &&) noexcept = delete;
+  Reserved &operator=(const Reserved &) = delete;
+  Reserved &operator=(Reserved &&) noexcept = delete;
+
+ private:
+  const RegType reserved;
+};
+
+/**
  * Hardware registers for type-safe access with explicit loads and stores
  *
  * @tparam BitsType Logical type of the data stored in the hardware register,
@@ -48,4 +70,5 @@ class Register {
 };
 
 static_assert(sizeof(Register<std::byte>) == sizeof(std::uint8_t));
+static_assert(sizeof(Reserved<std::byte>) == sizeof(std::uint8_t));
 }  // namespace deri::dev
