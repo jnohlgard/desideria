@@ -8,10 +8,9 @@
 
 namespace deri::dev {
 template <typename BitsType,
-          typename StorageType = std::underlying_type_t<BitsType>>
+          typename StorageType = std::underlying_type_t<BitsType>,
+          typename UnderlyingBitsType = std::underlying_type_t<BitsType>>
 class Register {
-  using UnderlyingBitsType = std::underlying_type_t<BitsType>;
-
  public:
   // These objects are hardware constructs, a constructor in software does not
   // make sense in the general case.
