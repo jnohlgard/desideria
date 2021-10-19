@@ -7,6 +7,17 @@
 #include <type_traits>
 
 namespace deri::dev {
+
+/**
+ * Hardware registers for type-safe access with explicit loads and stores
+ *
+ * @tparam BitsType Logical type of the data stored in the hardware register,
+ * typically some enum class
+ * @tparam StorageType Type of the hardware register itself, typically some
+ * fixed-width integer
+ * @tparam UnderlyingBitsType Underlying type of @p BitsType when @p BitsType is
+ * an enum
+ */
 template <typename BitsType,
           typename StorageType = std::underlying_type_t<BitsType>,
           typename UnderlyingBitsType = std::underlying_type_t<BitsType>>
