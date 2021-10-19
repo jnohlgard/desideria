@@ -88,6 +88,15 @@ def write_heading_comment(output):
     output.write(f"/* *** Generated with Desideria SVD converter *** */\n")
 
 
+def itanium_mangle_name(name):
+    return f'{len(name)}{name}'
+
+
+def itanium_mangle_symbol(name):
+    """Hacky implementation of basic name mangling in Itanium C++ ABI"""
+    return f'_ZN{"".join([itanium_mangle_name(part) for part in name.split("::")])}E'
+
+
 def write_ldscript(output, device):
     """
     Create a linker script for the base addresses of the hardware modules in the given SVD
@@ -99,7 +108,10 @@ def write_ldscript(output, device):
     output.write(f"/* Hardware module map for {device.name} */\n")
     output.write(f"/* {device.description} */\n")
     for peripheral in device.peripherals:
-        output.write(f"PROVIDE({f'{peripheral.name}$':10}= {peripheral.baseAddress:#08x});\n")
+        output.write(f"PROVIDE({f'{peripheral.name}$':16} = {peripheral.baseAddress:#08x});\n")
+    output.write(f'\n/* C++ mangled names below */\n')
+    for peripheral in device.peripherals:
+        output.write(f"PROVIDE({itanium_mangle_symbol(f'deri::mmio::{peripheral.name}')} = {peripheral.name}$);\n")
 
 
 def write_enum_definitions(output, periph, periph_type_names, indent=''):
@@ -254,7 +266,7 @@ def write_interrupts_enum(output, device):
             interrupt_map[irq.value] = irq
     output.write(f'{indent}enum class IRQ {{\n')
     indent = increase_indent(indent)
-    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0] ):
+    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
         output.write(f'{indent}{irq.name} = {num},\n')
     indent = decrease_indent(indent)
     output.write(f'{indent}}};\n')
