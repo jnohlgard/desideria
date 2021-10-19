@@ -78,10 +78,11 @@ class UsartGd32 {
    * @return @p buffer trimmed to contain only what was not yet written to the
    * transmit register
    */
-  [[nodiscard]] auto write(std::span<const std::byte> buffer) -> decltype(buffer);
+  [[nodiscard]] auto write(std::span<const std::byte> buffer)
+      -> decltype(buffer);
 };
 #pragma GCC diagnostic pop
 
 static_assert(sizeof(UsartGd32) == 0x1C);
 
-}  // namespace deri::hal::periph
+}  // namespace deri::dev::uart
