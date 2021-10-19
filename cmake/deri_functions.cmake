@@ -36,4 +36,10 @@ endfunction()
 
 function(deri_configure_target target_name)
   deri_target_depends(${target_name} PUBLIC deri::deri)
+  if (DERI_SIZE)
+    add_custom_command(TARGET ${target_name} POST_BUILD
+      COMMAND ${DERI_SIZE} "$<TARGET_FILE_NAME:${target_name}>"
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:${target_name}>"
+      COMMENT "Size report for ${target_name}")
+  endif ()
 endfunction()
