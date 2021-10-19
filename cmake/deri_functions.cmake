@@ -36,6 +36,7 @@ endfunction()
 
 function(deri_configure_target target_name)
   deri_target_depends(${target_name} PUBLIC deri::deri)
+  target_link_options(${target_name} PUBLIC "LINKER:-Map=$<TARGET_FILE:${target_name}>.map")
   if (DERI_SIZE)
     add_custom_command(TARGET ${target_name} POST_BUILD
       COMMAND ${DERI_SIZE} "$<TARGET_FILE_NAME:${target_name}>"
