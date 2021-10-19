@@ -99,7 +99,7 @@ def write_ldscript(output, device):
     output.write(f"/* Hardware module map for {device.name} */\n")
     output.write(f"/* {device.description} */\n")
     for peripheral in device.peripherals:
-        output.write(f"PROVIDE({peripheral.name}$ = {peripheral.baseAddress:#08x})\n")
+        output.write(f"PROVIDE({f'{peripheral.name}$':10}= {peripheral.baseAddress:#08x})\n")
 
 
 def write_enum_definitions(output, periph, periph_type_names, indent=''):
