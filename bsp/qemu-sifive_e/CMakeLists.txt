@@ -6,6 +6,7 @@ target_include_directories(deri_bsp INTERFACE include)
 deri_target_depends(deri_bsp INTERFACE
   deri_core
   deri_arch
+  deri_soc
   deri_dev_uart_sifive
   )
 

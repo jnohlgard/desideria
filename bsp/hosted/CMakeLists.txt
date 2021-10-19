@@ -5,5 +5,6 @@ target_include_directories(deri_bsp PUBLIC include)
 deri_target_depends(deri_bsp PUBLIC
   deri_core
   deri_arch
+  deri_soc
   )
 add_subdirectory(testing)

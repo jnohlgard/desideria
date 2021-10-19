@@ -1,0 +1,11 @@
+if(NOT SOC_MODEL)
+  message(FATAL_ERROR "Missing SOC_MODEL setting in deri_bsp.cmake")
+endif()
+
+set(ARCH riscv)
+set(CPU_CORE e31)
+set(CPU rv32)
+set(CPU_C_FLAGS -march=rv32imac -mabi=ilp32)
+set(CODE_MODEL_C_FLAGS -mcmodel=medlow)
+target_compile_options(deri_soc_flags INTERFACE ${CODE_MODEL_C_FLAGS} ${CPU_C_FLAGS})
+target_link_options(deri_soc_flags INTERFACE ${CPU_C_FLAGS} -T "${SOC_MODEL}.ld")

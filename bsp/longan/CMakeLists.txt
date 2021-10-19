@@ -9,6 +9,7 @@ target_include_directories(deri_bsp_periph INTERFACE include)
 target_link_libraries(deri_bsp PUBLIC
   deri_core
   deri_arch
+  deri_soc
   deri_bsp_periph
   )
 target_link_libraries(deri_bsp_periph INTERFACE
