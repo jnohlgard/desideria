@@ -86,6 +86,7 @@ def reg_type_name(periph_type_names):
 
 def write_heading_comment(output):
     output.write(f"/* *** Generated with Desideria SVD converter *** */\n")
+    output.write(f"#pragma once\n\n")
 
 
 def itanium_mangle_name(name):
@@ -309,7 +310,7 @@ def generate_all_files(device, basedir):
             fd.write(f'#include "deri/registers.h"\n')
             fd.write(f'#include <cstdint>\n')
             fd.write(f'\nnamespace deri::mmio {{\n')
-            write_periph_class(fd, periph)
+            write_periph_class(fd, periph, name=periph_struct(name))
             fd.write(f'}}\n')
         with open(os.path.join(bits_path, f'{name}_bits.hpp'), 'w') as fd:
             write_heading_comment(fd)
