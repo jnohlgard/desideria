@@ -251,7 +251,7 @@ def write_struct_offsetof_static_asserts(output, periph, periph_type_names):
     """Generate static asserts for ensuring the correct offset of each member element of a peripheral"""
     for reg in periph.registers + periph.clusters:
         output.write(
-            f'static_assert(offsetof({reg_type_name(periph_type_names)}, {strip_array_dimensions(reg.name)}) == {reg.addressOffset:#x};\n')
+            f'static_assert(offsetof({reg_type_name(periph_type_names)}, {strip_array_dimensions(reg.name)}) == {reg.addressOffset:#x});\n')
     for cluster in periph.clusters:
         cluster_type_name = periph_struct(strip_array_dimensions(cluster.name))
         write_struct_offsetof_static_asserts(output, cluster, periph_type_names + [strip_array_dimensions(reg.name)])
