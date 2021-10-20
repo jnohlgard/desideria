@@ -144,7 +144,7 @@ def write_enum_definitions(output, periph, periph_type_names, indent=''):
                 field_name = f'{field.name}_mask'
             # reflow description text to remove newlines and indentation
             description = ' '.join([s.strip() for s in field.description.splitlines()])
-            output.write(f'{indent}{field_name:<10} = ({bitmask} << {field.bitOffset:>2}), ///< {description}\n')
+            output.write(f'{indent}{field_name:<10} = ({bitmask}u << {field.bitOffset:>2}), ///< {description}\n')
             reserved_mask &= ~(int(bitmask, 0) << field.bitOffset)
         if reserved_mask != 0:
             output.write(
