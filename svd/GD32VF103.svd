@@ -20655,9 +20655,11 @@
       </addressBlock>
       <registers>
         <register>
-          <name>CTL0</name>
-          <displayName>CTL0</displayName>
-          <description>port control register 0</description>
+          <name>CTL[%s]</name>
+          <displayName>CTL[%s]</displayName>
+          <dim>2</dim>
+          <dimIncrement>0x04</dimIncrement>
+          <description>port control register</description>
           <addressOffset>0x0</addressOffset>
           <size>0x20</size>
           <access>read-write</access>
@@ -20787,145 +20789,6 @@
               <name>MD0</name>
               <description>Port x mode bits (x =
                 0)
-              </description>
-              <bitOffset>0</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>CTL1</name>
-          <displayName>CTL1</displayName>
-          <description>port control register 1</description>
-          <addressOffset>0x04</addressOffset>
-          <size>0x20</size>
-          <access>read-write</access>
-          <resetValue>0x44444444</resetValue>
-          <fields>
-            <field>
-              <name>CTL15</name>
-              <description>Port x configuration bits (x =
-                15)
-              </description>
-              <bitOffset>30</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD15</name>
-              <description>Port x mode bits (x =
-                15)
-              </description>
-              <bitOffset>28</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL14</name>
-              <description>Port x configuration bits (x =
-                14)
-              </description>
-              <bitOffset>26</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD14</name>
-              <description>Port x mode bits (x =
-                14)
-              </description>
-              <bitOffset>24</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL13</name>
-              <description>Port x configuration bits (x =
-                13)
-              </description>
-              <bitOffset>22</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD13</name>
-              <description>Port x mode bits (x =
-                13)
-              </description>
-              <bitOffset>20</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL12</name>
-              <description>Port x configuration bits (x =
-                12)
-              </description>
-              <bitOffset>18</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD12</name>
-              <description>Port x mode bits (x =
-                12)
-              </description>
-              <bitOffset>16</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL11</name>
-              <description>Port x configuration bits (x =
-                11)
-              </description>
-              <bitOffset>14</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD11</name>
-              <description>Port x mode bits (x =
-                11 )
-              </description>
-              <bitOffset>12</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL10</name>
-              <description>Port x configuration bits (x =
-                10)
-              </description>
-              <bitOffset>10</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD10</name>
-              <description>Port x mode bits (x =
-                10 )
-              </description>
-              <bitOffset>8</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL9</name>
-              <description>Port x configuration bits (x =
-                9)
-              </description>
-              <bitOffset>6</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD9</name>
-              <description>Port x mode bits (x =
-                9)
-              </description>
-              <bitOffset>4</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>CTL8</name>
-              <description>Port x configuration bits (x =
-                8)
-              </description>
-              <bitOffset>2</bitOffset>
-              <bitWidth>2</bitWidth>
-            </field>
-            <field>
-              <name>MD8</name>
-              <description>Port x mode bits (x =
-                8)
               </description>
               <bitOffset>0</bitOffset>
               <bitWidth>2</bitWidth>
