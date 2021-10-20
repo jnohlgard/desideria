@@ -195,6 +195,14 @@ def write_element_padding(output, offset_from, offset_to, word_size, step_size, 
     return (offset, reserved_count)
 
 
+def multiplicity(name):
+    # Hack: Detect arrays
+    p = re.compile(r'\[(\d+)\]')
+    m = p.search(name)
+    if m:
+        return int(m.group(1))
+    return 1
+
 def write_periph_class(output, periph, name=None, indent=''):
     """
     Generate a struct definition for the given peripheral
@@ -226,7 +234,7 @@ def write_periph_class(output, periph, name=None, indent=''):
         else:
             output.write(f'{indent}{constness}Register<{reg_enum(reg.name)}> {reg.name};\n')
 
-        offset += reg.size // 8
+        offset += multiplicity(reg.name) * reg.size // 8
 
     indent = decrease_indent(indent)
     output.write(f'{indent}}};\n')
