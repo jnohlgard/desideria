@@ -12,21 +12,21 @@ namespace deri::mmio {
  * Control register 0
  */
 enum class I2C_regs::CTL0_bits : uint16_t {
-  SRESET = (1 << 15),    ///< Software reset
-  SALT = (1 << 13),      ///< SMBus alert
-  PECTRANS = (1 << 12),  ///< PEC Transfer
-  POAP = (1 << 11),      ///< Position of ACK and PEC when receiving
-  ACKEN = (1 << 10),     ///< Whether or not to send an ACK
-  STOP = (1 << 9),       ///< Generate a STOP condition on I2C bus
-  START = (1 << 8),      ///< Generate a START condition on I2C bus
-  SS = (1 << 7),      ///< Whether to stretch SCL low when data is not ready in
-                      ///< slave mode
-  GCEN = (1 << 6),    ///< Whether or not to response to a General Call (0x00)
-  PECEN = (1 << 5),   ///< PEC Calculation Switch
-  ARPEN = (1 << 4),   ///< ARP protocol in SMBus switch
-  SMBSEL = (1 << 3),  ///< SMBusType Selection
-  SMBEN = (1 << 1),   ///< SMBus/I2C mode switch
-  I2CEN = (1 << 0),   ///< I2C peripheral enable
+  SRESET = (1u << 15),    ///< Software reset
+  SALT = (1u << 13),      ///< SMBus alert
+  PECTRANS = (1u << 12),  ///< PEC Transfer
+  POAP = (1u << 11),      ///< Position of ACK and PEC when receiving
+  ACKEN = (1u << 10),     ///< Whether or not to send an ACK
+  STOP = (1u << 9),       ///< Generate a STOP condition on I2C bus
+  START = (1u << 8),      ///< Generate a START condition on I2C bus
+  SS = (1u << 7),      ///< Whether to stretch SCL low when data is not ready in
+                       ///< slave mode
+  GCEN = (1u << 6),    ///< Whether or not to response to a General Call (0x00)
+  PECEN = (1u << 5),   ///< PEC Calculation Switch
+  ARPEN = (1u << 4),   ///< ARP protocol in SMBus switch
+  SMBSEL = (1u << 3),  ///< SMBusType Selection
+  SMBEN = (1u << 1),   ///< SMBus/I2C mode switch
+  I2CEN = (1u << 0),   ///< I2C peripheral enable
   Reserved_mask = 0x4004  ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::CTL0_bits);
@@ -57,13 +57,13 @@ enum class I2C_regs::CTL0_shift : unsigned {
  * Control register 1
  */
 enum class I2C_regs::CTL1_bits : uint16_t {
-  DMALST = (1 << 12),         ///< Flag indicating DMA last transfer
-  DMAON = (1 << 11),          ///< DMA mode switch
-  BUFIE = (1 << 10),          ///< Buffer interrupt enable
-  EVIE = (1 << 9),            ///< Event interrupt enable
-  ERRIE = (1 << 8),           ///< Error interrupt enable
-  I2CCLK_mask = (0x3f << 0),  ///< I2C Peripheral clock frequency
-  Reserved_mask = 0xe0c0      ///< All reserved bits
+  DMALST = (1u << 12),         ///< Flag indicating DMA last transfer
+  DMAON = (1u << 11),          ///< DMA mode switch
+  BUFIE = (1u << 10),          ///< Buffer interrupt enable
+  EVIE = (1u << 9),            ///< Event interrupt enable
+  ERRIE = (1u << 8),           ///< Error interrupt enable
+  I2CCLK_mask = (0x3fu << 0),  ///< I2C Peripheral clock frequency
+  Reserved_mask = 0xe0c0       ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::CTL1_bits);
 
@@ -85,11 +85,11 @@ enum class I2C_regs::CTL1_shift : unsigned {
  * Slave address register 0
  */
 enum class I2C_regs::SADDR0_bits : uint16_t {
-  ADDFORMAT = (1 << 15),         ///< Address mode for the I2C slave
-  ADDRESS9_8_mask = (0x3 << 8),  ///< Highest two bits of a 10-bit address
+  ADDFORMAT = (1u << 15),         ///< Address mode for the I2C slave
+  ADDRESS9_8_mask = (0x3u << 8),  ///< Highest two bits of a 10-bit address
   ADDRESS7_1_mask =
-      (0x7f << 1),        ///< 7-bit address or bits 7:1 of a 10-bit address
-  ADDRESS0 = (1 << 0),    ///< Bit 0 of a 10-bit address
+      (0x7fu << 1),       ///< 7-bit address or bits 7:1 of a 10-bit address
+  ADDRESS0 = (1u << 0),   ///< Bit 0 of a 10-bit address
   Reserved_mask = 0x7c00  ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::SADDR0_bits);
@@ -111,8 +111,8 @@ enum class I2C_regs::SADDR0_shift : unsigned {
  */
 enum class I2C_regs::SADDR1_bits : uint16_t {
   ADDRESS2_mask =
-      (0x7f << 1),    ///< Second I2C address for the slave in Dual-Address mode
-  DUADEN = (1 << 0),  ///< Dual-Address mode switch
+      (0x7fu << 1),  ///< Second I2C address for the slave in Dual-Address mode
+  DUADEN = (1u << 0),     ///< Dual-Address mode switch
   Reserved_mask = 0xff00  ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::SADDR1_bits);
@@ -131,8 +131,8 @@ enum class I2C_regs::SADDR1_shift : unsigned {
  * Transfer buffer register
  */
 enum class I2C_regs::DATA_bits : uint16_t {
-  TRB_mask = (0xff << 0),  ///< Transmission or reception data buffer register
-  Reserved_mask = 0xff00   ///< All reserved bits
+  TRB_mask = (0xffu << 0),  ///< Transmission or reception data buffer register
+  Reserved_mask = 0xff00    ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::DATA_bits);
 
@@ -149,22 +149,22 @@ enum class I2C_regs::DATA_shift : unsigned {
  * Transfer status register 0
  */
 enum class I2C_regs::STAT0_bits : uint16_t {
-  SMBALT = (1 << 15),  ///< SMBus Alert status
-  SMBTO = (1 << 14),   ///< Timeout signal in SMBus mode
-  PECERR = (1 << 12),  ///< PEC error when receiving data
-  OUERR = (1 << 11),   ///< Over-run or under-run situation occurs in slave mode
-  AERR = (1 << 10),    ///< Acknowledge error
-  LOSTARB = (1 << 9),  ///< Arbitration Lost in master mode
-  BERR = (1 << 8),     ///< A bus error occurs indication a unexpected START or
-                       ///< STOP condition on I2C bus
-  TBE = (1 << 7),      ///< I2C_DATA is Empty during transmitting
-  RBNE = (1 << 6),     ///< I2C_DATA is not Empty during receiving
-  STPDET = (1 << 4),   ///< STOP condition detected in slave mode
-  ADD10SEND = (1 << 3),   ///< Header of 10-bit address is sent in master mode
-  BTC = (1 << 2),         ///< Byte transmission completed
-  ADDSEND = (1 << 1),     ///< Address is sent in master mode or received and
+  SMBALT = (1u << 15),  ///< SMBus Alert status
+  SMBTO = (1u << 14),   ///< Timeout signal in SMBus mode
+  PECERR = (1u << 12),  ///< PEC error when receiving data
+  OUERR = (1u << 11),  ///< Over-run or under-run situation occurs in slave mode
+  AERR = (1u << 10),   ///< Acknowledge error
+  LOSTARB = (1u << 9),  ///< Arbitration Lost in master mode
+  BERR = (1u << 8),     ///< A bus error occurs indication a unexpected START or
+                        ///< STOP condition on I2C bus
+  TBE = (1u << 7),      ///< I2C_DATA is Empty during transmitting
+  RBNE = (1u << 6),     ///< I2C_DATA is not Empty during receiving
+  STPDET = (1u << 4),   ///< STOP condition detected in slave mode
+  ADD10SEND = (1u << 3),  ///< Header of 10-bit address is sent in master mode
+  BTC = (1u << 2),        ///< Byte transmission completed
+  ADDSEND = (1u << 1),    ///< Address is sent in master mode or received and
                           ///< matches in slave mode
-  SBSEND = (1 << 0),      ///< START condition sent out in master mode
+  SBSEND = (1u << 0),     ///< START condition sent out in master mode
   Reserved_mask = 0x2020  ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::STAT0_bits);
@@ -195,16 +195,16 @@ enum class I2C_regs::STAT0_shift : unsigned {
  * Transfer status register 1
  */
 enum class I2C_regs::STAT1_bits : uint16_t {
-  PECV_mask = (0xff << 8),  ///< Packet Error Checking Value that calculated by
-                            ///< hardware when PEC is enabled
-  DUMODF = (1 << 7),        ///< Dual Flag in slave mode
-  HSTSMB = (1 << 6),        ///< SMBus Host Header detected in slave mode
-  DEFSMB = (1 << 5),        ///< Default address of SMBusDevice
-  RXGC = (1 << 4),          ///< General call address (00h) received
-  TR = (1 << 2),            ///< Whether the I2C is a transmitter or a receiver
-  I2CBSY = (1 << 1),        ///< Busy flag
-  MASTER = (1 << 0),  ///< A flag indicating whether I2C block is in master or
-                      ///< slave mode
+  PECV_mask = (0xffu << 8),  ///< Packet Error Checking Value that calculated by
+                             ///< hardware when PEC is enabled
+  DUMODF = (1u << 7),        ///< Dual Flag in slave mode
+  HSTSMB = (1u << 6),        ///< SMBus Host Header detected in slave mode
+  DEFSMB = (1u << 5),        ///< Default address of SMBusDevice
+  RXGC = (1u << 4),          ///< General call address (00h) received
+  TR = (1u << 2),            ///< Whether the I2C is a transmitter or a receiver
+  I2CBSY = (1u << 1),        ///< Busy flag
+  MASTER = (1u << 0),  ///< A flag indicating whether I2C block is in master or
+                       ///< slave mode
   Reserved_mask = 0x0008  ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::STAT1_bits);
@@ -229,10 +229,10 @@ enum class I2C_regs::STAT1_shift : unsigned {
  * Clock configure register
  */
 enum class I2C_regs::CKCFG_bits : uint16_t {
-  FAST = (1 << 15),          ///< I2C speed selection in master mode
-  DTCY = (1 << 14),          ///< Duty cycle in fast mode
-  CLKC_mask = (0xfff << 0),  ///< I2C Clock control in master mode
-  Reserved_mask = 0x3000     ///< All reserved bits
+  FAST = (1u << 15),          ///< I2C speed selection in master mode
+  DTCY = (1u << 14),          ///< Duty cycle in fast mode
+  CLKC_mask = (0xfffu << 0),  ///< I2C Clock control in master mode
+  Reserved_mask = 0x3000      ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::CKCFG_bits);
 
@@ -251,8 +251,8 @@ enum class I2C_regs::CKCFG_shift : unsigned {
  * Rise time register
  */
 enum class I2C_regs::RT_bits : uint16_t {
-  RISETIME_mask = (0x3f << 0),  ///< Maximum rise time in master mode
-  Reserved_mask = 0xffc0        ///< All reserved bits
+  RISETIME_mask = (0x3fu << 0),  ///< Maximum rise time in master mode
+  Reserved_mask = 0xffc0         ///< All reserved bits
 };
 void HasBitwiseOperators(I2C_regs::RT_bits);
 

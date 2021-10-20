@@ -12,7 +12,7 @@ namespace deri::mmio {
  * wait state counter register
  */
 enum class FMC_regs::WS_bits : uint32_t {
-  WSCNT_mask = (0x7 << 0),    ///< wait state counter register
+  WSCNT_mask = (0x7u << 0),   ///< wait state counter register
   Reserved_mask = 0xfffffff8  ///< All reserved bits
 };
 void HasBitwiseOperators(FMC_regs::WS_bits);
@@ -30,7 +30,7 @@ enum class FMC_regs::WS_shift : unsigned {
  * Unlock key register 0
  */
 enum class FMC_regs::KEY0_bits : uint32_t {
-  KEY_mask = (0xffffffff << 0),  ///< FMC_CTL0 unlock key
+  KEY_mask = (0xffffffffu << 0),  ///< FMC_CTL0 unlock key
 };
 void HasBitwiseOperators(FMC_regs::KEY0_bits);
 
@@ -48,7 +48,7 @@ enum class FMC_regs::KEY0_shift : unsigned {
  */
 enum class FMC_regs::OBKEY_bits : uint32_t {
   OBKEY_mask =
-      (0xffffffff << 0),  ///< FMC_ CTL0 option byte operation unlock register
+      (0xffffffffu << 0),  ///< FMC_ CTL0 option byte operation unlock register
 };
 void HasBitwiseOperators(FMC_regs::OBKEY_bits);
 
@@ -65,10 +65,10 @@ enum class FMC_regs::OBKEY_shift : unsigned {
  * Status register 0
  */
 enum class FMC_regs::STAT0_bits : uint32_t {
-  ENDF = (1 << 5),            ///< End of operation flag bit
-  WPERR = (1 << 4),           ///< Erase/Program protection error flag bit
-  PGERR = (1 << 2),           ///< Program error flag bit
-  BUSY = (1 << 0),            ///< The flash is busy bit
+  ENDF = (1u << 5),           ///< End of operation flag bit
+  WPERR = (1u << 4),          ///< Erase/Program protection error flag bit
+  PGERR = (1u << 2),          ///< Program error flag bit
+  BUSY = (1u << 0),           ///< The flash is busy bit
   Reserved_mask = 0xffffffca  ///< All reserved bits
 };
 void HasBitwiseOperators(FMC_regs::STAT0_bits);
@@ -89,16 +89,16 @@ enum class FMC_regs::STAT0_shift : unsigned {
  * Control register 0
  */
 enum class FMC_regs::CTL0_bits : uint32_t {
-  ENDIE = (1 << 12),          ///< End of operation interrupt enable bit
-  ERRIE = (1 << 10),          ///< Error interrupt enable bit
-  OBWEN = (1 << 9),           ///< Option byte erase/program enable bit
-  LK = (1 << 7),              ///< FMC_CTL0 lock bit
-  START = (1 << 6),           ///< Send erase command to FMC bit
-  OBER = (1 << 5),            ///< Option bytes erase command bit
-  OBPG = (1 << 4),            ///< Option bytes program command bit
-  MER = (1 << 2),             ///< Main flash mass erase for bank0 command bit
-  PER = (1 << 1),             ///< Main flash page erase for bank0 command bit
-  PG = (1 << 0),              ///< Main flash program for bank0 command bit
+  ENDIE = (1u << 12),         ///< End of operation interrupt enable bit
+  ERRIE = (1u << 10),         ///< Error interrupt enable bit
+  OBWEN = (1u << 9),          ///< Option byte erase/program enable bit
+  LK = (1u << 7),             ///< FMC_CTL0 lock bit
+  START = (1u << 6),          ///< Send erase command to FMC bit
+  OBER = (1u << 5),           ///< Option bytes erase command bit
+  OBPG = (1u << 4),           ///< Option bytes program command bit
+  MER = (1u << 2),            ///< Main flash mass erase for bank0 command bit
+  PER = (1u << 1),            ///< Main flash page erase for bank0 command bit
+  PG = (1u << 0),             ///< Main flash program for bank0 command bit
   Reserved_mask = 0xffffe908  ///< All reserved bits
 };
 void HasBitwiseOperators(FMC_regs::CTL0_bits);
@@ -125,7 +125,7 @@ enum class FMC_regs::CTL0_shift : unsigned {
  * Address register 0
  */
 enum class FMC_regs::ADDR0_bits : uint32_t {
-  ADDR_mask = (0xffffffff << 0),  ///< Flash erase/program command address bits
+  ADDR_mask = (0xffffffffu << 0),  ///< Flash erase/program command address bits
 };
 void HasBitwiseOperators(FMC_regs::ADDR0_bits);
 
@@ -142,12 +142,12 @@ enum class FMC_regs::ADDR0_shift : unsigned {
  * Option byte status register
  */
 enum class FMC_regs::OBSTAT_bits : uint32_t {
-  OBERR = (1 << 0),  ///< Option bytes read error bit
-  SPC = (1 << 1),    ///< Option bytes security protection code
+  OBERR = (1u << 0),  ///< Option bytes read error bit
+  SPC = (1u << 1),    ///< Option bytes security protection code
   USER_mask =
-      (0xff << 2),  ///< Store USER of option bytes block after system reset
+      (0xffu << 2),  ///< Store USER of option bytes block after system reset
   DATA_mask =
-      (0xffff
+      (0xffffu
        << 10),  ///< Store DATA[15:0] of option bytes block after system reset
   Reserved_mask = 0xfc000000  ///< All reserved bits
 };
@@ -170,7 +170,7 @@ enum class FMC_regs::OBSTAT_shift : unsigned {
  */
 enum class FMC_regs::WP_bits : uint32_t {
   WP_mask =
-      (0xffffffff
+      (0xffffffffu
        << 0),  ///< Store WP[31:0] of option bytes block after system reset
 };
 void HasBitwiseOperators(FMC_regs::WP_bits);
@@ -188,7 +188,7 @@ enum class FMC_regs::WP_shift : unsigned {
  * Product ID register
  */
 enum class FMC_regs::PID_bits : uint32_t {
-  PID_mask = (0xffffffff << 0),  ///< Product reserved ID code register
+  PID_mask = (0xffffffffu << 0),  ///< Product reserved ID code register
 };
 void HasBitwiseOperators(FMC_regs::PID_bits);
 

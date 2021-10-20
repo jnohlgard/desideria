@@ -12,7 +12,7 @@ namespace deri::mmio {
  * Backup data register 0
  */
 enum class BKP_regs::DATA0_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA0_bits);
 
@@ -29,7 +29,7 @@ enum class BKP_regs::DATA0_shift : unsigned {
  * Backup data register 1
  */
 enum class BKP_regs::DATA1_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA1_bits);
 
@@ -46,7 +46,7 @@ enum class BKP_regs::DATA1_shift : unsigned {
  * Backup data register 2
  */
 enum class BKP_regs::DATA2_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA2_bits);
 
@@ -63,7 +63,7 @@ enum class BKP_regs::DATA2_shift : unsigned {
  * Backup data register 3
  */
 enum class BKP_regs::DATA3_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA3_bits);
 
@@ -80,7 +80,7 @@ enum class BKP_regs::DATA3_shift : unsigned {
  * Backup data register 4
  */
 enum class BKP_regs::DATA4_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA4_bits);
 
@@ -97,7 +97,7 @@ enum class BKP_regs::DATA4_shift : unsigned {
  * Backup data register 5
  */
 enum class BKP_regs::DATA5_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA5_bits);
 
@@ -114,7 +114,7 @@ enum class BKP_regs::DATA5_shift : unsigned {
  * Backup data register 6
  */
 enum class BKP_regs::DATA6_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA6_bits);
 
@@ -131,7 +131,7 @@ enum class BKP_regs::DATA6_shift : unsigned {
  * Backup data register 7
  */
 enum class BKP_regs::DATA7_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA7_bits);
 
@@ -148,7 +148,7 @@ enum class BKP_regs::DATA7_shift : unsigned {
  * Backup data register 8
  */
 enum class BKP_regs::DATA8_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA8_bits);
 
@@ -165,7 +165,7 @@ enum class BKP_regs::DATA8_shift : unsigned {
  * Backup data register 9
  */
 enum class BKP_regs::DATA9_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA9_bits);
 
@@ -182,11 +182,11 @@ enum class BKP_regs::DATA9_shift : unsigned {
  * RTC signal output control register
  */
 enum class BKP_regs::OCTL_bits : uint16_t {
-  ROSEL = (1 << 9),         ///< RTC output selection
-  ASOEN = (1 << 8),         ///< RTC alarm or second signal output enable
-  COEN = (1 << 7),          ///< RTC clock calibration output enable
-  RCCV_mask = (0x7f << 0),  ///< RTC clock calibration value
-  Reserved_mask = 0xfc00    ///< All reserved bits
+  ROSEL = (1u << 9),         ///< RTC output selection
+  ASOEN = (1u << 8),         ///< RTC alarm or second signal output enable
+  COEN = (1u << 7),          ///< RTC clock calibration output enable
+  RCCV_mask = (0x7fu << 0),  ///< RTC clock calibration value
+  Reserved_mask = 0xfc00     ///< All reserved bits
 };
 void HasBitwiseOperators(BKP_regs::OCTL_bits);
 
@@ -206,8 +206,8 @@ enum class BKP_regs::OCTL_shift : unsigned {
  * Tamper pin control register
  */
 enum class BKP_regs::TPCTL_bits : uint16_t {
-  TPAL = (1 << 1),        ///< TAMPER pin active level
-  TPEN = (1 << 0),        ///< TAMPER detection enable
+  TPAL = (1u << 1),       ///< TAMPER pin active level
+  TPEN = (1u << 0),       ///< TAMPER detection enable
   Reserved_mask = 0xfffc  ///< All reserved bits
 };
 void HasBitwiseOperators(BKP_regs::TPCTL_bits);
@@ -226,11 +226,11 @@ enum class BKP_regs::TPCTL_shift : unsigned {
  * Tamper control and status register
  */
 enum class BKP_regs::TPCS_bits : uint16_t {
-  TIF = (1 << 9),         ///< Tamper interrupt flag
-  TEF = (1 << 8),         ///< Tamper event flag
-  TPIE = (1 << 2),        ///< Tamper interrupt enable
-  TIR = (1 << 1),         ///< Tamper interrupt reset
-  TER = (1 << 0),         ///< Tamper event reset
+  TIF = (1u << 9),        ///< Tamper interrupt flag
+  TEF = (1u << 8),        ///< Tamper event flag
+  TPIE = (1u << 2),       ///< Tamper interrupt enable
+  TIR = (1u << 1),        ///< Tamper interrupt reset
+  TER = (1u << 0),        ///< Tamper event reset
   Reserved_mask = 0xfcf8  ///< All reserved bits
 };
 void HasBitwiseOperators(BKP_regs::TPCS_bits);
@@ -252,7 +252,7 @@ enum class BKP_regs::TPCS_shift : unsigned {
  * Backup data register 10
  */
 enum class BKP_regs::DATA10_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA10_bits);
 
@@ -269,7 +269,7 @@ enum class BKP_regs::DATA10_shift : unsigned {
  * Backup data register 11
  */
 enum class BKP_regs::DATA11_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA11_bits);
 
@@ -286,7 +286,7 @@ enum class BKP_regs::DATA11_shift : unsigned {
  * Backup data register 12
  */
 enum class BKP_regs::DATA12_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA12_bits);
 
@@ -303,7 +303,7 @@ enum class BKP_regs::DATA12_shift : unsigned {
  * Backup data register 13
  */
 enum class BKP_regs::DATA13_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA13_bits);
 
@@ -320,7 +320,7 @@ enum class BKP_regs::DATA13_shift : unsigned {
  * Backup data register 14
  */
 enum class BKP_regs::DATA14_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA14_bits);
 
@@ -337,7 +337,7 @@ enum class BKP_regs::DATA14_shift : unsigned {
  * Backup data register 15
  */
 enum class BKP_regs::DATA15_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA15_bits);
 
@@ -354,7 +354,7 @@ enum class BKP_regs::DATA15_shift : unsigned {
  * Backup data register 16
  */
 enum class BKP_regs::DATA16_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA16_bits);
 
@@ -371,7 +371,7 @@ enum class BKP_regs::DATA16_shift : unsigned {
  * Backup data register 17
  */
 enum class BKP_regs::DATA17_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA17_bits);
 
@@ -388,7 +388,7 @@ enum class BKP_regs::DATA17_shift : unsigned {
  * Backup data register 18
  */
 enum class BKP_regs::DATA18_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA18_bits);
 
@@ -405,7 +405,7 @@ enum class BKP_regs::DATA18_shift : unsigned {
  * Backup data register 19
  */
 enum class BKP_regs::DATA19_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA19_bits);
 
@@ -422,7 +422,7 @@ enum class BKP_regs::DATA19_shift : unsigned {
  * Backup data register 20
  */
 enum class BKP_regs::DATA20_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA20_bits);
 
@@ -439,7 +439,7 @@ enum class BKP_regs::DATA20_shift : unsigned {
  * Backup data register 21
  */
 enum class BKP_regs::DATA21_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA21_bits);
 
@@ -456,7 +456,7 @@ enum class BKP_regs::DATA21_shift : unsigned {
  * Backup data register 22
  */
 enum class BKP_regs::DATA22_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA22_bits);
 
@@ -473,7 +473,7 @@ enum class BKP_regs::DATA22_shift : unsigned {
  * Backup data register 23
  */
 enum class BKP_regs::DATA23_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA23_bits);
 
@@ -490,7 +490,7 @@ enum class BKP_regs::DATA23_shift : unsigned {
  * Backup data register 24
  */
 enum class BKP_regs::DATA24_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA24_bits);
 
@@ -507,7 +507,7 @@ enum class BKP_regs::DATA24_shift : unsigned {
  * Backup data register 25
  */
 enum class BKP_regs::DATA25_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA25_bits);
 
@@ -524,7 +524,7 @@ enum class BKP_regs::DATA25_shift : unsigned {
  * Backup data register 26
  */
 enum class BKP_regs::DATA26_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA26_bits);
 
@@ -541,7 +541,7 @@ enum class BKP_regs::DATA26_shift : unsigned {
  * Backup data register 27
  */
 enum class BKP_regs::DATA27_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA27_bits);
 
@@ -558,7 +558,7 @@ enum class BKP_regs::DATA27_shift : unsigned {
  * Backup data register 28
  */
 enum class BKP_regs::DATA28_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA28_bits);
 
@@ -575,7 +575,7 @@ enum class BKP_regs::DATA28_shift : unsigned {
  * Backup data register 29
  */
 enum class BKP_regs::DATA29_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA29_bits);
 
@@ -592,7 +592,7 @@ enum class BKP_regs::DATA29_shift : unsigned {
  * Backup data register 30
  */
 enum class BKP_regs::DATA30_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA30_bits);
 
@@ -609,7 +609,7 @@ enum class BKP_regs::DATA30_shift : unsigned {
  * Backup data register 31
  */
 enum class BKP_regs::DATA31_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA31_bits);
 
@@ -626,7 +626,7 @@ enum class BKP_regs::DATA31_shift : unsigned {
  * Backup data register 32
  */
 enum class BKP_regs::DATA32_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA32_bits);
 
@@ -643,7 +643,7 @@ enum class BKP_regs::DATA32_shift : unsigned {
  * Backup data register 33
  */
 enum class BKP_regs::DATA33_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA33_bits);
 
@@ -660,7 +660,7 @@ enum class BKP_regs::DATA33_shift : unsigned {
  * Backup data register 34
  */
 enum class BKP_regs::DATA34_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA34_bits);
 
@@ -677,7 +677,7 @@ enum class BKP_regs::DATA34_shift : unsigned {
  * Backup data register 35
  */
 enum class BKP_regs::DATA35_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA35_bits);
 
@@ -694,7 +694,7 @@ enum class BKP_regs::DATA35_shift : unsigned {
  * Backup data register 36
  */
 enum class BKP_regs::DATA36_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA36_bits);
 
@@ -711,7 +711,7 @@ enum class BKP_regs::DATA36_shift : unsigned {
  * Backup data register 37
  */
 enum class BKP_regs::DATA37_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA37_bits);
 
@@ -728,7 +728,7 @@ enum class BKP_regs::DATA37_shift : unsigned {
  * Backup data register 38
  */
 enum class BKP_regs::DATA38_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA38_bits);
 
@@ -745,7 +745,7 @@ enum class BKP_regs::DATA38_shift : unsigned {
  * Backup data register 39
  */
 enum class BKP_regs::DATA39_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA39_bits);
 
@@ -762,7 +762,7 @@ enum class BKP_regs::DATA39_shift : unsigned {
  * Backup data register 40
  */
 enum class BKP_regs::DATA40_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA40_bits);
 
@@ -779,7 +779,7 @@ enum class BKP_regs::DATA40_shift : unsigned {
  * Backup data register 41
  */
 enum class BKP_regs::DATA41_bits : uint16_t {
-  DATA_mask = (0xffff << 0),  ///< Backup data
+  DATA_mask = (0xffffu << 0),  ///< Backup data
 };
 void HasBitwiseOperators(BKP_regs::DATA41_bits);
 

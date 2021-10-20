@@ -79,6 +79,11 @@ def reg_enum(name):
     return f'{strip_array_dimensions(name)}_bits'
 
 
+def reg_shifts(name):
+    """Provide the enum type name for the bit offsets of the given register"""
+    return f'{strip_array_dimensions(name)}_shift'
+
+
 def reg_type_name(periph_type_names):
     """Provide the full type name for the given nested struct names"""
     return "::".join([periph_struct(name) for name in periph_type_names])
@@ -153,6 +158,17 @@ def write_enum_definitions(output, periph, periph_type_names, indent=''):
         output.write(f'{indent}}};\n')
         output.write(f'{indent}void HasBitwiseOperators({enum_type_name});\n\n')
 
+        enum_shift_type_name = f'{reg_type_name(periph_type_names)}::{reg_shifts(reg.name)}'
+        output.write(f'{indent}/**\n')
+        output.write(f'{indent} * Bit shifts for {"_".join(periph_type_names)} {reg.name}\n')
+        output.write(f'{indent} */\n')
+        output.write(f'{indent}enum class {enum_shift_type_name} : unsigned {{\n')
+        indent = increase_indent(indent)
+        for field in reg.fields:
+            output.write(f'{indent}{field.name} = {field.bitOffset:>2},\n')
+        indent = decrease_indent(indent)
+        output.write(f'{indent}}};\n\n')
+
 
 def write_field_accessors(output, enum_type_name, field, indent=''):
     underlying_type = f'uint{field.parent.size}_t'
@@ -221,6 +237,9 @@ def write_periph_class(output, periph, name=None, indent=''):
     reserved_count = 0
     for reg in sorted(periph.registers, key=lambda obj: obj.addressOffset):
         write_enum_declaration(output, reg, indent)
+
+    for reg in sorted(periph.registers, key=lambda obj: obj.addressOffset):
+        write_shift_declaration(output, reg, indent)
     output.write('\n')
     for reg in sorted(periph.registers + periph.clusters, key=lambda obj: obj.addressOffset):
         constness = 'const ' if reg.access == reg.access.read_only else ''
@@ -252,7 +271,11 @@ def write_regs_declaration(output, type_name):
 
 def write_enum_declaration(output, reg, indent=''):
     """Generate a declaration for a register"""
-    output.write(f'{indent}enum class {reg.name}_bits : uint{reg.size}_t;\n')
+    output.write(f'{indent}enum class {reg_enum(reg.name)} : uint{reg.size}_t;\n')
+
+def write_shift_declaration(output, reg, indent=''):
+    """Generate a declaration for a register bit shift enum"""
+    output.write(f'{indent}enum class {reg_shifts(reg.name)} : unsigned;\n')
 
 
 def write_struct_offsetof_static_asserts(output, periph, periph_type_names):

@@ -12,8 +12,8 @@ namespace deri::mmio {
  * Control register
  */
 enum class WWDGT_regs::CTL_bits : uint32_t {
-  WDGTEN = (1 << 7),          ///< Activation bit
-  CNT_mask = (0x7f << 0),     ///< 7-bit counter
+  WDGTEN = (1u << 7),         ///< Activation bit
+  CNT_mask = (0x7fu << 0),    ///< 7-bit counter
   Reserved_mask = 0xffffff00  ///< All reserved bits
 };
 void HasBitwiseOperators(WWDGT_regs::CTL_bits);
@@ -32,9 +32,9 @@ enum class WWDGT_regs::CTL_shift : unsigned {
  * Configuration register
  */
 enum class WWDGT_regs::CFG_bits : uint32_t {
-  EWIE = (1 << 9),            ///< Early wakeup interrupt
-  PSC_mask = (0x3 << 7),      ///< Prescaler
-  WIN_mask = (0x7f << 0),     ///< 7-bit window value
+  EWIE = (1u << 9),           ///< Early wakeup interrupt
+  PSC_mask = (0x3u << 7),     ///< Prescaler
+  WIN_mask = (0x7fu << 0),    ///< 7-bit window value
   Reserved_mask = 0xfffffc00  ///< All reserved bits
 };
 void HasBitwiseOperators(WWDGT_regs::CFG_bits);
@@ -54,7 +54,7 @@ enum class WWDGT_regs::CFG_shift : unsigned {
  * Status register
  */
 enum class WWDGT_regs::STAT_bits : uint32_t {
-  EWIF = (1 << 0),            ///< Early wakeup interrupt flag
+  EWIF = (1u << 0),           ///< Early wakeup interrupt flag
   Reserved_mask = 0xfffffffe  ///< All reserved bits
 };
 void HasBitwiseOperators(WWDGT_regs::STAT_bits);

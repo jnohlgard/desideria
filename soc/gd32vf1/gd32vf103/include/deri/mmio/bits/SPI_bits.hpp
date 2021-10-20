@@ -12,20 +12,20 @@ namespace deri::mmio {
  * control register 0
  */
 enum class SPI_regs::CTL0_bits : uint16_t {
-  BDEN = (1 << 15),       ///< Bidirectional enable
-  BDOEN = (1 << 14),      ///< Bidirectional Transmit output enable
-  CRCEN = (1 << 13),      ///< CRC Calculation Enable
-  CRCNT = (1 << 12),      ///< CRC Next Transfer
-  FF16 = (1 << 11),       ///< Data frame format
-  RO = (1 << 10),         ///< Receive only
-  SWNSSEN = (1 << 9),     ///< NSS Software Mode Selection
-  SWNSS = (1 << 8),       ///< NSS Pin Selection In NSS Software Mode
-  LF = (1 << 7),          ///< LSB First Mode
-  SPIEN = (1 << 6),       ///< SPI enable
-  PSC_mask = (0x7 << 3),  ///< Master Clock Prescaler Selection
-  MSTMOD = (1 << 2),      ///< Master Mode Enable
-  CKPL = (1 << 1),        ///< Clock polarity Selection
-  CKPH = (1 << 0),        ///< Clock Phase Selection
+  BDEN = (1u << 15),       ///< Bidirectional enable
+  BDOEN = (1u << 14),      ///< Bidirectional Transmit output enable
+  CRCEN = (1u << 13),      ///< CRC Calculation Enable
+  CRCNT = (1u << 12),      ///< CRC Next Transfer
+  FF16 = (1u << 11),       ///< Data frame format
+  RO = (1u << 10),         ///< Receive only
+  SWNSSEN = (1u << 9),     ///< NSS Software Mode Selection
+  SWNSS = (1u << 8),       ///< NSS Pin Selection In NSS Software Mode
+  LF = (1u << 7),          ///< LSB First Mode
+  SPIEN = (1u << 6),       ///< SPI enable
+  PSC_mask = (0x7u << 3),  ///< Master Clock Prescaler Selection
+  MSTMOD = (1u << 2),      ///< Master Mode Enable
+  CKPL = (1u << 1),        ///< Clock polarity Selection
+  CKPH = (1u << 0),        ///< Clock Phase Selection
 };
 void HasBitwiseOperators(SPI_regs::CTL0_bits);
 
@@ -55,14 +55,14 @@ enum class SPI_regs::CTL0_shift : unsigned {
  * control register 1
  */
 enum class SPI_regs::CTL1_bits : uint16_t {
-  TBEIE = (1 << 7),       ///< Tx buffer empty interrupt enable
-  RBNEIE = (1 << 6),      ///< RX buffer not empty interrupt enable
-  ERRIE = (1 << 5),       ///< Error interrupt enable
-  TMOD = (1 << 4),        ///< SPI TI mode enable
-  NSSP = (1 << 3),        ///< SPI NSS pulse mode enable
-  NSSDRV = (1 << 2),      ///< Drive NSS Output
-  DMATEN = (1 << 1),      ///< Transmit Buffer DMA Enable
-  DMAREN = (1 << 0),      ///< Rx buffer DMA enable
+  TBEIE = (1u << 7),      ///< Tx buffer empty interrupt enable
+  RBNEIE = (1u << 6),     ///< RX buffer not empty interrupt enable
+  ERRIE = (1u << 5),      ///< Error interrupt enable
+  TMOD = (1u << 4),       ///< SPI TI mode enable
+  NSSP = (1u << 3),       ///< SPI NSS pulse mode enable
+  NSSDRV = (1u << 2),     ///< Drive NSS Output
+  DMATEN = (1u << 1),     ///< Transmit Buffer DMA Enable
+  DMAREN = (1u << 0),     ///< Rx buffer DMA enable
   Reserved_mask = 0xff00  ///< All reserved bits
 };
 void HasBitwiseOperators(SPI_regs::CTL1_bits);
@@ -87,15 +87,15 @@ enum class SPI_regs::CTL1_shift : unsigned {
  * status register
  */
 enum class SPI_regs::STAT_bits : uint16_t {
-  FERR = (1 << 8),        ///< Format error
-  TRANS = (1 << 7),       ///< Transmitting On-going Bit
-  RXORERR = (1 << 6),     ///< Reception Overrun Error Bit
-  CONFERR = (1 << 5),     ///< SPI Configuration error
-  CRCERR = (1 << 4),      ///< SPI CRC Error Bit
-  TXURERR = (1 << 3),     ///< Transmission underrun error bit
-  I2SCH = (1 << 2),       ///< I2S channel side
-  TBE = (1 << 1),         ///< Transmit Buffer Empty
-  RBNE = (1 << 0),        ///< Receive Buffer Not Empty
+  FERR = (1u << 8),       ///< Format error
+  TRANS = (1u << 7),      ///< Transmitting On-going Bit
+  RXORERR = (1u << 6),    ///< Reception Overrun Error Bit
+  CONFERR = (1u << 5),    ///< SPI Configuration error
+  CRCERR = (1u << 4),     ///< SPI CRC Error Bit
+  TXURERR = (1u << 3),    ///< Transmission underrun error bit
+  I2SCH = (1u << 2),      ///< I2S channel side
+  TBE = (1u << 1),        ///< Transmit Buffer Empty
+  RBNE = (1u << 0),       ///< Receive Buffer Not Empty
   Reserved_mask = 0xfe00  ///< All reserved bits
 };
 void HasBitwiseOperators(SPI_regs::STAT_bits);
@@ -121,7 +121,7 @@ enum class SPI_regs::STAT_shift : unsigned {
  * data register
  */
 enum class SPI_regs::DATA_bits : uint16_t {
-  SPI_DATA_mask = (0xffff << 0),  ///< Data transfer register
+  SPI_DATA_mask = (0xffffu << 0),  ///< Data transfer register
 };
 void HasBitwiseOperators(SPI_regs::DATA_bits);
 
@@ -138,7 +138,7 @@ enum class SPI_regs::DATA_shift : unsigned {
  * CRC polynomial register
  */
 enum class SPI_regs::CRCPOLY_bits : uint16_t {
-  CRCPOLY_mask = (0xffff << 0),  ///< CRC polynomial value
+  CRCPOLY_mask = (0xffffu << 0),  ///< CRC polynomial value
 };
 void HasBitwiseOperators(SPI_regs::CRCPOLY_bits);
 
@@ -155,7 +155,7 @@ enum class SPI_regs::CRCPOLY_shift : unsigned {
  * RX CRC register
  */
 enum class SPI_regs::RCRC_bits : uint16_t {
-  RCRC_mask = (0xffff << 0),  ///< RX CRC value
+  RCRC_mask = (0xffffu << 0),  ///< RX CRC value
 };
 void HasBitwiseOperators(SPI_regs::RCRC_bits);
 
@@ -172,7 +172,7 @@ enum class SPI_regs::RCRC_shift : unsigned {
  * TX CRC register
  */
 enum class SPI_regs::TCRC_bits : uint16_t {
-  TCRC_mask = (0xffff << 0),  ///< Tx CRC value
+  TCRC_mask = (0xffffu << 0),  ///< Tx CRC value
 };
 void HasBitwiseOperators(SPI_regs::TCRC_bits);
 
@@ -189,14 +189,14 @@ enum class SPI_regs::TCRC_shift : unsigned {
  * I2S control register
  */
 enum class SPI_regs::I2SCTL_bits : uint16_t {
-  I2SSEL = (1 << 11),          ///< I2S mode selection
-  I2SEN = (1 << 10),           ///< I2S Enable
-  I2SOPMOD_mask = (0x3 << 8),  ///< I2S operation mode
-  PCMSMOD = (1 << 7),          ///< PCM frame synchronization mode
-  I2SSTD_mask = (0x3 << 4),    ///< I2S standard selection
-  CKPL = (1 << 3),             ///< Idle state clock polarity
-  DTLEN_mask = (0x3 << 1),     ///< Data length
-  CHLEN = (1 << 0),       ///< Channel length (number of bits per audio channel)
+  I2SSEL = (1u << 11),          ///< I2S mode selection
+  I2SEN = (1u << 10),           ///< I2S Enable
+  I2SOPMOD_mask = (0x3u << 8),  ///< I2S operation mode
+  PCMSMOD = (1u << 7),          ///< PCM frame synchronization mode
+  I2SSTD_mask = (0x3u << 4),    ///< I2S standard selection
+  CKPL = (1u << 3),             ///< Idle state clock polarity
+  DTLEN_mask = (0x3u << 1),     ///< Data length
+  CHLEN = (1u << 0),      ///< Channel length (number of bits per audio channel)
   Reserved_mask = 0xf040  ///< All reserved bits
 };
 void HasBitwiseOperators(SPI_regs::I2SCTL_bits);
@@ -221,10 +221,10 @@ enum class SPI_regs::I2SCTL_shift : unsigned {
  * I2S prescaler register
  */
 enum class SPI_regs::I2SPSC_bits : uint16_t {
-  MCKOEN = (1 << 9),       ///< I2S_MCK output enable
-  OF = (1 << 8),           ///< Odd factor for the prescaler
-  DIV_mask = (0xff << 0),  ///< Dividing factor for the prescaler
-  Reserved_mask = 0xfc00   ///< All reserved bits
+  MCKOEN = (1u << 9),       ///< I2S_MCK output enable
+  OF = (1u << 8),           ///< Odd factor for the prescaler
+  DIV_mask = (0xffu << 0),  ///< Dividing factor for the prescaler
+  Reserved_mask = 0xfc00    ///< All reserved bits
 };
 void HasBitwiseOperators(SPI_regs::I2SPSC_bits);
 

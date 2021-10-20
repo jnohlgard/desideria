@@ -12,11 +12,11 @@ namespace deri::mmio {
  * status register
  */
 enum class ADC_regs::STAT_bits : uint32_t {
-  STRC = (1 << 4),            ///< Start flag of regular channel group
-  STIC = (1 << 3),            ///< Start flag of inserted channel group
-  EOIC = (1 << 2),            ///< End of inserted group conversion flag
-  EOC = (1 << 1),             ///< End of group conversion flag
-  WDE = (1 << 0),             ///< Analog watchdog event flag
+  STRC = (1u << 4),           ///< Start flag of regular channel group
+  STIC = (1u << 3),           ///< Start flag of inserted channel group
+  EOIC = (1u << 2),           ///< End of inserted group conversion flag
+  EOC = (1u << 1),            ///< End of group conversion flag
+  WDE = (1u << 0),            ///< Analog watchdog event flag
   Reserved_mask = 0xffffffe0  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::STAT_bits);
@@ -38,21 +38,21 @@ enum class ADC_regs::STAT_shift : unsigned {
  * control register 0
  */
 enum class ADC_regs::CTL0_bits : uint32_t {
-  RWDEN = (1 << 23),          ///< Regular channel analog watchdog enable
-  IWDEN = (1 << 22),          ///< Inserted channel analog watchdog enable
-  SYNCM_mask = (0xf << 16),   ///< sync mode selection
-  DISNUM_mask = (0x7 << 13),  ///< Number of conversions in discontinuous mode
-  DISIC = (1 << 12),          ///< Discontinuous mode on inserted channels
-  DISRC = (1 << 11),          ///< Discontinuous mode on regular channels
-  ICA = (1 << 10),            ///< Inserted channel group convert automatically
-  WDSC = (1 << 9),    ///< When in scan mode, analog watchdog is effective on a
-                      ///< single channel
-  SM = (1 << 8),      ///< Scan mode
-  EOICIE = (1 << 7),  ///< Interrupt enable for EOIC
-  WDEIE = (1 << 6),   ///< Interrupt enable for WDE
-  EOCIE = (1 << 5),   ///< Interrupt enable for EOC
-  WDCHSEL_mask = (0x1f << 0),  ///< Analog watchdog channel select
-  Reserved_mask = 0xff300000   ///< All reserved bits
+  RWDEN = (1u << 23),          ///< Regular channel analog watchdog enable
+  IWDEN = (1u << 22),          ///< Inserted channel analog watchdog enable
+  SYNCM_mask = (0xfu << 16),   ///< sync mode selection
+  DISNUM_mask = (0x7u << 13),  ///< Number of conversions in discontinuous mode
+  DISIC = (1u << 12),          ///< Discontinuous mode on inserted channels
+  DISRC = (1u << 11),          ///< Discontinuous mode on regular channels
+  ICA = (1u << 10),            ///< Inserted channel group convert automatically
+  WDSC = (1u << 9),    ///< When in scan mode, analog watchdog is effective on a
+                       ///< single channel
+  SM = (1u << 8),      ///< Scan mode
+  EOICIE = (1u << 7),  ///< Interrupt enable for EOIC
+  WDEIE = (1u << 6),   ///< Interrupt enable for WDE
+  EOCIE = (1u << 5),   ///< Interrupt enable for EOC
+  WDCHSEL_mask = (0x1fu << 0),  ///< Analog watchdog channel select
+  Reserved_mask = 0xff300000    ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::CTL0_bits);
 
@@ -81,19 +81,19 @@ enum class ADC_regs::CTL0_shift : unsigned {
  * control register 1
  */
 enum class ADC_regs::CTL1_bits : uint32_t {
-  TSVREN = (1 << 23),         ///< Channel 16 and 17 enable of ADC0
-  SWRCST = (1 << 22),         ///< Start on regular channel
-  SWICST = (1 << 21),         ///< Start on inserted channel
-  ETERC = (1 << 20),          ///< External trigger enable for regular channel
-  ETSRC_mask = (0x7 << 17),   ///< External trigger select for regular channel
-  ETEIC = (1 << 15),          ///< External trigger select for inserted channel
-  ETSIC_mask = (0x7 << 12),   ///< External trigger select for inserted channel
-  DAL = (1 << 11),            ///< Data alignment
-  DMA = (1 << 8),             ///< DMA request enable
-  RSTCLB = (1 << 3),          ///< Reset calibration
-  CLB = (1 << 2),             ///< ADC calibration
-  CTN = (1 << 1),             ///< Continuous mode
-  ADCON = (1 << 0),           ///< ADC on
+  TSVREN = (1u << 23),        ///< Channel 16 and 17 enable of ADC0
+  SWRCST = (1u << 22),        ///< Start on regular channel
+  SWICST = (1u << 21),        ///< Start on inserted channel
+  ETERC = (1u << 20),         ///< External trigger enable for regular channel
+  ETSRC_mask = (0x7u << 17),  ///< External trigger select for regular channel
+  ETEIC = (1u << 15),         ///< External trigger select for inserted channel
+  ETSIC_mask = (0x7u << 12),  ///< External trigger select for inserted channel
+  DAL = (1u << 11),           ///< Data alignment
+  DMA = (1u << 8),            ///< DMA request enable
+  RSTCLB = (1u << 3),         ///< Reset calibration
+  CLB = (1u << 2),            ///< ADC calibration
+  CTN = (1u << 1),            ///< Continuous mode
+  ADCON = (1u << 0),          ///< ADC on
   Reserved_mask = 0xff0106f0  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::CTL1_bits);
@@ -123,14 +123,14 @@ enum class ADC_regs::CTL1_shift : unsigned {
  * Sample time register 0
  */
 enum class ADC_regs::SAMPT0_bits : uint32_t {
-  SPT10_mask = (0x7 << 0),    ///< Channel 10 sample time selection
-  SPT11_mask = (0x7 << 3),    ///< Channel 11 sample time selection
-  SPT12_mask = (0x7 << 6),    ///< Channel 12 sample time selection
-  SPT13_mask = (0x7 << 9),    ///< Channel 13 sample time selection
-  SPT14_mask = (0x7 << 12),   ///< Channel 14 sample time selection
-  SPT15_mask = (0x7 << 15),   ///< Channel 15 sample time selection
-  SPT16_mask = (0x7 << 18),   ///< Channel 16 sample time selection
-  SPT17_mask = (0x7 << 21),   ///< Channel 17 sample time selection
+  SPT10_mask = (0x7u << 0),   ///< Channel 10 sample time selection
+  SPT11_mask = (0x7u << 3),   ///< Channel 11 sample time selection
+  SPT12_mask = (0x7u << 6),   ///< Channel 12 sample time selection
+  SPT13_mask = (0x7u << 9),   ///< Channel 13 sample time selection
+  SPT14_mask = (0x7u << 12),  ///< Channel 14 sample time selection
+  SPT15_mask = (0x7u << 15),  ///< Channel 15 sample time selection
+  SPT16_mask = (0x7u << 18),  ///< Channel 16 sample time selection
+  SPT17_mask = (0x7u << 21),  ///< Channel 17 sample time selection
   Reserved_mask = 0xff000000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::SAMPT0_bits);
@@ -155,16 +155,16 @@ enum class ADC_regs::SAMPT0_shift : unsigned {
  * Sample time register 1
  */
 enum class ADC_regs::SAMPT1_bits : uint32_t {
-  SPT0_mask = (0x7 << 0),     ///< Channel 0 sample time selection
-  SPT1_mask = (0x7 << 3),     ///< Channel 1 sample time selection
-  SPT2_mask = (0x7 << 6),     ///< Channel 2 sample time selection
-  SPT3_mask = (0x7 << 9),     ///< Channel 3 sample time selection
-  SPT4_mask = (0x7 << 12),    ///< Channel 4 sample time selection
-  SPT5_mask = (0x7 << 15),    ///< Channel 5 sample time selection
-  SPT6_mask = (0x7 << 18),    ///< Channel 6 sample time selection
-  SPT7_mask = (0x7 << 21),    ///< Channel 7 sample time selection
-  SPT8_mask = (0x7 << 24),    ///< Channel 8 sample time selection
-  SPT9_mask = (0x7 << 27),    ///< Channel 9 sample time selection
+  SPT0_mask = (0x7u << 0),    ///< Channel 0 sample time selection
+  SPT1_mask = (0x7u << 3),    ///< Channel 1 sample time selection
+  SPT2_mask = (0x7u << 6),    ///< Channel 2 sample time selection
+  SPT3_mask = (0x7u << 9),    ///< Channel 3 sample time selection
+  SPT4_mask = (0x7u << 12),   ///< Channel 4 sample time selection
+  SPT5_mask = (0x7u << 15),   ///< Channel 5 sample time selection
+  SPT6_mask = (0x7u << 18),   ///< Channel 6 sample time selection
+  SPT7_mask = (0x7u << 21),   ///< Channel 7 sample time selection
+  SPT8_mask = (0x7u << 24),   ///< Channel 8 sample time selection
+  SPT9_mask = (0x7u << 27),   ///< Channel 9 sample time selection
   Reserved_mask = 0xc0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::SAMPT1_bits);
@@ -191,7 +191,7 @@ enum class ADC_regs::SAMPT1_shift : unsigned {
  * Inserted channel data offset register 0
  */
 enum class ADC_regs::IOFF0_bits : uint32_t {
-  IOFF_mask = (0xfff << 0),   ///< Data offset for inserted channel 0
+  IOFF_mask = (0xfffu << 0),  ///< Data offset for inserted channel 0
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IOFF0_bits);
@@ -209,7 +209,7 @@ enum class ADC_regs::IOFF0_shift : unsigned {
  * Inserted channel data offset register 1
  */
 enum class ADC_regs::IOFF1_bits : uint32_t {
-  IOFF_mask = (0xfff << 0),   ///< Data offset for inserted channel 1
+  IOFF_mask = (0xfffu << 0),  ///< Data offset for inserted channel 1
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IOFF1_bits);
@@ -227,7 +227,7 @@ enum class ADC_regs::IOFF1_shift : unsigned {
  * Inserted channel data offset register 2
  */
 enum class ADC_regs::IOFF2_bits : uint32_t {
-  IOFF_mask = (0xfff << 0),   ///< Data offset for inserted channel 2
+  IOFF_mask = (0xfffu << 0),  ///< Data offset for inserted channel 2
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IOFF2_bits);
@@ -245,7 +245,7 @@ enum class ADC_regs::IOFF2_shift : unsigned {
  * Inserted channel data offset register 3
  */
 enum class ADC_regs::IOFF3_bits : uint32_t {
-  IOFF_mask = (0xfff << 0),   ///< Data offset for inserted channel 3
+  IOFF_mask = (0xfffu << 0),  ///< Data offset for inserted channel 3
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IOFF3_bits);
@@ -263,7 +263,7 @@ enum class ADC_regs::IOFF3_shift : unsigned {
  * watchdog higher threshold register
  */
 enum class ADC_regs::WDHT_bits : uint32_t {
-  WDHT_mask = (0xfff << 0),   ///< Analog watchdog higher threshold
+  WDHT_mask = (0xfffu << 0),  ///< Analog watchdog higher threshold
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::WDHT_bits);
@@ -281,7 +281,7 @@ enum class ADC_regs::WDHT_shift : unsigned {
  * watchdog lower threshold register
  */
 enum class ADC_regs::WDLT_bits : uint32_t {
-  WDLT_mask = (0xfff << 0),   ///< Analog watchdog lower threshold
+  WDLT_mask = (0xfffu << 0),  ///< Analog watchdog lower threshold
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::WDLT_bits);
@@ -299,12 +299,12 @@ enum class ADC_regs::WDLT_shift : unsigned {
  * regular sequence register 0
  */
 enum class ADC_regs::RSQ0_bits : uint32_t {
-  RL_mask = (0xf << 20),      ///< Regular channel group length
-  RSQ15_mask = (0x1f << 15),  ///< 16th conversion in regular sequence
-  RSQ14_mask = (0x1f << 10),  ///< 15th conversion in regular sequence
-  RSQ13_mask = (0x1f << 5),   ///< 14th conversion in regular sequence
-  RSQ12_mask = (0x1f << 0),   ///< 13th conversion in regular sequence
-  Reserved_mask = 0xff000000  ///< All reserved bits
+  RL_mask = (0xfu << 20),      ///< Regular channel group length
+  RSQ15_mask = (0x1fu << 15),  ///< 16th conversion in regular sequence
+  RSQ14_mask = (0x1fu << 10),  ///< 15th conversion in regular sequence
+  RSQ13_mask = (0x1fu << 5),   ///< 14th conversion in regular sequence
+  RSQ12_mask = (0x1fu << 0),   ///< 13th conversion in regular sequence
+  Reserved_mask = 0xff000000   ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::RSQ0_bits);
 
@@ -325,13 +325,13 @@ enum class ADC_regs::RSQ0_shift : unsigned {
  * regular sequence register 1
  */
 enum class ADC_regs::RSQ1_bits : uint32_t {
-  RSQ11_mask = (0x1f << 25),  ///< 12th conversion in regular sequence
-  RSQ10_mask = (0x1f << 20),  ///< 11th conversion in regular sequence
-  RSQ9_mask = (0x1f << 15),   ///< 10th conversion in regular sequence
-  RSQ8_mask = (0x1f << 10),   ///< 9th conversion in regular sequence
-  RSQ7_mask = (0x1f << 5),    ///< 8th conversion in regular sequence
-  RSQ6_mask = (0x1f << 0),    ///< 7th conversion in regular sequence
-  Reserved_mask = 0xc0000000  ///< All reserved bits
+  RSQ11_mask = (0x1fu << 25),  ///< 12th conversion in regular sequence
+  RSQ10_mask = (0x1fu << 20),  ///< 11th conversion in regular sequence
+  RSQ9_mask = (0x1fu << 15),   ///< 10th conversion in regular sequence
+  RSQ8_mask = (0x1fu << 10),   ///< 9th conversion in regular sequence
+  RSQ7_mask = (0x1fu << 5),    ///< 8th conversion in regular sequence
+  RSQ6_mask = (0x1fu << 0),    ///< 7th conversion in regular sequence
+  Reserved_mask = 0xc0000000   ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::RSQ1_bits);
 
@@ -353,12 +353,12 @@ enum class ADC_regs::RSQ1_shift : unsigned {
  * regular sequence register 2
  */
 enum class ADC_regs::RSQ2_bits : uint32_t {
-  RSQ5_mask = (0x1f << 25),   ///< 6th conversion in regular sequence
-  RSQ4_mask = (0x1f << 20),   ///< 5th conversion in regular sequence
-  RSQ3_mask = (0x1f << 15),   ///< 4th conversion in regular sequence
-  RSQ2_mask = (0x1f << 10),   ///< 3rd conversion in regular sequence
-  RSQ1_mask = (0x1f << 5),    ///< 2nd conversion in regular sequence
-  RSQ0_mask = (0x1f << 0),    ///< 1st conversion in regular sequence
+  RSQ5_mask = (0x1fu << 25),  ///< 6th conversion in regular sequence
+  RSQ4_mask = (0x1fu << 20),  ///< 5th conversion in regular sequence
+  RSQ3_mask = (0x1fu << 15),  ///< 4th conversion in regular sequence
+  RSQ2_mask = (0x1fu << 10),  ///< 3rd conversion in regular sequence
+  RSQ1_mask = (0x1fu << 5),   ///< 2nd conversion in regular sequence
+  RSQ0_mask = (0x1fu << 0),   ///< 1st conversion in regular sequence
   Reserved_mask = 0xc0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::RSQ2_bits);
@@ -381,11 +381,11 @@ enum class ADC_regs::RSQ2_shift : unsigned {
  * Inserted sequence register
  */
 enum class ADC_regs::ISQ_bits : uint32_t {
-  IL_mask = (0x3 << 20),      ///< Inserted channel group length
-  ISQ3_mask = (0x1f << 15),   ///< 4th conversion in inserted sequence
-  ISQ2_mask = (0x1f << 10),   ///< 3rd conversion in inserted sequence
-  ISQ1_mask = (0x1f << 5),    ///< 2nd conversion in inserted sequence
-  ISQ0_mask = (0x1f << 0),    ///< 1st conversion in inserted sequence
+  IL_mask = (0x3u << 20),     ///< Inserted channel group length
+  ISQ3_mask = (0x1fu << 15),  ///< 4th conversion in inserted sequence
+  ISQ2_mask = (0x1fu << 10),  ///< 3rd conversion in inserted sequence
+  ISQ1_mask = (0x1fu << 5),   ///< 2nd conversion in inserted sequence
+  ISQ0_mask = (0x1fu << 0),   ///< 1st conversion in inserted sequence
   Reserved_mask = 0xffc00000  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::ISQ_bits);
@@ -407,8 +407,8 @@ enum class ADC_regs::ISQ_shift : unsigned {
  * Inserted data register 0
  */
 enum class ADC_regs::IDATA0_bits : uint32_t {
-  IDATAn_mask = (0xffff << 0),  ///< Inserted number n conversion data
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IDATAn_mask = (0xffffu << 0),  ///< Inserted number n conversion data
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IDATA0_bits);
 
@@ -425,8 +425,8 @@ enum class ADC_regs::IDATA0_shift : unsigned {
  * Inserted data register 1
  */
 enum class ADC_regs::IDATA1_bits : uint32_t {
-  IDATAn_mask = (0xffff << 0),  ///< Inserted number n conversion data
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IDATAn_mask = (0xffffu << 0),  ///< Inserted number n conversion data
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IDATA1_bits);
 
@@ -443,8 +443,8 @@ enum class ADC_regs::IDATA1_shift : unsigned {
  * Inserted data register 2
  */
 enum class ADC_regs::IDATA2_bits : uint32_t {
-  IDATAn_mask = (0xffff << 0),  ///< Inserted number n conversion data
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IDATAn_mask = (0xffffu << 0),  ///< Inserted number n conversion data
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IDATA2_bits);
 
@@ -461,8 +461,8 @@ enum class ADC_regs::IDATA2_shift : unsigned {
  * Inserted data register 3
  */
 enum class ADC_regs::IDATA3_bits : uint32_t {
-  IDATAn_mask = (0xffff << 0),  ///< Inserted number n conversion data
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IDATAn_mask = (0xffffu << 0),  ///< Inserted number n conversion data
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::IDATA3_bits);
 
@@ -479,8 +479,8 @@ enum class ADC_regs::IDATA3_shift : unsigned {
  * regular data register
  */
 enum class ADC_regs::RDATA_bits : uint32_t {
-  ADC1RDTR_mask = (0xffff << 16),  ///< ADC regular channel data
-  RDATA_mask = (0xffff << 0),      ///< Regular channel data
+  ADC1RDTR_mask = (0xffffu << 16),  ///< ADC regular channel data
+  RDATA_mask = (0xffffu << 0),      ///< Regular channel data
 };
 void HasBitwiseOperators(ADC_regs::RDATA_bits);
 
@@ -498,11 +498,11 @@ enum class ADC_regs::RDATA_shift : unsigned {
  * Oversample control register
  */
 enum class ADC_regs::OVSAMPCTL_bits : uint32_t {
-  DRES_mask = (0x3 << 12),    ///< ADC resolution
-  TOVS = (1 << 9),            ///< Triggered Oversampling
-  OVSS_mask = (0xf << 5),     ///< Oversampling shift
-  OVSR_mask = (0x7 << 2),     ///< Oversampling ratio
-  OVSEN = (1 << 0),           ///< Oversampler Enable
+  DRES_mask = (0x3u << 12),   ///< ADC resolution
+  TOVS = (1u << 9),           ///< Triggered Oversampling
+  OVSS_mask = (0xfu << 5),    ///< Oversampling shift
+  OVSR_mask = (0x7u << 2),    ///< Oversampling ratio
+  OVSEN = (1u << 0),          ///< Oversampler Enable
   Reserved_mask = 0xffffcc02  ///< All reserved bits
 };
 void HasBitwiseOperators(ADC_regs::OVSAMPCTL_bits);

@@ -12,7 +12,7 @@ namespace deri::mmio {
  * Control register
  */
 enum class FWDGT_regs::CTL_bits : uint32_t {
-  CMD_mask = (0xffff << 0),   ///< Key value
+  CMD_mask = (0xffffu << 0),  ///< Key value
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(FWDGT_regs::CTL_bits);
@@ -30,7 +30,7 @@ enum class FWDGT_regs::CTL_shift : unsigned {
  * Prescaler register
  */
 enum class FWDGT_regs::PSC_bits : uint32_t {
-  PSC_mask = (0x7 << 0),      ///< Free watchdog timer prescaler selection
+  PSC_mask = (0x7u << 0),     ///< Free watchdog timer prescaler selection
   Reserved_mask = 0xfffffff8  ///< All reserved bits
 };
 void HasBitwiseOperators(FWDGT_regs::PSC_bits);
@@ -48,7 +48,7 @@ enum class FWDGT_regs::PSC_shift : unsigned {
  * Reload register
  */
 enum class FWDGT_regs::RLD_bits : uint32_t {
-  RLD_mask = (0xfff << 0),    ///< Free watchdog timer counter reload value
+  RLD_mask = (0xfffu << 0),   ///< Free watchdog timer counter reload value
   Reserved_mask = 0xfffff000  ///< All reserved bits
 };
 void HasBitwiseOperators(FWDGT_regs::RLD_bits);
@@ -66,8 +66,8 @@ enum class FWDGT_regs::RLD_shift : unsigned {
  * Status register
  */
 enum class FWDGT_regs::STAT_bits : uint32_t {
-  PUD = (1 << 0),  ///< Free watchdog timer prescaler value update
-  RUD = (1 << 1),  ///< Free watchdog timer counter reload value update
+  PUD = (1u << 0),  ///< Free watchdog timer prescaler value update
+  RUD = (1u << 1),  ///< Free watchdog timer counter reload value update
   Reserved_mask = 0xfffffffc  ///< All reserved bits
 };
 void HasBitwiseOperators(FWDGT_regs::STAT_bits);

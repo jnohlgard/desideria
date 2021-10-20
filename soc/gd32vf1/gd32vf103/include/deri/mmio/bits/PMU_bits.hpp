@@ -12,13 +12,13 @@ namespace deri::mmio {
  * power control register
  */
 enum class PMU_regs::CTL_bits : uint32_t {
-  BKPWEN = (1 << 8),          ///< Backup Domain Write Enable
-  LVDT_mask = (0x7 << 5),     ///< Low Voltage Detector Threshold
-  LVDEN = (1 << 4),           ///< Low Voltage Detector Enable
-  STBRST = (1 << 3),          ///< Standby Flag Reset
-  WURST = (1 << 2),           ///< Wakeup Flag Reset
-  STBMOD = (1 << 1),          ///< Standby Mode
-  LDOLP = (1 << 0),           ///< LDO Low Power Mode
+  BKPWEN = (1u << 8),         ///< Backup Domain Write Enable
+  LVDT_mask = (0x7u << 5),    ///< Low Voltage Detector Threshold
+  LVDEN = (1u << 4),          ///< Low Voltage Detector Enable
+  STBRST = (1u << 3),         ///< Standby Flag Reset
+  WURST = (1u << 2),          ///< Wakeup Flag Reset
+  STBMOD = (1u << 1),         ///< Standby Mode
+  LDOLP = (1u << 0),          ///< LDO Low Power Mode
   Reserved_mask = 0xfffffe00  ///< All reserved bits
 };
 void HasBitwiseOperators(PMU_regs::CTL_bits);
@@ -42,10 +42,10 @@ enum class PMU_regs::CTL_shift : unsigned {
  * power control/status register
  */
 enum class PMU_regs::CS_bits : uint32_t {
-  WUPEN = (1 << 8),           ///< Enable WKUP pin
-  LVDF = (1 << 2),            ///< Low Voltage Detector Status Flag
-  STBF = (1 << 1),            ///< Standby flag
-  WUF = (1 << 0),             ///< Wakeup flag
+  WUPEN = (1u << 8),          ///< Enable WKUP pin
+  LVDF = (1u << 2),           ///< Low Voltage Detector Status Flag
+  STBF = (1u << 1),           ///< Standby flag
+  WUF = (1u << 0),            ///< Wakeup flag
   Reserved_mask = 0xfffffef8  ///< All reserved bits
 };
 void HasBitwiseOperators(PMU_regs::CS_bits);

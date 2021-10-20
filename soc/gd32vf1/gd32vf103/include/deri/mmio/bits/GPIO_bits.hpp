@@ -12,22 +12,22 @@ namespace deri::mmio {
  * port control register
  */
 enum class GPIO_regs::CTL_bits : uint32_t {
-  CTL7_mask = (0x3 << 30),  ///< Port x configuration bits (x = 7)
-  MD7_mask = (0x3 << 28),   ///< Port x mode bits (x = 7)
-  CTL6_mask = (0x3 << 26),  ///< Port x configuration bits (x = 6)
-  MD6_mask = (0x3 << 24),   ///< Port x mode bits (x = 6)
-  CTL5_mask = (0x3 << 22),  ///< Port x configuration bits (x = 5)
-  MD5_mask = (0x3 << 20),   ///< Port x mode bits (x = 5)
-  CTL4_mask = (0x3 << 18),  ///< Port x configuration bits (x = 4)
-  MD4_mask = (0x3 << 16),   ///< Port x mode bits (x = 4)
-  CTL3_mask = (0x3 << 14),  ///< Port x configuration bits (x = 3)
-  MD3_mask = (0x3 << 12),   ///< Port x mode bits (x = 3 )
-  CTL2_mask = (0x3 << 10),  ///< Port x configuration bits (x = 2)
-  MD2_mask = (0x3 << 8),    ///< Port x mode bits (x = 2 )
-  CTL1_mask = (0x3 << 6),   ///< Port x configuration bits (x = 1)
-  MD1_mask = (0x3 << 4),    ///< Port x mode bits (x = 1)
-  CTL0_mask = (0x3 << 2),   ///< Port x configuration bits (x = 0)
-  MD0_mask = (0x3 << 0),    ///< Port x mode bits (x = 0)
+  CTL7_mask = (0x3u << 30),  ///< Port x configuration bits (x = 7)
+  MD7_mask = (0x3u << 28),   ///< Port x mode bits (x = 7)
+  CTL6_mask = (0x3u << 26),  ///< Port x configuration bits (x = 6)
+  MD6_mask = (0x3u << 24),   ///< Port x mode bits (x = 6)
+  CTL5_mask = (0x3u << 22),  ///< Port x configuration bits (x = 5)
+  MD5_mask = (0x3u << 20),   ///< Port x mode bits (x = 5)
+  CTL4_mask = (0x3u << 18),  ///< Port x configuration bits (x = 4)
+  MD4_mask = (0x3u << 16),   ///< Port x mode bits (x = 4)
+  CTL3_mask = (0x3u << 14),  ///< Port x configuration bits (x = 3)
+  MD3_mask = (0x3u << 12),   ///< Port x mode bits (x = 3 )
+  CTL2_mask = (0x3u << 10),  ///< Port x configuration bits (x = 2)
+  MD2_mask = (0x3u << 8),    ///< Port x mode bits (x = 2 )
+  CTL1_mask = (0x3u << 6),   ///< Port x configuration bits (x = 1)
+  MD1_mask = (0x3u << 4),    ///< Port x mode bits (x = 1)
+  CTL0_mask = (0x3u << 2),   ///< Port x configuration bits (x = 0)
+  MD0_mask = (0x3u << 0),    ///< Port x mode bits (x = 0)
 };
 void HasBitwiseOperators(GPIO_regs::CTL_bits);
 
@@ -59,22 +59,22 @@ enum class GPIO_regs::CTL_shift : unsigned {
  * Port input status register
  */
 enum class GPIO_regs::ISTAT_bits : uint32_t {
-  ISTAT15 = (1 << 15),        ///< Port input status
-  ISTAT14 = (1 << 14),        ///< Port input status
-  ISTAT13 = (1 << 13),        ///< Port input status
-  ISTAT12 = (1 << 12),        ///< Port input status
-  ISTAT11 = (1 << 11),        ///< Port input status
-  ISTAT10 = (1 << 10),        ///< Port input status
-  ISTAT9 = (1 << 9),          ///< Port input status
-  ISTAT8 = (1 << 8),          ///< Port input status
-  ISTAT7 = (1 << 7),          ///< Port input status
-  ISTAT6 = (1 << 6),          ///< Port input status
-  ISTAT5 = (1 << 5),          ///< Port input status
-  ISTAT4 = (1 << 4),          ///< Port input status
-  ISTAT3 = (1 << 3),          ///< Port input status
-  ISTAT2 = (1 << 2),          ///< Port input status
-  ISTAT1 = (1 << 1),          ///< Port input status
-  ISTAT0 = (1 << 0),          ///< Port input status
+  ISTAT15 = (1u << 15),       ///< Port input status
+  ISTAT14 = (1u << 14),       ///< Port input status
+  ISTAT13 = (1u << 13),       ///< Port input status
+  ISTAT12 = (1u << 12),       ///< Port input status
+  ISTAT11 = (1u << 11),       ///< Port input status
+  ISTAT10 = (1u << 10),       ///< Port input status
+  ISTAT9 = (1u << 9),         ///< Port input status
+  ISTAT8 = (1u << 8),         ///< Port input status
+  ISTAT7 = (1u << 7),         ///< Port input status
+  ISTAT6 = (1u << 6),         ///< Port input status
+  ISTAT5 = (1u << 5),         ///< Port input status
+  ISTAT4 = (1u << 4),         ///< Port input status
+  ISTAT3 = (1u << 3),         ///< Port input status
+  ISTAT2 = (1u << 2),         ///< Port input status
+  ISTAT1 = (1u << 1),         ///< Port input status
+  ISTAT0 = (1u << 0),         ///< Port input status
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(GPIO_regs::ISTAT_bits);
@@ -107,22 +107,22 @@ enum class GPIO_regs::ISTAT_shift : unsigned {
  * Port output control register
  */
 enum class GPIO_regs::OCTL_bits : uint32_t {
-  OCTL15 = (1 << 15),         ///< Port output control
-  OCTL14 = (1 << 14),         ///< Port output control
-  OCTL13 = (1 << 13),         ///< Port output control
-  OCTL12 = (1 << 12),         ///< Port output control
-  OCTL11 = (1 << 11),         ///< Port output control
-  OCTL10 = (1 << 10),         ///< Port output control
-  OCTL9 = (1 << 9),           ///< Port output control
-  OCTL8 = (1 << 8),           ///< Port output control
-  OCTL7 = (1 << 7),           ///< Port output control
-  OCTL6 = (1 << 6),           ///< Port output control
-  OCTL5 = (1 << 5),           ///< Port output control
-  OCTL4 = (1 << 4),           ///< Port output control
-  OCTL3 = (1 << 3),           ///< Port output control
-  OCTL2 = (1 << 2),           ///< Port output control
-  OCTL1 = (1 << 1),           ///< Port output control
-  OCTL0 = (1 << 0),           ///< Port output control
+  OCTL15 = (1u << 15),        ///< Port output control
+  OCTL14 = (1u << 14),        ///< Port output control
+  OCTL13 = (1u << 13),        ///< Port output control
+  OCTL12 = (1u << 12),        ///< Port output control
+  OCTL11 = (1u << 11),        ///< Port output control
+  OCTL10 = (1u << 10),        ///< Port output control
+  OCTL9 = (1u << 9),          ///< Port output control
+  OCTL8 = (1u << 8),          ///< Port output control
+  OCTL7 = (1u << 7),          ///< Port output control
+  OCTL6 = (1u << 6),          ///< Port output control
+  OCTL5 = (1u << 5),          ///< Port output control
+  OCTL4 = (1u << 4),          ///< Port output control
+  OCTL3 = (1u << 3),          ///< Port output control
+  OCTL2 = (1u << 2),          ///< Port output control
+  OCTL1 = (1u << 1),          ///< Port output control
+  OCTL0 = (1u << 0),          ///< Port output control
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(GPIO_regs::OCTL_bits);
@@ -155,38 +155,38 @@ enum class GPIO_regs::OCTL_shift : unsigned {
  * Port bit operate register
  */
 enum class GPIO_regs::BOP_bits : uint32_t {
-  CR15 = (1 << 31),   ///< Port 15 Clear bit
-  CR14 = (1 << 30),   ///< Port 14 Clear bit
-  CR13 = (1 << 29),   ///< Port 13 Clear bit
-  CR12 = (1 << 28),   ///< Port 12 Clear bit
-  CR11 = (1 << 27),   ///< Port 11 Clear bit
-  CR10 = (1 << 26),   ///< Port 10 Clear bit
-  CR9 = (1 << 25),    ///< Port 9 Clear bit
-  CR8 = (1 << 24),    ///< Port 8 Clear bit
-  CR7 = (1 << 23),    ///< Port 7 Clear bit
-  CR6 = (1 << 22),    ///< Port 6 Clear bit
-  CR5 = (1 << 21),    ///< Port 5 Clear bit
-  CR4 = (1 << 20),    ///< Port 4 Clear bit
-  CR3 = (1 << 19),    ///< Port 3 Clear bit
-  CR2 = (1 << 18),    ///< Port 2 Clear bit
-  CR1 = (1 << 17),    ///< Port 1 Clear bit
-  CR0 = (1 << 16),    ///< Port 0 Clear bit
-  BOP15 = (1 << 15),  ///< Port 15 Set bit
-  BOP14 = (1 << 14),  ///< Port 14 Set bit
-  BOP13 = (1 << 13),  ///< Port 13 Set bit
-  BOP12 = (1 << 12),  ///< Port 12 Set bit
-  BOP11 = (1 << 11),  ///< Port 11 Set bit
-  BOP10 = (1 << 10),  ///< Port 10 Set bit
-  BOP9 = (1 << 9),    ///< Port 9 Set bit
-  BOP8 = (1 << 8),    ///< Port 8 Set bit
-  BOP7 = (1 << 7),    ///< Port 7 Set bit
-  BOP6 = (1 << 6),    ///< Port 6 Set bit
-  BOP5 = (1 << 5),    ///< Port 5 Set bit
-  BOP4 = (1 << 4),    ///< Port 4 Set bit
-  BOP3 = (1 << 3),    ///< Port 3 Set bit
-  BOP2 = (1 << 2),    ///< Port 2 Set bit
-  BOP1 = (1 << 1),    ///< Port 1 Set bit
-  BOP0 = (1 << 0),    ///< Port 0 Set bit
+  CR15 = (1u << 31),   ///< Port 15 Clear bit
+  CR14 = (1u << 30),   ///< Port 14 Clear bit
+  CR13 = (1u << 29),   ///< Port 13 Clear bit
+  CR12 = (1u << 28),   ///< Port 12 Clear bit
+  CR11 = (1u << 27),   ///< Port 11 Clear bit
+  CR10 = (1u << 26),   ///< Port 10 Clear bit
+  CR9 = (1u << 25),    ///< Port 9 Clear bit
+  CR8 = (1u << 24),    ///< Port 8 Clear bit
+  CR7 = (1u << 23),    ///< Port 7 Clear bit
+  CR6 = (1u << 22),    ///< Port 6 Clear bit
+  CR5 = (1u << 21),    ///< Port 5 Clear bit
+  CR4 = (1u << 20),    ///< Port 4 Clear bit
+  CR3 = (1u << 19),    ///< Port 3 Clear bit
+  CR2 = (1u << 18),    ///< Port 2 Clear bit
+  CR1 = (1u << 17),    ///< Port 1 Clear bit
+  CR0 = (1u << 16),    ///< Port 0 Clear bit
+  BOP15 = (1u << 15),  ///< Port 15 Set bit
+  BOP14 = (1u << 14),  ///< Port 14 Set bit
+  BOP13 = (1u << 13),  ///< Port 13 Set bit
+  BOP12 = (1u << 12),  ///< Port 12 Set bit
+  BOP11 = (1u << 11),  ///< Port 11 Set bit
+  BOP10 = (1u << 10),  ///< Port 10 Set bit
+  BOP9 = (1u << 9),    ///< Port 9 Set bit
+  BOP8 = (1u << 8),    ///< Port 8 Set bit
+  BOP7 = (1u << 7),    ///< Port 7 Set bit
+  BOP6 = (1u << 6),    ///< Port 6 Set bit
+  BOP5 = (1u << 5),    ///< Port 5 Set bit
+  BOP4 = (1u << 4),    ///< Port 4 Set bit
+  BOP3 = (1u << 3),    ///< Port 3 Set bit
+  BOP2 = (1u << 2),    ///< Port 2 Set bit
+  BOP1 = (1u << 1),    ///< Port 1 Set bit
+  BOP0 = (1u << 0),    ///< Port 0 Set bit
 };
 void HasBitwiseOperators(GPIO_regs::BOP_bits);
 
@@ -234,22 +234,22 @@ enum class GPIO_regs::BOP_shift : unsigned {
  * Port bit clear register
  */
 enum class GPIO_regs::BC_bits : uint32_t {
-  CR15 = (1 << 15),           ///< Port 15 Clear bit
-  CR14 = (1 << 14),           ///< Port 14 Clear bit
-  CR13 = (1 << 13),           ///< Port 13 Clear bit
-  CR12 = (1 << 12),           ///< Port 12 Clear bit
-  CR11 = (1 << 11),           ///< Port 11 Clear bit
-  CR10 = (1 << 10),           ///< Port 10 Clear bit
-  CR9 = (1 << 9),             ///< Port 9 Clear bit
-  CR8 = (1 << 8),             ///< Port 8 Clear bit
-  CR7 = (1 << 7),             ///< Port 7 Clear bit
-  CR6 = (1 << 6),             ///< Port 6 Clear bit
-  CR5 = (1 << 5),             ///< Port 5 Clear bit
-  CR4 = (1 << 4),             ///< Port 4 Clear bit
-  CR3 = (1 << 3),             ///< Port 3 Clear bit
-  CR2 = (1 << 2),             ///< Port 2 Clear bit
-  CR1 = (1 << 1),             ///< Port 1 Clear bit
-  CR0 = (1 << 0),             ///< Port 0 Clear bit
+  CR15 = (1u << 15),          ///< Port 15 Clear bit
+  CR14 = (1u << 14),          ///< Port 14 Clear bit
+  CR13 = (1u << 13),          ///< Port 13 Clear bit
+  CR12 = (1u << 12),          ///< Port 12 Clear bit
+  CR11 = (1u << 11),          ///< Port 11 Clear bit
+  CR10 = (1u << 10),          ///< Port 10 Clear bit
+  CR9 = (1u << 9),            ///< Port 9 Clear bit
+  CR8 = (1u << 8),            ///< Port 8 Clear bit
+  CR7 = (1u << 7),            ///< Port 7 Clear bit
+  CR6 = (1u << 6),            ///< Port 6 Clear bit
+  CR5 = (1u << 5),            ///< Port 5 Clear bit
+  CR4 = (1u << 4),            ///< Port 4 Clear bit
+  CR3 = (1u << 3),            ///< Port 3 Clear bit
+  CR2 = (1u << 2),            ///< Port 2 Clear bit
+  CR1 = (1u << 1),            ///< Port 1 Clear bit
+  CR0 = (1u << 0),            ///< Port 0 Clear bit
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(GPIO_regs::BC_bits);
@@ -282,23 +282,23 @@ enum class GPIO_regs::BC_shift : unsigned {
  * GPIO port configuration lock register
  */
 enum class GPIO_regs::LOCK_bits : uint32_t {
-  LKK = (1 << 16),            ///< Lock sequence key
-  LK15 = (1 << 15),           ///< Port Lock bit 15
-  LK14 = (1 << 14),           ///< Port Lock bit 14
-  LK13 = (1 << 13),           ///< Port Lock bit 13
-  LK12 = (1 << 12),           ///< Port Lock bit 12
-  LK11 = (1 << 11),           ///< Port Lock bit 11
-  LK10 = (1 << 10),           ///< Port Lock bit 10
-  LK9 = (1 << 9),             ///< Port Lock bit 9
-  LK8 = (1 << 8),             ///< Port Lock bit 8
-  LK7 = (1 << 7),             ///< Port Lock bit 7
-  LK6 = (1 << 6),             ///< Port Lock bit 6
-  LK5 = (1 << 5),             ///< Port Lock bit 5
-  LK4 = (1 << 4),             ///< Port Lock bit 4
-  LK3 = (1 << 3),             ///< Port Lock bit 3
-  LK2 = (1 << 2),             ///< Port Lock bit 2
-  LK1 = (1 << 1),             ///< Port Lock bit 1
-  LK0 = (1 << 0),             ///< Port Lock bit 0
+  LKK = (1u << 16),           ///< Lock sequence key
+  LK15 = (1u << 15),          ///< Port Lock bit 15
+  LK14 = (1u << 14),          ///< Port Lock bit 14
+  LK13 = (1u << 13),          ///< Port Lock bit 13
+  LK12 = (1u << 12),          ///< Port Lock bit 12
+  LK11 = (1u << 11),          ///< Port Lock bit 11
+  LK10 = (1u << 10),          ///< Port Lock bit 10
+  LK9 = (1u << 9),            ///< Port Lock bit 9
+  LK8 = (1u << 8),            ///< Port Lock bit 8
+  LK7 = (1u << 7),            ///< Port Lock bit 7
+  LK6 = (1u << 6),            ///< Port Lock bit 6
+  LK5 = (1u << 5),            ///< Port Lock bit 5
+  LK4 = (1u << 4),            ///< Port Lock bit 4
+  LK3 = (1u << 3),            ///< Port Lock bit 3
+  LK2 = (1u << 2),            ///< Port Lock bit 2
+  LK1 = (1u << 1),            ///< Port Lock bit 1
+  LK0 = (1u << 0),            ///< Port Lock bit 0
   Reserved_mask = 0xfffe0000  ///< All reserved bits
 };
 void HasBitwiseOperators(GPIO_regs::LOCK_bits);

@@ -12,15 +12,15 @@ namespace deri::mmio {
  * control register 0
  */
 enum class TIMER_regs::CTL0_bits : uint16_t {
-  CKDIV_mask = (0x3 << 8),  ///< Clock division
-  ARSE = (1 << 7),          ///< Auto-reload shadow enable
-  CAM_mask = (0x3 << 5),    ///< Counter aligns mode selection
-  DIR = (1 << 4),           ///< Direction
-  SPM = (1 << 3),           ///< Single pulse mode
-  UPS = (1 << 2),           ///< Update source
-  UPDIS = (1 << 1),         ///< Update disable
-  CEN = (1 << 0),           ///< Counter enable
-  Reserved_mask = 0xfc00    ///< All reserved bits
+  CKDIV_mask = (0x3u << 8),  ///< Clock division
+  ARSE = (1u << 7),          ///< Auto-reload shadow enable
+  CAM_mask = (0x3u << 5),    ///< Counter aligns mode selection
+  DIR = (1u << 4),           ///< Direction
+  SPM = (1u << 3),           ///< Single pulse mode
+  UPS = (1u << 2),           ///< Update source
+  UPDIS = (1u << 1),         ///< Update disable
+  CEN = (1u << 0),           ///< Counter enable
+  Reserved_mask = 0xfc00     ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::CTL0_bits);
 
@@ -44,18 +44,18 @@ enum class TIMER_regs::CTL0_shift : unsigned {
  * control register 1
  */
 enum class TIMER_regs::CTL1_bits : uint16_t {
-  ISO3 = (1 << 14),       ///< Idle state of channel 3 output
-  ISO2N = (1 << 13),      ///< Idle state of channel 2 complementary output
-  ISO2 = (1 << 12),       ///< Idle state of channel 2 output
-  ISO1N = (1 << 11),      ///< Idle state of channel 1 complementary output
-  ISO1 = (1 << 10),       ///< Idle state of channel 1 output
-  ISO0N = (1 << 9),       ///< Idle state of channel 0 complementary output
-  ISO0 = (1 << 8),        ///< Idle state of channel 0 output
-  TI0S = (1 << 7),        ///< Channel 0 trigger input selection
-  MMC_mask = (0x7 << 4),  ///< Master mode control
-  DMAS = (1 << 3),        ///< DMA request source selection
-  CCUC = (1 << 2),  ///< Commutation control shadow register update control
-  CCSE = (1 << 0),  ///< Commutation control shadow enable
+  ISO3 = (1u << 14),       ///< Idle state of channel 3 output
+  ISO2N = (1u << 13),      ///< Idle state of channel 2 complementary output
+  ISO2 = (1u << 12),       ///< Idle state of channel 2 output
+  ISO1N = (1u << 11),      ///< Idle state of channel 1 complementary output
+  ISO1 = (1u << 10),       ///< Idle state of channel 1 output
+  ISO0N = (1u << 9),       ///< Idle state of channel 0 complementary output
+  ISO0 = (1u << 8),        ///< Idle state of channel 0 output
+  TI0S = (1u << 7),        ///< Channel 0 trigger input selection
+  MMC_mask = (0x7u << 4),  ///< Master mode control
+  DMAS = (1u << 3),        ///< DMA request source selection
+  CCUC = (1u << 2),  ///< Commutation control shadow register update control
+  CCSE = (1u << 0),  ///< Commutation control shadow enable
   Reserved_mask = 0x8002  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::CTL1_bits);
@@ -84,14 +84,14 @@ enum class TIMER_regs::CTL1_shift : unsigned {
  * slave mode configuration register
  */
 enum class TIMER_regs::SMCFG_bits : uint16_t {
-  ETP = (1 << 15),           ///< External trigger polarity
-  SMC1 = (1 << 14),          ///< Part of SMC for enable External clock mode1
-  ETPSC_mask = (0x3 << 12),  ///< External trigger prescaler
-  ETFC_mask = (0xf << 8),    ///< External trigger filter control
-  MSM = (1 << 7),            ///< Master/Slave mode
-  TRGS_mask = (0x7 << 4),    ///< Trigger selection
-  SMC_mask = (0x7 << 0),     ///< Slave mode selection
-  Reserved_mask = 0x0008     ///< All reserved bits
+  ETP = (1u << 15),           ///< External trigger polarity
+  SMC1 = (1u << 14),          ///< Part of SMC for enable External clock mode1
+  ETPSC_mask = (0x3u << 12),  ///< External trigger prescaler
+  ETFC_mask = (0xfu << 8),    ///< External trigger filter control
+  MSM = (1u << 7),            ///< Master/Slave mode
+  TRGS_mask = (0x7u << 4),    ///< Trigger selection
+  SMC_mask = (0x7u << 0),     ///< Slave mode selection
+  Reserved_mask = 0x0008      ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::SMCFG_bits);
 
@@ -114,21 +114,21 @@ enum class TIMER_regs::SMCFG_shift : unsigned {
  * DMA/Interrupt enable register
  */
 enum class TIMER_regs::DMAINTEN_bits : uint16_t {
-  TRGDEN = (1 << 14),     ///< Trigger DMA request enable
-  CMTDEN = (1 << 13),     ///< Commutation DMA request enable
-  CH3DEN = (1 << 12),     ///< Channel 3 capture/compare DMA request enable
-  CH2DEN = (1 << 11),     ///< Channel 2 capture/compare DMA request enable
-  CH1DEN = (1 << 10),     ///< Channel 1 capture/compare DMA request enable
-  CH0DEN = (1 << 9),      ///< Channel 0 capture/compare DMA request enable
-  UPDEN = (1 << 8),       ///< Update DMA request enable
-  BRKIE = (1 << 7),       ///< Break interrupt enable
-  TRGIE = (1 << 6),       ///< Trigger interrupt enable
-  CMTIE = (1 << 5),       ///< commutation interrupt enable
-  CH3IE = (1 << 4),       ///< Channel 3 capture/compare interrupt enable
-  CH2IE = (1 << 3),       ///< Channel 2 capture/compare interrupt enable
-  CH1IE = (1 << 2),       ///< Channel 1 capture/compare interrupt enable
-  CH0IE = (1 << 1),       ///< Channel 0 capture/compare interrupt enable
-  UPIE = (1 << 0),        ///< Update interrupt enable
+  TRGDEN = (1u << 14),    ///< Trigger DMA request enable
+  CMTDEN = (1u << 13),    ///< Commutation DMA request enable
+  CH3DEN = (1u << 12),    ///< Channel 3 capture/compare DMA request enable
+  CH2DEN = (1u << 11),    ///< Channel 2 capture/compare DMA request enable
+  CH1DEN = (1u << 10),    ///< Channel 1 capture/compare DMA request enable
+  CH0DEN = (1u << 9),     ///< Channel 0 capture/compare DMA request enable
+  UPDEN = (1u << 8),      ///< Update DMA request enable
+  BRKIE = (1u << 7),      ///< Break interrupt enable
+  TRGIE = (1u << 6),      ///< Trigger interrupt enable
+  CMTIE = (1u << 5),      ///< commutation interrupt enable
+  CH3IE = (1u << 4),      ///< Channel 3 capture/compare interrupt enable
+  CH2IE = (1u << 3),      ///< Channel 2 capture/compare interrupt enable
+  CH1IE = (1u << 2),      ///< Channel 1 capture/compare interrupt enable
+  CH0IE = (1u << 1),      ///< Channel 0 capture/compare interrupt enable
+  UPIE = (1u << 0),       ///< Update interrupt enable
   Reserved_mask = 0x8000  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::DMAINTEN_bits);
@@ -160,18 +160,18 @@ enum class TIMER_regs::DMAINTEN_shift : unsigned {
  * Interrupt flag register
  */
 enum class TIMER_regs::INTF_bits : uint16_t {
-  CH3OF = (1 << 12),      ///< Channel 3 over capture flag
-  CH2OF = (1 << 11),      ///< Channel 2 over capture flag
-  CH1OF = (1 << 10),      ///< Channel 1 over capture flag
-  CH0OF = (1 << 9),       ///< Channel 0 over capture flag
-  BRKIF = (1 << 7),       ///< Break interrupt flag
-  TRGIF = (1 << 6),       ///< Trigger interrupt flag
-  CMTIF = (1 << 5),       ///< Channel commutation interrupt flag
-  CH3IF = (1 << 4),       ///< Channel 3 capture/compare interrupt flag
-  CH2IF = (1 << 3),       ///< Channel 2 capture/compare interrupt flag
-  CH1IF = (1 << 2),       ///< Channel 1 capture/compare interrupt flag
-  CH0IF = (1 << 1),       ///< Channel 0 capture/compare interrupt flag
-  UPIF = (1 << 0),        ///< Update interrupt flag
+  CH3OF = (1u << 12),     ///< Channel 3 over capture flag
+  CH2OF = (1u << 11),     ///< Channel 2 over capture flag
+  CH1OF = (1u << 10),     ///< Channel 1 over capture flag
+  CH0OF = (1u << 9),      ///< Channel 0 over capture flag
+  BRKIF = (1u << 7),      ///< Break interrupt flag
+  TRGIF = (1u << 6),      ///< Trigger interrupt flag
+  CMTIF = (1u << 5),      ///< Channel commutation interrupt flag
+  CH3IF = (1u << 4),      ///< Channel 3 capture/compare interrupt flag
+  CH2IF = (1u << 3),      ///< Channel 2 capture/compare interrupt flag
+  CH1IF = (1u << 2),      ///< Channel 1 capture/compare interrupt flag
+  CH0IF = (1u << 1),      ///< Channel 0 capture/compare interrupt flag
+  UPIF = (1u << 0),       ///< Update interrupt flag
   Reserved_mask = 0xe100  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::INTF_bits);
@@ -200,14 +200,14 @@ enum class TIMER_regs::INTF_shift : unsigned {
  * Software event generation register
  */
 enum class TIMER_regs::SWEVG_bits : uint16_t {
-  BRKG = (1 << 7),        ///< Break event generation
-  TRGG = (1 << 6),        ///< Trigger event generation
-  CMTG = (1 << 5),        ///< Channel commutation event generation
-  CH3G = (1 << 4),        ///< Channel 3 capture or compare event generation
-  CH2G = (1 << 3),        ///< Channel 2 capture or compare event generation
-  CH1G = (1 << 2),        ///< Channel 1 capture or compare event generation
-  CH0G = (1 << 1),        ///< Channel 0 capture or compare event generation
-  UPG = (1 << 0),         ///< Update event generation
+  BRKG = (1u << 7),       ///< Break event generation
+  TRGG = (1u << 6),       ///< Trigger event generation
+  CMTG = (1u << 5),       ///< Channel commutation event generation
+  CH3G = (1u << 4),       ///< Channel 3 capture or compare event generation
+  CH2G = (1u << 3),       ///< Channel 2 capture or compare event generation
+  CH1G = (1u << 2),       ///< Channel 1 capture or compare event generation
+  CH0G = (1u << 1),       ///< Channel 0 capture or compare event generation
+  UPG = (1u << 0),        ///< Update event generation
   Reserved_mask = 0xff00  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::SWEVG_bits);
@@ -232,16 +232,16 @@ enum class TIMER_regs::SWEVG_shift : unsigned {
  * Channel control register 0 (output mode)
  */
 enum class TIMER_regs::CHCTL0_Output_bits : uint16_t {
-  CH1COMCEN = (1 << 15),         ///< Channel 1 output compare clear enable
-  CH1COMCTL_mask = (0x7 << 12),  ///< Channel 1 compare output control
-  CH1COMSEN = (1 << 11),         ///< Channel 1 output compare shadow enable
-  CH1COMFEN = (1 << 10),         ///< Channel 1 output compare fast enable
-  CH1MS_mask = (0x3 << 8),       ///< Channel 1 mode selection
-  CH0COMCEN = (1 << 7),          ///< Channel 0 output compare clear enable
-  CH0COMCTL_mask = (0x7 << 4),   ///< Channel 0 compare output control
-  CH0COMSEN = (1 << 3),          ///< Channel 0 compare output shadow enable
-  CH0COMFEN = (1 << 2),          ///< Channel 0 output compare fast enable
-  CH0MS_mask = (0x3 << 0),       ///< Channel 0 I/O mode selection
+  CH1COMCEN = (1u << 15),         ///< Channel 1 output compare clear enable
+  CH1COMCTL_mask = (0x7u << 12),  ///< Channel 1 compare output control
+  CH1COMSEN = (1u << 11),         ///< Channel 1 output compare shadow enable
+  CH1COMFEN = (1u << 10),         ///< Channel 1 output compare fast enable
+  CH1MS_mask = (0x3u << 8),       ///< Channel 1 mode selection
+  CH0COMCEN = (1u << 7),          ///< Channel 0 output compare clear enable
+  CH0COMCTL_mask = (0x7u << 4),   ///< Channel 0 compare output control
+  CH0COMSEN = (1u << 3),          ///< Channel 0 compare output shadow enable
+  CH0COMFEN = (1u << 2),          ///< Channel 0 output compare fast enable
+  CH0MS_mask = (0x3u << 0),       ///< Channel 0 I/O mode selection
 };
 void HasBitwiseOperators(TIMER_regs::CHCTL0_Output_bits);
 
@@ -267,12 +267,12 @@ enum class TIMER_regs::CHCTL0_Output_shift : unsigned {
  * Channel control register 0 (input mode)
  */
 enum class TIMER_regs::CHCTL0_Input_bits : uint16_t {
-  CH1CAPFLT_mask = (0xf << 12),  ///< Channel 1 input capture filter control
-  CH1CAPPSC_mask = (0x3 << 10),  ///< Channel 1 input capture prescaler
-  CH1MS_mask = (0x3 << 8),       ///< Channel 1 mode selection
-  CH0CAPFLT_mask = (0xf << 4),   ///< Channel 0 input capture filter control
-  CH0CAPPSC_mask = (0x3 << 2),   ///< Channel 0 input capture prescaler
-  CH0MS_mask = (0x3 << 0),       ///< Channel 0 mode selection
+  CH1CAPFLT_mask = (0xfu << 12),  ///< Channel 1 input capture filter control
+  CH1CAPPSC_mask = (0x3u << 10),  ///< Channel 1 input capture prescaler
+  CH1MS_mask = (0x3u << 8),       ///< Channel 1 mode selection
+  CH0CAPFLT_mask = (0xfu << 4),   ///< Channel 0 input capture filter control
+  CH0CAPPSC_mask = (0x3u << 2),   ///< Channel 0 input capture prescaler
+  CH0MS_mask = (0x3u << 0),       ///< Channel 0 mode selection
 };
 void HasBitwiseOperators(TIMER_regs::CHCTL0_Input_bits);
 
@@ -294,16 +294,16 @@ enum class TIMER_regs::CHCTL0_Input_shift : unsigned {
  * Channel control register 1 (output mode)
  */
 enum class TIMER_regs::CHCTL1_Output_bits : uint16_t {
-  CH3COMCEN = (1 << 15),         ///< Channel 3 output compare clear enable
-  CH3COMCTL_mask = (0x7 << 12),  ///< Channel 3 compare output control
-  CH3COMSEN = (1 << 11),         ///< Channel 3 output compare shadow enable
-  CH3COMFEN = (1 << 10),         ///< Channel 3 output compare fast enable
-  CH3MS_mask = (0x3 << 8),       ///< Channel 3 mode selection
-  CH2COMCEN = (1 << 7),          ///< Channel 2 output compare clear enable
-  CH2COMCTL_mask = (0x7 << 4),   ///< Channel 2 compare output control
-  CH2COMSEN = (1 << 3),          ///< Channel 2 compare output shadow enable
-  CH2COMFEN = (1 << 2),          ///< Channel 2 output compare fast enable
-  CH2MS_mask = (0x3 << 0),       ///< Channel 2 I/O mode selection
+  CH3COMCEN = (1u << 15),         ///< Channel 3 output compare clear enable
+  CH3COMCTL_mask = (0x7u << 12),  ///< Channel 3 compare output control
+  CH3COMSEN = (1u << 11),         ///< Channel 3 output compare shadow enable
+  CH3COMFEN = (1u << 10),         ///< Channel 3 output compare fast enable
+  CH3MS_mask = (0x3u << 8),       ///< Channel 3 mode selection
+  CH2COMCEN = (1u << 7),          ///< Channel 2 output compare clear enable
+  CH2COMCTL_mask = (0x7u << 4),   ///< Channel 2 compare output control
+  CH2COMSEN = (1u << 3),          ///< Channel 2 compare output shadow enable
+  CH2COMFEN = (1u << 2),          ///< Channel 2 output compare fast enable
+  CH2MS_mask = (0x3u << 0),       ///< Channel 2 I/O mode selection
 };
 void HasBitwiseOperators(TIMER_regs::CHCTL1_Output_bits);
 
@@ -329,12 +329,12 @@ enum class TIMER_regs::CHCTL1_Output_shift : unsigned {
  * Channel control register 1 (input mode)
  */
 enum class TIMER_regs::CHCTL1_Input_bits : uint16_t {
-  CH3CAPFLT_mask = (0xf << 12),  ///< Channel 3 input capture filter control
-  CH3CAPPSC_mask = (0x3 << 10),  ///< Channel 3 input capture prescaler
-  CH3MS_mask = (0x3 << 8),       ///< Channel 3 mode selection
-  CH2CAPFLT_mask = (0xf << 4),   ///< Channel 2 input capture filter control
-  CH2CAPPSC_mask = (0x3 << 2),   ///< Channel 2 input capture prescaler
-  CH2MS_mask = (0x3 << 0),       ///< Channel 2 mode selection
+  CH3CAPFLT_mask = (0xfu << 12),  ///< Channel 3 input capture filter control
+  CH3CAPPSC_mask = (0x3u << 10),  ///< Channel 3 input capture prescaler
+  CH3MS_mask = (0x3u << 8),       ///< Channel 3 mode selection
+  CH2CAPFLT_mask = (0xfu << 4),   ///< Channel 2 input capture filter control
+  CH2CAPPSC_mask = (0x3u << 2),   ///< Channel 2 input capture prescaler
+  CH2MS_mask = (0x3u << 0),       ///< Channel 2 mode selection
 };
 void HasBitwiseOperators(TIMER_regs::CHCTL1_Input_bits);
 
@@ -356,20 +356,20 @@ enum class TIMER_regs::CHCTL1_Input_shift : unsigned {
  * Channel control register 2
  */
 enum class TIMER_regs::CHCTL2_bits : uint16_t {
-  CH3P = (1 << 13),       ///< Channel 3 capture/compare function polarity
-  CH3EN = (1 << 12),      ///< Channel 3 capture/compare function enable
-  CH2NP = (1 << 11),      ///< Channel 2 complementary output polarity
-  CH2NEN = (1 << 10),     ///< Channel 2 complementary output enable
-  CH2P = (1 << 9),        ///< Channel 2 capture/compare function polarity
-  CH2EN = (1 << 8),       ///< Channel 2 capture/compare function enable
-  CH1NP = (1 << 7),       ///< Channel 1 complementary output polarity
-  CH1NEN = (1 << 6),      ///< Channel 1 complementary output enable
-  CH1P = (1 << 5),        ///< Channel 1 capture/compare function polarity
-  CH1EN = (1 << 4),       ///< Channel 1 capture/compare function enable
-  CH0NP = (1 << 3),       ///< Channel 0 complementary output polarity
-  CH0NEN = (1 << 2),      ///< Channel 0 complementary output enable
-  CH0P = (1 << 1),        ///< Channel 0 capture/compare function polarity
-  CH0EN = (1 << 0),       ///< Channel 0 capture/compare function enable
+  CH3P = (1u << 13),      ///< Channel 3 capture/compare function polarity
+  CH3EN = (1u << 12),     ///< Channel 3 capture/compare function enable
+  CH2NP = (1u << 11),     ///< Channel 2 complementary output polarity
+  CH2NEN = (1u << 10),    ///< Channel 2 complementary output enable
+  CH2P = (1u << 9),       ///< Channel 2 capture/compare function polarity
+  CH2EN = (1u << 8),      ///< Channel 2 capture/compare function enable
+  CH1NP = (1u << 7),      ///< Channel 1 complementary output polarity
+  CH1NEN = (1u << 6),     ///< Channel 1 complementary output enable
+  CH1P = (1u << 5),       ///< Channel 1 capture/compare function polarity
+  CH1EN = (1u << 4),      ///< Channel 1 capture/compare function enable
+  CH0NP = (1u << 3),      ///< Channel 0 complementary output polarity
+  CH0NEN = (1u << 2),     ///< Channel 0 complementary output enable
+  CH0P = (1u << 1),       ///< Channel 0 capture/compare function polarity
+  CH0EN = (1u << 0),      ///< Channel 0 capture/compare function enable
   Reserved_mask = 0xc000  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::CHCTL2_bits);
@@ -400,7 +400,7 @@ enum class TIMER_regs::CHCTL2_shift : unsigned {
  * counter
  */
 enum class TIMER_regs::CNT_bits : uint16_t {
-  CNT_mask = (0xffff << 0),  ///< current counter value
+  CNT_mask = (0xffffu << 0),  ///< current counter value
 };
 void HasBitwiseOperators(TIMER_regs::CNT_bits);
 
@@ -417,7 +417,7 @@ enum class TIMER_regs::CNT_shift : unsigned {
  * prescaler
  */
 enum class TIMER_regs::PSC_bits : uint16_t {
-  PSC_mask = (0xffff << 0),  ///< Prescaler value of the counter clock
+  PSC_mask = (0xffffu << 0),  ///< Prescaler value of the counter clock
 };
 void HasBitwiseOperators(TIMER_regs::PSC_bits);
 
@@ -434,7 +434,7 @@ enum class TIMER_regs::PSC_shift : unsigned {
  * Counter auto reload register
  */
 enum class TIMER_regs::CAR_bits : uint16_t {
-  CARL_mask = (0xffff << 0),  ///< Counter auto reload value
+  CARL_mask = (0xffffu << 0),  ///< Counter auto reload value
 };
 void HasBitwiseOperators(TIMER_regs::CAR_bits);
 
@@ -451,8 +451,8 @@ enum class TIMER_regs::CAR_shift : unsigned {
  * Counter repetition register
  */
 enum class TIMER_regs::CREP_bits : uint16_t {
-  CREP_mask = (0xff << 0),  ///< Counter repetition value
-  Reserved_mask = 0xff00    ///< All reserved bits
+  CREP_mask = (0xffu << 0),  ///< Counter repetition value
+  Reserved_mask = 0xff00     ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::CREP_bits);
 
@@ -469,7 +469,7 @@ enum class TIMER_regs::CREP_shift : unsigned {
  * Channel 0 capture/compare value register
  */
 enum class TIMER_regs::CH0CV_bits : uint16_t {
-  CH0VAL_mask = (0xffff << 0),  ///< Capture or compare value of channel0
+  CH0VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel0
 };
 void HasBitwiseOperators(TIMER_regs::CH0CV_bits);
 
@@ -486,7 +486,7 @@ enum class TIMER_regs::CH0CV_shift : unsigned {
  * Channel 1 capture/compare value register
  */
 enum class TIMER_regs::CH1CV_bits : uint16_t {
-  CH1VAL_mask = (0xffff << 0),  ///< Capture or compare value of channel1
+  CH1VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel1
 };
 void HasBitwiseOperators(TIMER_regs::CH1CV_bits);
 
@@ -503,7 +503,7 @@ enum class TIMER_regs::CH1CV_shift : unsigned {
  * Channel 2 capture/compare value register
  */
 enum class TIMER_regs::CH2CV_bits : uint16_t {
-  CH2VAL_mask = (0xffff << 0),  ///< Capture or compare value of channel 2
+  CH2VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 2
 };
 void HasBitwiseOperators(TIMER_regs::CH2CV_bits);
 
@@ -520,7 +520,7 @@ enum class TIMER_regs::CH2CV_shift : unsigned {
  * Channel 3 capture/compare value register
  */
 enum class TIMER_regs::CH3CV_bits : uint16_t {
-  CH3VAL_mask = (0xffff << 0),  ///< Capture or compare value of channel 3
+  CH3VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 3
 };
 void HasBitwiseOperators(TIMER_regs::CH3CV_bits);
 
@@ -537,14 +537,14 @@ enum class TIMER_regs::CH3CV_shift : unsigned {
  * channel complementary protection register
  */
 enum class TIMER_regs::CCHP_bits : uint16_t {
-  POEN = (1 << 15),          ///< Primary output enable
-  OAEN = (1 << 14),          ///< Output automatic enable
-  BRKP = (1 << 13),          ///< Break polarity
-  BRKEN = (1 << 12),         ///< Break enable
-  ROS = (1 << 11),           ///< Run mode off-state configure
-  IOS = (1 << 10),           ///< Idle mode off-state configure
-  PROT_mask = (0x3 << 8),    ///< Complementary register protect control
-  DTCFG_mask = (0xff << 0),  ///< Dead time configure
+  POEN = (1u << 15),          ///< Primary output enable
+  OAEN = (1u << 14),          ///< Output automatic enable
+  BRKP = (1u << 13),          ///< Break polarity
+  BRKEN = (1u << 12),         ///< Break enable
+  ROS = (1u << 11),           ///< Run mode off-state configure
+  IOS = (1u << 10),           ///< Idle mode off-state configure
+  PROT_mask = (0x3u << 8),    ///< Complementary register protect control
+  DTCFG_mask = (0xffu << 0),  ///< Dead time configure
 };
 void HasBitwiseOperators(TIMER_regs::CCHP_bits);
 
@@ -568,9 +568,9 @@ enum class TIMER_regs::CCHP_shift : unsigned {
  * DMA configuration register
  */
 enum class TIMER_regs::DMACFG_bits : uint16_t {
-  DMATC_mask = (0x1f << 8),  ///< DMA transfer count
-  DMATA_mask = (0x1f << 0),  ///< DMA transfer access start address
-  Reserved_mask = 0xe0e0     ///< All reserved bits
+  DMATC_mask = (0x1fu << 8),  ///< DMA transfer count
+  DMATA_mask = (0x1fu << 0),  ///< DMA transfer access start address
+  Reserved_mask = 0xe0e0      ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::DMACFG_bits);
 
@@ -588,7 +588,7 @@ enum class TIMER_regs::DMACFG_shift : unsigned {
  * DMA transfer buffer register
  */
 enum class TIMER_regs::DMATB_bits : uint16_t {
-  DMATB_mask = (0xffff << 0),  ///< DMA transfer buffer
+  DMATB_mask = (0xffffu << 0),  ///< DMA transfer buffer
 };
 void HasBitwiseOperators(TIMER_regs::DMATB_bits);
 

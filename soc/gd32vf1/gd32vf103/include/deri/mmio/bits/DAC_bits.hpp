@@ -12,21 +12,21 @@ namespace deri::mmio {
  * control register
  */
 enum class DAC_regs::CTL_bits : uint32_t {
-  DEN0 = (1 << 0),            ///< DAC0 enable
-  DBOFF0 = (1 << 1),          ///< DAC0 output buffer turn off
-  DTEN0 = (1 << 2),           ///< DAC0 trigger enable
-  DTSEL0_mask = (0x7 << 3),   ///< DAC0 trigger selection
-  DWM0_mask = (0x3 << 6),     ///< DAC0 noise wave mode
-  DWBW0_mask = (0xf << 8),    ///< DAC0 noise wave bit width
-  DDMAEN0 = (1 << 12),        ///< DAC0 DMA enable
-  DEN1 = (1 << 16),           ///< DAC1 enable
-  DBOFF1 = (1 << 17),         ///< DAC1 output buffer turn off
-  DTEN1 = (1 << 18),          ///< DAC1 trigger enable
-  DTSEL1_mask = (0x7 << 19),  ///< DAC1 trigger selection
-  DWM1_mask = (0x3 << 22),    ///< DAC1 noise wave mode
-  DWBW1_mask = (0xf << 24),   ///< DAC1 noise wave bit width
-  DDMAEN1 = (1 << 28),        ///< DAC1 DMA enable
-  Reserved_mask = 0xe000e000  ///< All reserved bits
+  DEN0 = (1u << 0),            ///< DAC0 enable
+  DBOFF0 = (1u << 1),          ///< DAC0 output buffer turn off
+  DTEN0 = (1u << 2),           ///< DAC0 trigger enable
+  DTSEL0_mask = (0x7u << 3),   ///< DAC0 trigger selection
+  DWM0_mask = (0x3u << 6),     ///< DAC0 noise wave mode
+  DWBW0_mask = (0xfu << 8),    ///< DAC0 noise wave bit width
+  DDMAEN0 = (1u << 12),        ///< DAC0 DMA enable
+  DEN1 = (1u << 16),           ///< DAC1 enable
+  DBOFF1 = (1u << 17),         ///< DAC1 output buffer turn off
+  DTEN1 = (1u << 18),          ///< DAC1 trigger enable
+  DTSEL1_mask = (0x7u << 19),  ///< DAC1 trigger selection
+  DWM1_mask = (0x3u << 22),    ///< DAC1 noise wave mode
+  DWBW1_mask = (0xfu << 24),   ///< DAC1 noise wave bit width
+  DDMAEN1 = (1u << 28),        ///< DAC1 DMA enable
+  Reserved_mask = 0xe000e000   ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::CTL_bits);
 
@@ -56,8 +56,8 @@ enum class DAC_regs::CTL_shift : unsigned {
  * software trigger register
  */
 enum class DAC_regs::SWT_bits : uint32_t {
-  SWTR0 = (1 << 0),           ///< DAC0 software trigger
-  SWTR1 = (1 << 1),           ///< DAC1 software trigger
+  SWTR0 = (1u << 0),          ///< DAC0 software trigger
+  SWTR1 = (1u << 1),          ///< DAC1 software trigger
   Reserved_mask = 0xfffffffc  ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::SWT_bits);
@@ -76,8 +76,8 @@ enum class DAC_regs::SWT_shift : unsigned {
  * DAC0 12-bit right-aligned data holding register
  */
 enum class DAC_regs::DAC0_R12DH_bits : uint32_t {
-  DAC0_DH_mask = (0xfff << 0),  ///< DAC0 12-bit right-aligned data
-  Reserved_mask = 0xfffff000    ///< All reserved bits
+  DAC0_DH_mask = (0xfffu << 0),  ///< DAC0 12-bit right-aligned data
+  Reserved_mask = 0xfffff000     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC0_R12DH_bits);
 
@@ -94,8 +94,8 @@ enum class DAC_regs::DAC0_R12DH_shift : unsigned {
  * DAC0 12-bit left-aligned data holding register
  */
 enum class DAC_regs::DAC0_L12DH_bits : uint32_t {
-  DAC0_DH_mask = (0xfff << 4),  ///< DAC0 12-bit left-aligned data
-  Reserved_mask = 0xffff000f    ///< All reserved bits
+  DAC0_DH_mask = (0xfffu << 4),  ///< DAC0 12-bit left-aligned data
+  Reserved_mask = 0xffff000f     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC0_L12DH_bits);
 
@@ -112,8 +112,8 @@ enum class DAC_regs::DAC0_L12DH_shift : unsigned {
  * DAC0 8-bit right aligned data holding register
  */
 enum class DAC_regs::DAC0_R8DH_bits : uint32_t {
-  DAC0_DH_mask = (0xff << 0),  ///< DAC0 8-bit right-aligned data
-  Reserved_mask = 0xffffff00   ///< All reserved bits
+  DAC0_DH_mask = (0xffu << 0),  ///< DAC0 8-bit right-aligned data
+  Reserved_mask = 0xffffff00    ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC0_R8DH_bits);
 
@@ -130,8 +130,8 @@ enum class DAC_regs::DAC0_R8DH_shift : unsigned {
  * DAC1 12-bit right-aligned data holding register
  */
 enum class DAC_regs::DAC1_R12DH_bits : uint32_t {
-  DAC1_DH_mask = (0xfff << 0),  ///< DAC1 12-bit right-aligned data
-  Reserved_mask = 0xfffff000    ///< All reserved bits
+  DAC1_DH_mask = (0xfffu << 0),  ///< DAC1 12-bit right-aligned data
+  Reserved_mask = 0xfffff000     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC1_R12DH_bits);
 
@@ -148,8 +148,8 @@ enum class DAC_regs::DAC1_R12DH_shift : unsigned {
  * DAC1 12-bit left aligned data holding register
  */
 enum class DAC_regs::DAC1_L12DH_bits : uint32_t {
-  DAC1_DH_mask = (0xfff << 4),  ///< DAC1 12-bit left-aligned data
-  Reserved_mask = 0xffff000f    ///< All reserved bits
+  DAC1_DH_mask = (0xfffu << 4),  ///< DAC1 12-bit left-aligned data
+  Reserved_mask = 0xffff000f     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC1_L12DH_bits);
 
@@ -166,8 +166,8 @@ enum class DAC_regs::DAC1_L12DH_shift : unsigned {
  * DAC1 8-bit right aligned data holding register
  */
 enum class DAC_regs::DAC1_R8DH_bits : uint32_t {
-  DAC1_DH_mask = (0xff << 0),  ///< DAC1 8-bit right-aligned data
-  Reserved_mask = 0xffffff00   ///< All reserved bits
+  DAC1_DH_mask = (0xffu << 0),  ///< DAC1 8-bit right-aligned data
+  Reserved_mask = 0xffffff00    ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC1_R8DH_bits);
 
@@ -184,9 +184,9 @@ enum class DAC_regs::DAC1_R8DH_shift : unsigned {
  * DAC concurrent mode 12-bit right-aligned data holding register
  */
 enum class DAC_regs::DACC_R12DH_bits : uint32_t {
-  DAC0_DH_mask = (0xfff << 0),   ///< DAC0 12-bit right-aligned data
-  DAC1_DH_mask = (0xfff << 16),  ///< DAC1 12-bit right-aligned data
-  Reserved_mask = 0xf000f000     ///< All reserved bits
+  DAC0_DH_mask = (0xfffu << 0),   ///< DAC0 12-bit right-aligned data
+  DAC1_DH_mask = (0xfffu << 16),  ///< DAC1 12-bit right-aligned data
+  Reserved_mask = 0xf000f000      ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DACC_R12DH_bits);
 
@@ -204,9 +204,9 @@ enum class DAC_regs::DACC_R12DH_shift : unsigned {
  * DAC concurrent mode 12-bit left aligned data holding register
  */
 enum class DAC_regs::DACC_L12DH_bits : uint32_t {
-  DAC0_DH_mask = (0xfff << 4),   ///< DAC0 12-bit left-aligned data
-  DAC1_DH_mask = (0xfff << 20),  ///< DAC1 12-bit left-aligned data
-  Reserved_mask = 0x000f000f     ///< All reserved bits
+  DAC0_DH_mask = (0xfffu << 4),   ///< DAC0 12-bit left-aligned data
+  DAC1_DH_mask = (0xfffu << 20),  ///< DAC1 12-bit left-aligned data
+  Reserved_mask = 0x000f000f      ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DACC_L12DH_bits);
 
@@ -224,9 +224,9 @@ enum class DAC_regs::DACC_L12DH_shift : unsigned {
  * DAC concurrent mode 8-bit right aligned data holding register
  */
 enum class DAC_regs::DACC_R8DH_bits : uint32_t {
-  DAC0_DH_mask = (0xff << 0),  ///< DAC0 8-bit right-aligned data
-  DAC1_DH_mask = (0xff << 8),  ///< DAC1 8-bit right-aligned data
-  Reserved_mask = 0xffff0000   ///< All reserved bits
+  DAC0_DH_mask = (0xffu << 0),  ///< DAC0 8-bit right-aligned data
+  DAC1_DH_mask = (0xffu << 8),  ///< DAC1 8-bit right-aligned data
+  Reserved_mask = 0xffff0000    ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DACC_R8DH_bits);
 
@@ -244,8 +244,8 @@ enum class DAC_regs::DACC_R8DH_shift : unsigned {
  * DAC0 data output register
  */
 enum class DAC_regs::DAC0_DO_bits : uint32_t {
-  DAC0_DO_mask = (0xfff << 0),  ///< DAC0 data output
-  Reserved_mask = 0xfffff000    ///< All reserved bits
+  DAC0_DO_mask = (0xfffu << 0),  ///< DAC0 data output
+  Reserved_mask = 0xfffff000     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC0_DO_bits);
 
@@ -262,8 +262,8 @@ enum class DAC_regs::DAC0_DO_shift : unsigned {
  * DAC1 data output register
  */
 enum class DAC_regs::DAC1_DO_bits : uint32_t {
-  DAC1_DO_mask = (0xfff << 0),  ///< DAC1 data output
-  Reserved_mask = 0xfffff000    ///< All reserved bits
+  DAC1_DO_mask = (0xfffu << 0),  ///< DAC1 data output
+  Reserved_mask = 0xfffff000     ///< All reserved bits
 };
 void HasBitwiseOperators(DAC_regs::DAC1_DO_bits);
 

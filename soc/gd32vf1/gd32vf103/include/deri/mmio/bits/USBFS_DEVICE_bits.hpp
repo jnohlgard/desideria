@@ -12,10 +12,10 @@ namespace deri::mmio {
  * device configuration register (DCFG)
  */
 enum class USBFS_DEVICE_regs::DCFG_bits : uint32_t {
-  DS_mask = (0x3 << 0),       ///< Device speed
-  NZLSOH = (1 << 2),          ///< Non-zero-length status OUT handshake
-  DAR_mask = (0x7f << 4),     ///< Device address
-  EOPFT_mask = (0x3 << 11),   ///< end of periodic frame time
+  DS_mask = (0x3u << 0),      ///< Device speed
+  NZLSOH = (1u << 2),         ///< Non-zero-length status OUT handshake
+  DAR_mask = (0x7fu << 4),    ///< Device address
+  EOPFT_mask = (0x3u << 11),  ///< end of periodic frame time
   Reserved_mask = 0xffffe008  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DCFG_bits);
@@ -36,15 +36,15 @@ enum class USBFS_DEVICE_regs::DCFG_shift : unsigned {
  * device control register (DCTL)
  */
 enum class USBFS_DEVICE_regs::DCTL_bits : uint32_t {
-  RWKUP = (1 << 0),           ///< Remote wakeup
-  SD = (1 << 1),              ///< Soft disconnect
-  GINS = (1 << 2),            ///< Global IN NAK status
-  GONS = (1 << 3),            ///< Global OUT NAK status
-  SGINAK = (1 << 7),          ///< Set global IN NAK
-  CGINAK = (1 << 8),          ///< Clear global IN NAK
-  SGONAK = (1 << 9),          ///< Set global OUT NAK
-  CGONAK = (1 << 10),         ///< Clear global OUT NAK
-  POIF = (1 << 11),           ///< Power-on initialization flag
+  RWKUP = (1u << 0),          ///< Remote wakeup
+  SD = (1u << 1),             ///< Soft disconnect
+  GINS = (1u << 2),           ///< Global IN NAK status
+  GONS = (1u << 3),           ///< Global OUT NAK status
+  SGINAK = (1u << 7),         ///< Set global IN NAK
+  CGINAK = (1u << 8),         ///< Clear global IN NAK
+  SGONAK = (1u << 9),         ///< Set global OUT NAK
+  CGONAK = (1u << 10),        ///< Clear global OUT NAK
+  POIF = (1u << 11),          ///< Power-on initialization flag
   Reserved_mask = 0xfffff070  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DCTL_bits);
@@ -70,10 +70,10 @@ enum class USBFS_DEVICE_regs::DCTL_shift : unsigned {
  * device status register (DSTAT)
  */
 enum class USBFS_DEVICE_regs::DSTAT_bits : uint32_t {
-  SPST = (1 << 0),              ///< Suspend status
-  ES_mask = (0x3 << 1),         ///< Enumerated speed
-  FNRSOF_mask = (0x3fff << 8),  ///< Frame number of the received SOF
-  Reserved_mask = 0xffc000f8    ///< All reserved bits
+  SPST = (1u << 0),              ///< Suspend status
+  ES_mask = (0x3u << 1),         ///< Enumerated speed
+  FNRSOF_mask = (0x3fffu << 8),  ///< Frame number of the received SOF
+  Reserved_mask = 0xffc000f8     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DSTAT_bits);
 
@@ -92,12 +92,12 @@ enum class USBFS_DEVICE_regs::DSTAT_shift : unsigned {
  * device IN endpoint common interrupt mask register (DIEPINTEN)
  */
 enum class USBFS_DEVICE_regs::DIEPINTEN_bits : uint32_t {
-  TFEN = (1 << 0),       ///< Transfer finished interrupt enable
-  EPDISEN = (1 << 1),    ///< Endpoint disabled interrupt enable
-  CITOEN = (1 << 3),     ///< Control IN timeout condition interrupt enable
-                         ///< (Non-isochronous endpoints)
-  EPTXFUDEN = (1 << 4),  ///< Endpoint Tx FIFO underrun interrupt enable bit
-  IEPNEEN = (1 << 6),    ///< IN endpoint NAK effective interrupt enable
+  TFEN = (1u << 0),       ///< Transfer finished interrupt enable
+  EPDISEN = (1u << 1),    ///< Endpoint disabled interrupt enable
+  CITOEN = (1u << 3),     ///< Control IN timeout condition interrupt enable
+                          ///< (Non-isochronous endpoints)
+  EPTXFUDEN = (1u << 4),  ///< Endpoint Tx FIFO underrun interrupt enable bit
+  IEPNEEN = (1u << 6),    ///< IN endpoint NAK effective interrupt enable
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEPINTEN_bits);
@@ -119,11 +119,11 @@ enum class USBFS_DEVICE_regs::DIEPINTEN_shift : unsigned {
  * device OUT endpoint common interrupt enable register (DOEPINTEN)
  */
 enum class USBFS_DEVICE_regs::DOEPINTEN_bits : uint32_t {
-  TFEN = (1 << 0),            ///< Transfer finished interrupt enable
-  EPDISEN = (1 << 1),         ///< Endpoint disabled interrupt enable
-  STPFEN = (1 << 3),          ///< SETUP phase finished interrupt enable
-  EPRXFOVREN = (1 << 4),      ///< Endpoint Rx FIFO overrun interrupt enable
-  BTBSTPEN = (1 << 6),        ///< Back-to-back SETUP packets interrupt enable
+  TFEN = (1u << 0),           ///< Transfer finished interrupt enable
+  EPDISEN = (1u << 1),        ///< Endpoint disabled interrupt enable
+  STPFEN = (1u << 3),         ///< SETUP phase finished interrupt enable
+  EPRXFOVREN = (1u << 4),     ///< Endpoint Rx FIFO overrun interrupt enable
+  BTBSTPEN = (1u << 6),       ///< Back-to-back SETUP packets interrupt enable
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEPINTEN_bits);
@@ -145,9 +145,9 @@ enum class USBFS_DEVICE_regs::DOEPINTEN_shift : unsigned {
  * device all endpoints interrupt register (DAEPINT)
  */
 enum class USBFS_DEVICE_regs::DAEPINT_bits : uint32_t {
-  IEPITB_mask = (0xf << 0),   ///< Device all IN endpoint interrupt bits
-  OEPITB_mask = (0xf << 16),  ///< Device all OUT endpoint interrupt bits
-  Reserved_mask = 0xfff0fff0  ///< All reserved bits
+  IEPITB_mask = (0xfu << 0),   ///< Device all IN endpoint interrupt bits
+  OEPITB_mask = (0xfu << 16),  ///< Device all OUT endpoint interrupt bits
+  Reserved_mask = 0xfff0fff0   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DAEPINT_bits);
 
@@ -165,8 +165,8 @@ enum class USBFS_DEVICE_regs::DAEPINT_shift : unsigned {
  * Device all endpoints interrupt enable register (DAEPINTEN)
  */
 enum class USBFS_DEVICE_regs::DAEPINTEN_bits : uint32_t {
-  IEPIE_mask = (0xf << 0),    ///< IN EP interrupt interrupt enable bits
-  OEPIE_mask = (0xf << 16),   ///< OUT endpoint interrupt enable bits
+  IEPIE_mask = (0xfu << 0),   ///< IN EP interrupt interrupt enable bits
+  OEPIE_mask = (0xfu << 16),  ///< OUT endpoint interrupt enable bits
   Reserved_mask = 0xfff0fff0  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DAEPINTEN_bits);
@@ -185,8 +185,8 @@ enum class USBFS_DEVICE_regs::DAEPINTEN_shift : unsigned {
  * device VBUS discharge time register
  */
 enum class USBFS_DEVICE_regs::DVBUSDT_bits : uint32_t {
-  DVBUSDT_mask = (0xffff << 0),  ///< Device VBUS discharge time
-  Reserved_mask = 0xffff0000     ///< All reserved bits
+  DVBUSDT_mask = (0xffffu << 0),  ///< Device VBUS discharge time
+  Reserved_mask = 0xffff0000      ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DVBUSDT_bits);
 
@@ -203,8 +203,8 @@ enum class USBFS_DEVICE_regs::DVBUSDT_shift : unsigned {
  * device VBUS pulsing time register
  */
 enum class USBFS_DEVICE_regs::DVBUSPT_bits : uint32_t {
-  DVBUSPT_mask = (0xfff << 0),  ///< Device VBUS pulsing time
-  Reserved_mask = 0xfffff000    ///< All reserved bits
+  DVBUSPT_mask = (0xfffu << 0),  ///< Device VBUS pulsing time
+  Reserved_mask = 0xfffff000     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DVBUSPT_bits);
 
@@ -221,8 +221,8 @@ enum class USBFS_DEVICE_regs::DVBUSPT_shift : unsigned {
  * device IN endpoint FIFO empty interrupt enable register
  */
 enum class USBFS_DEVICE_regs::DIEPFEINTEN_bits : uint32_t {
-  IEPTXFEIE_mask = (0xf << 0),  ///< IN EP Tx FIFO empty interrupt enable bits
-  Reserved_mask = 0xfffffff0    ///< All reserved bits
+  IEPTXFEIE_mask = (0xfu << 0),  ///< IN EP Tx FIFO empty interrupt enable bits
+  Reserved_mask = 0xfffffff0     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEPFEINTEN_bits);
 
@@ -239,17 +239,17 @@ enum class USBFS_DEVICE_regs::DIEPFEINTEN_shift : unsigned {
  * device IN endpoint 0 control register (DIEP0CTL)
  */
 enum class USBFS_DEVICE_regs::DIEP0CTL_bits : uint32_t {
-  MPL_mask = (0x3 << 0),      ///< Maximum packet length
-  EPACT = (1 << 15),          ///< endpoint active
-  NAKS = (1 << 17),           ///< NAK status
-  EPTYPE_mask = (0x3 << 18),  ///< Endpoint type
-  STALL = (1 << 21),          ///< STALL handshake
-  TXFNUM_mask = (0xf << 22),  ///< TxFIFO number
-  CNAK = (1 << 26),           ///< Clear NAK
-  SNAK = (1 << 27),           ///< Set NAK
-  EPD = (1 << 30),            ///< Endpoint disable
-  EPEN = (1 << 31),           ///< Endpoint enable
-  Reserved_mask = 0x30117ffc  ///< All reserved bits
+  MPL_mask = (0x3u << 0),      ///< Maximum packet length
+  EPACT = (1u << 15),          ///< endpoint active
+  NAKS = (1u << 17),           ///< NAK status
+  EPTYPE_mask = (0x3u << 18),  ///< Endpoint type
+  STALL = (1u << 21),          ///< STALL handshake
+  TXFNUM_mask = (0xfu << 22),  ///< TxFIFO number
+  CNAK = (1u << 26),           ///< Clear NAK
+  SNAK = (1u << 27),           ///< Set NAK
+  EPD = (1u << 30),            ///< Endpoint disable
+  EPEN = (1u << 31),           ///< Endpoint enable
+  Reserved_mask = 0x30117ffc   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP0CTL_bits);
 
@@ -275,12 +275,12 @@ enum class USBFS_DEVICE_regs::DIEP0CTL_shift : unsigned {
  * device endpoint-0 interrupt register
  */
 enum class USBFS_DEVICE_regs::DIEP0INTF_bits : uint32_t {
-  TXFE = (1 << 7),            ///< Transmit FIFO empty
-  IEPNE = (1 << 6),           ///< IN endpoint NAK effective
-  EPTXFUD = (1 << 4),         ///< Endpoint Tx FIFO underrun
-  CITO = (1 << 3),            ///< Control in timeout interrupt
-  EPDIS = (1 << 1),           ///< Endpoint finished
-  TF = (1 << 0),              ///< Transfer finished
+  TXFE = (1u << 7),           ///< Transmit FIFO empty
+  IEPNE = (1u << 6),          ///< IN endpoint NAK effective
+  EPTXFUD = (1u << 4),        ///< Endpoint Tx FIFO underrun
+  CITO = (1u << 3),           ///< Control in timeout interrupt
+  EPDIS = (1u << 1),          ///< Endpoint finished
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffff24  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP0INTF_bits);
@@ -303,8 +303,8 @@ enum class USBFS_DEVICE_regs::DIEP0INTF_shift : unsigned {
  * device IN endpoint-0 transfer length register
  */
 enum class USBFS_DEVICE_regs::DIEP0LEN_bits : uint32_t {
-  PCNT_mask = (0x3 << 19),    ///< Packet count
-  TLEN_mask = (0x7f << 0),    ///< Transfer length
+  PCNT_mask = (0x3u << 19),   ///< Packet count
+  TLEN_mask = (0x7fu << 0),   ///< Transfer length
   Reserved_mask = 0xffe7ff80  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP0LEN_bits);
@@ -323,8 +323,8 @@ enum class USBFS_DEVICE_regs::DIEP0LEN_shift : unsigned {
  * device IN endpoint 0 transmit FIFO status register
  */
 enum class USBFS_DEVICE_regs::DIEP0TFSTAT_bits : uint32_t {
-  IEPTFS_mask = (0xffff << 0),  ///< IN endpoint TxFIFO space remaining
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IEPTFS_mask = (0xffffu << 0),  ///< IN endpoint TxFIFO space remaining
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP0TFSTAT_bits);
 
@@ -341,20 +341,20 @@ enum class USBFS_DEVICE_regs::DIEP0TFSTAT_shift : unsigned {
  * device in endpoint-1 control register
  */
 enum class USBFS_DEVICE_regs::DIEP1CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< Set DATA1 PID/Set odd frame
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVNFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  TXFNUM_mask = (0xf << 22),    ///< Tx FIFO number
-  STALL = (1 << 21),            ///< STALL handshake
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x00107800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< Set DATA1 PID/Set odd frame
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVNFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  TXFNUM_mask = (0xfu << 22),    ///< Tx FIFO number
+  STALL = (1u << 21),            ///< STALL handshake
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x00107800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP1CTL_bits);
 
@@ -383,12 +383,12 @@ enum class USBFS_DEVICE_regs::DIEP1CTL_shift : unsigned {
  * device endpoint-1 interrupt register
  */
 enum class USBFS_DEVICE_regs::DIEP1INTF_bits : uint32_t {
-  TXFE = (1 << 7),            ///< Transmit FIFO empty
-  IEPNE = (1 << 6),           ///< IN endpoint NAK effective
-  EPTXFUD = (1 << 4),         ///< Endpoint Tx FIFO underrun
-  CITO = (1 << 3),            ///< Control in timeout interrupt
-  EPDIS = (1 << 1),           ///< Endpoint finished
-  TF = (1 << 0),              ///< Transfer finished
+  TXFE = (1u << 7),           ///< Transmit FIFO empty
+  IEPNE = (1u << 6),          ///< IN endpoint NAK effective
+  EPTXFUD = (1u << 4),        ///< Endpoint Tx FIFO underrun
+  CITO = (1u << 3),           ///< Control in timeout interrupt
+  EPDIS = (1u << 1),          ///< Endpoint finished
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffff24  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP1INTF_bits);
@@ -411,10 +411,10 @@ enum class USBFS_DEVICE_regs::DIEP1INTF_shift : unsigned {
  * device IN endpoint-1 transfer length register
  */
 enum class USBFS_DEVICE_regs::DIEP1LEN_bits : uint32_t {
-  MCPF_mask = (0x3 << 29),     ///< Multi packet count per frame
-  PCNT_mask = (0x3ff << 19),   ///< Packet count
-  TLEN_mask = (0x7ffff << 0),  ///< Transfer length
-  Reserved_mask = 0x80000000   ///< All reserved bits
+  MCPF_mask = (0x3u << 29),     ///< Multi packet count per frame
+  PCNT_mask = (0x3ffu << 19),   ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),  ///< Transfer length
+  Reserved_mask = 0x80000000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP1LEN_bits);
 
@@ -433,8 +433,8 @@ enum class USBFS_DEVICE_regs::DIEP1LEN_shift : unsigned {
  * device IN endpoint 1 transmit FIFO status register
  */
 enum class USBFS_DEVICE_regs::DIEP1TFSTAT_bits : uint32_t {
-  IEPTFS_mask = (0xffff << 0),  ///< IN endpoint TxFIFO space remaining
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IEPTFS_mask = (0xffffu << 0),  ///< IN endpoint TxFIFO space remaining
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP1TFSTAT_bits);
 
@@ -451,20 +451,20 @@ enum class USBFS_DEVICE_regs::DIEP1TFSTAT_shift : unsigned {
  * device endpoint-2 control register
  */
 enum class USBFS_DEVICE_regs::DIEP2CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< Set DATA1 PID/Set odd frame
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVNFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  TXFNUM_mask = (0xf << 22),    ///< Tx FIFO number
-  STALL = (1 << 21),            ///< STALL handshake
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x00107800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< Set DATA1 PID/Set odd frame
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVNFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  TXFNUM_mask = (0xfu << 22),    ///< Tx FIFO number
+  STALL = (1u << 21),            ///< STALL handshake
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x00107800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP2CTL_bits);
 
@@ -493,12 +493,12 @@ enum class USBFS_DEVICE_regs::DIEP2CTL_shift : unsigned {
  * device endpoint-2 interrupt register
  */
 enum class USBFS_DEVICE_regs::DIEP2INTF_bits : uint32_t {
-  TXFE = (1 << 7),            ///< Transmit FIFO empty
-  IEPNE = (1 << 6),           ///< IN endpoint NAK effective
-  EPTXFUD = (1 << 4),         ///< Endpoint Tx FIFO underrun
-  CITO = (1 << 3),            ///< Control in timeout interrupt
-  EPDIS = (1 << 1),           ///< Endpoint finished
-  TF = (1 << 0),              ///< Transfer finished
+  TXFE = (1u << 7),           ///< Transmit FIFO empty
+  IEPNE = (1u << 6),          ///< IN endpoint NAK effective
+  EPTXFUD = (1u << 4),        ///< Endpoint Tx FIFO underrun
+  CITO = (1u << 3),           ///< Control in timeout interrupt
+  EPDIS = (1u << 1),          ///< Endpoint finished
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffff24  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP2INTF_bits);
@@ -521,10 +521,10 @@ enum class USBFS_DEVICE_regs::DIEP2INTF_shift : unsigned {
  * device IN endpoint-2 transfer length register
  */
 enum class USBFS_DEVICE_regs::DIEP2LEN_bits : uint32_t {
-  MCPF_mask = (0x3 << 29),     ///< Multi packet count per frame
-  PCNT_mask = (0x3ff << 19),   ///< Packet count
-  TLEN_mask = (0x7ffff << 0),  ///< Transfer length
-  Reserved_mask = 0x80000000   ///< All reserved bits
+  MCPF_mask = (0x3u << 29),     ///< Multi packet count per frame
+  PCNT_mask = (0x3ffu << 19),   ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),  ///< Transfer length
+  Reserved_mask = 0x80000000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP2LEN_bits);
 
@@ -543,8 +543,8 @@ enum class USBFS_DEVICE_regs::DIEP2LEN_shift : unsigned {
  * device IN endpoint 2 transmit FIFO status register
  */
 enum class USBFS_DEVICE_regs::DIEP2TFSTAT_bits : uint32_t {
-  IEPTFS_mask = (0xffff << 0),  ///< IN endpoint TxFIFO space remaining
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IEPTFS_mask = (0xffffu << 0),  ///< IN endpoint TxFIFO space remaining
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP2TFSTAT_bits);
 
@@ -561,20 +561,20 @@ enum class USBFS_DEVICE_regs::DIEP2TFSTAT_shift : unsigned {
  * device endpoint-3 control register
  */
 enum class USBFS_DEVICE_regs::DIEP3CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< Set DATA1 PID/Set odd frame
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVNFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  TXFNUM_mask = (0xf << 22),    ///< Tx FIFO number
-  STALL = (1 << 21),            ///< STALL handshake
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x00107800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< Set DATA1 PID/Set odd frame
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVNFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  TXFNUM_mask = (0xfu << 22),    ///< Tx FIFO number
+  STALL = (1u << 21),            ///< STALL handshake
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x00107800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP3CTL_bits);
 
@@ -603,12 +603,12 @@ enum class USBFS_DEVICE_regs::DIEP3CTL_shift : unsigned {
  * device endpoint-3 interrupt register
  */
 enum class USBFS_DEVICE_regs::DIEP3INTF_bits : uint32_t {
-  TXFE = (1 << 7),            ///< Transmit FIFO empty
-  IEPNE = (1 << 6),           ///< IN endpoint NAK effective
-  EPTXFUD = (1 << 4),         ///< Endpoint Tx FIFO underrun
-  CITO = (1 << 3),            ///< Control in timeout interrupt
-  EPDIS = (1 << 1),           ///< Endpoint finished
-  TF = (1 << 0),              ///< Transfer finished
+  TXFE = (1u << 7),           ///< Transmit FIFO empty
+  IEPNE = (1u << 6),          ///< IN endpoint NAK effective
+  EPTXFUD = (1u << 4),        ///< Endpoint Tx FIFO underrun
+  CITO = (1u << 3),           ///< Control in timeout interrupt
+  EPDIS = (1u << 1),          ///< Endpoint finished
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffff24  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP3INTF_bits);
@@ -631,10 +631,10 @@ enum class USBFS_DEVICE_regs::DIEP3INTF_shift : unsigned {
  * device IN endpoint-3 transfer length register
  */
 enum class USBFS_DEVICE_regs::DIEP3LEN_bits : uint32_t {
-  MCPF_mask = (0x3 << 29),     ///< Multi packet count per frame
-  PCNT_mask = (0x3ff << 19),   ///< Packet count
-  TLEN_mask = (0x7ffff << 0),  ///< Transfer length
-  Reserved_mask = 0x80000000   ///< All reserved bits
+  MCPF_mask = (0x3u << 29),     ///< Multi packet count per frame
+  PCNT_mask = (0x3ffu << 19),   ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),  ///< Transfer length
+  Reserved_mask = 0x80000000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP3LEN_bits);
 
@@ -653,8 +653,8 @@ enum class USBFS_DEVICE_regs::DIEP3LEN_shift : unsigned {
  * device IN endpoint 3 transmit FIFO status register
  */
 enum class USBFS_DEVICE_regs::DIEP3TFSTAT_bits : uint32_t {
-  IEPTFS_mask = (0xffff << 0),  ///< IN endpoint TxFIFO space remaining
-  Reserved_mask = 0xffff0000    ///< All reserved bits
+  IEPTFS_mask = (0xffffu << 0),  ///< IN endpoint TxFIFO space remaining
+  Reserved_mask = 0xffff0000     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DIEP3TFSTAT_bits);
 
@@ -671,17 +671,17 @@ enum class USBFS_DEVICE_regs::DIEP3TFSTAT_shift : unsigned {
  * device endpoint-0 control register
  */
 enum class USBFS_DEVICE_regs::DOEP0CTL_bits : uint32_t {
-  EPEN = (1 << 31),           ///< Endpoint enable
-  EPD = (1 << 30),            ///< Endpoint disable
-  SNAK = (1 << 27),           ///< Set NAK
-  CNAK = (1 << 26),           ///< Clear NAK
-  STALL = (1 << 21),          ///< STALL handshake
-  SNOOP = (1 << 20),          ///< Snoop mode
-  EPTYPE_mask = (0x3 << 18),  ///< Endpoint type
-  NAKS = (1 << 17),           ///< NAK status
-  EPACT = (1 << 15),          ///< Endpoint active
-  MPL_mask = (0x3 << 0),      ///< Maximum packet length
-  Reserved_mask = 0x33c17ffc  ///< All reserved bits
+  EPEN = (1u << 31),           ///< Endpoint enable
+  EPD = (1u << 30),            ///< Endpoint disable
+  SNAK = (1u << 27),           ///< Set NAK
+  CNAK = (1u << 26),           ///< Clear NAK
+  STALL = (1u << 21),          ///< STALL handshake
+  SNOOP = (1u << 20),          ///< Snoop mode
+  EPTYPE_mask = (0x3u << 18),  ///< Endpoint type
+  NAKS = (1u << 17),           ///< NAK status
+  EPACT = (1u << 15),          ///< Endpoint active
+  MPL_mask = (0x3u << 0),      ///< Maximum packet length
+  Reserved_mask = 0x33c17ffc   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP0CTL_bits);
 
@@ -707,11 +707,11 @@ enum class USBFS_DEVICE_regs::DOEP0CTL_shift : unsigned {
  * device out endpoint-0 interrupt flag register
  */
 enum class USBFS_DEVICE_regs::DOEP0INTF_bits : uint32_t {
-  BTBSTP = (1 << 6),          ///< Back-to-back SETUP packets
-  EPRXFOVR = (1 << 4),        ///< Endpoint Rx FIFO overrun
-  STPF = (1 << 3),            ///< Setup phase finished
-  EPDIS = (1 << 1),           ///< Endpoint disabled
-  TF = (1 << 0),              ///< Transfer finished
+  BTBSTP = (1u << 6),         ///< Back-to-back SETUP packets
+  EPRXFOVR = (1u << 4),       ///< Endpoint Rx FIFO overrun
+  STPF = (1u << 3),           ///< Setup phase finished
+  EPDIS = (1u << 1),          ///< Endpoint disabled
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP0INTF_bits);
@@ -733,10 +733,10 @@ enum class USBFS_DEVICE_regs::DOEP0INTF_shift : unsigned {
  * device OUT endpoint-0 transfer length register
  */
 enum class USBFS_DEVICE_regs::DOEP0LEN_bits : uint32_t {
-  STPCNT_mask = (0x3 << 29),  ///< SETUP packet count
-  PCNT = (1 << 19),           ///< Packet count
-  TLEN_mask = (0x7f << 0),    ///< Transfer length
-  Reserved_mask = 0x9ff7ff80  ///< All reserved bits
+  STPCNT_mask = (0x3u << 29),  ///< SETUP packet count
+  PCNT = (1u << 19),           ///< Packet count
+  TLEN_mask = (0x7fu << 0),    ///< Transfer length
+  Reserved_mask = 0x9ff7ff80   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP0LEN_bits);
 
@@ -755,20 +755,20 @@ enum class USBFS_DEVICE_regs::DOEP0LEN_shift : unsigned {
  * device endpoint-1 control register
  */
 enum class USBFS_DEVICE_regs::DOEP1CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< SD1PID/SODDFRM
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVENFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  STALL = (1 << 21),            ///< STALL handshake
-  SNOOP = (1 << 20),            ///< Snoop mode
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x03c07800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< SD1PID/SODDFRM
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVENFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  STALL = (1u << 21),            ///< STALL handshake
+  SNOOP = (1u << 20),            ///< Snoop mode
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x03c07800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP1CTL_bits);
 
@@ -797,11 +797,11 @@ enum class USBFS_DEVICE_regs::DOEP1CTL_shift : unsigned {
  * device out endpoint-1 interrupt flag register
  */
 enum class USBFS_DEVICE_regs::DOEP1INTF_bits : uint32_t {
-  BTBSTP = (1 << 6),          ///< Back-to-back SETUP packets
-  EPRXFOVR = (1 << 4),        ///< Endpoint Rx FIFO overrun
-  STPF = (1 << 3),            ///< Setup phase finished
-  EPDIS = (1 << 1),           ///< Endpoint disabled
-  TF = (1 << 0),              ///< Transfer finished
+  BTBSTP = (1u << 6),         ///< Back-to-back SETUP packets
+  EPRXFOVR = (1u << 4),       ///< Endpoint Rx FIFO overrun
+  STPF = (1u << 3),           ///< Setup phase finished
+  EPDIS = (1u << 1),          ///< Endpoint disabled
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP1INTF_bits);
@@ -823,10 +823,10 @@ enum class USBFS_DEVICE_regs::DOEP1INTF_shift : unsigned {
  * device OUT endpoint-1 transfer length register
  */
 enum class USBFS_DEVICE_regs::DOEP1LEN_bits : uint32_t {
-  STPCNT_RXDPID_mask = (0x3 << 29),  ///< SETUP packet count/Received data PID
-  PCNT_mask = (0x3ff << 19),         ///< Packet count
-  TLEN_mask = (0x7ffff << 0),        ///< Transfer length
-  Reserved_mask = 0x80000000         ///< All reserved bits
+  STPCNT_RXDPID_mask = (0x3u << 29),  ///< SETUP packet count/Received data PID
+  PCNT_mask = (0x3ffu << 19),         ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),        ///< Transfer length
+  Reserved_mask = 0x80000000          ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP1LEN_bits);
 
@@ -845,20 +845,20 @@ enum class USBFS_DEVICE_regs::DOEP1LEN_shift : unsigned {
  * device endpoint-2 control register
  */
 enum class USBFS_DEVICE_regs::DOEP2CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< SD1PID/SODDFRM
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVENFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  STALL = (1 << 21),            ///< STALL handshake
-  SNOOP = (1 << 20),            ///< Snoop mode
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x03c07800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< SD1PID/SODDFRM
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVENFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  STALL = (1u << 21),            ///< STALL handshake
+  SNOOP = (1u << 20),            ///< Snoop mode
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x03c07800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP2CTL_bits);
 
@@ -887,11 +887,11 @@ enum class USBFS_DEVICE_regs::DOEP2CTL_shift : unsigned {
  * device out endpoint-2 interrupt flag register
  */
 enum class USBFS_DEVICE_regs::DOEP2INTF_bits : uint32_t {
-  BTBSTP = (1 << 6),          ///< Back-to-back SETUP packets
-  EPRXFOVR = (1 << 4),        ///< Endpoint Rx FIFO overrun
-  STPF = (1 << 3),            ///< Setup phase finished
-  EPDIS = (1 << 1),           ///< Endpoint disabled
-  TF = (1 << 0),              ///< Transfer finished
+  BTBSTP = (1u << 6),         ///< Back-to-back SETUP packets
+  EPRXFOVR = (1u << 4),       ///< Endpoint Rx FIFO overrun
+  STPF = (1u << 3),           ///< Setup phase finished
+  EPDIS = (1u << 1),          ///< Endpoint disabled
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP2INTF_bits);
@@ -913,10 +913,10 @@ enum class USBFS_DEVICE_regs::DOEP2INTF_shift : unsigned {
  * device OUT endpoint-2 transfer length register
  */
 enum class USBFS_DEVICE_regs::DOEP2LEN_bits : uint32_t {
-  STPCNT_RXDPID_mask = (0x3 << 29),  ///< SETUP packet count/Received data PID
-  PCNT_mask = (0x3ff << 19),         ///< Packet count
-  TLEN_mask = (0x7ffff << 0),        ///< Transfer length
-  Reserved_mask = 0x80000000         ///< All reserved bits
+  STPCNT_RXDPID_mask = (0x3u << 29),  ///< SETUP packet count/Received data PID
+  PCNT_mask = (0x3ffu << 19),         ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),        ///< Transfer length
+  Reserved_mask = 0x80000000          ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP2LEN_bits);
 
@@ -935,20 +935,20 @@ enum class USBFS_DEVICE_regs::DOEP2LEN_shift : unsigned {
  * device endpoint-3 control register
  */
 enum class USBFS_DEVICE_regs::DOEP3CTL_bits : uint32_t {
-  EPEN = (1 << 31),             ///< Endpoint enable
-  EPD = (1 << 30),              ///< Endpoint disable
-  SD1PID_SODDFRM = (1 << 29),   ///< SD1PID/SODDFRM
-  SD0PID_SEVENFRM = (1 << 28),  ///< SD0PID/SEVENFRM
-  SNAK = (1 << 27),             ///< Set NAK
-  CNAK = (1 << 26),             ///< Clear NAK
-  STALL = (1 << 21),            ///< STALL handshake
-  SNOOP = (1 << 20),            ///< Snoop mode
-  EPTYPE_mask = (0x3 << 18),    ///< Endpoint type
-  NAKS = (1 << 17),             ///< NAK status
-  EOFRM_DPID = (1 << 16),       ///< EOFRM/DPID
-  EPACT = (1 << 15),            ///< Endpoint active
-  MPL_mask = (0x7ff << 0),      ///< maximum packet length
-  Reserved_mask = 0x03c07800    ///< All reserved bits
+  EPEN = (1u << 31),             ///< Endpoint enable
+  EPD = (1u << 30),              ///< Endpoint disable
+  SD1PID_SODDFRM = (1u << 29),   ///< SD1PID/SODDFRM
+  SD0PID_SEVENFRM = (1u << 28),  ///< SD0PID/SEVENFRM
+  SNAK = (1u << 27),             ///< Set NAK
+  CNAK = (1u << 26),             ///< Clear NAK
+  STALL = (1u << 21),            ///< STALL handshake
+  SNOOP = (1u << 20),            ///< Snoop mode
+  EPTYPE_mask = (0x3u << 18),    ///< Endpoint type
+  NAKS = (1u << 17),             ///< NAK status
+  EOFRM_DPID = (1u << 16),       ///< EOFRM/DPID
+  EPACT = (1u << 15),            ///< Endpoint active
+  MPL_mask = (0x7ffu << 0),      ///< maximum packet length
+  Reserved_mask = 0x03c07800     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP3CTL_bits);
 
@@ -977,11 +977,11 @@ enum class USBFS_DEVICE_regs::DOEP3CTL_shift : unsigned {
  * device out endpoint-3 interrupt flag register
  */
 enum class USBFS_DEVICE_regs::DOEP3INTF_bits : uint32_t {
-  BTBSTP = (1 << 6),          ///< Back-to-back SETUP packets
-  EPRXFOVR = (1 << 4),        ///< Endpoint Rx FIFO overrun
-  STPF = (1 << 3),            ///< Setup phase finished
-  EPDIS = (1 << 1),           ///< Endpoint disabled
-  TF = (1 << 0),              ///< Transfer finished
+  BTBSTP = (1u << 6),         ///< Back-to-back SETUP packets
+  EPRXFOVR = (1u << 4),       ///< Endpoint Rx FIFO overrun
+  STPF = (1u << 3),           ///< Setup phase finished
+  EPDIS = (1u << 1),          ///< Endpoint disabled
+  TF = (1u << 0),             ///< Transfer finished
   Reserved_mask = 0xffffffa4  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP3INTF_bits);
@@ -1003,10 +1003,10 @@ enum class USBFS_DEVICE_regs::DOEP3INTF_shift : unsigned {
  * device OUT endpoint-3 transfer length register
  */
 enum class USBFS_DEVICE_regs::DOEP3LEN_bits : uint32_t {
-  STPCNT_RXDPID_mask = (0x3 << 29),  ///< SETUP packet count/Received data PID
-  PCNT_mask = (0x3ff << 19),         ///< Packet count
-  TLEN_mask = (0x7ffff << 0),        ///< Transfer length
-  Reserved_mask = 0x80000000         ///< All reserved bits
+  STPCNT_RXDPID_mask = (0x3u << 29),  ///< SETUP packet count/Received data PID
+  PCNT_mask = (0x3ffu << 19),         ///< Packet count
+  TLEN_mask = (0x7ffffu << 0),        ///< Transfer length
+  Reserved_mask = 0x80000000          ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_DEVICE_regs::DOEP3LEN_bits);
 

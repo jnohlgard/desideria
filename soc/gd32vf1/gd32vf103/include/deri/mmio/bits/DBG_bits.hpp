@@ -12,7 +12,7 @@ namespace deri::mmio {
  * ID code register
  */
 enum class DBG_regs::ID_bits : uint32_t {
-  ID_CODE_mask = (0xffffffff << 0),  ///< DBG ID code register
+  ID_CODE_mask = (0xffffffffu << 0),  ///< DBG ID code register
 };
 void HasBitwiseOperators(DBG_regs::ID_bits);
 
@@ -29,22 +29,22 @@ enum class DBG_regs::ID_shift : unsigned {
  * Control register 0
  */
 enum class DBG_regs::CTL_bits : uint32_t {
-  SLP_HOLD = (1 << 0),        ///< Sleep mode hold register
-  DSLP_HOLD = (1 << 1),       ///< Deep-sleep mode hold register
-  STB_HOLD = (1 << 2),        ///< Standby mode hold register
-  FWDGT_HOLD = (1 << 8),      ///< FWDGT hold bit
-  WWDGT_HOLD = (1 << 9),      ///< WWDGT hold bit
-  TIMER0_HOLD = (1 << 10),    ///< TIMER 0 hold bit
-  TIMER1_HOLD = (1 << 11),    ///< TIMER 1 hold bit
-  TIMER2_HOLD = (1 << 12),    ///< TIMER 2 hold bit
-  TIMER3_HOLD = (1 << 13),    ///< TIMER 23 hold bit
-  CAN0_HOLD = (1 << 14),      ///< CAN0 hold bit
-  I2C0_HOLD = (1 << 15),      ///< I2C0 hold bit
-  I2C1_HOLD = (1 << 16),      ///< I2C1 hold bit
-  TIMER4_HOLD = (1 << 18),    ///< TIMER4_HOLD
-  TIMER5_HOLD = (1 << 19),    ///< TIMER 5 hold bit
-  TIMER6_HOLD = (1 << 20),    ///< TIMER 6 hold bit
-  CAN1_HOLD = (1 << 21),      ///< CAN1 hold bit
+  SLP_HOLD = (1u << 0),       ///< Sleep mode hold register
+  DSLP_HOLD = (1u << 1),      ///< Deep-sleep mode hold register
+  STB_HOLD = (1u << 2),       ///< Standby mode hold register
+  FWDGT_HOLD = (1u << 8),     ///< FWDGT hold bit
+  WWDGT_HOLD = (1u << 9),     ///< WWDGT hold bit
+  TIMER0_HOLD = (1u << 10),   ///< TIMER 0 hold bit
+  TIMER1_HOLD = (1u << 11),   ///< TIMER 1 hold bit
+  TIMER2_HOLD = (1u << 12),   ///< TIMER 2 hold bit
+  TIMER3_HOLD = (1u << 13),   ///< TIMER 23 hold bit
+  CAN0_HOLD = (1u << 14),     ///< CAN0 hold bit
+  I2C0_HOLD = (1u << 15),     ///< I2C0 hold bit
+  I2C1_HOLD = (1u << 16),     ///< I2C1 hold bit
+  TIMER4_HOLD = (1u << 18),   ///< TIMER4_HOLD
+  TIMER5_HOLD = (1u << 19),   ///< TIMER 5 hold bit
+  TIMER6_HOLD = (1u << 20),   ///< TIMER 6 hold bit
+  CAN1_HOLD = (1u << 21),     ///< CAN1 hold bit
   Reserved_mask = 0xffc200f8  ///< All reserved bits
 };
 void HasBitwiseOperators(DBG_regs::CTL_bits);

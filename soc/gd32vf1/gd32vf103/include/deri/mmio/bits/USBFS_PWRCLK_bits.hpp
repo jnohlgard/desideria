@@ -12,8 +12,8 @@ namespace deri::mmio {
  * power and clock gating control register (PWRCLKCTL)
  */
 enum class USBFS_PWRCLK_regs::PWRCLKCTL_bits : uint32_t {
-  SUCLK = (1 << 0),           ///< Stop the USB clock
-  SHCLK = (1 << 1),           ///< Stop HCLK
+  SUCLK = (1u << 0),          ///< Stop the USB clock
+  SHCLK = (1u << 1),          ///< Stop HCLK
   Reserved_mask = 0xfffffffc  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_PWRCLK_regs::PWRCLKCTL_bits);

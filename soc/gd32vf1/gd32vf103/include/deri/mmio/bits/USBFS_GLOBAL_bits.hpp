@@ -12,16 +12,16 @@ namespace deri::mmio {
  * Global OTG control and status register (USBFS_GOTGCS)
  */
 enum class USBFS_GLOBAL_regs::GOTGCS_bits : uint32_t {
-  SRPS = (1 << 0),            ///< SRP success
-  SRPREQ = (1 << 1),          ///< SRP request
-  HNPS = (1 << 8),            ///< Host success
-  HNPREQ = (1 << 9),          ///< HNP request
-  HHNPEN = (1 << 10),         ///< Host HNP enable
-  DHNPEN = (1 << 11),         ///< Device HNP enabled
-  IDPS = (1 << 16),           ///< ID pin status
-  DI = (1 << 17),             ///< Debounce interval
-  ASV = (1 << 18),            ///< A-session valid
-  BSV = (1 << 19),            ///< B-session valid
+  SRPS = (1u << 0),           ///< SRP success
+  SRPREQ = (1u << 1),         ///< SRP request
+  HNPS = (1u << 8),           ///< Host success
+  HNPREQ = (1u << 9),         ///< HNP request
+  HHNPEN = (1u << 10),        ///< Host HNP enable
+  DHNPEN = (1u << 11),        ///< Device HNP enabled
+  IDPS = (1u << 16),          ///< ID pin status
+  DI = (1u << 17),            ///< Debounce interval
+  ASV = (1u << 18),           ///< A-session valid
+  BSV = (1u << 19),           ///< B-session valid
   Reserved_mask = 0xfff0f0fc  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GOTGCS_bits);
@@ -48,12 +48,12 @@ enum class USBFS_GLOBAL_regs::GOTGCS_shift : unsigned {
  * Global OTG interrupt flag register (USBFS_GOTGINTF)
  */
 enum class USBFS_GLOBAL_regs::GOTGINTF_bits : uint32_t {
-  SESEND = (1 << 2),          ///< Session end
-  SRPEND = (1 << 8),          ///< Session request success status change
-  HNPEND = (1 << 9),          ///< HNP end
-  HNPDET = (1 << 17),         ///< Host negotiation request detected
-  ADTO = (1 << 18),           ///< A-device timeout
-  DF = (1 << 19),             ///< Debounce finish
+  SESEND = (1u << 2),         ///< Session end
+  SRPEND = (1u << 8),         ///< Session request success status change
+  HNPEND = (1u << 9),         ///< HNP end
+  HNPDET = (1u << 17),        ///< Host negotiation request detected
+  ADTO = (1u << 18),          ///< A-device timeout
+  DF = (1u << 19),            ///< Debounce finish
   Reserved_mask = 0xfff1fcfb  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GOTGINTF_bits);
@@ -76,9 +76,9 @@ enum class USBFS_GLOBAL_regs::GOTGINTF_shift : unsigned {
  * Global AHB control and status register (USBFS_GAHBCS)
  */
 enum class USBFS_GLOBAL_regs::GAHBCS_bits : uint32_t {
-  GINTEN = (1 << 0),          ///< Global interrupt enable
-  TXFTH = (1 << 7),           ///< Tx FIFO threshold
-  PTXFTH = (1 << 8),          ///< Periodic Tx FIFO threshold
+  GINTEN = (1u << 0),         ///< Global interrupt enable
+  TXFTH = (1u << 7),          ///< Tx FIFO threshold
+  PTXFTH = (1u << 8),         ///< Periodic Tx FIFO threshold
   Reserved_mask = 0xfffffe7e  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GAHBCS_bits);
@@ -98,12 +98,12 @@ enum class USBFS_GLOBAL_regs::GAHBCS_shift : unsigned {
  * Global USB control and status register (USBFS_GUSBCSR)
  */
 enum class USBFS_GLOBAL_regs::GUSBCS_bits : uint32_t {
-  TOC_mask = (0x7 << 0),      ///< Timeout calibration
-  SRPCEN = (1 << 8),          ///< SRP capability enable
-  HNPCEN = (1 << 9),          ///< HNP capability enable
-  UTT_mask = (0xf << 10),     ///< USB turnaround time
-  FHM = (1 << 29),            ///< Force host mode
-  FDM = (1 << 30),            ///< Force device mode
+  TOC_mask = (0x7u << 0),     ///< Timeout calibration
+  SRPCEN = (1u << 8),         ///< SRP capability enable
+  HNPCEN = (1u << 9),         ///< HNP capability enable
+  UTT_mask = (0xfu << 10),    ///< USB turnaround time
+  FHM = (1u << 29),           ///< Force host mode
+  FDM = (1u << 30),           ///< Force device mode
   Reserved_mask = 0x9fffc0f8  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GUSBCS_bits);
@@ -126,13 +126,13 @@ enum class USBFS_GLOBAL_regs::GUSBCS_shift : unsigned {
  * Global reset control register (USBFS_GRSTCTL)
  */
 enum class USBFS_GLOBAL_regs::GRSTCTL_bits : uint32_t {
-  CSRST = (1 << 0),           ///< Core soft reset
-  HCSRST = (1 << 1),          ///< HCLK soft reset
-  HFCRST = (1 << 2),          ///< Host frame counter reset
-  RXFF = (1 << 4),            ///< RxFIFO flush
-  TXFF = (1 << 5),            ///< TxFIFO flush
-  TXFNUM_mask = (0x1f << 6),  ///< TxFIFO number
-  Reserved_mask = 0xfffff808  ///< All reserved bits
+  CSRST = (1u << 0),           ///< Core soft reset
+  HCSRST = (1u << 1),          ///< HCLK soft reset
+  HFCRST = (1u << 2),          ///< Host frame counter reset
+  RXFF = (1u << 4),            ///< RxFIFO flush
+  TXFF = (1u << 5),            ///< TxFIFO flush
+  TXFNUM_mask = (0x1fu << 6),  ///< TxFIFO number
+  Reserved_mask = 0xfffff808   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRSTCTL_bits);
 
@@ -154,35 +154,35 @@ enum class USBFS_GLOBAL_regs::GRSTCTL_shift : unsigned {
  * Global interrupt flag register (USBFS_GINTF)
  */
 enum class USBFS_GLOBAL_regs::GINTF_bits : uint32_t {
-  COPM = (1 << 0),       ///< Current operation mode
-  MFIF = (1 << 1),       ///< Mode fault interrupt flag
-  OTGIF = (1 << 2),      ///< OTG interrupt flag
-  SOF = (1 << 3),        ///< Start of frame
-  RXFNEIF = (1 << 4),    ///< RxFIFO non-empty interrupt flag
-  NPTXFEIF = (1 << 5),   ///< Non-periodic TxFIFO empty interrupt flag
-  GNPINAK = (1 << 6),    ///< Global Non-Periodic IN NAK effective
-  GONAK = (1 << 7),      ///< Global OUT NAK effective
-  ESP = (1 << 10),       ///< Early suspend
-  SP = (1 << 11),        ///< USB suspend
-  RST = (1 << 12),       ///< USB reset
-  ENUMF = (1 << 13),     ///< Enumeration finished
-  ISOOPDIF = (1 << 14),  ///< Isochronous OUT packet dropped interrupt
-  EOPFIF = (1 << 15),    ///< End of periodic frame interrupt flag
-  IEPIF = (1 << 18),     ///< IN endpoint interrupt flag
-  OEPIF = (1 << 19),     ///< OUT endpoint interrupt flag
+  COPM = (1u << 0),       ///< Current operation mode
+  MFIF = (1u << 1),       ///< Mode fault interrupt flag
+  OTGIF = (1u << 2),      ///< OTG interrupt flag
+  SOF = (1u << 3),        ///< Start of frame
+  RXFNEIF = (1u << 4),    ///< RxFIFO non-empty interrupt flag
+  NPTXFEIF = (1u << 5),   ///< Non-periodic TxFIFO empty interrupt flag
+  GNPINAK = (1u << 6),    ///< Global Non-Periodic IN NAK effective
+  GONAK = (1u << 7),      ///< Global OUT NAK effective
+  ESP = (1u << 10),       ///< Early suspend
+  SP = (1u << 11),        ///< USB suspend
+  RST = (1u << 12),       ///< USB reset
+  ENUMF = (1u << 13),     ///< Enumeration finished
+  ISOOPDIF = (1u << 14),  ///< Isochronous OUT packet dropped interrupt
+  EOPFIF = (1u << 15),    ///< End of periodic frame interrupt flag
+  IEPIF = (1u << 18),     ///< IN endpoint interrupt flag
+  OEPIF = (1u << 19),     ///< OUT endpoint interrupt flag
   ISOINCIF =
-      (1 << 20),  ///< Isochronous IN transfer Not Complete Interrupt Flag
-  PXNCIF_ISOONCIF = (1 << 21),  ///< periodic transfer not complete interrupt
-                                ///< flag(Host mode)/isochronous OUT transfer
-                                ///< not complete interrupt flag(Device mode)
-  HPIF = (1 << 24),             ///< Host port interrupt flag
-  HCIF = (1 << 25),             ///< Host channels interrupt flag
-  PTXFEIF = (1 << 26),          ///< Periodic TxFIFO empty interrupt flag
-  IDPSC = (1 << 28),            ///< ID pin status change
-  DISCIF = (1 << 29),           ///< Disconnect interrupt flag
-  SESIF = (1 << 30),            ///< Session interrupt flag
-  WKUPIF = (1 << 31),           ///< Wakeup interrupt flag
-  Reserved_mask = 0x08c30300    ///< All reserved bits
+      (1u << 20),  ///< Isochronous IN transfer Not Complete Interrupt Flag
+  PXNCIF_ISOONCIF = (1u << 21),  ///< periodic transfer not complete interrupt
+                                 ///< flag(Host mode)/isochronous OUT transfer
+                                 ///< not complete interrupt flag(Device mode)
+  HPIF = (1u << 24),             ///< Host port interrupt flag
+  HCIF = (1u << 25),             ///< Host channels interrupt flag
+  PTXFEIF = (1u << 26),          ///< Periodic TxFIFO empty interrupt flag
+  IDPSC = (1u << 28),            ///< ID pin status change
+  DISCIF = (1u << 29),           ///< Disconnect interrupt flag
+  SESIF = (1u << 30),            ///< Session interrupt flag
+  WKUPIF = (1u << 31),           ///< Wakeup interrupt flag
+  Reserved_mask = 0x08c30300     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GINTF_bits);
 
@@ -223,35 +223,35 @@ enum class USBFS_GLOBAL_regs::GINTF_shift : unsigned {
  * Global interrupt enable register (USBFS_GINTEN)
  */
 enum class USBFS_GLOBAL_regs::GINTEN_bits : uint32_t {
-  MFIE = (1 << 1),      ///< Mode fault interrupt enable
-  OTGIE = (1 << 2),     ///< OTG interrupt enable
-  SOFIE = (1 << 3),     ///< Start of frame interrupt enable
-  RXFNEIE = (1 << 4),   ///< Receive FIFO non-empty interrupt enable
-  NPTXFEIE = (1 << 5),  ///< Non-periodic TxFIFO empty interrupt enable
+  MFIE = (1u << 1),      ///< Mode fault interrupt enable
+  OTGIE = (1u << 2),     ///< OTG interrupt enable
+  SOFIE = (1u << 3),     ///< Start of frame interrupt enable
+  RXFNEIE = (1u << 4),   ///< Receive FIFO non-empty interrupt enable
+  NPTXFEIE = (1u << 5),  ///< Non-periodic TxFIFO empty interrupt enable
   GNPINAKIE =
-      (1 << 6),  ///< Global non-periodic IN NAK effective interrupt enable
-  GONAKIE = (1 << 7),    ///< Global OUT NAK effective interrupt enable
-  ESPIE = (1 << 10),     ///< Early suspend interrupt enable
-  SPIE = (1 << 11),      ///< USB suspend interrupt enable
-  RSTIE = (1 << 12),     ///< USB reset interrupt enable
-  ENUMFIE = (1 << 13),   ///< Enumeration finish interrupt enable
-  ISOOPDIE = (1 << 14),  ///< Isochronous OUT packet dropped interrupt enable
-  EOPFIE = (1 << 15),    ///< End of periodic frame interrupt enable
-  IEPIE = (1 << 18),     ///< IN endpoints interrupt enable
-  OEPIE = (1 << 19),     ///< OUT endpoints interrupt enable
+      (1u << 6),  ///< Global non-periodic IN NAK effective interrupt enable
+  GONAKIE = (1u << 7),    ///< Global OUT NAK effective interrupt enable
+  ESPIE = (1u << 10),     ///< Early suspend interrupt enable
+  SPIE = (1u << 11),      ///< USB suspend interrupt enable
+  RSTIE = (1u << 12),     ///< USB reset interrupt enable
+  ENUMFIE = (1u << 13),   ///< Enumeration finish interrupt enable
+  ISOOPDIE = (1u << 14),  ///< Isochronous OUT packet dropped interrupt enable
+  EOPFIE = (1u << 15),    ///< End of periodic frame interrupt enable
+  IEPIE = (1u << 18),     ///< IN endpoints interrupt enable
+  OEPIE = (1u << 19),     ///< OUT endpoints interrupt enable
   ISOINCIE =
-      (1 << 20),  ///< isochronous IN transfer not complete interrupt enable
-  PXNCIE_ISOONCIE = (1 << 21),  ///< periodic transfer not compelete Interrupt
-                                ///< enable(Host mode)/isochronous OUT transfer
-                                ///< not complete interrupt enable(Device mode)
-  HPIE = (1 << 24),             ///< Host port interrupt enable
-  HCIE = (1 << 25),             ///< Host channels interrupt enable
-  PTXFEIE = (1 << 26),          ///< Periodic TxFIFO empty interrupt enable
-  IDPSCIE = (1 << 28),          ///< ID pin status change interrupt enable
-  DISCIE = (1 << 29),           ///< Disconnect interrupt enable
-  SESIE = (1 << 30),            ///< Session interrupt enable
-  WKUPIE = (1 << 31),           ///< Wakeup interrupt enable
-  Reserved_mask = 0x08c30301    ///< All reserved bits
+      (1u << 20),  ///< isochronous IN transfer not complete interrupt enable
+  PXNCIE_ISOONCIE = (1u << 21),  ///< periodic transfer not compelete Interrupt
+                                 ///< enable(Host mode)/isochronous OUT transfer
+                                 ///< not complete interrupt enable(Device mode)
+  HPIE = (1u << 24),             ///< Host port interrupt enable
+  HCIE = (1u << 25),             ///< Host channels interrupt enable
+  PTXFEIE = (1u << 26),          ///< Periodic TxFIFO empty interrupt enable
+  IDPSCIE = (1u << 28),          ///< ID pin status change interrupt enable
+  DISCIE = (1u << 29),           ///< Disconnect interrupt enable
+  SESIE = (1u << 30),            ///< Session interrupt enable
+  WKUPIE = (1u << 31),           ///< Wakeup interrupt enable
+  Reserved_mask = 0x08c30301     ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GINTEN_bits);
 
@@ -291,11 +291,11 @@ enum class USBFS_GLOBAL_regs::GINTEN_shift : unsigned {
  * Global Receive status read(Device mode)
  */
 enum class USBFS_GLOBAL_regs::GRSTATR_Device_bits : uint32_t {
-  EPNUM_mask = (0xf << 0),     ///< Endpoint number
-  BCOUNT_mask = (0x7ff << 4),  ///< Byte count
-  DPID_mask = (0x3 << 15),     ///< Data PID
-  RPCKST_mask = (0xf << 17),   ///< Recieve packet status
-  Reserved_mask = 0xffe00000   ///< All reserved bits
+  EPNUM_mask = (0xfu << 0),     ///< Endpoint number
+  BCOUNT_mask = (0x7ffu << 4),  ///< Byte count
+  DPID_mask = (0x3u << 15),     ///< Data PID
+  RPCKST_mask = (0xfu << 17),   ///< Recieve packet status
+  Reserved_mask = 0xffe00000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRSTATR_Device_bits);
 
@@ -315,11 +315,11 @@ enum class USBFS_GLOBAL_regs::GRSTATR_Device_shift : unsigned {
  * Global Receive status read(Host mode)
  */
 enum class USBFS_GLOBAL_regs::GRSTATR_Host_bits : uint32_t {
-  CNUM_mask = (0xf << 0),      ///< Channel number
-  BCOUNT_mask = (0x7ff << 4),  ///< Byte count
-  DPID_mask = (0x3 << 15),     ///< Data PID
-  RPCKST_mask = (0xf << 17),   ///< Reivece packet status
-  Reserved_mask = 0xffe00000   ///< All reserved bits
+  CNUM_mask = (0xfu << 0),      ///< Channel number
+  BCOUNT_mask = (0x7ffu << 4),  ///< Byte count
+  DPID_mask = (0x3u << 15),     ///< Data PID
+  RPCKST_mask = (0xfu << 17),   ///< Reivece packet status
+  Reserved_mask = 0xffe00000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRSTATR_Host_bits);
 
@@ -339,11 +339,11 @@ enum class USBFS_GLOBAL_regs::GRSTATR_Host_shift : unsigned {
  * Global Receive status pop(Device mode)
  */
 enum class USBFS_GLOBAL_regs::GRSTATP_Device_bits : uint32_t {
-  EPNUM_mask = (0xf << 0),     ///< Endpoint number
-  BCOUNT_mask = (0x7ff << 4),  ///< Byte count
-  DPID_mask = (0x3 << 15),     ///< Data PID
-  RPCKST_mask = (0xf << 17),   ///< Recieve packet status
-  Reserved_mask = 0xffe00000   ///< All reserved bits
+  EPNUM_mask = (0xfu << 0),     ///< Endpoint number
+  BCOUNT_mask = (0x7ffu << 4),  ///< Byte count
+  DPID_mask = (0x3u << 15),     ///< Data PID
+  RPCKST_mask = (0xfu << 17),   ///< Recieve packet status
+  Reserved_mask = 0xffe00000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRSTATP_Device_bits);
 
@@ -363,11 +363,11 @@ enum class USBFS_GLOBAL_regs::GRSTATP_Device_shift : unsigned {
  * Global Receive status pop(Host mode)
  */
 enum class USBFS_GLOBAL_regs::GRSTATP_Host_bits : uint32_t {
-  CNUM_mask = (0xf << 0),      ///< Channel number
-  BCOUNT_mask = (0x7ff << 4),  ///< Byte count
-  DPID_mask = (0x3 << 15),     ///< Data PID
-  RPCKST_mask = (0xf << 17),   ///< Reivece packet status
-  Reserved_mask = 0xffe00000   ///< All reserved bits
+  CNUM_mask = (0xfu << 0),      ///< Channel number
+  BCOUNT_mask = (0x7ffu << 4),  ///< Byte count
+  DPID_mask = (0x3u << 15),     ///< Data PID
+  RPCKST_mask = (0xfu << 17),   ///< Reivece packet status
+  Reserved_mask = 0xffe00000    ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRSTATP_Host_bits);
 
@@ -387,8 +387,8 @@ enum class USBFS_GLOBAL_regs::GRSTATP_Host_shift : unsigned {
  * Global Receive FIFO size register (USBFS_GRFLEN)
  */
 enum class USBFS_GLOBAL_regs::GRFLEN_bits : uint32_t {
-  RXFD_mask = (0xffff << 0),  ///< Rx FIFO depth
-  Reserved_mask = 0xffff0000  ///< All reserved bits
+  RXFD_mask = (0xffffu << 0),  ///< Rx FIFO depth
+  Reserved_mask = 0xffff0000   ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GRFLEN_bits);
 
@@ -406,8 +406,8 @@ enum class USBFS_GLOBAL_regs::GRFLEN_shift : unsigned {
  */
 enum class USBFS_GLOBAL_regs::HNPTFLEN_bits : uint32_t {
   HNPTXRSAR_mask =
-      (0xffff << 0),  ///< host non-periodic transmit Tx RAM start address
-  HNPTXFD_mask = (0xffff << 16),  ///< host non-periodic TxFIFO depth
+      (0xffffu << 0),  ///< host non-periodic transmit Tx RAM start address
+  HNPTXFD_mask = (0xffffu << 16),  ///< host non-periodic TxFIFO depth
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::HNPTFLEN_bits);
 
@@ -425,8 +425,8 @@ enum class USBFS_GLOBAL_regs::HNPTFLEN_shift : unsigned {
  * Device IN endpoint 0 transmit FIFO length (Device mode)
  */
 enum class USBFS_GLOBAL_regs::DIEP0TFLEN_bits : uint32_t {
-  IEP0TXFD_mask = (0xffff << 16),   ///< in endpoint 0 Tx FIFO depth
-  IEP0TXRSAR_mask = (0xffff << 0),  ///< in endpoint 0 Tx RAM start address
+  IEP0TXFD_mask = (0xffffu << 16),   ///< in endpoint 0 Tx FIFO depth
+  IEP0TXRSAR_mask = (0xffffu << 0),  ///< in endpoint 0 Tx RAM start address
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::DIEP0TFLEN_bits);
 
@@ -444,10 +444,10 @@ enum class USBFS_GLOBAL_regs::DIEP0TFLEN_shift : unsigned {
  * Host non-periodic transmit FIFO/queue status register (HNPTFQSTAT)
  */
 enum class USBFS_GLOBAL_regs::HNPTFQSTAT_bits : uint32_t {
-  NPTXFS_mask = (0xffff << 0),  ///< Non-periodic TxFIFO space
-  NPTXRQS_mask = (0xff << 16),  ///< Non-periodic transmit request queue space
+  NPTXFS_mask = (0xffffu << 0),  ///< Non-periodic TxFIFO space
+  NPTXRQS_mask = (0xffu << 16),  ///< Non-periodic transmit request queue space
   NPTXRQTOP_mask =
-      (0x7f << 24),  ///< Top of the non-periodic transmit request queue
+      (0x7fu << 24),  ///< Top of the non-periodic transmit request queue
   Reserved_mask = 0x80000000  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::HNPTFQSTAT_bits);
@@ -467,11 +467,11 @@ enum class USBFS_GLOBAL_regs::HNPTFQSTAT_shift : unsigned {
  * Global core configuration register (USBFS_GCCFG)
  */
 enum class USBFS_GLOBAL_regs::GCCFG_bits : uint32_t {
-  PWRON = (1 << 16),          ///< Power on
-  VBUSACEN = (1 << 18),       ///< The VBUS A-device Comparer enable
-  VBUSBCEN = (1 << 19),       ///< The VBUS B-device Comparer enable
-  SOFOEN = (1 << 20),         ///< SOF output enable
-  VBUSIG = (1 << 21),         ///< VBUS ignored
+  PWRON = (1u << 16),         ///< Power on
+  VBUSACEN = (1u << 18),      ///< The VBUS A-device Comparer enable
+  VBUSBCEN = (1u << 19),      ///< The VBUS B-device Comparer enable
+  SOFOEN = (1u << 20),        ///< SOF output enable
+  VBUSIG = (1u << 21),        ///< VBUS ignored
   Reserved_mask = 0xffc2ffff  ///< All reserved bits
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::GCCFG_bits);
@@ -493,7 +493,7 @@ enum class USBFS_GLOBAL_regs::GCCFG_shift : unsigned {
  * core ID register
  */
 enum class USBFS_GLOBAL_regs::CID_bits : uint32_t {
-  CID_mask = (0xffffffff << 0),  ///< Core ID
+  CID_mask = (0xffffffffu << 0),  ///< Core ID
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::CID_bits);
 
@@ -510,8 +510,8 @@ enum class USBFS_GLOBAL_regs::CID_shift : unsigned {
  * Host periodic transmit FIFO length register (HPTFLEN)
  */
 enum class USBFS_GLOBAL_regs::HPTFLEN_bits : uint32_t {
-  HPTXFSAR_mask = (0xffff << 0),  ///< Host periodic TxFIFO start address
-  HPTXFD_mask = (0xffff << 16),   ///< Host periodic TxFIFO depth
+  HPTXFSAR_mask = (0xffffu << 0),  ///< Host periodic TxFIFO start address
+  HPTXFD_mask = (0xffffu << 16),   ///< Host periodic TxFIFO depth
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::HPTFLEN_bits);
 
@@ -530,8 +530,8 @@ enum class USBFS_GLOBAL_regs::HPTFLEN_shift : unsigned {
  */
 enum class USBFS_GLOBAL_regs::DIEP1TFLEN_bits : uint32_t {
   IEPTXRSAR_mask =
-      (0xffff << 0),  ///< IN endpoint FIFO transmit RAM start address
-  IEPTXFD_mask = (0xffff << 16),  ///< IN endpoint TxFIFO depth
+      (0xffffu << 0),  ///< IN endpoint FIFO transmit RAM start address
+  IEPTXFD_mask = (0xffffu << 16),  ///< IN endpoint TxFIFO depth
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::DIEP1TFLEN_bits);
 
@@ -550,8 +550,8 @@ enum class USBFS_GLOBAL_regs::DIEP1TFLEN_shift : unsigned {
  */
 enum class USBFS_GLOBAL_regs::DIEP2TFLEN_bits : uint32_t {
   IEPTXRSAR_mask =
-      (0xffff << 0),  ///< IN endpoint FIFO transmit RAM start address
-  IEPTXFD_mask = (0xffff << 16),  ///< IN endpoint TxFIFO depth
+      (0xffffu << 0),  ///< IN endpoint FIFO transmit RAM start address
+  IEPTXFD_mask = (0xffffu << 16),  ///< IN endpoint TxFIFO depth
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::DIEP2TFLEN_bits);
 
@@ -570,8 +570,8 @@ enum class USBFS_GLOBAL_regs::DIEP2TFLEN_shift : unsigned {
  */
 enum class USBFS_GLOBAL_regs::DIEP3TFLEN_bits : uint32_t {
   IEPTXRSAR_mask =
-      (0xffff << 0),  ///< IN endpoint FIFO4 transmit RAM start address
-  IEPTXFD_mask = (0xffff << 16),  ///< IN endpoint TxFIFO depth
+      (0xffffu << 0),  ///< IN endpoint FIFO4 transmit RAM start address
+  IEPTXFD_mask = (0xffffu << 16),  ///< IN endpoint TxFIFO depth
 };
 void HasBitwiseOperators(USBFS_GLOBAL_regs::DIEP3TFLEN_bits);
 

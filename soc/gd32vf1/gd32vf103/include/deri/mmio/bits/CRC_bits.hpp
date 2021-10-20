@@ -12,7 +12,7 @@ namespace deri::mmio {
  * Data register
  */
 enum class CRC_regs::DATA_bits : uint32_t {
-  DATA_mask = (0xffffffff << 0),  ///< CRC calculation result bits
+  DATA_mask = (0xffffffffu << 0),  ///< CRC calculation result bits
 };
 void HasBitwiseOperators(CRC_regs::DATA_bits);
 
@@ -29,7 +29,7 @@ enum class CRC_regs::DATA_shift : unsigned {
  * Free data register
  */
 enum class CRC_regs::FDATA_bits : uint32_t {
-  FDATA_mask = (0xff << 0),   ///< Free Data Register bits
+  FDATA_mask = (0xffu << 0),  ///< Free Data Register bits
   Reserved_mask = 0xffffff00  ///< All reserved bits
 };
 void HasBitwiseOperators(CRC_regs::FDATA_bits);
@@ -47,7 +47,7 @@ enum class CRC_regs::FDATA_shift : unsigned {
  * Control register
  */
 enum class CRC_regs::CTL_bits : uint32_t {
-  RST = (1 << 0),             ///< reset bit
+  RST = (1u << 0),            ///< reset bit
   Reserved_mask = 0xfffffffe  ///< All reserved bits
 };
 void HasBitwiseOperators(CRC_regs::CTL_bits);

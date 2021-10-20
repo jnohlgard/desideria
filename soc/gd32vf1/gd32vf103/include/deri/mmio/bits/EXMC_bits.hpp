@@ -12,15 +12,15 @@ namespace deri::mmio {
  * SRAM/NOR flash control register 0
  */
 enum class EXMC_regs::SNCTL0_bits : uint32_t {
-  ASYNCWAIT = (1 << 15),      ///< Asynchronous wait
-  NRWTEN = (1 << 13),         ///< NWAIT signal enable
-  WREN = (1 << 12),           ///< Write enable
-  NRWTPOL = (1 << 9),         ///< NWAIT signal polarity
-  NREN = (1 << 6),            ///< NOR Flash access enable
-  NRW_mask = (0x3 << 4),      ///< NOR bank memory data bus width
-  NRTP_mask = (0x3 << 2),     ///< NOR bank memory type
-  NRMUX = (1 << 1),           ///< NOR bank memory address/data multiplexing
-  NRBKEN = (1 << 0),          ///< NOR bank enable
+  ASYNCWAIT = (1u << 15),     ///< Asynchronous wait
+  NRWTEN = (1u << 13),        ///< NWAIT signal enable
+  WREN = (1u << 12),          ///< Write enable
+  NRWTPOL = (1u << 9),        ///< NWAIT signal polarity
+  NREN = (1u << 6),           ///< NOR Flash access enable
+  NRW_mask = (0x3u << 4),     ///< NOR bank memory data bus width
+  NRTP_mask = (0x3u << 2),    ///< NOR bank memory type
+  NRMUX = (1u << 1),          ///< NOR bank memory address/data multiplexing
+  NRBKEN = (1u << 0),         ///< NOR bank enable
   Reserved_mask = 0xffff4d80  ///< All reserved bits
 };
 void HasBitwiseOperators(EXMC_regs::SNCTL0_bits);
@@ -46,11 +46,11 @@ enum class EXMC_regs::SNCTL0_shift : unsigned {
  * SRAM/NOR flash timing configuration register 0
  */
 enum class EXMC_regs::SNTCFG0_bits : uint32_t {
-  BUSLAT_mask = (0xf << 16),  ///< Bus latency
-  DSET_mask = (0xff << 8),    ///< Data setup time
-  AHLD_mask = (0xf << 4),     ///< Address hold time
-  ASET_mask = (0xf << 0),     ///< Address setup time
-  Reserved_mask = 0xfff00000  ///< All reserved bits
+  BUSLAT_mask = (0xfu << 16),  ///< Bus latency
+  DSET_mask = (0xffu << 8),    ///< Data setup time
+  AHLD_mask = (0xfu << 4),     ///< Address hold time
+  ASET_mask = (0xfu << 0),     ///< Address setup time
+  Reserved_mask = 0xfff00000   ///< All reserved bits
 };
 void HasBitwiseOperators(EXMC_regs::SNTCFG0_bits);
 
@@ -70,15 +70,15 @@ enum class EXMC_regs::SNTCFG0_shift : unsigned {
  * SRAM/NOR flash control register 1
  */
 enum class EXMC_regs::SNCTL1_bits : uint32_t {
-  ASYNCWAIT = (1 << 15),      ///< Asynchronous wait
-  NRWTEN = (1 << 13),         ///< NWAIT signal enable
-  WREN = (1 << 12),           ///< Write enable
-  NRWTPOL = (1 << 9),         ///< NWAIT signal polarity
-  NREN = (1 << 6),            ///< NOR Flash access enable
-  NRW_mask = (0x3 << 4),      ///< NOR bank memory data bus width
-  NRTP_mask = (0x3 << 2),     ///< NOR bank memory type
-  NRMUX = (1 << 1),           ///< NOR bank memory address/data multiplexing
-  NRBKEN = (1 << 0),          ///< NOR bank enable
+  ASYNCWAIT = (1u << 15),     ///< Asynchronous wait
+  NRWTEN = (1u << 13),        ///< NWAIT signal enable
+  WREN = (1u << 12),          ///< Write enable
+  NRWTPOL = (1u << 9),        ///< NWAIT signal polarity
+  NREN = (1u << 6),           ///< NOR Flash access enable
+  NRW_mask = (0x3u << 4),     ///< NOR bank memory data bus width
+  NRTP_mask = (0x3u << 2),    ///< NOR bank memory type
+  NRMUX = (1u << 1),          ///< NOR bank memory address/data multiplexing
+  NRBKEN = (1u << 0),         ///< NOR bank enable
   Reserved_mask = 0xffff4d80  ///< All reserved bits
 };
 void HasBitwiseOperators(EXMC_regs::SNCTL1_bits);

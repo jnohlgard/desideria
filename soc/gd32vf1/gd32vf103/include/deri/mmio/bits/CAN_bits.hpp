@@ -12,16 +12,16 @@ namespace deri::mmio {
  * Control register
  */
 enum class CAN_regs::CTL_bits : uint32_t {
-  DFZ = (1 << 16),            ///< Debug freeze
-  SWRST = (1 << 15),          ///< Software reset
-  TTC = (1 << 7),             ///< Time-triggered communication
-  ABOR = (1 << 6),            ///< Automatic bus-off recovery
-  AWU = (1 << 5),             ///< Automatic wakeup
-  ARD = (1 << 4),             ///< Automatic retransmission disable
-  RFOD = (1 << 3),            ///< Receive FIFO overwrite disable
-  TFO = (1 << 2),             ///< Transmit FIFO order
-  SLPWMOD = (1 << 1),         ///< Sleep working mode
-  IWMOD = (1 << 0),           ///< Initial working mode
+  DFZ = (1u << 16),           ///< Debug freeze
+  SWRST = (1u << 15),         ///< Software reset
+  TTC = (1u << 7),            ///< Time-triggered communication
+  ABOR = (1u << 6),           ///< Automatic bus-off recovery
+  AWU = (1u << 5),            ///< Automatic wakeup
+  ARD = (1u << 4),            ///< Automatic retransmission disable
+  RFOD = (1u << 3),           ///< Receive FIFO overwrite disable
+  TFO = (1u << 2),            ///< Transmit FIFO order
+  SLPWMOD = (1u << 1),        ///< Sleep working mode
+  IWMOD = (1u << 0),          ///< Initial working mode
   Reserved_mask = 0xfffe7f00  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::CTL_bits);
@@ -48,18 +48,18 @@ enum class CAN_regs::CTL_shift : unsigned {
  * Status register
  */
 enum class CAN_regs::STAT_bits : uint32_t {
-  RXL = (1 << 11),     ///< RX level
-  LASTRX = (1 << 10),  ///< Last sample value of RX pin
-  RS = (1 << 9),       ///< Receiving state
-  TS = (1 << 8),       ///< Transmitting state
+  RXL = (1u << 11),     ///< RX level
+  LASTRX = (1u << 10),  ///< Last sample value of RX pin
+  RS = (1u << 9),       ///< Receiving state
+  TS = (1u << 8),       ///< Transmitting state
   SLPIF =
-      (1
+      (1u
        << 4),  ///< Status change interrupt flag of sleep working mode entering
-  WUIF = (1 << 3),   ///< Status change interrupt flag of wakeup from sleep
-                     ///< working mode
-  ERRIF = (1 << 2),  ///< Error interrupt flag
-  SLPWS = (1 << 1),  ///< Sleep working state
-  IWS = (1 << 0),    ///< Initial working state
+  WUIF = (1u << 3),   ///< Status change interrupt flag of wakeup from sleep
+                      ///< working mode
+  ERRIF = (1u << 2),  ///< Error interrupt flag
+  SLPWS = (1u << 1),  ///< Sleep working state
+  IWS = (1u << 0),    ///< Initial working state
   Reserved_mask = 0xfffff0e0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::STAT_bits);
@@ -85,30 +85,30 @@ enum class CAN_regs::STAT_shift : unsigned {
  * Transmit status register
  */
 enum class CAN_regs::TSTAT_bits : uint32_t {
-  TMLS2 = (1 << 31),  ///< Transmit mailbox 2 last sending in transmit FIFO
-  TMLS1 = (1 << 30),  ///< Transmit mailbox 1 last sending in transmit FIFO
-  TMLS0 = (1 << 29),  ///< Transmit mailbox 0 last sending in transmit FIFO
-  TME2 = (1 << 28),   ///< Transmit mailbox 2 empty
-  TME1 = (1 << 27),   ///< Transmit mailbox 1 empty
-  TME0 = (1 << 26),   ///< Transmit mailbox 0 empty
+  TMLS2 = (1u << 31),  ///< Transmit mailbox 2 last sending in transmit FIFO
+  TMLS1 = (1u << 30),  ///< Transmit mailbox 1 last sending in transmit FIFO
+  TMLS0 = (1u << 29),  ///< Transmit mailbox 0 last sending in transmit FIFO
+  TME2 = (1u << 28),   ///< Transmit mailbox 2 empty
+  TME1 = (1u << 27),   ///< Transmit mailbox 1 empty
+  TME0 = (1u << 26),   ///< Transmit mailbox 0 empty
   NUM_mask =
-      (0x3 << 24),   ///< number of the transmit FIFO mailbox in which the frame
+      (0x3u << 24),  ///< number of the transmit FIFO mailbox in which the frame
                      ///< will be transmitted if at least one mailbox is empty
-  MST2 = (1 << 23),  ///< Mailbox 2 stop transmitting
-  MTE2 = (1 << 19),  ///< Mailbox 2 transmit error
-  MAL2 = (1 << 18),  ///< Mailbox 2 arbitration lost
-  MTFNERR2 = (1 << 17),       ///< Mailbox 2 transmit finished and no error
-  MTF2 = (1 << 16),           ///< Mailbox 2 transmit finished
-  MST1 = (1 << 15),           ///< Mailbox 1 stop transmitting
-  MTE1 = (1 << 11),           ///< Mailbox 1 transmit error
-  MAL1 = (1 << 10),           ///< Mailbox 1 arbitration lost
-  MTFNERR1 = (1 << 9),        ///< Mailbox 1 transmit finished and no error
-  MTF1 = (1 << 8),            ///< Mailbox 1 transmit finished
-  MST0 = (1 << 7),            ///< Mailbox 0 stop transmitting
-  MTE0 = (1 << 3),            ///< Mailbox 0 transmit error
-  MAL0 = (1 << 2),            ///< Mailbox 0 arbitration lost
-  MTFNERR0 = (1 << 1),        ///< Mailbox 0 transmit finished and no error
-  MTF0 = (1 << 0),            ///< Mailbox 0 transmit finished
+  MST2 = (1u << 23),          ///< Mailbox 2 stop transmitting
+  MTE2 = (1u << 19),          ///< Mailbox 2 transmit error
+  MAL2 = (1u << 18),          ///< Mailbox 2 arbitration lost
+  MTFNERR2 = (1u << 17),      ///< Mailbox 2 transmit finished and no error
+  MTF2 = (1u << 16),          ///< Mailbox 2 transmit finished
+  MST1 = (1u << 15),          ///< Mailbox 1 stop transmitting
+  MTE1 = (1u << 11),          ///< Mailbox 1 transmit error
+  MAL1 = (1u << 10),          ///< Mailbox 1 arbitration lost
+  MTFNERR1 = (1u << 9),       ///< Mailbox 1 transmit finished and no error
+  MTF1 = (1u << 8),           ///< Mailbox 1 transmit finished
+  MST0 = (1u << 7),           ///< Mailbox 0 stop transmitting
+  MTE0 = (1u << 3),           ///< Mailbox 0 transmit error
+  MAL0 = (1u << 2),           ///< Mailbox 0 arbitration lost
+  MTFNERR0 = (1u << 1),       ///< Mailbox 0 transmit finished and no error
+  MTF0 = (1u << 0),           ///< Mailbox 0 transmit finished
   Reserved_mask = 0x00707070  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::TSTAT_bits);
@@ -147,10 +147,10 @@ enum class CAN_regs::TSTAT_shift : unsigned {
  * Receive message FIFO0 register
  */
 enum class CAN_regs::RFIFO0_bits : uint32_t {
-  RFD0 = (1 << 5),            ///< Receive FIFO0 dequeue
-  RFO0 = (1 << 4),            ///< Receive FIFO0 overfull
-  RFF0 = (1 << 3),            ///< Receive FIFO0 full
-  RFL0_mask = (0x3 << 0),     ///< Receive FIFO0 length
+  RFD0 = (1u << 5),           ///< Receive FIFO0 dequeue
+  RFO0 = (1u << 4),           ///< Receive FIFO0 overfull
+  RFF0 = (1u << 3),           ///< Receive FIFO0 full
+  RFL0_mask = (0x3u << 0),    ///< Receive FIFO0 length
   Reserved_mask = 0xffffffc4  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFO0_bits);
@@ -171,10 +171,10 @@ enum class CAN_regs::RFIFO0_shift : unsigned {
  * Receive message FIFO1 register
  */
 enum class CAN_regs::RFIFO1_bits : uint32_t {
-  RFD1 = (1 << 5),            ///< Receive FIFO1 dequeue
-  RFO1 = (1 << 4),            ///< Receive FIFO1 overfull
-  RFF1 = (1 << 3),            ///< Receive FIFO1 full
-  RFL1_mask = (0x3 << 0),     ///< Receive FIFO1 length
+  RFD1 = (1u << 5),           ///< Receive FIFO1 dequeue
+  RFO1 = (1u << 4),           ///< Receive FIFO1 overfull
+  RFF1 = (1u << 3),           ///< Receive FIFO1 full
+  RFL1_mask = (0x3u << 0),    ///< Receive FIFO1 length
   Reserved_mask = 0xffffffc4  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFO1_bits);
@@ -195,20 +195,20 @@ enum class CAN_regs::RFIFO1_shift : unsigned {
  * Interrupt enable register
  */
 enum class CAN_regs::INTEN_bits : uint32_t {
-  SLPWIE = (1 << 17),         ///< Sleep working interrupt enable
-  WIE = (1 << 16),            ///< Wakeup interrupt enable
-  ERRIE = (1 << 15),          ///< Error interrupt enable
-  ERRNIE = (1 << 11),         ///< Error number interrupt enable
-  BOIE = (1 << 10),           ///< Bus-off interrupt enable
-  PERRIE = (1 << 9),          ///< Passive error interrupt enable
-  WERRIE = (1 << 8),          ///< Warning error interrupt enable
-  RFOIE1 = (1 << 6),          ///< Receive FIFO1 overfull interrupt enable
-  RFFIE1 = (1 << 5),          ///< Receive FIFO1 full interrupt enable
-  RFNEIE1 = (1 << 4),         ///< Receive FIFO1 not empty interrupt enable
-  RFOIE0 = (1 << 3),          ///< Receive FIFO0 overfull interrupt enable
-  RFFIE0 = (1 << 2),          ///< Receive FIFO0 full interrupt enable
-  RFNEIE0 = (1 << 1),         ///< Receive FIFO0 not empty interrupt enable
-  TMEIE = (1 << 0),           ///< Transmit mailbox empty interrupt enable
+  SLPWIE = (1u << 17),        ///< Sleep working interrupt enable
+  WIE = (1u << 16),           ///< Wakeup interrupt enable
+  ERRIE = (1u << 15),         ///< Error interrupt enable
+  ERRNIE = (1u << 11),        ///< Error number interrupt enable
+  BOIE = (1u << 10),          ///< Bus-off interrupt enable
+  PERRIE = (1u << 9),         ///< Passive error interrupt enable
+  WERRIE = (1u << 8),         ///< Warning error interrupt enable
+  RFOIE1 = (1u << 6),         ///< Receive FIFO1 overfull interrupt enable
+  RFFIE1 = (1u << 5),         ///< Receive FIFO1 full interrupt enable
+  RFNEIE1 = (1u << 4),        ///< Receive FIFO1 not empty interrupt enable
+  RFOIE0 = (1u << 3),         ///< Receive FIFO0 overfull interrupt enable
+  RFFIE0 = (1u << 2),         ///< Receive FIFO0 full interrupt enable
+  RFNEIE0 = (1u << 1),        ///< Receive FIFO0 not empty interrupt enable
+  TMEIE = (1u << 0),          ///< Transmit mailbox empty interrupt enable
   Reserved_mask = 0xfffc7080  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::INTEN_bits);
@@ -240,13 +240,13 @@ enum class CAN_regs::INTEN_shift : unsigned {
  */
 enum class CAN_regs::ERR_bits : uint32_t {
   RECNT_mask =
-      (0xff << 24),  ///< Receive Error Count defined by the CAN standard
+      (0xffu << 24),  ///< Receive Error Count defined by the CAN standard
   TECNT_mask =
-      (0xff << 16),        ///< Transmit Error Count defined by the CAN standard
-  ERRN_mask = (0x7 << 4),  ///< Error number
-  BOERR = (1 << 2),        ///< Bus-off error
-  PERR = (1 << 1),         ///< Passive error
-  WERR = (1 << 0),         ///< Warning error
+      (0xffu << 16),  ///< Transmit Error Count defined by the CAN standard
+  ERRN_mask = (0x7u << 4),    ///< Error number
+  BOERR = (1u << 2),          ///< Bus-off error
+  PERR = (1u << 1),           ///< Passive error
+  WERR = (1u << 0),           ///< Warning error
   Reserved_mask = 0x0000ff88  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::ERR_bits);
@@ -269,13 +269,13 @@ enum class CAN_regs::ERR_shift : unsigned {
  * Bit timing register
  */
 enum class CAN_regs::BT_bits : uint32_t {
-  SCMOD = (1 << 31),            ///< Silent communication mode
-  LCMOD = (1 << 30),            ///< Loopback communication mode
-  SJW_mask = (0x3 << 24),       ///< Resynchronization jump width
-  BS2_mask = (0x7 << 20),       ///< Bit segment 2
-  BS1_mask = (0xf << 16),       ///< Bit segment 1
-  BAUDPSC_mask = (0x3ff << 0),  ///< Baud rate prescaler
-  Reserved_mask = 0x3c80fc00    ///< All reserved bits
+  SCMOD = (1u << 31),            ///< Silent communication mode
+  LCMOD = (1u << 30),            ///< Loopback communication mode
+  SJW_mask = (0x3u << 24),       ///< Resynchronization jump width
+  BS2_mask = (0x7u << 20),       ///< Bit segment 2
+  BS1_mask = (0xfu << 16),       ///< Bit segment 1
+  BAUDPSC_mask = (0x3ffu << 0),  ///< Baud rate prescaler
+  Reserved_mask = 0x3c80fc00     ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::BT_bits);
 
@@ -297,11 +297,11 @@ enum class CAN_regs::BT_shift : unsigned {
  * Transmit mailbox identifier register 0
  */
 enum class CAN_regs::TMI0_bits : uint32_t {
-  SFID_EFID_mask = (0x7ff << 21),  ///< The frame identifier
-  EFID_mask = (0x3ffff << 3),      ///< The frame identifier
-  FF = (1 << 2),                   ///< Frame format
-  FT = (1 << 1),                   ///< Frame type
-  TEN = (1 << 0),                  ///< Transmit enable
+  SFID_EFID_mask = (0x7ffu << 21),  ///< The frame identifier
+  EFID_mask = (0x3ffffu << 3),      ///< The frame identifier
+  FF = (1u << 2),                   ///< Frame format
+  FT = (1u << 1),                   ///< Frame type
+  TEN = (1u << 0),                  ///< Transmit enable
 };
 void HasBitwiseOperators(CAN_regs::TMI0_bits);
 
@@ -322,9 +322,9 @@ enum class CAN_regs::TMI0_shift : unsigned {
  * Transmit mailbox property register 0
  */
 enum class CAN_regs::TMP0_bits : uint32_t {
-  TS_mask = (0xffff << 16),   ///< Time stamp
-  TSEN = (1 << 8),            ///< Time stamp enable
-  DLENC_mask = (0xf << 0),    ///< Data length code
+  TS_mask = (0xffffu << 16),  ///< Time stamp
+  TSEN = (1u << 8),           ///< Time stamp enable
+  DLENC_mask = (0xfu << 0),   ///< Data length code
   Reserved_mask = 0x0000fef0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::TMP0_bits);
@@ -344,10 +344,10 @@ enum class CAN_regs::TMP0_shift : unsigned {
  * Transmit mailbox data0 register
  */
 enum class CAN_regs::TMDATA00_bits : uint32_t {
-  DB3_mask = (0xff << 24),  ///< Data byte 3
-  DB2_mask = (0xff << 16),  ///< Data byte 2
-  DB1_mask = (0xff << 8),   ///< Data byte 1
-  DB0_mask = (0xff << 0),   ///< Data byte 0
+  DB3_mask = (0xffu << 24),  ///< Data byte 3
+  DB2_mask = (0xffu << 16),  ///< Data byte 2
+  DB1_mask = (0xffu << 8),   ///< Data byte 1
+  DB0_mask = (0xffu << 0),   ///< Data byte 0
 };
 void HasBitwiseOperators(CAN_regs::TMDATA00_bits);
 
@@ -367,10 +367,10 @@ enum class CAN_regs::TMDATA00_shift : unsigned {
  * Transmit mailbox data1 register
  */
 enum class CAN_regs::TMDATA10_bits : uint32_t {
-  DB7_mask = (0xff << 24),  ///< Data byte 7
-  DB6_mask = (0xff << 16),  ///< Data byte 6
-  DB5_mask = (0xff << 8),   ///< Data byte 5
-  DB4_mask = (0xff << 0),   ///< Data byte 4
+  DB7_mask = (0xffu << 24),  ///< Data byte 7
+  DB6_mask = (0xffu << 16),  ///< Data byte 6
+  DB5_mask = (0xffu << 8),   ///< Data byte 5
+  DB4_mask = (0xffu << 0),   ///< Data byte 4
 };
 void HasBitwiseOperators(CAN_regs::TMDATA10_bits);
 
@@ -390,11 +390,11 @@ enum class CAN_regs::TMDATA10_shift : unsigned {
  * Transmit mailbox identifier register 1
  */
 enum class CAN_regs::TMI1_bits : uint32_t {
-  SFID_EFID_mask = (0x7ff << 21),  ///< The frame identifier
-  EFID_mask = (0x3ffff << 3),      ///< The frame identifier
-  FF = (1 << 2),                   ///< Frame format
-  FT = (1 << 1),                   ///< Frame type
-  TEN = (1 << 0),                  ///< Transmit enable
+  SFID_EFID_mask = (0x7ffu << 21),  ///< The frame identifier
+  EFID_mask = (0x3ffffu << 3),      ///< The frame identifier
+  FF = (1u << 2),                   ///< Frame format
+  FT = (1u << 1),                   ///< Frame type
+  TEN = (1u << 0),                  ///< Transmit enable
 };
 void HasBitwiseOperators(CAN_regs::TMI1_bits);
 
@@ -415,9 +415,9 @@ enum class CAN_regs::TMI1_shift : unsigned {
  * Transmit mailbox property register 1
  */
 enum class CAN_regs::TMP1_bits : uint32_t {
-  TS_mask = (0xffff << 16),   ///< Time stamp
-  TSEN = (1 << 8),            ///< Time stamp enable
-  DLENC_mask = (0xf << 0),    ///< Data length code
+  TS_mask = (0xffffu << 16),  ///< Time stamp
+  TSEN = (1u << 8),           ///< Time stamp enable
+  DLENC_mask = (0xfu << 0),   ///< Data length code
   Reserved_mask = 0x0000fef0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::TMP1_bits);
@@ -437,10 +437,10 @@ enum class CAN_regs::TMP1_shift : unsigned {
  * Transmit mailbox data0 register
  */
 enum class CAN_regs::TMDATA01_bits : uint32_t {
-  DB3_mask = (0xff << 24),  ///< Data byte 3
-  DB2_mask = (0xff << 16),  ///< Data byte 2
-  DB1_mask = (0xff << 8),   ///< Data byte 1
-  DB0_mask = (0xff << 0),   ///< Data byte 0
+  DB3_mask = (0xffu << 24),  ///< Data byte 3
+  DB2_mask = (0xffu << 16),  ///< Data byte 2
+  DB1_mask = (0xffu << 8),   ///< Data byte 1
+  DB0_mask = (0xffu << 0),   ///< Data byte 0
 };
 void HasBitwiseOperators(CAN_regs::TMDATA01_bits);
 
@@ -460,10 +460,10 @@ enum class CAN_regs::TMDATA01_shift : unsigned {
  * Transmit mailbox data1 register
  */
 enum class CAN_regs::TMDATA11_bits : uint32_t {
-  DB7_mask = (0xff << 24),  ///< Data byte 7
-  DB6_mask = (0xff << 16),  ///< Data byte 6
-  DB5_mask = (0xff << 8),   ///< Data byte 5
-  DB4_mask = (0xff << 0),   ///< Data byte 4
+  DB7_mask = (0xffu << 24),  ///< Data byte 7
+  DB6_mask = (0xffu << 16),  ///< Data byte 6
+  DB5_mask = (0xffu << 8),   ///< Data byte 5
+  DB4_mask = (0xffu << 0),   ///< Data byte 4
 };
 void HasBitwiseOperators(CAN_regs::TMDATA11_bits);
 
@@ -483,11 +483,11 @@ enum class CAN_regs::TMDATA11_shift : unsigned {
  * Transmit mailbox identifier register 2
  */
 enum class CAN_regs::TMI2_bits : uint32_t {
-  SFID_EFID_mask = (0x7ff << 21),  ///< The frame identifier
-  EFID_mask = (0x3ffff << 3),      ///< The frame identifier
-  FF = (1 << 2),                   ///< Frame format
-  FT = (1 << 1),                   ///< Frame type
-  TEN = (1 << 0),                  ///< Transmit enable
+  SFID_EFID_mask = (0x7ffu << 21),  ///< The frame identifier
+  EFID_mask = (0x3ffffu << 3),      ///< The frame identifier
+  FF = (1u << 2),                   ///< Frame format
+  FT = (1u << 1),                   ///< Frame type
+  TEN = (1u << 0),                  ///< Transmit enable
 };
 void HasBitwiseOperators(CAN_regs::TMI2_bits);
 
@@ -508,9 +508,9 @@ enum class CAN_regs::TMI2_shift : unsigned {
  * Transmit mailbox property register 2
  */
 enum class CAN_regs::TMP2_bits : uint32_t {
-  TS_mask = (0xffff << 16),   ///< Time stamp
-  TSEN = (1 << 8),            ///< Time stamp enable
-  DLENC_mask = (0xf << 0),    ///< Data length code
+  TS_mask = (0xffffu << 16),  ///< Time stamp
+  TSEN = (1u << 8),           ///< Time stamp enable
+  DLENC_mask = (0xfu << 0),   ///< Data length code
   Reserved_mask = 0x0000fef0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::TMP2_bits);
@@ -530,10 +530,10 @@ enum class CAN_regs::TMP2_shift : unsigned {
  * Transmit mailbox data0 register
  */
 enum class CAN_regs::TMDATA02_bits : uint32_t {
-  DB3_mask = (0xff << 24),  ///< Data byte 3
-  DB2_mask = (0xff << 16),  ///< Data byte 2
-  DB1_mask = (0xff << 8),   ///< Data byte 1
-  DB0_mask = (0xff << 0),   ///< Data byte 0
+  DB3_mask = (0xffu << 24),  ///< Data byte 3
+  DB2_mask = (0xffu << 16),  ///< Data byte 2
+  DB1_mask = (0xffu << 8),   ///< Data byte 1
+  DB0_mask = (0xffu << 0),   ///< Data byte 0
 };
 void HasBitwiseOperators(CAN_regs::TMDATA02_bits);
 
@@ -553,10 +553,10 @@ enum class CAN_regs::TMDATA02_shift : unsigned {
  * Transmit mailbox data1 register
  */
 enum class CAN_regs::TMDATA12_bits : uint32_t {
-  DB7_mask = (0xff << 24),  ///< Data byte 7
-  DB6_mask = (0xff << 16),  ///< Data byte 6
-  DB5_mask = (0xff << 8),   ///< Data byte 5
-  DB4_mask = (0xff << 0),   ///< Data byte 4
+  DB7_mask = (0xffu << 24),  ///< Data byte 7
+  DB6_mask = (0xffu << 16),  ///< Data byte 6
+  DB5_mask = (0xffu << 8),   ///< Data byte 5
+  DB4_mask = (0xffu << 0),   ///< Data byte 4
 };
 void HasBitwiseOperators(CAN_regs::TMDATA12_bits);
 
@@ -576,11 +576,11 @@ enum class CAN_regs::TMDATA12_shift : unsigned {
  * Receive FIFO mailbox identifier register
  */
 enum class CAN_regs::RFIFOMI0_bits : uint32_t {
-  SFID_EFID_mask = (0x7ff << 21),  ///< The frame identifier
-  EFID_mask = (0x3ffff << 3),      ///< The frame identifier
-  FF = (1 << 2),                   ///< Frame format
-  FT = (1 << 1),                   ///< Frame type
-  Reserved_mask = 0x00000001       ///< All reserved bits
+  SFID_EFID_mask = (0x7ffu << 21),  ///< The frame identifier
+  EFID_mask = (0x3ffffu << 3),      ///< The frame identifier
+  FF = (1u << 2),                   ///< Frame format
+  FT = (1u << 1),                   ///< Frame type
+  Reserved_mask = 0x00000001        ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMI0_bits);
 
@@ -600,9 +600,9 @@ enum class CAN_regs::RFIFOMI0_shift : unsigned {
  * Receive FIFO0 mailbox property register
  */
 enum class CAN_regs::RFIFOMP0_bits : uint32_t {
-  TS_mask = (0xffff << 16),   ///< Time stamp
-  FI_mask = (0xff << 8),      ///< Filtering index
-  DLENC_mask = (0xf << 0),    ///< Data length code
+  TS_mask = (0xffffu << 16),  ///< Time stamp
+  FI_mask = (0xffu << 8),     ///< Filtering index
+  DLENC_mask = (0xfu << 0),   ///< Data length code
   Reserved_mask = 0x000000f0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMP0_bits);
@@ -622,10 +622,10 @@ enum class CAN_regs::RFIFOMP0_shift : unsigned {
  * Receive FIFO0 mailbox data0 register
  */
 enum class CAN_regs::RFIFOMDATA00_bits : uint32_t {
-  DB3_mask = (0xff << 24),  ///< Data byte 3
-  DB2_mask = (0xff << 16),  ///< Data byte 2
-  DB1_mask = (0xff << 8),   ///< Data byte 1
-  DB0_mask = (0xff << 0),   ///< Data byte 0
+  DB3_mask = (0xffu << 24),  ///< Data byte 3
+  DB2_mask = (0xffu << 16),  ///< Data byte 2
+  DB1_mask = (0xffu << 8),   ///< Data byte 1
+  DB0_mask = (0xffu << 0),   ///< Data byte 0
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMDATA00_bits);
 
@@ -645,10 +645,10 @@ enum class CAN_regs::RFIFOMDATA00_shift : unsigned {
  * Receive FIFO0 mailbox data1 register
  */
 enum class CAN_regs::RFIFOMDATA10_bits : uint32_t {
-  DB7_mask = (0xff << 24),  ///< Data byte 7
-  DB6_mask = (0xff << 16),  ///< Data byte 6
-  DB5_mask = (0xff << 8),   ///< Data byte 5
-  DB4_mask = (0xff << 0),   ///< Data byte 4
+  DB7_mask = (0xffu << 24),  ///< Data byte 7
+  DB6_mask = (0xffu << 16),  ///< Data byte 6
+  DB5_mask = (0xffu << 8),   ///< Data byte 5
+  DB4_mask = (0xffu << 0),   ///< Data byte 4
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMDATA10_bits);
 
@@ -668,11 +668,11 @@ enum class CAN_regs::RFIFOMDATA10_shift : unsigned {
  * Receive FIFO1 mailbox identifier register
  */
 enum class CAN_regs::RFIFOMI1_bits : uint32_t {
-  SFID_EFID_mask = (0x7ff << 21),  ///< The frame identifier
-  EFID_mask = (0x3ffff << 3),      ///< The frame identifier
-  FF = (1 << 2),                   ///< Frame format
-  FT = (1 << 1),                   ///< Frame type
-  Reserved_mask = 0x00000001       ///< All reserved bits
+  SFID_EFID_mask = (0x7ffu << 21),  ///< The frame identifier
+  EFID_mask = (0x3ffffu << 3),      ///< The frame identifier
+  FF = (1u << 2),                   ///< Frame format
+  FT = (1u << 1),                   ///< Frame type
+  Reserved_mask = 0x00000001        ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMI1_bits);
 
@@ -692,9 +692,9 @@ enum class CAN_regs::RFIFOMI1_shift : unsigned {
  * Receive FIFO1 mailbox property register
  */
 enum class CAN_regs::RFIFOMP1_bits : uint32_t {
-  TS_mask = (0xffff << 16),   ///< Time stamp
-  FI_mask = (0xff << 8),      ///< Filtering index
-  DLENC_mask = (0xf << 0),    ///< Data length code
+  TS_mask = (0xffffu << 16),  ///< Time stamp
+  FI_mask = (0xffu << 8),     ///< Filtering index
+  DLENC_mask = (0xfu << 0),   ///< Data length code
   Reserved_mask = 0x000000f0  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMP1_bits);
@@ -714,10 +714,10 @@ enum class CAN_regs::RFIFOMP1_shift : unsigned {
  * Receive FIFO1 mailbox data0 register
  */
 enum class CAN_regs::RFIFOMDATA01_bits : uint32_t {
-  DB3_mask = (0xff << 24),  ///< Data byte 3
-  DB2_mask = (0xff << 16),  ///< Data byte 2
-  DB1_mask = (0xff << 8),   ///< Data byte 1
-  DB0_mask = (0xff << 0),   ///< Data byte 0
+  DB3_mask = (0xffu << 24),  ///< Data byte 3
+  DB2_mask = (0xffu << 16),  ///< Data byte 2
+  DB1_mask = (0xffu << 8),   ///< Data byte 1
+  DB0_mask = (0xffu << 0),   ///< Data byte 0
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMDATA01_bits);
 
@@ -737,10 +737,10 @@ enum class CAN_regs::RFIFOMDATA01_shift : unsigned {
  * Receive FIFO1 mailbox data1 register
  */
 enum class CAN_regs::RFIFOMDATA11_bits : uint32_t {
-  DB7_mask = (0xff << 24),  ///< Data byte 7
-  DB6_mask = (0xff << 16),  ///< Data byte 6
-  DB5_mask = (0xff << 8),   ///< Data byte 5
-  DB4_mask = (0xff << 0),   ///< Data byte 4
+  DB7_mask = (0xffu << 24),  ///< Data byte 7
+  DB6_mask = (0xffu << 16),  ///< Data byte 6
+  DB5_mask = (0xffu << 8),   ///< Data byte 5
+  DB4_mask = (0xffu << 0),   ///< Data byte 4
 };
 void HasBitwiseOperators(CAN_regs::RFIFOMDATA11_bits);
 
@@ -760,8 +760,8 @@ enum class CAN_regs::RFIFOMDATA11_shift : unsigned {
  * Filter control register
  */
 enum class CAN_regs::FCTL_bits : uint32_t {
-  HBC1F_mask = (0x3f << 8),   ///< Header bank of CAN1 filter
-  FLD = (1 << 0),             ///< Filter lock disable
+  HBC1F_mask = (0x3fu << 8),  ///< Header bank of CAN1 filter
+  FLD = (1u << 0),            ///< Filter lock disable
   Reserved_mask = 0xffffc0fe  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::FCTL_bits);
@@ -780,34 +780,34 @@ enum class CAN_regs::FCTL_shift : unsigned {
  * Filter mode configuration register
  */
 enum class CAN_regs::FMCFG_bits : uint32_t {
-  FMOD27 = (1 << 27),         ///< Filter mode
-  FMOD26 = (1 << 26),         ///< Filter mode
-  FMOD25 = (1 << 25),         ///< Filter mode
-  FMOD24 = (1 << 24),         ///< Filter mode
-  FMOD23 = (1 << 23),         ///< Filter mode
-  FMOD22 = (1 << 22),         ///< Filter mode
-  FMOD21 = (1 << 21),         ///< Filter mode
-  FMOD20 = (1 << 20),         ///< Filter mode
-  FMOD19 = (1 << 19),         ///< Filter mode
-  FMOD18 = (1 << 18),         ///< Filter mode
-  FMOD17 = (1 << 17),         ///< Filter mode
-  FMOD16 = (1 << 16),         ///< Filter mode
-  FMOD15 = (1 << 15),         ///< Filter mode
-  FMOD14 = (1 << 14),         ///< Filter mode
-  FMOD13 = (1 << 13),         ///< Filter mode
-  FMOD12 = (1 << 12),         ///< Filter mode
-  FMOD11 = (1 << 11),         ///< Filter mode
-  FMOD10 = (1 << 10),         ///< Filter mode
-  FMOD9 = (1 << 9),           ///< Filter mode
-  FMOD8 = (1 << 8),           ///< Filter mode
-  FMOD7 = (1 << 7),           ///< Filter mode
-  FMOD6 = (1 << 6),           ///< Filter mode
-  FMOD5 = (1 << 5),           ///< Filter mode
-  FMOD4 = (1 << 4),           ///< Filter mode
-  FMOD3 = (1 << 3),           ///< Filter mode
-  FMOD2 = (1 << 2),           ///< Filter mode
-  FMOD1 = (1 << 1),           ///< Filter mode
-  FMOD0 = (1 << 0),           ///< Filter mode
+  FMOD27 = (1u << 27),        ///< Filter mode
+  FMOD26 = (1u << 26),        ///< Filter mode
+  FMOD25 = (1u << 25),        ///< Filter mode
+  FMOD24 = (1u << 24),        ///< Filter mode
+  FMOD23 = (1u << 23),        ///< Filter mode
+  FMOD22 = (1u << 22),        ///< Filter mode
+  FMOD21 = (1u << 21),        ///< Filter mode
+  FMOD20 = (1u << 20),        ///< Filter mode
+  FMOD19 = (1u << 19),        ///< Filter mode
+  FMOD18 = (1u << 18),        ///< Filter mode
+  FMOD17 = (1u << 17),        ///< Filter mode
+  FMOD16 = (1u << 16),        ///< Filter mode
+  FMOD15 = (1u << 15),        ///< Filter mode
+  FMOD14 = (1u << 14),        ///< Filter mode
+  FMOD13 = (1u << 13),        ///< Filter mode
+  FMOD12 = (1u << 12),        ///< Filter mode
+  FMOD11 = (1u << 11),        ///< Filter mode
+  FMOD10 = (1u << 10),        ///< Filter mode
+  FMOD9 = (1u << 9),          ///< Filter mode
+  FMOD8 = (1u << 8),          ///< Filter mode
+  FMOD7 = (1u << 7),          ///< Filter mode
+  FMOD6 = (1u << 6),          ///< Filter mode
+  FMOD5 = (1u << 5),          ///< Filter mode
+  FMOD4 = (1u << 4),          ///< Filter mode
+  FMOD3 = (1u << 3),          ///< Filter mode
+  FMOD2 = (1u << 2),          ///< Filter mode
+  FMOD1 = (1u << 1),          ///< Filter mode
+  FMOD0 = (1u << 0),          ///< Filter mode
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::FMCFG_bits);
@@ -852,34 +852,34 @@ enum class CAN_regs::FMCFG_shift : unsigned {
  * Filter scale configuration register
  */
 enum class CAN_regs::FSCFG_bits : uint32_t {
-  FS0 = (1 << 0),             ///< Filter scale configuration
-  FS1 = (1 << 1),             ///< Filter scale configuration
-  FS2 = (1 << 2),             ///< Filter scale configuration
-  FS3 = (1 << 3),             ///< Filter scale configuration
-  FS4 = (1 << 4),             ///< Filter scale configuration
-  FS5 = (1 << 5),             ///< Filter scale configuration
-  FS6 = (1 << 6),             ///< Filter scale configuration
-  FS7 = (1 << 7),             ///< Filter scale configuration
-  FS8 = (1 << 8),             ///< Filter scale configuration
-  FS9 = (1 << 9),             ///< Filter scale configuration
-  FS10 = (1 << 10),           ///< Filter scale configuration
-  FS11 = (1 << 11),           ///< Filter scale configuration
-  FS12 = (1 << 12),           ///< Filter scale configuration
-  FS13 = (1 << 13),           ///< Filter scale configuration
-  FS14 = (1 << 14),           ///< Filter scale configuration
-  FS15 = (1 << 15),           ///< Filter scale configuration
-  FS16 = (1 << 16),           ///< Filter scale configuration
-  FS17 = (1 << 17),           ///< Filter scale configuration
-  FS18 = (1 << 18),           ///< Filter scale configuration
-  FS19 = (1 << 19),           ///< Filter scale configuration
-  FS20 = (1 << 20),           ///< Filter scale configuration
-  FS21 = (1 << 21),           ///< Filter scale configuration
-  FS22 = (1 << 22),           ///< Filter scale configuration
-  FS23 = (1 << 23),           ///< Filter scale configuration
-  FS24 = (1 << 24),           ///< Filter scale configuration
-  FS25 = (1 << 25),           ///< Filter scale configuration
-  FS26 = (1 << 26),           ///< Filter scale configuration
-  FS27 = (1 << 27),           ///< Filter scale configuration
+  FS0 = (1u << 0),            ///< Filter scale configuration
+  FS1 = (1u << 1),            ///< Filter scale configuration
+  FS2 = (1u << 2),            ///< Filter scale configuration
+  FS3 = (1u << 3),            ///< Filter scale configuration
+  FS4 = (1u << 4),            ///< Filter scale configuration
+  FS5 = (1u << 5),            ///< Filter scale configuration
+  FS6 = (1u << 6),            ///< Filter scale configuration
+  FS7 = (1u << 7),            ///< Filter scale configuration
+  FS8 = (1u << 8),            ///< Filter scale configuration
+  FS9 = (1u << 9),            ///< Filter scale configuration
+  FS10 = (1u << 10),          ///< Filter scale configuration
+  FS11 = (1u << 11),          ///< Filter scale configuration
+  FS12 = (1u << 12),          ///< Filter scale configuration
+  FS13 = (1u << 13),          ///< Filter scale configuration
+  FS14 = (1u << 14),          ///< Filter scale configuration
+  FS15 = (1u << 15),          ///< Filter scale configuration
+  FS16 = (1u << 16),          ///< Filter scale configuration
+  FS17 = (1u << 17),          ///< Filter scale configuration
+  FS18 = (1u << 18),          ///< Filter scale configuration
+  FS19 = (1u << 19),          ///< Filter scale configuration
+  FS20 = (1u << 20),          ///< Filter scale configuration
+  FS21 = (1u << 21),          ///< Filter scale configuration
+  FS22 = (1u << 22),          ///< Filter scale configuration
+  FS23 = (1u << 23),          ///< Filter scale configuration
+  FS24 = (1u << 24),          ///< Filter scale configuration
+  FS25 = (1u << 25),          ///< Filter scale configuration
+  FS26 = (1u << 26),          ///< Filter scale configuration
+  FS27 = (1u << 27),          ///< Filter scale configuration
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::FSCFG_bits);
@@ -924,34 +924,34 @@ enum class CAN_regs::FSCFG_shift : unsigned {
  * Filter associated FIFO register
  */
 enum class CAN_regs::FAFIFO_bits : uint32_t {
-  FAF0 = (1 << 0),            ///< Filter 0 associated with FIFO
-  FAF1 = (1 << 1),            ///< Filter 1 associated with FIFO
-  FAF2 = (1 << 2),            ///< Filter 2 associated with FIFO
-  FAF3 = (1 << 3),            ///< Filter 3 associated with FIFO
-  FAF4 = (1 << 4),            ///< Filter 4 associated with FIFO
-  FAF5 = (1 << 5),            ///< Filter 5 associated with FIFO
-  FAF6 = (1 << 6),            ///< Filter 6 associated with FIFO
-  FAF7 = (1 << 7),            ///< Filter 7 associated with FIFO
-  FAF8 = (1 << 8),            ///< Filter 8 associated with FIFO
-  FAF9 = (1 << 9),            ///< Filter 9 associated with FIFO
-  FAF10 = (1 << 10),          ///< Filter 10 associated with FIFO
-  FAF11 = (1 << 11),          ///< Filter 11 associated with FIFO
-  FAF12 = (1 << 12),          ///< Filter 12 associated with FIFO
-  FAF13 = (1 << 13),          ///< Filter 13 associated with FIFO
-  FAF14 = (1 << 14),          ///< Filter 14 associated with FIFO
-  FAF15 = (1 << 15),          ///< Filter 15 associated with FIFO
-  FAF16 = (1 << 16),          ///< Filter 16 associated with FIFO
-  FAF17 = (1 << 17),          ///< Filter 17 associated with FIFO
-  FAF18 = (1 << 18),          ///< Filter 18 associated with FIFO
-  FAF19 = (1 << 19),          ///< Filter 19 associated with FIFO
-  FAF20 = (1 << 20),          ///< Filter 20 associated with FIFO
-  FAF21 = (1 << 21),          ///< Filter 21 associated with FIFO
-  FAF22 = (1 << 22),          ///< Filter 22 associated with FIFO
-  FAF23 = (1 << 23),          ///< Filter 23 associated with FIFO
-  FAF24 = (1 << 24),          ///< Filter 24 associated with FIFO
-  FAF25 = (1 << 25),          ///< Filter 25 associated with FIFO
-  FAF26 = (1 << 26),          ///< Filter 26 associated with FIFO
-  FAF27 = (1 << 27),          ///< Filter 27 associated with FIFO
+  FAF0 = (1u << 0),           ///< Filter 0 associated with FIFO
+  FAF1 = (1u << 1),           ///< Filter 1 associated with FIFO
+  FAF2 = (1u << 2),           ///< Filter 2 associated with FIFO
+  FAF3 = (1u << 3),           ///< Filter 3 associated with FIFO
+  FAF4 = (1u << 4),           ///< Filter 4 associated with FIFO
+  FAF5 = (1u << 5),           ///< Filter 5 associated with FIFO
+  FAF6 = (1u << 6),           ///< Filter 6 associated with FIFO
+  FAF7 = (1u << 7),           ///< Filter 7 associated with FIFO
+  FAF8 = (1u << 8),           ///< Filter 8 associated with FIFO
+  FAF9 = (1u << 9),           ///< Filter 9 associated with FIFO
+  FAF10 = (1u << 10),         ///< Filter 10 associated with FIFO
+  FAF11 = (1u << 11),         ///< Filter 11 associated with FIFO
+  FAF12 = (1u << 12),         ///< Filter 12 associated with FIFO
+  FAF13 = (1u << 13),         ///< Filter 13 associated with FIFO
+  FAF14 = (1u << 14),         ///< Filter 14 associated with FIFO
+  FAF15 = (1u << 15),         ///< Filter 15 associated with FIFO
+  FAF16 = (1u << 16),         ///< Filter 16 associated with FIFO
+  FAF17 = (1u << 17),         ///< Filter 17 associated with FIFO
+  FAF18 = (1u << 18),         ///< Filter 18 associated with FIFO
+  FAF19 = (1u << 19),         ///< Filter 19 associated with FIFO
+  FAF20 = (1u << 20),         ///< Filter 20 associated with FIFO
+  FAF21 = (1u << 21),         ///< Filter 21 associated with FIFO
+  FAF22 = (1u << 22),         ///< Filter 22 associated with FIFO
+  FAF23 = (1u << 23),         ///< Filter 23 associated with FIFO
+  FAF24 = (1u << 24),         ///< Filter 24 associated with FIFO
+  FAF25 = (1u << 25),         ///< Filter 25 associated with FIFO
+  FAF26 = (1u << 26),         ///< Filter 26 associated with FIFO
+  FAF27 = (1u << 27),         ///< Filter 27 associated with FIFO
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::FAFIFO_bits);
@@ -996,34 +996,34 @@ enum class CAN_regs::FAFIFO_shift : unsigned {
  * Filter working register
  */
 enum class CAN_regs::FW_bits : uint32_t {
-  FW0 = (1 << 0),             ///< Filter working
-  FW1 = (1 << 1),             ///< Filter working
-  FW2 = (1 << 2),             ///< Filter working
-  FW3 = (1 << 3),             ///< Filter working
-  FW4 = (1 << 4),             ///< Filter working
-  FW5 = (1 << 5),             ///< Filter working
-  FW6 = (1 << 6),             ///< Filter working
-  FW7 = (1 << 7),             ///< Filter working
-  FW8 = (1 << 8),             ///< Filter working
-  FW9 = (1 << 9),             ///< Filter working
-  FW10 = (1 << 10),           ///< Filter working
-  FW11 = (1 << 11),           ///< Filter working
-  FW12 = (1 << 12),           ///< Filter working
-  FW13 = (1 << 13),           ///< Filter working
-  FW14 = (1 << 14),           ///< Filter working
-  FW15 = (1 << 15),           ///< Filter working
-  FW16 = (1 << 16),           ///< Filter working
-  FW17 = (1 << 17),           ///< Filter working
-  FW18 = (1 << 18),           ///< Filter working
-  FW19 = (1 << 19),           ///< Filter working
-  FW20 = (1 << 20),           ///< Filter working
-  FW21 = (1 << 21),           ///< Filter working
-  FW22 = (1 << 22),           ///< Filter working
-  FW23 = (1 << 23),           ///< Filter working
-  FW24 = (1 << 24),           ///< Filter working
-  FW25 = (1 << 25),           ///< Filter working
-  FW26 = (1 << 26),           ///< Filter working
-  FW27 = (1 << 27),           ///< Filter working
+  FW0 = (1u << 0),            ///< Filter working
+  FW1 = (1u << 1),            ///< Filter working
+  FW2 = (1u << 2),            ///< Filter working
+  FW3 = (1u << 3),            ///< Filter working
+  FW4 = (1u << 4),            ///< Filter working
+  FW5 = (1u << 5),            ///< Filter working
+  FW6 = (1u << 6),            ///< Filter working
+  FW7 = (1u << 7),            ///< Filter working
+  FW8 = (1u << 8),            ///< Filter working
+  FW9 = (1u << 9),            ///< Filter working
+  FW10 = (1u << 10),          ///< Filter working
+  FW11 = (1u << 11),          ///< Filter working
+  FW12 = (1u << 12),          ///< Filter working
+  FW13 = (1u << 13),          ///< Filter working
+  FW14 = (1u << 14),          ///< Filter working
+  FW15 = (1u << 15),          ///< Filter working
+  FW16 = (1u << 16),          ///< Filter working
+  FW17 = (1u << 17),          ///< Filter working
+  FW18 = (1u << 18),          ///< Filter working
+  FW19 = (1u << 19),          ///< Filter working
+  FW20 = (1u << 20),          ///< Filter working
+  FW21 = (1u << 21),          ///< Filter working
+  FW22 = (1u << 22),          ///< Filter working
+  FW23 = (1u << 23),          ///< Filter working
+  FW24 = (1u << 24),          ///< Filter working
+  FW25 = (1u << 25),          ///< Filter working
+  FW26 = (1u << 26),          ///< Filter working
+  FW27 = (1u << 27),          ///< Filter working
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(CAN_regs::FW_bits);
@@ -1068,38 +1068,38 @@ enum class CAN_regs::FW_shift : unsigned {
  * Filter 0 data 0 register
  */
 enum class CAN_regs::F0DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F0DATA0_bits);
 
@@ -1147,38 +1147,38 @@ enum class CAN_regs::F0DATA0_shift : unsigned {
  * Filter 0 data 1 register
  */
 enum class CAN_regs::F0DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F0DATA1_bits);
 
@@ -1226,38 +1226,38 @@ enum class CAN_regs::F0DATA1_shift : unsigned {
  * Filter 1 data 0 register
  */
 enum class CAN_regs::F1DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F1DATA0_bits);
 
@@ -1305,38 +1305,38 @@ enum class CAN_regs::F1DATA0_shift : unsigned {
  * Filter 1 data 1 register
  */
 enum class CAN_regs::F1DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F1DATA1_bits);
 
@@ -1384,38 +1384,38 @@ enum class CAN_regs::F1DATA1_shift : unsigned {
  * Filter 2 data 0 register
  */
 enum class CAN_regs::F2DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F2DATA0_bits);
 
@@ -1463,38 +1463,38 @@ enum class CAN_regs::F2DATA0_shift : unsigned {
  * Filter 2 data 1 register
  */
 enum class CAN_regs::F2DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F2DATA1_bits);
 
@@ -1542,38 +1542,38 @@ enum class CAN_regs::F2DATA1_shift : unsigned {
  * Filter 3 data 0 register
  */
 enum class CAN_regs::F3DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F3DATA0_bits);
 
@@ -1621,38 +1621,38 @@ enum class CAN_regs::F3DATA0_shift : unsigned {
  * Filter 3 data 1 register
  */
 enum class CAN_regs::F3DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F3DATA1_bits);
 
@@ -1700,38 +1700,38 @@ enum class CAN_regs::F3DATA1_shift : unsigned {
  * Filter 4 data 0 register
  */
 enum class CAN_regs::F4DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F4DATA0_bits);
 
@@ -1779,38 +1779,38 @@ enum class CAN_regs::F4DATA0_shift : unsigned {
  * Filter 4 data 1 register
  */
 enum class CAN_regs::F4DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F4DATA1_bits);
 
@@ -1858,38 +1858,38 @@ enum class CAN_regs::F4DATA1_shift : unsigned {
  * Filter 5 data 0 register
  */
 enum class CAN_regs::F5DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F5DATA0_bits);
 
@@ -1937,38 +1937,38 @@ enum class CAN_regs::F5DATA0_shift : unsigned {
  * Filter 5 data 1 register
  */
 enum class CAN_regs::F5DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F5DATA1_bits);
 
@@ -2016,38 +2016,38 @@ enum class CAN_regs::F5DATA1_shift : unsigned {
  * Filter 6 data 0 register
  */
 enum class CAN_regs::F6DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F6DATA0_bits);
 
@@ -2095,38 +2095,38 @@ enum class CAN_regs::F6DATA0_shift : unsigned {
  * Filter 6 data 1 register
  */
 enum class CAN_regs::F6DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F6DATA1_bits);
 
@@ -2174,38 +2174,38 @@ enum class CAN_regs::F6DATA1_shift : unsigned {
  * Filter 7 data 0 register
  */
 enum class CAN_regs::F7DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F7DATA0_bits);
 
@@ -2253,38 +2253,38 @@ enum class CAN_regs::F7DATA0_shift : unsigned {
  * Filter 7 data 1 register
  */
 enum class CAN_regs::F7DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F7DATA1_bits);
 
@@ -2332,38 +2332,38 @@ enum class CAN_regs::F7DATA1_shift : unsigned {
  * Filter 8 data 0 register
  */
 enum class CAN_regs::F8DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F8DATA0_bits);
 
@@ -2411,38 +2411,38 @@ enum class CAN_regs::F8DATA0_shift : unsigned {
  * Filter 8 data 1 register
  */
 enum class CAN_regs::F8DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F8DATA1_bits);
 
@@ -2490,38 +2490,38 @@ enum class CAN_regs::F8DATA1_shift : unsigned {
  * Filter 9 data 0 register
  */
 enum class CAN_regs::F9DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F9DATA0_bits);
 
@@ -2569,38 +2569,38 @@ enum class CAN_regs::F9DATA0_shift : unsigned {
  * Filter 9 data 1 register
  */
 enum class CAN_regs::F9DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F9DATA1_bits);
 
@@ -2648,38 +2648,38 @@ enum class CAN_regs::F9DATA1_shift : unsigned {
  * Filter 10 data 0 register
  */
 enum class CAN_regs::F10DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F10DATA0_bits);
 
@@ -2727,38 +2727,38 @@ enum class CAN_regs::F10DATA0_shift : unsigned {
  * Filter 10 data 1 register
  */
 enum class CAN_regs::F10DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F10DATA1_bits);
 
@@ -2806,38 +2806,38 @@ enum class CAN_regs::F10DATA1_shift : unsigned {
  * Filter 11 data 0 register
  */
 enum class CAN_regs::F11DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F11DATA0_bits);
 
@@ -2885,38 +2885,38 @@ enum class CAN_regs::F11DATA0_shift : unsigned {
  * Filter 11 data 1 register
  */
 enum class CAN_regs::F11DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F11DATA1_bits);
 
@@ -2964,38 +2964,38 @@ enum class CAN_regs::F11DATA1_shift : unsigned {
  * Filter 12 data 0 register
  */
 enum class CAN_regs::F12DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F12DATA0_bits);
 
@@ -3043,38 +3043,38 @@ enum class CAN_regs::F12DATA0_shift : unsigned {
  * Filter 12 data 1 register
  */
 enum class CAN_regs::F12DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F12DATA1_bits);
 
@@ -3122,38 +3122,38 @@ enum class CAN_regs::F12DATA1_shift : unsigned {
  * Filter 13 data 0 register
  */
 enum class CAN_regs::F13DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F13DATA0_bits);
 
@@ -3201,38 +3201,38 @@ enum class CAN_regs::F13DATA0_shift : unsigned {
  * Filter 13 data 1 register
  */
 enum class CAN_regs::F13DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F13DATA1_bits);
 
@@ -3280,38 +3280,38 @@ enum class CAN_regs::F13DATA1_shift : unsigned {
  * Filter 14 data 0 register
  */
 enum class CAN_regs::F14DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F14DATA0_bits);
 
@@ -3359,38 +3359,38 @@ enum class CAN_regs::F14DATA0_shift : unsigned {
  * Filter 14 data 1 register
  */
 enum class CAN_regs::F14DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F14DATA1_bits);
 
@@ -3438,38 +3438,38 @@ enum class CAN_regs::F14DATA1_shift : unsigned {
  * Filter 15 data 0 register
  */
 enum class CAN_regs::F15DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F15DATA0_bits);
 
@@ -3517,38 +3517,38 @@ enum class CAN_regs::F15DATA0_shift : unsigned {
  * Filter 15 data 1 register
  */
 enum class CAN_regs::F15DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F15DATA1_bits);
 
@@ -3596,38 +3596,38 @@ enum class CAN_regs::F15DATA1_shift : unsigned {
  * Filter 16 data 0 register
  */
 enum class CAN_regs::F16DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F16DATA0_bits);
 
@@ -3675,38 +3675,38 @@ enum class CAN_regs::F16DATA0_shift : unsigned {
  * Filter 16 data 1 register
  */
 enum class CAN_regs::F16DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F16DATA1_bits);
 
@@ -3754,38 +3754,38 @@ enum class CAN_regs::F16DATA1_shift : unsigned {
  * Filter 17 data 0 register
  */
 enum class CAN_regs::F17DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F17DATA0_bits);
 
@@ -3833,38 +3833,38 @@ enum class CAN_regs::F17DATA0_shift : unsigned {
  * Filter 17 data 1 register
  */
 enum class CAN_regs::F17DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F17DATA1_bits);
 
@@ -3912,38 +3912,38 @@ enum class CAN_regs::F17DATA1_shift : unsigned {
  * Filter 18 data 0 register
  */
 enum class CAN_regs::F18DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F18DATA0_bits);
 
@@ -3991,38 +3991,38 @@ enum class CAN_regs::F18DATA0_shift : unsigned {
  * Filter 18 data 1 register
  */
 enum class CAN_regs::F18DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F18DATA1_bits);
 
@@ -4070,38 +4070,38 @@ enum class CAN_regs::F18DATA1_shift : unsigned {
  * Filter 19 data 0 register
  */
 enum class CAN_regs::F19DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F19DATA0_bits);
 
@@ -4149,38 +4149,38 @@ enum class CAN_regs::F19DATA0_shift : unsigned {
  * Filter 19 data 1 register
  */
 enum class CAN_regs::F19DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F19DATA1_bits);
 
@@ -4228,38 +4228,38 @@ enum class CAN_regs::F19DATA1_shift : unsigned {
  * Filter 20 data 0 register
  */
 enum class CAN_regs::F20DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F20DATA0_bits);
 
@@ -4307,38 +4307,38 @@ enum class CAN_regs::F20DATA0_shift : unsigned {
  * Filter 20 data 1 register
  */
 enum class CAN_regs::F20DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F20DATA1_bits);
 
@@ -4386,38 +4386,38 @@ enum class CAN_regs::F20DATA1_shift : unsigned {
  * Filter 21 data 0 register
  */
 enum class CAN_regs::F21DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F21DATA0_bits);
 
@@ -4465,38 +4465,38 @@ enum class CAN_regs::F21DATA0_shift : unsigned {
  * Filter 21 data 1 register
  */
 enum class CAN_regs::F21DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F21DATA1_bits);
 
@@ -4544,38 +4544,38 @@ enum class CAN_regs::F21DATA1_shift : unsigned {
  * Filter 22 data 0 register
  */
 enum class CAN_regs::F22DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F22DATA0_bits);
 
@@ -4623,38 +4623,38 @@ enum class CAN_regs::F22DATA0_shift : unsigned {
  * Filter 22 data 1 register
  */
 enum class CAN_regs::F22DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F22DATA1_bits);
 
@@ -4702,38 +4702,38 @@ enum class CAN_regs::F22DATA1_shift : unsigned {
  * Filter 23 data 0 register
  */
 enum class CAN_regs::F23DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F23DATA0_bits);
 
@@ -4781,38 +4781,38 @@ enum class CAN_regs::F23DATA0_shift : unsigned {
  * Filter 23 data 1 register
  */
 enum class CAN_regs::F23DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F23DATA1_bits);
 
@@ -4860,38 +4860,38 @@ enum class CAN_regs::F23DATA1_shift : unsigned {
  * Filter 24 data 0 register
  */
 enum class CAN_regs::F24DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F24DATA0_bits);
 
@@ -4939,38 +4939,38 @@ enum class CAN_regs::F24DATA0_shift : unsigned {
  * Filter 24 data 1 register
  */
 enum class CAN_regs::F24DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F24DATA1_bits);
 
@@ -5018,38 +5018,38 @@ enum class CAN_regs::F24DATA1_shift : unsigned {
  * Filter 25 data 0 register
  */
 enum class CAN_regs::F25DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F25DATA0_bits);
 
@@ -5097,38 +5097,38 @@ enum class CAN_regs::F25DATA0_shift : unsigned {
  * Filter 25 data 1 register
  */
 enum class CAN_regs::F25DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F25DATA1_bits);
 
@@ -5176,38 +5176,38 @@ enum class CAN_regs::F25DATA1_shift : unsigned {
  * Filter 26 data 0 register
  */
 enum class CAN_regs::F26DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F26DATA0_bits);
 
@@ -5255,38 +5255,38 @@ enum class CAN_regs::F26DATA0_shift : unsigned {
  * Filter 26 data 1 register
  */
 enum class CAN_regs::F26DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F26DATA1_bits);
 
@@ -5334,38 +5334,38 @@ enum class CAN_regs::F26DATA1_shift : unsigned {
  * Filter 27 data 0 register
  */
 enum class CAN_regs::F27DATA0_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F27DATA0_bits);
 
@@ -5413,38 +5413,38 @@ enum class CAN_regs::F27DATA0_shift : unsigned {
  * Filter 27 data 1 register
  */
 enum class CAN_regs::F27DATA1_bits : uint32_t {
-  FD0 = (1 << 0),    ///< Filter bits
-  FD1 = (1 << 1),    ///< Filter bits
-  FD2 = (1 << 2),    ///< Filter bits
-  FD3 = (1 << 3),    ///< Filter bits
-  FD4 = (1 << 4),    ///< Filter bits
-  FD5 = (1 << 5),    ///< Filter bits
-  FD6 = (1 << 6),    ///< Filter bits
-  FD7 = (1 << 7),    ///< Filter bits
-  FD8 = (1 << 8),    ///< Filter bits
-  FD9 = (1 << 9),    ///< Filter bits
-  FD10 = (1 << 10),  ///< Filter bits
-  FD11 = (1 << 11),  ///< Filter bits
-  FD12 = (1 << 12),  ///< Filter bits
-  FD13 = (1 << 13),  ///< Filter bits
-  FD14 = (1 << 14),  ///< Filter bits
-  FD15 = (1 << 15),  ///< Filter bits
-  FD16 = (1 << 16),  ///< Filter bits
-  FD17 = (1 << 17),  ///< Filter bits
-  FD18 = (1 << 18),  ///< Filter bits
-  FD19 = (1 << 19),  ///< Filter bits
-  FD20 = (1 << 20),  ///< Filter bits
-  FD21 = (1 << 21),  ///< Filter bits
-  FD22 = (1 << 22),  ///< Filter bits
-  FD23 = (1 << 23),  ///< Filter bits
-  FD24 = (1 << 24),  ///< Filter bits
-  FD25 = (1 << 25),  ///< Filter bits
-  FD26 = (1 << 26),  ///< Filter bits
-  FD27 = (1 << 27),  ///< Filter bits
-  FD28 = (1 << 28),  ///< Filter bits
-  FD29 = (1 << 29),  ///< Filter bits
-  FD30 = (1 << 30),  ///< Filter bits
-  FD31 = (1 << 31),  ///< Filter bits
+  FD0 = (1u << 0),    ///< Filter bits
+  FD1 = (1u << 1),    ///< Filter bits
+  FD2 = (1u << 2),    ///< Filter bits
+  FD3 = (1u << 3),    ///< Filter bits
+  FD4 = (1u << 4),    ///< Filter bits
+  FD5 = (1u << 5),    ///< Filter bits
+  FD6 = (1u << 6),    ///< Filter bits
+  FD7 = (1u << 7),    ///< Filter bits
+  FD8 = (1u << 8),    ///< Filter bits
+  FD9 = (1u << 9),    ///< Filter bits
+  FD10 = (1u << 10),  ///< Filter bits
+  FD11 = (1u << 11),  ///< Filter bits
+  FD12 = (1u << 12),  ///< Filter bits
+  FD13 = (1u << 13),  ///< Filter bits
+  FD14 = (1u << 14),  ///< Filter bits
+  FD15 = (1u << 15),  ///< Filter bits
+  FD16 = (1u << 16),  ///< Filter bits
+  FD17 = (1u << 17),  ///< Filter bits
+  FD18 = (1u << 18),  ///< Filter bits
+  FD19 = (1u << 19),  ///< Filter bits
+  FD20 = (1u << 20),  ///< Filter bits
+  FD21 = (1u << 21),  ///< Filter bits
+  FD22 = (1u << 22),  ///< Filter bits
+  FD23 = (1u << 23),  ///< Filter bits
+  FD24 = (1u << 24),  ///< Filter bits
+  FD25 = (1u << 25),  ///< Filter bits
+  FD26 = (1u << 26),  ///< Filter bits
+  FD27 = (1u << 27),  ///< Filter bits
+  FD28 = (1u << 28),  ///< Filter bits
+  FD29 = (1u << 29),  ///< Filter bits
+  FD30 = (1u << 30),  ///< Filter bits
+  FD31 = (1u << 31),  ///< Filter bits
 };
 void HasBitwiseOperators(CAN_regs::F27DATA1_bits);
 

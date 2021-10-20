@@ -12,8 +12,8 @@ namespace deri::mmio {
  * cliccfg Register
  */
 enum class ECLIC_regs::CLICCFG_bits : uint8_t {
-  NLBITS_mask = (0xf << 1),  ///< NLBITS
-  Reserved_mask = 0xe1       ///< All reserved bits
+  NLBITS_mask = (0xfu << 1),  ///< NLBITS
+  Reserved_mask = 0xe1        ///< All reserved bits
 };
 void HasBitwiseOperators(ECLIC_regs::CLICCFG_bits);
 
@@ -30,10 +30,10 @@ enum class ECLIC_regs::CLICCFG_shift : unsigned {
  * clicinfo Register
  */
 enum class ECLIC_regs::CLICINFO_bits : uint32_t {
-  NUM_INTERRUPT_mask = (0x1fff << 0),  ///< NUM_INTERRUPT
-  VERSION_mask = (0xff << 13),         ///< VERSION
-  CLICINTCTLBITS_mask = (0xf << 21),   ///< CLICINTCTLBITS
-  Reserved_mask = 0xfe000000           ///< All reserved bits
+  NUM_INTERRUPT_mask = (0x1fffu << 0),  ///< NUM_INTERRUPT
+  VERSION_mask = (0xffu << 13),         ///< VERSION
+  CLICINTCTLBITS_mask = (0xfu << 21),   ///< CLICINTCTLBITS
+  Reserved_mask = 0xfe000000            ///< All reserved bits
 };
 void HasBitwiseOperators(ECLIC_regs::CLICINFO_bits);
 
@@ -52,7 +52,7 @@ enum class ECLIC_regs::CLICINFO_shift : unsigned {
  * MTH Register
  */
 enum class ECLIC_regs::MTH_bits : uint8_t {
-  MTH_mask = (0xff << 0),  ///< MTH
+  MTH_mask = (0xffu << 0),  ///< MTH
 };
 void HasBitwiseOperators(ECLIC_regs::MTH_bits);
 
@@ -70,7 +70,7 @@ enum class ECLIC_regs::MTH_shift : unsigned {
  * source.
  */
 enum class ECLIC_regs::CLICINT_regs::CLICINTIP_bits : uint8_t {
-  IP = (1 << 0),        ///< IP
+  IP = (1u << 0),       ///< IP
   Reserved_mask = 0xfe  ///< All reserved bits
 };
 void HasBitwiseOperators(ECLIC_regs::CLICINT_regs::CLICINTIP_bits);
@@ -89,7 +89,7 @@ enum class ECLIC_regs::CLICINT_regs::CLICINTIP_shift : unsigned {
  * source.
  */
 enum class ECLIC_regs::CLICINT_regs::CLICINTIE_bits : uint8_t {
-  IE = (1 << 0),        ///< IE
+  IE = (1u << 0),       ///< IE
   Reserved_mask = 0xfe  ///< All reserved bits
 };
 void HasBitwiseOperators(ECLIC_regs::CLICINT_regs::CLICINTIE_bits);
@@ -109,9 +109,9 @@ enum class ECLIC_regs::CLICINT_regs::CLICINTIE_shift : unsigned {
  * by writing this register.
  */
 enum class ECLIC_regs::CLICINT_regs::CLICINTATTR_bits : uint8_t {
-  SHV = (1 << 0),          ///< SHV
-  TRIG_mask = (0x3 << 1),  ///< TRIG
-  Reserved_mask = 0xf8     ///< All reserved bits
+  SHV = (1u << 0),          ///< SHV
+  TRIG_mask = (0x3u << 1),  ///< TRIG
+  Reserved_mask = 0xf8      ///< All reserved bits
 };
 void HasBitwiseOperators(ECLIC_regs::CLICINT_regs::CLICINTATTR_bits);
 
@@ -133,7 +133,7 @@ enum class ECLIC_regs::CLICINT_regs::CLICINTATTR_shift : unsigned {
  * details.
  */
 enum class ECLIC_regs::CLICINT_regs::CLICINTCTL_bits : uint8_t {
-  LEVEL_PRIORITY_mask = (0xff << 0),  ///< LEVEL_PRIORITY
+  LEVEL_PRIORITY_mask = (0xffu << 0),  ///< LEVEL_PRIORITY
 };
 void HasBitwiseOperators(ECLIC_regs::CLICINT_regs::CLICINTCTL_bits);
 

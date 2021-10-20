@@ -12,9 +12,9 @@ namespace deri::mmio {
  * RTC interrupt enable register
  */
 enum class RTC_regs::INTEN_bits : uint32_t {
-  OVIE = (1 << 2),            ///< Overflow interrupt enable
-  ALRMIE = (1 << 1),          ///< Alarm interrupt enable
-  SCIE = (1 << 0),            ///< Second interrupt
+  OVIE = (1u << 2),           ///< Overflow interrupt enable
+  ALRMIE = (1u << 1),         ///< Alarm interrupt enable
+  SCIE = (1u << 0),           ///< Second interrupt
   Reserved_mask = 0xfffffff8  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::INTEN_bits);
@@ -34,12 +34,12 @@ enum class RTC_regs::INTEN_shift : unsigned {
  * control register
  */
 enum class RTC_regs::CTL_bits : uint32_t {
-  LWOFF = (1 << 5),           ///< Last write operation finished flag
-  CMF = (1 << 4),             ///< Configuration mode flag
-  RSYNF = (1 << 3),           ///< Registers synchronized flag
-  OVIF = (1 << 2),            ///< Overflow interrupt flag
-  ALRMIF = (1 << 1),          ///< Alarm interrupt flag
-  SCIF = (1 << 0),            ///< Sencond interrupt flag
+  LWOFF = (1u << 5),          ///< Last write operation finished flag
+  CMF = (1u << 4),            ///< Configuration mode flag
+  RSYNF = (1u << 3),          ///< Registers synchronized flag
+  OVIF = (1u << 2),           ///< Overflow interrupt flag
+  ALRMIF = (1u << 1),         ///< Alarm interrupt flag
+  SCIF = (1u << 0),           ///< Sencond interrupt flag
   Reserved_mask = 0xffffffc0  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::CTL_bits);
@@ -62,7 +62,7 @@ enum class RTC_regs::CTL_shift : unsigned {
  * RTC prescaler high register
  */
 enum class RTC_regs::PSCH_bits : uint32_t {
-  PSC_mask = (0xf << 0),      ///< RTC prescaler value high
+  PSC_mask = (0xfu << 0),     ///< RTC prescaler value high
   Reserved_mask = 0xfffffff0  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::PSCH_bits);
@@ -80,7 +80,7 @@ enum class RTC_regs::PSCH_shift : unsigned {
  * RTC prescaler low register
  */
 enum class RTC_regs::PSCL_bits : uint32_t {
-  PSC_mask = (0xffff << 0),   ///< RTC prescaler value low
+  PSC_mask = (0xffffu << 0),  ///< RTC prescaler value low
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::PSCL_bits);
@@ -98,7 +98,7 @@ enum class RTC_regs::PSCL_shift : unsigned {
  * RTC divider high register
  */
 enum class RTC_regs::DIVH_bits : uint32_t {
-  DIV_mask = (0xf << 0),      ///< RTC divider value high
+  DIV_mask = (0xfu << 0),     ///< RTC divider value high
   Reserved_mask = 0xfffffff0  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::DIVH_bits);
@@ -116,7 +116,7 @@ enum class RTC_regs::DIVH_shift : unsigned {
  * RTC divider low register
  */
 enum class RTC_regs::DIVL_bits : uint32_t {
-  DIV_mask = (0xffff << 0),   ///< RTC divider value low
+  DIV_mask = (0xffffu << 0),  ///< RTC divider value low
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::DIVL_bits);
@@ -134,7 +134,7 @@ enum class RTC_regs::DIVL_shift : unsigned {
  * RTC counter high register
  */
 enum class RTC_regs::CNTH_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< RTC counter value high
+  CNT_mask = (0xffffu << 0),  ///< RTC counter value high
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::CNTH_bits);
@@ -152,7 +152,7 @@ enum class RTC_regs::CNTH_shift : unsigned {
  * RTC counter low register
  */
 enum class RTC_regs::CNTL_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< RTC counter value low
+  CNT_mask = (0xffffu << 0),  ///< RTC counter value low
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::CNTL_bits);
@@ -170,8 +170,8 @@ enum class RTC_regs::CNTL_shift : unsigned {
  * Alarm high register
  */
 enum class RTC_regs::ALRMH_bits : uint32_t {
-  ALRM_mask = (0xffff << 0),  ///< Alarm value high
-  Reserved_mask = 0xffff0000  ///< All reserved bits
+  ALRM_mask = (0xffffu << 0),  ///< Alarm value high
+  Reserved_mask = 0xffff0000   ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::ALRMH_bits);
 
@@ -188,8 +188,8 @@ enum class RTC_regs::ALRMH_shift : unsigned {
  * RTC alarm low register
  */
 enum class RTC_regs::ALRML_bits : uint32_t {
-  ALRM_mask = (0xffff << 0),  ///< alarm value low
-  Reserved_mask = 0xffff0000  ///< All reserved bits
+  ALRM_mask = (0xffffu << 0),  ///< alarm value low
+  Reserved_mask = 0xffff0000   ///< All reserved bits
 };
 void HasBitwiseOperators(RTC_regs::ALRML_bits);
 

@@ -12,34 +12,34 @@ namespace deri::mmio {
  * Interrupt flag register
  */
 enum class DMA_regs::INTF_bits : uint32_t {
-  GIF0 = (1 << 0),            ///< Global interrupt flag of channel 0
-  FTFIF0 = (1 << 1),          ///< Full Transfer finish flag of channe 0
-  HTFIF0 = (1 << 2),          ///< Half transfer finish flag of channel 0
-  ERRIF0 = (1 << 3),          ///< Error flag of channel 0
-  GIF1 = (1 << 4),            ///< Global interrupt flag of channel 1
-  FTFIF1 = (1 << 5),          ///< Full Transfer finish flag of channe 1
-  HTFIF1 = (1 << 6),          ///< Half transfer finish flag of channel 1
-  ERRIF1 = (1 << 7),          ///< Error flag of channel 1
-  GIF2 = (1 << 8),            ///< Global interrupt flag of channel 2
-  FTFIF2 = (1 << 9),          ///< Full Transfer finish flag of channe 2
-  HTFIF2 = (1 << 10),         ///< Half transfer finish flag of channel 2
-  ERRIF2 = (1 << 11),         ///< Error flag of channel 2
-  GIF3 = (1 << 12),           ///< Global interrupt flag of channel 3
-  FTFIF3 = (1 << 13),         ///< Full Transfer finish flag of channe 3
-  HTFIF3 = (1 << 14),         ///< Half transfer finish flag of channel 3
-  ERRIF3 = (1 << 15),         ///< Error flag of channel 3
-  GIF4 = (1 << 16),           ///< Global interrupt flag of channel 4
-  FTFIF4 = (1 << 17),         ///< Full Transfer finish flag of channe 4
-  HTFIF4 = (1 << 18),         ///< Half transfer finish flag of channel 4
-  ERRIF4 = (1 << 19),         ///< Error flag of channel 4
-  GIF5 = (1 << 20),           ///< Global interrupt flag of channel 5
-  FTFIF5 = (1 << 21),         ///< Full Transfer finish flag of channe 5
-  HTFIF5 = (1 << 22),         ///< Half transfer finish flag of channel 5
-  ERRIF5 = (1 << 23),         ///< Error flag of channel 5
-  GIF6 = (1 << 24),           ///< Global interrupt flag of channel 6
-  FTFIF6 = (1 << 25),         ///< Full Transfer finish flag of channe 6
-  HTFIF6 = (1 << 26),         ///< Half transfer finish flag of channel 6
-  ERRIF6 = (1 << 27),         ///< Error flag of channel 6
+  GIF0 = (1u << 0),           ///< Global interrupt flag of channel 0
+  FTFIF0 = (1u << 1),         ///< Full Transfer finish flag of channe 0
+  HTFIF0 = (1u << 2),         ///< Half transfer finish flag of channel 0
+  ERRIF0 = (1u << 3),         ///< Error flag of channel 0
+  GIF1 = (1u << 4),           ///< Global interrupt flag of channel 1
+  FTFIF1 = (1u << 5),         ///< Full Transfer finish flag of channe 1
+  HTFIF1 = (1u << 6),         ///< Half transfer finish flag of channel 1
+  ERRIF1 = (1u << 7),         ///< Error flag of channel 1
+  GIF2 = (1u << 8),           ///< Global interrupt flag of channel 2
+  FTFIF2 = (1u << 9),         ///< Full Transfer finish flag of channe 2
+  HTFIF2 = (1u << 10),        ///< Half transfer finish flag of channel 2
+  ERRIF2 = (1u << 11),        ///< Error flag of channel 2
+  GIF3 = (1u << 12),          ///< Global interrupt flag of channel 3
+  FTFIF3 = (1u << 13),        ///< Full Transfer finish flag of channe 3
+  HTFIF3 = (1u << 14),        ///< Half transfer finish flag of channel 3
+  ERRIF3 = (1u << 15),        ///< Error flag of channel 3
+  GIF4 = (1u << 16),          ///< Global interrupt flag of channel 4
+  FTFIF4 = (1u << 17),        ///< Full Transfer finish flag of channe 4
+  HTFIF4 = (1u << 18),        ///< Half transfer finish flag of channel 4
+  ERRIF4 = (1u << 19),        ///< Error flag of channel 4
+  GIF5 = (1u << 20),          ///< Global interrupt flag of channel 5
+  FTFIF5 = (1u << 21),        ///< Full Transfer finish flag of channe 5
+  HTFIF5 = (1u << 22),        ///< Half transfer finish flag of channel 5
+  ERRIF5 = (1u << 23),        ///< Error flag of channel 5
+  GIF6 = (1u << 24),          ///< Global interrupt flag of channel 6
+  FTFIF6 = (1u << 25),        ///< Full Transfer finish flag of channe 6
+  HTFIF6 = (1u << 26),        ///< Half transfer finish flag of channel 6
+  ERRIF6 = (1u << 27),        ///< Error flag of channel 6
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::INTF_bits);
@@ -84,43 +84,48 @@ enum class DMA_regs::INTF_shift : unsigned {
  * Interrupt flag clear register
  */
 enum class DMA_regs::INTC_bits : uint32_t {
-  GIFC0 = (1 << 0),    ///< Clear global interrupt flag of channel 0
-  FTFIFC0 = (1 << 1),  ///< Clear bit for full transfer finish flag of channel 0
-  HTFIFC0 = (1 << 2),  ///< Clear bit for half transfer finish flag of channel 0
-  ERRIFC0 = (1 << 3),  ///< Clear bit for error flag of channel 0
-  GIFC1 = (1 << 4),    ///< Clear global interrupt flag of channel 1
-  FTFIFC1 = (1 << 5),  ///< Clear bit for full transfer finish flag of channel 1
-  HTFIFC1 = (1 << 6),  ///< Clear bit for half transfer finish flag of channel 1
-  ERRIFC1 = (1 << 7),  ///< Clear bit for error flag of channel 1
-  GIFC2 = (1 << 8),    ///< Clear global interrupt flag of channel 2
-  FTFIFC2 = (1 << 9),  ///< Clear bit for full transfer finish flag of channel 2
+  GIFC0 = (1u << 0),  ///< Clear global interrupt flag of channel 0
+  FTFIFC0 =
+      (1u << 1),  ///< Clear bit for full transfer finish flag of channel 0
+  HTFIFC0 =
+      (1u << 2),  ///< Clear bit for half transfer finish flag of channel 0
+  ERRIFC0 = (1u << 3),  ///< Clear bit for error flag of channel 0
+  GIFC1 = (1u << 4),    ///< Clear global interrupt flag of channel 1
+  FTFIFC1 =
+      (1u << 5),  ///< Clear bit for full transfer finish flag of channel 1
+  HTFIFC1 =
+      (1u << 6),  ///< Clear bit for half transfer finish flag of channel 1
+  ERRIFC1 = (1u << 7),  ///< Clear bit for error flag of channel 1
+  GIFC2 = (1u << 8),    ///< Clear global interrupt flag of channel 2
+  FTFIFC2 =
+      (1u << 9),  ///< Clear bit for full transfer finish flag of channel 2
   HTFIFC2 =
-      (1 << 10),  ///< Clear bit for half transfer finish flag of channel 2
-  ERRIFC2 = (1 << 11),  ///< Clear bit for error flag of channel 2
-  GIFC3 = (1 << 12),    ///< Clear global interrupt flag of channel 3
+      (1u << 10),  ///< Clear bit for half transfer finish flag of channel 2
+  ERRIFC2 = (1u << 11),  ///< Clear bit for error flag of channel 2
+  GIFC3 = (1u << 12),    ///< Clear global interrupt flag of channel 3
   FTFIFC3 =
-      (1 << 13),  ///< Clear bit for full transfer finish flag of channel 3
+      (1u << 13),  ///< Clear bit for full transfer finish flag of channel 3
   HTFIFC3 =
-      (1 << 14),  ///< Clear bit for half transfer finish flag of channel 3
-  ERRIFC3 = (1 << 15),  ///< Clear bit for error flag of channel 3
-  GIFC4 = (1 << 16),    ///< Clear global interrupt flag of channel 4
+      (1u << 14),  ///< Clear bit for half transfer finish flag of channel 3
+  ERRIFC3 = (1u << 15),  ///< Clear bit for error flag of channel 3
+  GIFC4 = (1u << 16),    ///< Clear global interrupt flag of channel 4
   FTFIFC4 =
-      (1 << 17),  ///< Clear bit for full transfer finish flag of channel 4
+      (1u << 17),  ///< Clear bit for full transfer finish flag of channel 4
   HTFIFC4 =
-      (1 << 18),  ///< Clear bit for half transfer finish flag of channel 4
-  ERRIFC4 = (1 << 19),  ///< Clear bit for error flag of channel 4
-  GIFC5 = (1 << 20),    ///< Clear global interrupt flag of channel 5
+      (1u << 18),  ///< Clear bit for half transfer finish flag of channel 4
+  ERRIFC4 = (1u << 19),  ///< Clear bit for error flag of channel 4
+  GIFC5 = (1u << 20),    ///< Clear global interrupt flag of channel 5
   FTFIFC5 =
-      (1 << 21),  ///< Clear bit for full transfer finish flag of channel 5
+      (1u << 21),  ///< Clear bit for full transfer finish flag of channel 5
   HTFIFC5 =
-      (1 << 22),  ///< Clear bit for half transfer finish flag of channel 5
-  ERRIFC5 = (1 << 23),  ///< Clear bit for error flag of channel 5
-  GIFC6 = (1 << 24),    ///< Clear global interrupt flag of channel 6
+      (1u << 22),  ///< Clear bit for half transfer finish flag of channel 5
+  ERRIFC5 = (1u << 23),  ///< Clear bit for error flag of channel 5
+  GIFC6 = (1u << 24),    ///< Clear global interrupt flag of channel 6
   FTFIFC6 =
-      (1 << 25),  ///< Clear bit for full transfer finish flag of channel 6
+      (1u << 25),  ///< Clear bit for full transfer finish flag of channel 6
   HTFIFC6 =
-      (1 << 26),  ///< Clear bit for half transfer finish flag of channel 6
-  ERRIFC6 = (1 << 27),        ///< Clear bit for error flag of channel 6
+      (1u << 26),  ///< Clear bit for half transfer finish flag of channel 6
+  ERRIFC6 = (1u << 27),       ///< Clear bit for error flag of channel 6
   Reserved_mask = 0xf0000000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::INTC_bits);
@@ -165,19 +170,19 @@ enum class DMA_regs::INTC_shift : unsigned {
  * Channel 0 control register
  */
 enum class DMA_regs::CH0CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH0CTL_bits);
 
@@ -205,7 +210,7 @@ enum class DMA_regs::CH0CTL_shift : unsigned {
  * Channel 0 counter register
  */
 enum class DMA_regs::CH0CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH0CNT_bits);
@@ -223,7 +228,7 @@ enum class DMA_regs::CH0CNT_shift : unsigned {
  * Channel 0 peripheral base address register
  */
 enum class DMA_regs::CH0PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH0PADDR_bits);
 
@@ -240,7 +245,7 @@ enum class DMA_regs::CH0PADDR_shift : unsigned {
  * Channel 0 memory base address register
  */
 enum class DMA_regs::CH0MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH0MADDR_bits);
 
@@ -257,19 +262,19 @@ enum class DMA_regs::CH0MADDR_shift : unsigned {
  * Channel 1 control register
  */
 enum class DMA_regs::CH1CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH1CTL_bits);
 
@@ -297,7 +302,7 @@ enum class DMA_regs::CH1CTL_shift : unsigned {
  * Channel 1 counter register
  */
 enum class DMA_regs::CH1CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH1CNT_bits);
@@ -315,7 +320,7 @@ enum class DMA_regs::CH1CNT_shift : unsigned {
  * Channel 1 peripheral base address register
  */
 enum class DMA_regs::CH1PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH1PADDR_bits);
 
@@ -332,7 +337,7 @@ enum class DMA_regs::CH1PADDR_shift : unsigned {
  * Channel 1 memory base address register
  */
 enum class DMA_regs::CH1MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH1MADDR_bits);
 
@@ -349,19 +354,19 @@ enum class DMA_regs::CH1MADDR_shift : unsigned {
  * Channel 2 control register
  */
 enum class DMA_regs::CH2CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH2CTL_bits);
 
@@ -389,7 +394,7 @@ enum class DMA_regs::CH2CTL_shift : unsigned {
  * Channel 2 counter register
  */
 enum class DMA_regs::CH2CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH2CNT_bits);
@@ -407,7 +412,7 @@ enum class DMA_regs::CH2CNT_shift : unsigned {
  * Channel 2 peripheral base address register
  */
 enum class DMA_regs::CH2PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH2PADDR_bits);
 
@@ -424,7 +429,7 @@ enum class DMA_regs::CH2PADDR_shift : unsigned {
  * Channel 2 memory base address register
  */
 enum class DMA_regs::CH2MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH2MADDR_bits);
 
@@ -441,19 +446,19 @@ enum class DMA_regs::CH2MADDR_shift : unsigned {
  * Channel 3 control register
  */
 enum class DMA_regs::CH3CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH3CTL_bits);
 
@@ -481,7 +486,7 @@ enum class DMA_regs::CH3CTL_shift : unsigned {
  * Channel 3 counter register
  */
 enum class DMA_regs::CH3CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH3CNT_bits);
@@ -499,7 +504,7 @@ enum class DMA_regs::CH3CNT_shift : unsigned {
  * Channel 3 peripheral base address register
  */
 enum class DMA_regs::CH3PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH3PADDR_bits);
 
@@ -516,7 +521,7 @@ enum class DMA_regs::CH3PADDR_shift : unsigned {
  * Channel 3 memory base address register
  */
 enum class DMA_regs::CH3MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH3MADDR_bits);
 
@@ -533,19 +538,19 @@ enum class DMA_regs::CH3MADDR_shift : unsigned {
  * Channel 4 control register
  */
 enum class DMA_regs::CH4CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH4CTL_bits);
 
@@ -573,7 +578,7 @@ enum class DMA_regs::CH4CTL_shift : unsigned {
  * Channel 4 counter register
  */
 enum class DMA_regs::CH4CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH4CNT_bits);
@@ -591,7 +596,7 @@ enum class DMA_regs::CH4CNT_shift : unsigned {
  * Channel 4 peripheral base address register
  */
 enum class DMA_regs::CH4PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH4PADDR_bits);
 
@@ -608,7 +613,7 @@ enum class DMA_regs::CH4PADDR_shift : unsigned {
  * Channel 4 memory base address register
  */
 enum class DMA_regs::CH4MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH4MADDR_bits);
 
@@ -625,19 +630,19 @@ enum class DMA_regs::CH4MADDR_shift : unsigned {
  * Channel 5 control register
  */
 enum class DMA_regs::CH5CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH5CTL_bits);
 
@@ -665,7 +670,7 @@ enum class DMA_regs::CH5CTL_shift : unsigned {
  * Channel 5 counter register
  */
 enum class DMA_regs::CH5CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH5CNT_bits);
@@ -683,7 +688,7 @@ enum class DMA_regs::CH5CNT_shift : unsigned {
  * Channel 5 peripheral base address register
  */
 enum class DMA_regs::CH5PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH5PADDR_bits);
 
@@ -700,7 +705,7 @@ enum class DMA_regs::CH5PADDR_shift : unsigned {
  * Channel 5 memory base address register
  */
 enum class DMA_regs::CH5MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH5MADDR_bits);
 
@@ -717,19 +722,19 @@ enum class DMA_regs::CH5MADDR_shift : unsigned {
  * Channel 6 control register
  */
 enum class DMA_regs::CH6CTL_bits : uint32_t {
-  CHEN = (1 << 0),   ///< Channel enable
-  FTFIE = (1 << 1),  ///< Enable bit for channel full transfer finish interrupt
-  HTFIE = (1 << 2),  ///< Enable bit for channel half transfer finish interrupt
-  ERRIE = (1 << 3),  ///< Enable bit for channel error interrupt
-  DIR = (1 << 4),    ///< Transfer direction
-  CMEN = (1 << 5),   ///< Circular mode enable
-  PNAGA = (1 << 6),  ///< Next address generation algorithm of peripheral
-  MNAGA = (1 << 7),  ///< Next address generation algorithm of memory
-  PWIDTH_mask = (0x3 << 8),   ///< Transfer data size of peripheral
-  MWIDTH_mask = (0x3 << 10),  ///< Transfer data size of memory
-  PRIO_mask = (0x3 << 12),    ///< Priority level
-  M2M = (1 << 14),            ///< Memory to Memory Mode
-  Reserved_mask = 0xffff8000  ///< All reserved bits
+  CHEN = (1u << 0),   ///< Channel enable
+  FTFIE = (1u << 1),  ///< Enable bit for channel full transfer finish interrupt
+  HTFIE = (1u << 2),  ///< Enable bit for channel half transfer finish interrupt
+  ERRIE = (1u << 3),  ///< Enable bit for channel error interrupt
+  DIR = (1u << 4),    ///< Transfer direction
+  CMEN = (1u << 5),   ///< Circular mode enable
+  PNAGA = (1u << 6),  ///< Next address generation algorithm of peripheral
+  MNAGA = (1u << 7),  ///< Next address generation algorithm of memory
+  PWIDTH_mask = (0x3u << 8),   ///< Transfer data size of peripheral
+  MWIDTH_mask = (0x3u << 10),  ///< Transfer data size of memory
+  PRIO_mask = (0x3u << 12),    ///< Priority level
+  M2M = (1u << 14),            ///< Memory to Memory Mode
+  Reserved_mask = 0xffff8000   ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH6CTL_bits);
 
@@ -757,7 +762,7 @@ enum class DMA_regs::CH6CTL_shift : unsigned {
  * Channel 6 counter register
  */
 enum class DMA_regs::CH6CNT_bits : uint32_t {
-  CNT_mask = (0xffff << 0),   ///< Transfer counter
+  CNT_mask = (0xffffu << 0),  ///< Transfer counter
   Reserved_mask = 0xffff0000  ///< All reserved bits
 };
 void HasBitwiseOperators(DMA_regs::CH6CNT_bits);
@@ -775,7 +780,7 @@ enum class DMA_regs::CH6CNT_shift : unsigned {
  * Channel 6 peripheral base address register
  */
 enum class DMA_regs::CH6PADDR_bits : uint32_t {
-  PADDR_mask = (0xffffffff << 0),  ///< Peripheral base address
+  PADDR_mask = (0xffffffffu << 0),  ///< Peripheral base address
 };
 void HasBitwiseOperators(DMA_regs::CH6PADDR_bits);
 
@@ -792,7 +797,7 @@ enum class DMA_regs::CH6PADDR_shift : unsigned {
  * Channel 6 memory base address register
  */
 enum class DMA_regs::CH6MADDR_bits : uint32_t {
-  MADDR_mask = (0xffffffff << 0),  ///< Memory base address
+  MADDR_mask = (0xffffffffu << 0),  ///< Memory base address
 };
 void HasBitwiseOperators(DMA_regs::CH6MADDR_bits);
 
