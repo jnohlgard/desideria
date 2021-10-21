@@ -354,6 +354,7 @@ def generate_all_files(device, basedir):
 
     with open(os.path.join(include_path, f'peripherals.hpp'), 'w') as fd:
         write_heading_comment(fd)
+        fd.write(f'\nnamespace deri::mmio {{\n')
         fd.write(f'\n// Forward declarations of MMIO peripheral register maps\n')
         for name, periph in periph_types.items():
             write_regs_declaration(fd, name)
@@ -362,6 +363,7 @@ def generate_all_files(device, basedir):
         for periph in device.peripherals:
             basename = periph.derivedFrom.deri_typename if periph.derivedFrom is not None else periph.deri_typename
             write_periph_declaration(fd, basename, periph.name)
+        fd.write(f'}}\n')
 
     with open(os.path.join(include_path, f'interrupts.hpp'), 'w') as fd:
         write_heading_comment(fd)
