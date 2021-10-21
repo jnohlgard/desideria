@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <type_traits>
 
-namespace deri::dev {
+namespace deri::mmio {
 
 /**
  * Reserved register that should not be touched by the software
