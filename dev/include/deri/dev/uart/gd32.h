@@ -5,40 +5,16 @@
 #pragma once
 
 #include "deri/registers.h"
+#include "deri/mmio/USART.hpp"
 
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <span>
 
-namespace deri::dev::gd32::usart {
-
-enum class STAT_bits : uint32_t;
-enum class DATA_bits : uint32_t;
-enum class BAUD_bits : uint32_t;
-enum class CTL0_bits : uint32_t;
-enum class CTL1_bits : uint32_t;
-enum class CTL2_bits : uint32_t;
-enum class GP_bits : uint32_t;
-}
-
 namespace deri::dev::uart {
 
-#pragma GCC diagnostic push
-// Need to suppress this and other similar warnings:
-// 'deri::dev::uart::UartSiFive::rxdata' should be initialized in the member
-// initialization list [-Weffc++]
-#pragma GCC diagnostic ignored "-Weffc++"
-
-class UsartGd32 {
-  Register<gd32::usart::STAT_bits> STAT;
-  Register<gd32::usart::DATA_bits> DATA;
-  Register<gd32::usart::BAUD_bits> BAUD;
-  Register<gd32::usart::CTL0_bits> CTL0;
-  Register<gd32::usart::CTL1_bits> CTL1;
-  Register<gd32::usart::CTL2_bits> CTL2;
-  Register<gd32::usart::GP_bits> GP;
-
+class UsartGd32 : protected mmio::USART_regs {
  public:
   /**
    * Initialize the hardware module
@@ -81,8 +57,7 @@ class UsartGd32 {
   [[nodiscard]] auto write(std::span<const std::byte> buffer)
       -> decltype(buffer);
 };
-#pragma GCC diagnostic pop
 
-static_assert(sizeof(UsartGd32) == 0x1C);
+static_assert(sizeof(UsartGd32) == sizeof(mmio::USART_regs));
 
 }  // namespace deri::dev::uart
