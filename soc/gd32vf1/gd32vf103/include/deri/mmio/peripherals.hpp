@@ -1,6 +1,7 @@
 /* *** Generated with Desideria SVD converter *** */
 #pragma once
 
+namespace deri::mmio {
 // Forward declarations of MMIO peripheral register maps
 struct ADC_regs;
 struct AFIO_regs;
@@ -78,3 +79,4 @@ extern USBFS_HOST_regs USBFS_HOST;
 extern USBFS_DEVICE_regs USBFS_DEVICE;
 extern USBFS_PWRCLK_regs USBFS_PWRCLK;
 extern WWDGT_regs WWDGT;
+}  // namespace deri::mmio
