@@ -17,5 +17,6 @@ target_link_libraries(deri_bsp_periph INTERFACE
   )
 
 target_link_libraries(deri_bsp INTERFACE deri_libc)
+target_link_directories(deri_bsp PUBLIC ld)
 
 add_subdirectory(testing)
