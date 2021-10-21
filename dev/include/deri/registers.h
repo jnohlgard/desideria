@@ -41,7 +41,7 @@ class Reserved {
  * an enum
  */
 template <typename BitsType,
-          typename StorageType = std::underlying_type_t<BitsType>,
+          typename StorageType = volatile std::underlying_type_t<BitsType>,
           typename UnderlyingBitsType = std::underlying_type_t<BitsType>>
 class Register {
  public:
@@ -66,7 +66,7 @@ class Register {
   }
 
  private:
-  volatile StorageType bits;
+  StorageType bits;
 };
 
 static_assert(sizeof(Register<std::byte>) == sizeof(std::uint8_t));
