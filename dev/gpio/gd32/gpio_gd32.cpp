@@ -1,4 +1,4 @@
-#include "deri/dev/gpio/gd32.h"
+#include "deri/dev/gpio_gd32.h"
 #include "deri/mmio/bits/GPIO_bits.hpp"
 
 #include <cstdint>

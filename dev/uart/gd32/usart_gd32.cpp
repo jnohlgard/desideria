@@ -2,7 +2,7 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/uart/gd32.h"
+#include "deri/dev/uart_gd32.h"
 
 #include "deri/bitwise_enums.h"
 #include "deri/mmio/bits/USART_bits.hpp"

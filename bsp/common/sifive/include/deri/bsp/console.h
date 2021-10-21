@@ -4,7 +4,7 @@
 
 #pragma once
 #include "deri/dev/charbuf.h"
-#include "deri/dev/uart/sifive.h"
+#include "deri/dev/uart_sifive.h"
 
 namespace deri::bsp {
 using Console = dev::BlockingDevice<dev::uart::UartSiFive>;

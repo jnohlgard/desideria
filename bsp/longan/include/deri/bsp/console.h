@@ -4,7 +4,7 @@
 
 #pragma once
 #include "deri/dev/charbuf.h"
-#include "deri/dev/uart/gd32.h"
+#include "deri/dev/uart_gd32.h"
 
 namespace deri::bsp {
 using Console = dev::BlockingDevice<dev::uart::UsartGd32>;

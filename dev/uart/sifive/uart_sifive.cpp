@@ -1,4 +1,4 @@
-#include "deri/dev/uart/sifive.h"
+#include "deri/dev/uart_sifive.h"
 
 namespace deri::dev::uart {
 
