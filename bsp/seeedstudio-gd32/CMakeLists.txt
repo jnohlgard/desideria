@@ -14,6 +14,8 @@ target_link_libraries(deri_bsp PUBLIC
   )
 target_link_libraries(deri_bsp_periph INTERFACE
   deri_dev_usart_gd32
+  deri_dev_gpio_gd32
+  deri_dev_clock_gd32
   )
 
 target_link_libraries(deri_bsp INTERFACE deri_libc)
