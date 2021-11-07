@@ -1,5 +1,5 @@
 deri_add_library(deri_dev_clock_gd32 STATIC
-  rcu_gd32.cpp
+  clock_gd32.cpp
   ../../include/deri/dev/clock_gd32.h
   )
 
