@@ -103,6 +103,16 @@ def itanium_mangle_symbol(name):
     return f'_ZN{"".join([itanium_mangle_name(part) for part in name.split("::")])}E'
 
 
+def generate_interrupt_map(peripherals):
+    interrupt_map = {}
+    for periph in peripherals:
+        for irq in periph.interrupts:
+            if irq.value in interrupt_map and interrupt_map[irq.value].name != irq.name:
+                raise RuntimeError(f'Duplicate IRQ {irq.value} {interrupt_map[irq.value].name} <-> {irq.name}')
+            interrupt_map[irq.value] = irq
+    return interrupt_map
+
+
 def write_ldscript(output, device):
     """
     Create a linker script for the base addresses of the hardware modules in the given SVD
@@ -118,6 +128,12 @@ def write_ldscript(output, device):
     output.write(f'\n/* C++ mangled names below */\n')
     for peripheral in device.peripherals:
         output.write(f"PROVIDE({itanium_mangle_symbol(f'deri::mmio::{peripheral.name}')} = {peripheral.name}$);\n")
+
+    interrupt_map = generate_interrupt_map(device.peripherals)
+    output.write(f'\n\n')
+    output.write(f'/* Interrupt handlers weakly defined to point to the default handler */\n')
+    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
+        output.write(f'PROVIDE(isr_{irq.name} = isr_unused);\n')
 
 
 def write_enum_definitions(output, periph, periph_type_names, indent=''):
@@ -219,6 +235,7 @@ def multiplicity(name):
         return int(m.group(1))
     return 1
 
+
 def write_periph_class(output, periph, name=None, indent=''):
     """
     Generate a struct definition for the given peripheral
@@ -273,6 +290,7 @@ def write_enum_declaration(output, reg, indent=''):
     """Generate a declaration for a register"""
     output.write(f'{indent}enum class {reg_enum(reg.name)} : uint{reg.size}_t;\n')
 
+
 def write_shift_declaration(output, reg, indent=''):
     """Generate a declaration for a register bit shift enum"""
     output.write(f'{indent}enum class {reg_shifts(reg.name)} : unsigned;\n')
@@ -289,19 +307,38 @@ def write_struct_offsetof_static_asserts(output, periph, periph_type_names):
 
 
 def write_interrupts_enum(output, device):
-    interrupt_map = {}
+    interrupt_map = generate_interrupt_map(device.peripherals)
     indent = ''
-    for periph in device.peripherals:
-        for irq in periph.interrupts:
-            if irq.value in interrupt_map and interrupt_map[irq.value].name != irq.name:
-                raise RuntimeError(f'Duplicate IRQ {irq.value} {interrupt_map[irq.value].name} <-> {irq.name}')
-            interrupt_map[irq.value] = irq
     output.write(f'{indent}enum class IRQ {{\n')
     indent = increase_indent(indent)
     for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
         output.write(f'{indent}{irq.name} = {num},\n')
     indent = decrease_indent(indent)
     output.write(f'{indent}}};\n')
+
+
+def write_interrupts_table(output, device):
+    interrupt_map = generate_interrupt_map(device.peripherals)
+    indent = ''
+    output.write(f'{indent}extern "C" {{\n')
+    output.write(f'{indent}using isr_func = void();\n')
+    output.write(f'{indent}void isr_unused();\n')
+    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
+        output.write(f'{indent}void isr_{irq.name}();\n')
+
+    output.write(f'{indent}isr_func* const vector_table[] = {{\n')
+    indent = increase_indent(indent)
+    next_line = 0
+    for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
+        while num > next_line:
+            output.write(f'{indent}isr_unused, // {next_line}\n')
+            next_line += 1
+        output.write(f'{indent}isr_{irq.name}, // {num}\n')
+        next_line += 1
+    indent = decrease_indent(indent)
+    output.write(f'{indent}}};\n')
+    output.write(f'{indent}static_assert(sizeof(vector_table) == sizeof(isr_func*) * {next_line});\n')
+    output.write(f'{indent}}} // extern "C"\n')
 
 
 def generate_all_files(device, basedir):
@@ -370,6 +407,10 @@ def generate_all_files(device, basedir):
         fd.write(f'\nnamespace deri::mmio {{\n')
         write_interrupts_enum(fd, device)
         fd.write(f'}}\n')
+
+    with open(os.path.join(basedir, f'vectors.cpp'), 'w') as fd:
+        write_heading_comment(fd)
+        write_interrupts_table(fd, device)
 
 
 def dir_argument(path):
