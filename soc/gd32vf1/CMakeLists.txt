@@ -1,6 +1,10 @@
-deri_add_library(deri_soc INTERFACE
+deri_add_library(deri_soc_obj OBJECT
   )
+deri_add_library(deri_soc INTERFACE)
 target_link_directories(deri_soc INTERFACE ld)
+target_link_libraries(deri_soc INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/ld/gd32vf103_mmio.ld")
+target_link_libraries(deri_soc INTERFACE deri_soc_obj $<TARGET_OBJECTS:deri_soc_obj>)
 if (SOC_MODEL MATCHES "gd32vf103")
-  target_include_directories(deri_soc INTERFACE gd32vf103/include)
+  target_include_directories(deri_soc_obj PUBLIC gd32vf103/include)
+  target_sources(deri_soc PRIVATE gd32vf103/vectors.cpp)
 endif()
