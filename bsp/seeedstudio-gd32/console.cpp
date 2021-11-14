@@ -12,8 +12,8 @@ using namespace dev::clock;
 using PinNum = dev::gpio::GpioGd32::PinNum;
 namespace bsp {
 void console_init() {
+  enableModules(APB2EN_bits::USART0EN | APB2EN_bits::PAEN);
   gpioa.initOutAfio(static_cast<PinNum>(9));
-  enableModules(APB2EN_bits::USART0EN);
   uart0.init();
 }
 }  // namespace bsp
