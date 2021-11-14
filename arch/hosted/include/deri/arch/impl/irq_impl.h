@@ -1,10 +1,7 @@
 /*
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
-#ifndef DERI_ARCH_IMPL_IRQ_H_
-#define DERI_ARCH_IMPL_IRQ_H_
-
-#include "deri/arch/asm.h"
+#pragma once
 
 #include <atomic>
 
@@ -24,5 +21,3 @@ inline atomic_flag isr_lock = ATOMIC_FLAG_INIT;
     isr_lock.clear();
   }
 }
-
-#endif // DESIDERIA_ARCH_RISCV_IRQ_H_
