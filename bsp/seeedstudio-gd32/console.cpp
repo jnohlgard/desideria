@@ -15,6 +15,8 @@ void console_init() {
   enableModules(APB2EN_bits::USART0EN | APB2EN_bits::PAEN);
   gpioa.initOutAfio(static_cast<PinNum>(9));
   uart0.init();
+  uart0.setBaud(8'000'000u, 115200);
+  uart0.transmitterOn();
 }
 }  // namespace bsp
 bsp::Console console{bsp::uart0};
