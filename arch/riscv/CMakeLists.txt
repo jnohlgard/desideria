@@ -3,6 +3,8 @@ deri_add_library(deri_arch STATIC
   reset.S
   irq_riscv.cpp
   include/deri/arch/irq.h
+  include/deri/mmio/CLIC.hpp
+  include/deri/mmio/bits/CLIC_bits.hpp
   )
 deri_add_library(deri_arch_obj OBJECT
   trap.cpp
