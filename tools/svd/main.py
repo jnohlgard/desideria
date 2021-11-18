@@ -132,8 +132,9 @@ def write_ldscript(output, device):
     interrupt_map = generate_interrupt_map(device.peripherals)
     output.write(f'\n\n')
     output.write(f'/* Interrupt handlers weakly defined to point to the default handler */\n')
+    output.write(f'PROVIDE(isr_unused = isr_unhandled);\n')
     for num, irq in sorted(interrupt_map.items(), key=lambda item: item[0]):
-        output.write(f'PROVIDE(isr_{irq.name} = isr_unused);\n')
+        output.write(f'PROVIDE(isr_{irq.name} = isr_unhandled);\n')
 
 
 def write_enum_definitions(output, periph, periph_type_names, indent=''):
