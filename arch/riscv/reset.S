@@ -9,8 +9,6 @@ _reset_trampoline:
 .cfi_undefined ra
 .option push
 .option norelax
-lui a0, %hi(_start)
-addi a0, a0, %lo(_start)
-jr a0
+tail _jump_to__start_in_flash_region
 .option pop
 .cfi_endproc

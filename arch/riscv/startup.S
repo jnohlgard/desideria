@@ -20,6 +20,18 @@ early_trap:
   1: j 1b
 .cfi_endproc
 
+.globl _jump_to__start_in_flash_region
+_jump_to__start_in_flash_region:
+.cfi_startproc
+.cfi_undefined ra
+.option push
+.option norelax
+lui a0, %hi(_start)
+addi a0, a0, %lo(_start)
+jr a0
+.option pop
+.cfi_endproc
+
 .globl _start
 _start:
 .cfi_startproc

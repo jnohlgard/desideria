@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2021 Joakim Nohlgård
+*/
+
 #include "deri/dev/clock_gd32.h"
 #include "deri/mmio/peripherals.hpp"
 

@@ -1,5 +1,4 @@
 add_all_subdirectories()
 
-deri_add_library(deri_dev_common STATIC)
-target_include_directories(deri_dev_common PUBLIC include)
-deri_target_depends(deri_dev_common PUBLIC deri_core)
+deri_add_library(deri_dev_common INTERFACE)
+target_include_directories(deri_dev_common INTERFACE include)

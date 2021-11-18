@@ -1,5 +1,15 @@
+/*
+ * Copyright (c) 2021 Joakim Nohlgård
+ */
+
 #include "deri/dev/gpio_gd32.h"
+
+#include "deri/dev/afio_gd32.h"
+#include "deri/dev/clock_gd32.h"
+#include "deri/dev/exti_gd32.h"
+#include "deri/mmio/bits/AFIO_bits.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"
+#include "deri/soc/gpio_dev.h"
 
 #include <cstdint>
 
@@ -7,18 +17,18 @@ namespace deri::dev::gpio {
 using CTL_bits = mmio::GPIO_regs::CTL_bits;
 using CTL_shift = mmio::GPIO_regs::CTL_shift;
 
-constexpr unsigned ctlShift(GpioGd32::PinNum pin) {
+constexpr unsigned ctlShift(GpioGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;
 }
-constexpr unsigned ctlOffset(GpioGd32::PinNum pin) {
+constexpr unsigned ctlOffset(GpioGd32::Pin pin) {
   return static_cast<unsigned>(pin) / 8;
 }
-constexpr uint32_t ctlMask(GpioGd32::PinNum pin) {
+constexpr uint32_t ctlMask(GpioGd32::Pin pin) {
   return 0b1111 << ctlShift(pin);
 }
 
 constexpr CTL_bits applyCtlBits(CTL_bits ctl,
-                                GpioGd32::PinNum pin,
+                                GpioGd32::Pin pin,
                                 CTL_bits bits) {
   ctl &= static_cast<CTL_bits>(~ctlMask(pin));
   ctl |= static_cast<CTL_bits>(
@@ -26,12 +36,12 @@ constexpr CTL_bits applyCtlBits(CTL_bits ctl,
   return ctl;
 }
 
-void GpioGd32::writeCTLReg(PinNum pin, CTL_bits bits) {
+void GpioGd32::writeCTLReg(Pin pin, CTL_bits bits) {
   CTL[ctlOffset(pin)].store(
       applyCtlBits(CTL[ctlOffset(pin)].load(), pin, bits));
 }
 
-void GpioGd32::initAnalog(PinNum pin) {
+void GpioGd32::initAnalog(Pin pin) {
   writeCTLReg(pin, static_cast<CTL_bits>(0));
 }
 
@@ -39,7 +49,7 @@ CTL_bits operator<<(uint32_t value, mmio::GPIO_regs::CTL_shift shift) {
   return static_cast<CTL_bits>(value << static_cast<unsigned>(shift));
 }
 
-void GpioGd32::initInput(GpioGd32::PinNum pin, GpioGd32::DigitalIn mode) {
+void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::DigitalIn mode) {
   switch (mode) {
     case DigitalIn::FLOATING:
       writeCTLReg(pin, 0b01 << CTL_shift::CTL0);
@@ -67,7 +77,7 @@ CTL_bits speedBits(GpioGd32::DigitalOutSpeed speed) {
   return CTL_bits{};
 }
 
-void GpioGd32::initOutGpio(GpioGd32::PinNum pin,
+void GpioGd32::initOutGpio(GpioGd32::Pin pin,
                            GpioGd32::DigitalOutMode mode,
                            GpioGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
@@ -80,9 +90,8 @@ void GpioGd32::initOutGpio(GpioGd32::PinNum pin,
       break;
   }
   writeCTLReg(pin, bits);
-
 }
-void GpioGd32::initOutAfio(GpioGd32::PinNum pin,
+void GpioGd32::initOutAfio(GpioGd32::Pin pin,
                            GpioGd32::DigitalOutMode mode,
                            GpioGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
@@ -95,5 +104,72 @@ void GpioGd32::initOutAfio(GpioGd32::PinNum pin,
       break;
   }
   writeCTLReg(pin, bits);
+}
+
+void GpioManagerGd32::enableModule(Gpio::Port port) {
+  clock::enableModules(soc::gpioPortClockEnableBits(port));
+}
+
+void GpioManagerGd32::initAnalog(Gpio gpio) {
+  enableModule(gpio.port);
+  soc::gpioPortDev(gpio.port).initAnalog(gpio.pin);
+}
+
+void GpioManagerGd32::initInput(Gpio gpio, GpioManagerGd32::DigitalIn mode) {
+  enableModule(gpio.port);
+  soc::gpioPortDev(gpio.port).initInput(gpio.pin, mode);
+}
+
+void GpioManagerGd32::initOutGpio(Gpio gpio,
+                                  GpioManagerGd32::DigitalOutMode mode,
+                                  GpioManagerGd32::DigitalOutSpeed speed) {
+  enableModule(gpio.port);
+  soc::gpioPortDev(gpio.port).initOutGpio(gpio.pin, mode, speed);
+}
+
+void GpioManagerGd32::initOutAfio(Gpio gpio,
+                                  GpioManagerGd32::DigitalOutMode mode,
+                                  GpioManagerGd32::DigitalOutSpeed speed) {
+  enableModule(gpio.port);
+  soc::gpioPortDev(gpio.port).initOutAfio(gpio.pin, mode, speed);
+}
+
+void GpioManagerGd32::setInterruptHandler(Gpio gpio,
+                                          GpioManagerGd32::Edge edge,
+                                          GpioManagerGd32::Callback callback) {
+  auto line = static_cast<ExtiGd32::Line>(gpio.pin);
+  soc::exti.disableLine(line);
+  soc::exti.disableRising(line);
+  soc::exti.disableFalling(line);
+  soc::exti.clearPending(line);
+  soc::afio.setExtiSource(gpio.pin, gpio.port);
+  if (!!(edge & Edge::RISING)) {
+    soc::exti.enableRising(line);
+  }
+  if (!!(edge & Edge::FALLING)) {
+    soc::exti.enableFalling(line);
+  }
+  callbacks[static_cast<unsigned>(line)] = callback;
+}
+
+void GpioManagerGd32::clearInterruptHandler(Gpio gpio) {
+  auto line = static_cast<ExtiGd32::Line>(gpio.pin);
+  soc::exti.disableLine(line);
+  soc::exti.disableRising(line);
+  soc::exti.disableFalling(line);
+  soc::exti.clearPending(line);
+  callbacks[static_cast<unsigned>(line)] = {};
+}
+
+void GpioManagerGd32::enableInterrupt(Gpio gpio) {
+  auto line = static_cast<ExtiGd32::Line>(gpio.pin);
+  soc::exti.enableLine(line);
+  dev::gpio::ExtiGd32::clicInterruptEnable(line);
+}
+void GpioManagerGd32::disableInterrupt(Gpio gpio) {
+  auto line = static_cast<ExtiGd32::Line>(gpio.pin);
+  soc::exti.disableLine(line);
+  // we don't disable the CLIC line because some of them are shared between
+  // multiple pins
 }
 }  // namespace deri::dev::gpio

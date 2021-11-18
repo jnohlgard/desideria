@@ -4,12 +4,19 @@
 
 #pragma once
 
+#include "deri/dev/gpio.h"
+#include "deri/mmio/AFIO.hpp"
 #include "deri/mmio/GPIO.hpp"
+#include "deri/mmio/bits/GPIO_bits.hpp"
+
+#include <functional>
 
 namespace deri::dev::gpio {
 
-class GpioGd32 : protected mmio::GPIO_regs {
+class GpioGd32 : private mmio::GPIO_regs {
  public:
+  using Pin = Gpio::Pin;
+
   enum class DigitalIn {
     FLOATING,
     PULL_UP,
@@ -26,19 +33,70 @@ class GpioGd32 : protected mmio::GPIO_regs {
     D50MHZ,
   };
 
-  /// Pin number within the port, i.e. y in Pxy
-  enum class PinNum : int;
+  void initAnalog(Pin pin);
+  void initInput(Pin pin, DigitalIn mode = DigitalIn::FLOATING);
+  void initOutGpio(Pin pin,
+                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
+  void initOutAfio(Pin pin,
+                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
 
-  void initAnalog(PinNum pin);
-  void initInput(PinNum pin, DigitalIn mode = DigitalIn::FLOATING);
-  void initOutGpio(PinNum pin,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
-                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
-  void initOutAfio(PinNum pin,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
-                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
+  void set(Pin pin) {
+    BOP.store(static_cast<BOP_bits>(1 << static_cast<unsigned>(pin)));
+  }
+  void clear(Pin pin) {
+    BC.store(static_cast<BC_bits>(1 << static_cast<unsigned>(pin)));
+  }
+  void set(BOP_bits pins) { BOP.store(pins); }
+  void clear(BC_bits pins) { BC.store(pins); }
+
+  bool read(Pin pin) {
+    return !!(ISTAT.load() &
+              static_cast<ISTAT_bits>(1 << static_cast<unsigned>(pin)));
+  }
 
  private:
-  void writeCTLReg(PinNum pin, CTL_bits bits);
+  void writeCTLReg(Pin pin, CTL_bits bits);
 };
+
+class GpioManagerGd32 {
+ public:
+  using DigitalIn = GpioGd32::DigitalIn;
+  using DigitalOutMode = GpioGd32::DigitalOutMode;
+  using DigitalOutSpeed = GpioGd32::DigitalOutSpeed;
+  struct Callback {
+    void (*func)(uintptr_t);
+    uintptr_t arg;
+  };
+
+  enum class Edge {
+    RISING = 1 << 0,
+    FALLING = 1 << 1,
+  };
+
+  void enableModule(Gpio::Port port);
+  void initAnalog(Gpio gpio);
+  void initInput(Gpio gpio, DigitalIn mode = DigitalIn::FLOATING);
+  void initOutGpio(Gpio gpio,
+                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
+  void initOutAfio(Gpio gpio,
+                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
+  void setInterruptHandler(Gpio gpio, Edge edge, Callback callback);
+  void clearInterruptHandler(Gpio gpio);
+  void enableInterrupt(Gpio gpio);
+  void disableInterrupt(Gpio gpio);
+
+  void interruptCallback(unsigned line) {
+    const auto &callback = callbacks[line];
+    callback.func(callback.arg);
+  }
+
+ private:
+  std::array<Callback, 18> callbacks{};
+};
+void HasBitwiseOperators(GpioManagerGd32::Edge);
+
 }  // namespace deri::dev::gpio
