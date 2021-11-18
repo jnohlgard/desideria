@@ -43,17 +43,17 @@ class GpioGd32 : private mmio::GPIO_regs {
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
 
   void set(Pin pin) {
-    BOP.store(static_cast<BOP_bits>(1 << static_cast<unsigned>(pin)));
+    BOP.store(static_cast<BOP_bits>(1u << static_cast<unsigned>(pin)));
   }
   void clear(Pin pin) {
-    BC.store(static_cast<BC_bits>(1 << static_cast<unsigned>(pin)));
+    BC.store(static_cast<BC_bits>(1u << static_cast<unsigned>(pin)));
   }
   void set(BOP_bits pins) { BOP.store(pins); }
   void clear(BC_bits pins) { BC.store(pins); }
 
   bool read(Pin pin) {
     return !!(ISTAT.load() &
-              static_cast<ISTAT_bits>(1 << static_cast<unsigned>(pin)));
+              static_cast<ISTAT_bits>(1u << static_cast<unsigned>(pin)));
   }
 
  private:
