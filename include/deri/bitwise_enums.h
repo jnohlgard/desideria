@@ -13,6 +13,11 @@ concept Bitmask = requires(Enum mask) {
   HasBitwiseOperators(mask);
 };
 
+template <Bitmask Enum>
+bool operator!(Enum operand) {
+  return operand == static_cast<Enum>(0);
+}
+
 template <Bitmask Enum,
           typename IntermediateType = std::underlying_type_t<Enum>>
 constexpr Enum operator|(Enum lhs, Enum rhs) {
