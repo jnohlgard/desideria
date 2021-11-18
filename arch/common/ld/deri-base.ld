@@ -15,9 +15,9 @@ SECTIONS
 {
   .text : {
     *(.reset_trampoline)
-    . = ALIGN(128);
-    KEEP(*(SORT(.vectors*)))
     *(.text .text.* .gnu.linkonce.t.*)
+    . = ALIGN(64);
+    KEEP(*(SORT(.vectors*)))
   } >rom AT>rom :text
 
   .preinit_array : {
