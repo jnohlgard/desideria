@@ -18,7 +18,7 @@ namespace deri::mmio {
 enum class CLIC_regs::CLICCFG_bits : uint8_t {
   /// specifies whether the selective interrupt hardware vectoring feature is
   /// implemented or not.
-  NVBITS_mask = (0x1u << 0),
+  NVBITS = (0x1u << 0),
 
   /// indicates how many upper bits in clicintctl[i] are assigned to encode the
   /// interrupt level.
