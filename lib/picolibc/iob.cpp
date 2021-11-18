@@ -4,7 +4,9 @@
 
 #include <deri/console.h>
 
-#include <cstdio>
+extern "C" {
+#include <stdio.h>
+}
 #include <span>
 
 namespace {
@@ -13,7 +15,7 @@ int iob_console_get(FILE *);
 int iob_console_flush(FILE *);
 
 // Bare minimum stdout
-static FILE __stdio = {
+FILE _stdio{
     .unget = decltype(FILE::unget)(0),
     .flags = _FDEV_SETUP_RW,
     .put = iob_console_put,
@@ -23,9 +25,13 @@ static FILE __stdio = {
 }  // namespace
 
 extern "C" {
-extern FILE *const __iob[];
+extern FILE *const stdout;
+extern FILE *const stdin;
+extern FILE *const stderr;
 
-FILE *const __iob[3] = {&__stdio, &__stdio, &__stdio};
+FILE *const stdout = &_stdio;
+FILE *const stdin = &_stdio;
+FILE *const stderr = &_stdio;
 }
 namespace {
 
