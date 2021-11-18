@@ -19,30 +19,23 @@ void buttonCallback(uintptr_t id) {
 }
 
 void initLeds() {
-  deri::soc::gpio.initOutGpio(deri::bsp::led0);
-  auto &led0_port = deri::soc::gpioPortDev(deri::bsp::led0);
-  led0_port.set(deri::bsp::led0.pin);
-  deri::soc::gpio.initOutGpio(deri::bsp::led1);
-  auto &led1_port = deri::soc::gpioPortDev(deri::bsp::led1);
-  led1_port.clear(deri::bsp::led1.pin);
-  deri::soc::gpio.initOutGpio(deri::bsp::led2);
-  auto &led2_port = deri::soc::gpioPortDev(deri::bsp::led2);
-  led2_port.set(deri::bsp::led2.pin);
+  for (auto &&led : deri::bsp::leds) {
+    deri::soc::gpio.initOutGpio(led);
+    auto &led0_port = deri::soc::gpioPortDev(led);
+    led0_port.set(led.pin);
+  }
 }
 
 void initButtons() {
-  deri::soc::gpio.initInput(deri::bsp::button0);
-  deri::soc::gpio.setInterruptHandler(
-      deri::bsp::button0,
-      deri::dev::gpio::GpioManagerGd32::Edge::RISING,
-      {.func = &buttonCallback, .arg = 0});
-  deri::soc::gpio.enableInterrupt(deri::bsp::button0);
-  deri::soc::gpio.initInput(deri::bsp::button1);
-  deri::soc::gpio.setInterruptHandler(
-      deri::bsp::button1,
-      deri::dev::gpio::GpioManagerGd32::Edge::FALLING,
-      {.func = &buttonCallback, .arg = 1});
-  deri::soc::gpio.enableInterrupt(deri::bsp::button1);
+  uintptr_t arg = 0;
+  for (auto &&button : deri::bsp::buttons) {
+    deri::soc::gpio.initInput(button);
+    deri::soc::gpio.setInterruptHandler(
+        button,
+        deri::dev::gpio::GpioManagerGd32::Edge::RISING,
+        {.func = &buttonCallback, .arg = arg++});
+    deri::soc::gpio.enableInterrupt(button);
+  }
 }
 
 int main() {
