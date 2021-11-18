@@ -3,6 +3,7 @@
 
 #include "deri/registers.h"
 
+#include <array>
 #include <cstdint>
 
 namespace deri::mmio {
@@ -20,7 +21,7 @@ struct GPIO_regs {
   enum class BC_shift : unsigned;
   enum class LOCK_shift : unsigned;
 
-  Register<CTL_bits> CTL[2];
+  std::array<Register<CTL_bits>, 2> CTL;
   const Register<ISTAT_bits> ISTAT;
   Register<OCTL_bits> OCTL;
   Register<BOP_bits> BOP;
