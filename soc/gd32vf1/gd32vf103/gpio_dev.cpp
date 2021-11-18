@@ -159,7 +159,7 @@ void isr_EXTI_line9_5() {
   pending &= static_cast<PD_bits>(0b11111 << 5);
   exti.clearPending(pending);
   for (unsigned line_number = 5; line_number <= 9; ++line_number) {
-    if (!!(pending & static_cast<PD_bits>(line_number))) {
+    if (!!(pending & static_cast<PD_bits>(1u << line_number))) {
       gpio.interruptCallback(line_number);
     }
   }
