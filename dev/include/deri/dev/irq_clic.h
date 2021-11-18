@@ -4,8 +4,7 @@
 
 #pragma once
 
-// TODO: Change ECLIC references to CLIC
-#include "deri/mmio/ECLIC.hpp"
+#include "deri/mmio/CLIC.hpp"
 #include "deri/mmio/interrupts.hpp"
 
 namespace deri::dev::irq {
@@ -28,6 +27,8 @@ class IrqClic {
   void setVectorTable(isr_func *const *vector_table);
 
  private:
-  mmio::ECLIC_regs CLIC;
+  mmio::CLIC_regs CLIC;
 };
+
+static_assert(sizeof(IrqClic) == sizeof(mmio::CLIC_regs));
 }  // namespace deri::dev::irq

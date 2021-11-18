@@ -4,33 +4,32 @@
 
 #include "deri/dev/irq_clic.h"
 
-#include "deri/mmio/bits/ECLIC_bits.hpp"
+#include "deri/mmio/bits/CLIC_bits.hpp"
 #include "riscv/csr/encoding.h"
 
 namespace deri::dev::irq {
-using CLICINT_regs = mmio::ECLIC_regs::CLICINT_regs;
+using CLICINT_regs = mmio::CLIC_regs::CLICINT_regs;
 void IrqClic::enable_irq(IrqClic::IRQ irq) {
   using CLICINTIE_bits = CLICINT_regs::CLICINTIE_bits;
   using CLICINTATTR_bits = CLICINT_regs::CLICINTATTR_bits;
 
-  auto &clicint = CLIC.CLICINT[static_cast<size_t>(irq)];
+  auto &clicint = CLIC.clicint[static_cast<size_t>(irq)];
   // Hardware vectoring enabled
-  clicint.CLICINTATTR.store(CLICINTATTR_bits::SHV);
-  clicint.CLICINTIE.store(CLICINTIE_bits::IE);
+  clicint.clicintattr.store(CLICINTATTR_bits::SHV);
+  clicint.clicintie.store(CLICINTIE_bits::IE);
 }
 
 void IrqClic::disable_irq(IrqClic::IRQ irq) {
   using CLICINTIE_bits = CLICINT_regs::CLICINTIE_bits;
 
-  auto &clicint = CLIC.CLICINT[static_cast<size_t>(irq)];
-  clicint.CLICINTIE.store(static_cast<CLICINTIE_bits>(0));
+  auto &clicint = CLIC.clicint[static_cast<size_t>(irq)];
+  clicint.clicintie.store(static_cast<CLICINTIE_bits>(0));
 }
 
 void IrqClic::init() {
-  using CLICCFG_bits = mmio::ECLIC_regs::CLICCFG_bits;
+  using CLICCFG_bits = mmio::CLIC_regs::CLICCFG_bits;
   // Enable hardware vectoring
-  // FIXME: Missing enum for nvbits field
-  CLIC.CLICCFG.store(static_cast<CLICCFG_bits>(1));
+  CLIC.cliccfg.store(CLICCFG_bits::NVBITS);
   // Switch to CLIC mode
   write_csr(mtvec, 0b000011u);
 }
