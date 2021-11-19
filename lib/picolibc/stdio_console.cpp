@@ -10,17 +10,17 @@ extern "C" {
 #include <span>
 
 namespace {
-int iob_console_put(char, FILE *);
-int iob_console_get(FILE *);
-int iob_console_flush(FILE *);
+int stdio_put(char, FILE *);
+int stdio_get(FILE *);
+int stdio_flush(FILE *);
 
 // Bare minimum stdout
 FILE _stdio{
     .unget = decltype(FILE::unget)(0),
     .flags = _FDEV_SETUP_RW,
-    .put = iob_console_put,
-    .get = iob_console_get,
-    .flush = iob_console_flush,
+    .put = stdio_put,
+    .get = stdio_get,
+    .flush = stdio_flush,
 };
 }  // namespace
 
@@ -35,12 +35,12 @@ FILE *const stderr = &_stdio;
 }
 namespace {
 
-int iob_console_put(char c, FILE *) {
+int stdio_put(char c, FILE *) {
   std::span<const char, sizeof c> buffer{&c, sizeof c};
   deri::console.write(as_bytes(buffer));
   return buffer.size();
 }
-int iob_console_get(FILE *) { return 0; }
+int stdio_get(FILE *) { return 0; }
 
-int iob_console_flush(FILE *) { return 0; }
+int stdio_flush(FILE *) { return 0; }
 }  // namespace

@@ -95,11 +95,11 @@ endif ()
 
 add_dependencies(deri_libc picolibc-install)
 add_dependencies(deri_flags picolibc-install)
-deri_add_library(deri_iob OBJECT iob.cpp)
-deri_target_depends(deri_iob PUBLIC
+deri_add_library(deri_stdio_console OBJECT stdio_console.cpp)
+deri_target_depends(deri_stdio_console PUBLIC
   deri_libc
   deri_dev_common
   deri_core_include
   deri_bsp_periph
   )
-deri_target_depends(deri_core INTERFACE deri_iob $<TARGET_OBJECTS:deri_iob>)
+deri_target_depends(deri_core INTERFACE deri_stdio_console $<TARGET_OBJECTS:deri_stdio_console>)
