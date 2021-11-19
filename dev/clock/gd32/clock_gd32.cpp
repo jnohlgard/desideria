@@ -3,6 +3,7 @@
  */
 
 #include "deri/dev/clock_gd32.h"
+#include "deri/bsp/devices.h"
 
 namespace deri::dev::clock {
 
@@ -15,8 +16,8 @@ uint32_t RcuGd32::sysFreq() const {
       // IRC8M is the current clock source
       return 8'000'000u;
     case 0b01:
-      // TODO HXTAL is the current clock source
-      return 0;
+      // HXTAL is the current clock source
+      return bsp::hxtal_freq;
     case 0b10:
       // TODO PLL is the current clock source
       return 0;
