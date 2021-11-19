@@ -10,7 +10,7 @@
 namespace deri::soc {
 void init() {
   clic.init();
-  clic.setVectorTable(vector_table);
+  dev::irq::IrqClic::setVectorTable(vector_table);
   soc::afio.init();
   arch::irq_enable();
 }
