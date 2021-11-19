@@ -12,7 +12,6 @@ namespace deri::dev::irq {
 class IrqClic {
  public:
   using IRQ = mmio::IRQ;
-  using isr_func = void();
   void init();
   void enable_irq(IRQ irq);
   void disable_irq(IRQ irq);
