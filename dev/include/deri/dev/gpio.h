@@ -21,6 +21,12 @@ struct Gpio {
   constexpr Gpio(Port port, std::underlying_type_t<Pin> pin)
       : Gpio(port, static_cast<Pin>(pin)) {}
 
+  Gpio() = default;
+  Gpio(const Gpio &) = default;
+  Gpio(Gpio &&) noexcept = default;
+  Gpio &operator=(const Gpio &) = default;
+  Gpio &operator=(Gpio &&) noexcept = default;
+
   Pin pin;
   Port port;
 };
