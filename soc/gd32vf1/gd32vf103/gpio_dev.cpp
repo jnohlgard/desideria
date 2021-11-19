@@ -6,7 +6,6 @@
 
 #include "deri/dev/exti_gd32.h"
 #include "deri/dev/gpio_gd32.h"
-#include "deri/dev/irq_clic.h"
 #include "deri/mmio/bits/RCU_bits.hpp"
 #include "deri/mmio/interrupts.hpp"
 #include "deri/soc/irq_dev.h"
