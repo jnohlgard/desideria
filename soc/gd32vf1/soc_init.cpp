@@ -2,6 +2,7 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
+#include "deri/arch_init.h"
 #include "deri/dev/afio_gd32.h"
 #include "deri/soc/gpio_dev.h"
 #include "deri/soc/irq_dev.h"
@@ -9,6 +10,7 @@
 
 namespace deri::soc {
 void init() {
+  arch::init();
   clic.init();
   dev::irq::IrqClic::setVectorTable(vector_table);
   soc::afio.init();

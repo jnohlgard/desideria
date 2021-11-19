@@ -5,10 +5,10 @@
 #include "riscv/csr/encoding.h"
 #include "deri/arch/irq.h"
 
-namespace deri::arch::riscv {
+namespace deri::arch {
 void init() {
   // Clear all IRQ enable flags
-  clear_csr(mie, 0b1111'1111'1111u);
   irq_disable();
+  clear_csr(mie, 0b1111'1111'1111u);
 }
 }  // namespace deri::arch::riscv
