@@ -11,7 +11,7 @@ extern "C" {
 namespace deri {
 
 void failed_assertion(const char *msg) {
-  void *failed_pc = reinterpret_cast<void *>(
+  auto *failed_pc = reinterpret_cast<const void *>(
       reinterpret_cast<uintptr_t>(
           __builtin_extract_return_addr(__builtin_return_address(0))) -
       2);

@@ -27,7 +27,7 @@ ssize_t write(int fildes, const void *buf, size_t nbyte);
 */
 }
 
-#include <deri/console.h>
+#include "deri/console.h"
 
 int close(int) {
   errno = ENOSYS;

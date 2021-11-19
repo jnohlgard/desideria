@@ -1,22 +1,26 @@
-deri_add_library(deri_core INTERFACE
-  assert.cpp
+deri_add_library(deri_core STATIC
   include/deri/assert.h
   include/deri/console.h
-  die.cpp
   include/deri/die.h
+  assert.cpp
+  die.cpp
+  )
+deri_add_library(deri_core_obj OBJECT
   init.cpp
   syscalls.cpp
   )
 deri_add_library(deri_core_include INTERFACE)
 target_include_directories(deri_core_include INTERFACE include)
-deri_target_depends(deri_core INTERFACE deri_core_include)
+deri_target_depends(deri_core PUBLIC deri_core_obj $<TARGET_OBJECTS:deri_core_obj>)
+deri_target_depends(deri_core PUBLIC deri_core_include)
+deri_target_depends(deri_core_obj PUBLIC deri_core_include)
+deri_target_depends(deri_core_obj PUBLIC deri_bsp_common deri_bsp_periph)
 
 add_subdirectory(cxxabi)
 add_subdirectory(testing)
 
-deri_target_depends(deri_core INTERFACE
+deri_target_depends(deri_core PUBLIC
   deri_dev_common
   deri_core_cxxabi
-  deri_bsp
   deri_arch
   )

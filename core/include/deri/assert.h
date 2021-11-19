@@ -2,8 +2,7 @@
  * Copyright (c) 2020 Joakim Nohlgård
  */
 
-#ifndef DERI_ASSERT_H_
-#define DERI_ASSERT_H_
+#pragma once
 
 namespace deri {
 
@@ -19,5 +18,3 @@ namespace deri {
 }
 
 }
-
-#endif // DERI_ASSERT_H_

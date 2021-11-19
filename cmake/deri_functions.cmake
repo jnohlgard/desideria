@@ -28,10 +28,6 @@ endfunction()
 
 function(deri_target_depends target_name dep_kind) # ... ARGN dependencies
   target_link_libraries(${target_name} ${dep_kind} ${ARGN})
-  foreach (dep IN LISTS ARGN)
-    # propagate interface sources
-    target_sources(${target_name} INTERFACE $<TARGET_PROPERTY:${dep},INTERFACE_SOURCES>)
-  endforeach ()
 endfunction()
 
 function(deri_configure_target target_name)

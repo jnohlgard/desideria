@@ -7,6 +7,7 @@ deri_add_library(deri_bsp_periph INTERFACE
   include/deri/bsp/config.h
   )
 target_include_directories(deri_bsp_periph INTERFACE include)
+target_include_directories(deri_bsp PUBLIC include)
 target_link_libraries(deri_bsp PUBLIC
   deri_core
   deri_arch
