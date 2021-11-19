@@ -14,9 +14,12 @@ namespace deri::bsp {
 extern deri::dev::uart::UsartGd32 uart0;
 
 inline constexpr std::array leds{
-    dev::gpio::Gpio{dev::gpio::Gpio::Port::B, 5},
-    dev::gpio::Gpio{dev::gpio::Gpio::Port::B, 0},
-    dev::gpio::Gpio{dev::gpio::Gpio::Port::B, 1},
+    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 5},
+                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
+    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 0},
+                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
+    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 1},
+                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
 };
 
 inline constexpr std::array buttons{
