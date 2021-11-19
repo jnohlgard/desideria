@@ -14,7 +14,7 @@
 
 namespace deri::dev::uart {
 
-class UsartGd32 : protected mmio::USART_regs {
+class UsartGd32 {
  public:
   /**
    * Initialize the hardware module
@@ -56,6 +56,9 @@ class UsartGd32 : protected mmio::USART_regs {
    */
   [[nodiscard]] auto write(std::span<const std::byte> buffer)
       -> decltype(buffer);
+
+ private:
+  mmio::USART_regs USART;
 };
 
 static_assert(sizeof(UsartGd32) == sizeof(mmio::USART_regs));
