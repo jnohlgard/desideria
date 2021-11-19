@@ -13,7 +13,7 @@
 
 namespace deri::dev::gpio {
 
-class GpioGd32 {
+class GpioPortGd32 {
  public:
   using Pin = Gpio::Pin;
   using BOP_bits = mmio::GPIO_regs::BOP_bits;
@@ -62,7 +62,7 @@ class GpioManagerGd32 {
  public:
   using PullConfig = GpioIn::PullConfig;
   using OutputMode = GpioOut::OutputMode;
-  using DigitalOutSpeed = GpioGd32::DigitalOutSpeed;
+  using DigitalOutSpeed = GpioPortGd32::DigitalOutSpeed;
   struct Callback {
     void (*func)(uintptr_t);
     uintptr_t arg;

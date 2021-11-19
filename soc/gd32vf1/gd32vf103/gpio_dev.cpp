@@ -38,7 +38,7 @@ constexpr std::array gpioPortClockEnableBitMasks{
 
 GpioManagerGd32 gpio;
 
-GpioGd32 &gpioPortDev(Gpio::Port port) {
+GpioPortGd32 &gpioPortDev(Gpio::Port port) {
   return gpioPorts[static_cast<std::underlying_type_t<Gpio::Port>>(port)];
 }
 

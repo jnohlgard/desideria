@@ -13,7 +13,7 @@ namespace deri::dev::gpio {
 
 class AfioGd32;
 class ExtiGd32;
-class GpioGd32;
+class GpioPortGd32;
 class GpioManagerGd32;
 
 enum class Gpio::Port : unsigned {
@@ -28,18 +28,18 @@ enum class Gpio::Port : unsigned {
 
 namespace deri::soc {
 
-extern dev::gpio::GpioGd32 gpioa;
-extern dev::gpio::GpioGd32 gpiob;
-extern dev::gpio::GpioGd32 gpioc;
-extern dev::gpio::GpioGd32 gpiod;
-extern dev::gpio::GpioGd32 gpioe;
+extern dev::gpio::GpioPortGd32 gpioa;
+extern dev::gpio::GpioPortGd32 gpiob;
+extern dev::gpio::GpioPortGd32 gpioc;
+extern dev::gpio::GpioPortGd32 gpiod;
+extern dev::gpio::GpioPortGd32 gpioe;
 extern dev::gpio::AfioGd32 afio;
 extern dev::gpio::ExtiGd32 exti;
 extern dev::gpio::GpioManagerGd32 gpio;
 
-dev::gpio::GpioGd32 &gpioPortDev(dev::gpio::Gpio::Port port);
+dev::gpio::GpioPortGd32 &gpioPortDev(dev::gpio::Gpio::Port port);
 
-inline dev::gpio::GpioGd32 &gpioPortDev(dev::gpio::Gpio gpio) {
+inline dev::gpio::GpioPortGd32 &gpioPortDev(dev::gpio::Gpio gpio) {
   return gpioPortDev(gpio.port);
 }
 

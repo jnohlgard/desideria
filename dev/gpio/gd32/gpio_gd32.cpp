@@ -18,18 +18,18 @@ using CTL_bits = mmio::GPIO_regs::CTL_bits;
 using CTL_shift = mmio::GPIO_regs::CTL_shift;
 using OCTL_bits = mmio::GPIO_regs::OCTL_bits;
 
-constexpr unsigned ctlShift(GpioGd32::Pin pin) {
+constexpr unsigned ctlShift(GpioPortGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;
 }
-constexpr unsigned ctlOffset(GpioGd32::Pin pin) {
+constexpr unsigned ctlOffset(GpioPortGd32::Pin pin) {
   return static_cast<unsigned>(pin) / 8;
 }
-constexpr uint32_t ctlMask(GpioGd32::Pin pin) {
+constexpr uint32_t ctlMask(GpioPortGd32::Pin pin) {
   return 0b1111 << ctlShift(pin);
 }
 
 constexpr CTL_bits applyCtlBits(CTL_bits ctl,
-                                GpioGd32::Pin pin,
+                                GpioPortGd32::Pin pin,
                                 CTL_bits bits) {
   ctl &= static_cast<CTL_bits>(~ctlMask(pin));
   ctl |= static_cast<CTL_bits>(
@@ -37,12 +37,12 @@ constexpr CTL_bits applyCtlBits(CTL_bits ctl,
   return ctl;
 }
 
-void GpioGd32::writeCTLReg(Pin pin, CTL_bits bits) {
+void GpioPortGd32::writeCTLReg(Pin pin, CTL_bits bits) {
   GPIO.CTL[ctlOffset(pin)].store(
       applyCtlBits(GPIO.CTL[ctlOffset(pin)].load(), pin, bits));
 }
 
-void GpioGd32::initAnalog(Pin pin) {
+void GpioPortGd32::initAnalog(Pin pin) {
   writeCTLReg(pin, static_cast<CTL_bits>(0));
 }
 
@@ -50,7 +50,8 @@ CTL_bits operator<<(uint32_t value, mmio::GPIO_regs::CTL_shift shift) {
   return static_cast<CTL_bits>(value << static_cast<unsigned>(shift));
 }
 
-void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::PullConfig pull) {
+void GpioPortGd32::initInput(GpioPortGd32::Pin pin,
+                             GpioPortGd32::PullConfig pull) {
   switch (pull) {
     case PullConfig::FLOATING:
       writeCTLReg(pin, 0b01 << CTL_shift::CTL0);
@@ -66,21 +67,21 @@ void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::PullConfig pull) {
   }
 }
 
-CTL_bits speedBits(GpioGd32::DigitalOutSpeed speed) {
+CTL_bits speedBits(GpioPortGd32::DigitalOutSpeed speed) {
   switch (speed) {
-    case GpioGd32::DigitalOutSpeed::D10MHZ:
+    case GpioPortGd32::DigitalOutSpeed::D10MHZ:
       return 0b01 << CTL_shift::MD0;
-    case GpioGd32::DigitalOutSpeed::D2MHZ:
+    case GpioPortGd32::DigitalOutSpeed::D2MHZ:
       return 0b10 << CTL_shift::MD0;
-    case GpioGd32::DigitalOutSpeed::D50MHZ:
+    case GpioPortGd32::DigitalOutSpeed::D50MHZ:
       return 0b11 << CTL_shift::MD0;
   }
   return CTL_bits{};
 }
 
-void GpioGd32::initOutGpio(GpioGd32::Pin pin,
-                           GpioGd32::OutputMode mode,
-                           GpioGd32::DigitalOutSpeed speed) {
+void GpioPortGd32::initOutGpio(GpioPortGd32::Pin pin,
+                               GpioPortGd32::OutputMode mode,
+                               GpioPortGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
   switch (mode) {
     case OutputMode::PUSH_PULL:
@@ -92,9 +93,9 @@ void GpioGd32::initOutGpio(GpioGd32::Pin pin,
   }
   writeCTLReg(pin, bits);
 }
-void GpioGd32::initOutAfio(GpioGd32::Pin pin,
-                           GpioGd32::OutputMode mode,
-                           GpioGd32::DigitalOutSpeed speed) {
+void GpioPortGd32::initOutAfio(GpioPortGd32::Pin pin,
+                               GpioPortGd32::OutputMode mode,
+                               GpioPortGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
   switch (mode) {
     case OutputMode::PUSH_PULL:
