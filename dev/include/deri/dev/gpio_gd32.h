@@ -13,9 +13,11 @@
 
 namespace deri::dev::gpio {
 
-class GpioGd32 : private mmio::GPIO_regs {
+class GpioGd32 {
  public:
   using Pin = Gpio::Pin;
+  using BOP_bits = mmio::GPIO_regs::BOP_bits;
+  using BC_bits = mmio::GPIO_regs::BC_bits;
 
   enum class DigitalIn {
     FLOATING,
@@ -43,21 +45,24 @@ class GpioGd32 : private mmio::GPIO_regs {
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
 
   void set(Pin pin) {
-    BOP.store(static_cast<BOP_bits>(1u << static_cast<unsigned>(pin)));
+    GPIO.BOP.store(static_cast<BOP_bits>(1u << static_cast<unsigned>(pin)));
   }
   void clear(Pin pin) {
-    BC.store(static_cast<BC_bits>(1u << static_cast<unsigned>(pin)));
+    GPIO.BC.store(static_cast<BC_bits>(1u << static_cast<unsigned>(pin)));
   }
-  void set(BOP_bits pins) { BOP.store(pins); }
-  void clear(BC_bits pins) { BC.store(pins); }
+  void set(BOP_bits pins) { GPIO.BOP.store(pins); }
+  void clear(BC_bits pins) { GPIO.BC.store(pins); }
 
-  bool read(Pin pin) {
-    return !!(ISTAT.load() &
-              static_cast<ISTAT_bits>(1u << static_cast<unsigned>(pin)));
+  [[nodiscard]] bool read(Pin pin) const {
+    return !!(GPIO.ISTAT.load() &
+              static_cast<mmio::GPIO_regs::ISTAT_bits>(1u << static_cast<unsigned>(pin)));
   }
 
  private:
+  using CTL_bits = mmio::GPIO_regs::CTL_bits;
   void writeCTLReg(Pin pin, CTL_bits bits);
+
+  mmio::GPIO_regs GPIO;
 };
 
 class GpioManagerGd32 {

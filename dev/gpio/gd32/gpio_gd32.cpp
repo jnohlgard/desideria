@@ -16,6 +16,7 @@
 namespace deri::dev::gpio {
 using CTL_bits = mmio::GPIO_regs::CTL_bits;
 using CTL_shift = mmio::GPIO_regs::CTL_shift;
+using OCTL_bits = mmio::GPIO_regs::OCTL_bits;
 
 constexpr unsigned ctlShift(GpioGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;
@@ -37,8 +38,8 @@ constexpr CTL_bits applyCtlBits(CTL_bits ctl,
 }
 
 void GpioGd32::writeCTLReg(Pin pin, CTL_bits bits) {
-  CTL[ctlOffset(pin)].store(
-      applyCtlBits(CTL[ctlOffset(pin)].load(), pin, bits));
+  GPIO.CTL[ctlOffset(pin)].store(
+      applyCtlBits(GPIO.CTL[ctlOffset(pin)].load(), pin, bits));
 }
 
 void GpioGd32::initAnalog(Pin pin) {
@@ -56,11 +57,11 @@ void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::DigitalIn mode) {
       return;
     case DigitalIn::PULL_UP:
       writeCTLReg(pin, 0b10 << CTL_shift::CTL0);
-      OCTL |= static_cast<OCTL_bits>(1 << static_cast<unsigned>(pin));
+      GPIO.OCTL |= static_cast<OCTL_bits>(1 << static_cast<unsigned>(pin));
       return;
     case DigitalIn::PULL_DOWN:
       writeCTLReg(pin, 0b10 << CTL_shift::CTL0);
-      OCTL &= static_cast<OCTL_bits>(~(1 << static_cast<unsigned>(pin)));
+      GPIO.OCTL &= static_cast<OCTL_bits>(~(1 << static_cast<unsigned>(pin)));
       return;
   }
 }
