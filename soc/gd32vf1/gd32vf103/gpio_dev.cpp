@@ -125,54 +125,49 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
 }  // namespace deri::dev::gpio
 
 using namespace deri::soc;
+
+namespace {
+void gpio_interrupt(unsigned line) {
+  exti.clearPending(static_cast<ExtiGd32::Line>(line));
+  gpio.interruptCallback(line);
+}
+using PD_bits = deri::mmio::EXTI_regs::PD_bits;
+void gpio_interrupts_grouped(PD_bits pending, unsigned line) {
+  exti.clearPending(pending);
+  unsigned pending_lines = static_cast<unsigned>(pending) >> line;
+  while (pending_lines != 0) {
+    if ((pending_lines & 1) != 0) {
+      gpio.interruptCallback(line);
+    }
+    pending_lines >>= 1;
+    ++line;
+  }
+}
+}  // namespace
+
 extern "C" {
 void isr_EXTI_Line0() __attribute__((__interrupt__));
-void isr_EXTI_Line0() {
-  exti.clearPending(static_cast<ExtiGd32::Line>(0));
-  gpio.interruptCallback(0);
-}
+void isr_EXTI_Line0() { gpio_interrupt(0); }
 void isr_EXTI_Line1() __attribute__((__interrupt__));
-void isr_EXTI_Line1() {
-  exti.clearPending(static_cast<ExtiGd32::Line>(1));
-  gpio.interruptCallback(1);
-}
+void isr_EXTI_Line1() { gpio_interrupt(1); }
 void isr_EXTI_Line2() __attribute__((__interrupt__));
-void isr_EXTI_Line2() {
-  exti.clearPending(static_cast<ExtiGd32::Line>(2));
-  gpio.interruptCallback(2);
-}
+void isr_EXTI_Line2() { gpio_interrupt(2); }
 void isr_EXTI_Line3() __attribute__((__interrupt__));
-void isr_EXTI_Line3() {
-  exti.clearPending(static_cast<ExtiGd32::Line>(3));
-  gpio.interruptCallback(3);
-}
+void isr_EXTI_Line3() { gpio_interrupt(3); }
 void isr_EXTI_Line4() __attribute__((__interrupt__));
-void isr_EXTI_Line4() {
-  exti.clearPending(static_cast<ExtiGd32::Line>(4));
-  gpio.interruptCallback(4);
-}
+void isr_EXTI_Line4() { gpio_interrupt(4); }
 void isr_EXTI_line9_5() __attribute__((__interrupt__));
 void isr_EXTI_line9_5() {
-  using PD_bits = deri::mmio::EXTI_regs::PD_bits;
   auto pending = exti.pending();
-  pending &= static_cast<PD_bits>(0b11111 << 5);
-  exti.clearPending(pending);
-  for (unsigned line_number = 5; line_number <= 9; ++line_number) {
-    if (!!(pending & static_cast<PD_bits>(1u << line_number))) {
-      gpio.interruptCallback(line_number);
-    }
-  }
+  unsigned line_number = 5;
+  pending &= static_cast<PD_bits>(0b11111u << line_number);
+  gpio_interrupts_grouped(pending, line_number);
 }
 void isr_EXTI_line15_10() __attribute__((__interrupt__));
 void isr_EXTI_line15_10() {
-  using PD_bits = deri::mmio::EXTI_regs::PD_bits;
   auto pending = exti.pending();
-  pending &= static_cast<PD_bits>(0b11111u << 10);
-  exti.clearPending(pending);
-  for (unsigned line_number = 10; line_number <= 15; ++line_number) {
-    if (!!(pending & static_cast<PD_bits>(1u << line_number))) {
-      gpio.interruptCallback(line_number);
-    }
-  }
+  unsigned line_number = 10;
+  pending &= static_cast<PD_bits>(0b111111u << line_number);
+  gpio_interrupts_grouped(pending, line_number);
 }
 }
