@@ -9,20 +9,14 @@ macro(add_all_subdirectories)
   endforeach ()
 endmacro()
 
-
 function(deri_add_library target_name library_kind) # ... ARGN sources
-  add_library(${target_name} ${library_kind} EXCLUDE_FROM_ALL)
-  # INTERFACE libraries can be used to get conditional compilation and weak symbols
-  # working better by propagating the sources all the way down to the main executable target.
+  add_library(${target_name} ${library_kind} EXCLUDE_FROM_ALL ${ARGN})
   if (library_kind STREQUAL "INTERFACE")
-    set(source_type "INTERFACE")
     set(flags_type "INTERFACE")
   else ()
-    set(source_type "PRIVATE")
     set(flags_type "PUBLIC")
   endif ()
-  target_sources(${target_name} ${source_type} ${ARGN})
-  # Here we make sure we always have a dependency on the compile flags on all targets.
+  # Make sure we always have a dependency on the compile flags on all targets.
   target_link_libraries(${target_name} ${flags_type} deri_flags)
 endfunction()
 
