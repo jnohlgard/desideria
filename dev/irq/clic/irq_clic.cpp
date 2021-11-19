@@ -5,10 +5,13 @@
 #include "deri/dev/irq_clic.h"
 
 #include "deri/mmio/bits/CLIC_bits.hpp"
+
 #include "riscv/csr/encoding.h"
 
 namespace deri::dev::irq {
+
 using CLICINT_regs = mmio::CLIC_regs::CLICINT_regs;
+
 void IrqClic::enable_irq(IrqClic::IRQ irq) {
   using CLICINTIE_bits = CLICINT_regs::CLICINTIE_bits;
   using CLICINTATTR_bits = CLICINT_regs::CLICINTATTR_bits;
@@ -33,7 +36,9 @@ void IrqClic::init() {
   // Switch to CLIC mode
   write_csr(mtvec, 0b000011u);
 }
+
 void IrqClic::setVectorTable(isr_func *const *vector_table) {
   write_csr(mtvt, vector_table);
 }
+
 }  // namespace deri::dev::irq
