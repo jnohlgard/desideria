@@ -62,3 +62,15 @@ constexpr Enum &operator^=(Enum &lhs, const Enum rhs) {
   lhs = lhs ^ rhs;
   return lhs;
 }
+
+template <typename Enum>
+concept Bitshift = requires(Enum shift) {
+  IsBitShift(shift);
+};
+
+template <Bitmask Mask, Bitshift Shift>
+constexpr std::underlying_type_t<Mask> operator>>(const Mask lhs,
+                                                  const Shift rhs) {
+  return static_cast<std::underlying_type_t<Mask>>(lhs) >>
+         static_cast<unsigned>(rhs);
+}
