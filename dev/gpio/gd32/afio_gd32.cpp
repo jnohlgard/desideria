@@ -8,29 +8,40 @@
 #include "deri/mmio/bits/AFIO_bits.hpp"
 
 namespace deri::dev::gpio {
+
 namespace {
-auto applyExtiSource(auto pin_number, AfioGd32::ExtiSource source, auto reg) {
+
+template <typename BitsType>
+BitsType applyExtiSource(auto pin_number,
+                         AfioGd32::ExtiSource source,
+                         BitsType reg) {
   auto shift = (pin_number % 4) * 4;
-  return (reg & static_cast<decltype(reg)>(~(0b1111 << shift))) |
-         static_cast<decltype(reg)>(
-             static_cast<std::underlying_type_t<decltype(reg)>>(source)
-             << shift);
+  return (reg & static_cast<BitsType>(~(0b1111 << shift))) |
+         static_cast<BitsType>(
+             static_cast<std::underlying_type_t<BitsType>>(source) << shift);
 }
+
 }  // namespace
 
 void AfioGd32::setExtiSource(Gpio::Pin pin, AfioGd32::ExtiSource source) {
   auto pin_number = static_cast<std::underlying_type_t<Gpio::Pin>>(pin);
   if (pin_number < 4) {
-    EXTISS0.store(applyExtiSource(pin_number, source, EXTISS0.load()));
+    AFIO.EXTISS0.store(
+        applyExtiSource(pin_number, source, AFIO.EXTISS0.load()));
   } else if (pin_number < 8) {
-    EXTISS1.store(applyExtiSource(pin_number, source, EXTISS1.load()));
+    AFIO.EXTISS1.store(
+        applyExtiSource(pin_number, source, AFIO.EXTISS1.load()));
   } else if (pin_number < 12) {
-    EXTISS2.store(applyExtiSource(pin_number, source, EXTISS2.load()));
+    AFIO.EXTISS2.store(
+        applyExtiSource(pin_number, source, AFIO.EXTISS2.load()));
   } else if (pin_number < 16) {
-    EXTISS3.store(applyExtiSource(pin_number, source, EXTISS3.load()));
+    AFIO.EXTISS3.store(
+        applyExtiSource(pin_number, source, AFIO.EXTISS3.load()));
   }
 }
+
 void AfioGd32::init() {
   clock::enableModules(mmio::RCU_regs::APB2EN_bits::AFEN);
 }
+
 }  // namespace deri::dev::gpio
