@@ -174,4 +174,9 @@ void GpioManagerGd32::disableInterrupt(Gpio gpio) {
   // we don't disable the CLIC line because some of them are shared between
   // multiple pins
 }
+
+GpioOutGd32 GpioManagerGd32::initOutGpio(GpioOut config) {
+  initOutGpio(config.gpio, config.mode);
+  return {soc::gpioPortDev(config.gpio.port), config.gpio.pin, config.polarity};
+}
 }  // namespace deri::dev::gpio

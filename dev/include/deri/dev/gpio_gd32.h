@@ -58,6 +58,57 @@ class GpioPortGd32 {
   mmio::GPIO_regs GPIO;
 };
 
+class GpioOutGd32 {
+ public:
+  using Polarity = GpioOut::Polarity;
+  using Pin = GpioPortGd32::Pin;
+
+  GpioOutGd32(GpioPortGd32 &port,
+              Pin pin,
+              Polarity polarity = Polarity::POSITIVE)
+      : port(port), pin(pin), polarity(polarity) {}
+
+  void set() {
+    switch (polarity) {
+      case Polarity::POSITIVE:
+        port.set(pin);
+        break;
+      case Polarity::INVERTED:
+        port.clear(pin);
+        break;
+    }
+  }
+
+  void clear() {
+    switch (polarity) {
+      case Polarity::POSITIVE:
+        port.clear(pin);
+        break;
+      case Polarity::INVERTED:
+        port.set(pin);
+        break;
+    }
+  }
+
+  void write(bool value) {
+    if (value) {
+      set();
+    } else {
+      clear();
+    }
+  }
+
+  void toggle() {
+    bool value = port.read(pin);
+    write(!value);
+  }
+
+ private:
+  GpioPortGd32 &port;
+  Pin pin;
+  Polarity polarity{};
+};
+
 class GpioManagerGd32 {
  public:
   using PullConfig = GpioIn::PullConfig;
@@ -84,7 +135,7 @@ class GpioManagerGd32 {
                    OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D2MHZ);
 
-  void initOutGpio(GpioOut config) { initOutGpio(config.gpio, config.mode); }
+  GpioOutGd32 initOutGpio(GpioOut config);
 
   void initOutAfio(Gpio gpio,
                    OutputMode mode = OutputMode::PUSH_PULL,

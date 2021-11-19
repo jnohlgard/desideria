@@ -20,9 +20,8 @@ void buttonCallback(uintptr_t id) {
 
 void initLeds() {
   for (auto &&led : deri::bsp::leds) {
-    deri::soc::gpio.initOutGpio(led);
-    auto &led_port = deri::soc::gpioPortDev(led.gpio);
-    led_port.clear(led.gpio.pin);
+    auto gpio = deri::soc::gpio.initOutGpio(led);
+    gpio.set();
   }
 }
 
