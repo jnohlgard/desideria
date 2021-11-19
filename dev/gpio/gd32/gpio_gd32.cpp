@@ -10,6 +10,7 @@
 #include "deri/mmio/bits/AFIO_bits.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"
 #include "deri/soc/gpio_dev.h"
+#include "deri/soc/clock_dev.h"
 
 #include <cstdint>
 
@@ -20,7 +21,7 @@ using OCTL_bits = mmio::GPIO_regs::OCTL_bits;
 
 namespace {
 void enableModule(Gpio::Port port) {
-  clock::enableModules(soc::gpioPortClockEnableBits(port));
+  soc::rcu.enableModules(soc::gpioPortClockEnableBits(port));
 }
 constexpr unsigned ctlShift(GpioPortGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;

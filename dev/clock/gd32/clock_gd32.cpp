@@ -1,15 +1,26 @@
 /*
-* Copyright (c) 2021 Joakim Nohlgård
-*/
+ * Copyright (c) 2021 Joakim Nohlgård
+ */
 
 #include "deri/dev/clock_gd32.h"
-#include "deri/mmio/peripherals.hpp"
 
 namespace deri::dev::clock {
 
-using mmio::RCU;
-void enableModules(AHBEN_bits bits) { RCU.AHBEN |= bits; }
-void enableModules(APB1EN_bits bits) { RCU.APB1EN |= bits; }
-void enableModules(APB2EN_bits bits) { RCU.APB2EN |= bits; }
+uint32_t RcuGd32::systemFrequency() const {
+  using CFG0_bits = mmio::RCU_regs::CFG0_bits;
+  using CFG0_shift = mmio::RCU_regs::CFG0_shift;
 
+  switch ((RCU.CFG0.load() & CFG0_bits::SCSS_mask) >> CFG0_shift::SCSS) {
+    case 0b00:
+      // IRC8M is the current clock source
+      return 8'000'000u;
+    case 0b01:
+      // TODO HXTAL is the current clock source
+      return 0;
+    case 0b10:
+      // TODO PLL is the current clock source
+      return 0;
+  }
+  return 0;
+}
 }  // namespace deri::dev::clock

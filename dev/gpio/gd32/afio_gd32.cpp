@@ -4,7 +4,7 @@
 
 #include "deri/dev/afio_gd32.h"
 
-#include "deri/dev/clock_gd32.h"
+#include "deri/soc/clock_dev.h"
 #include "deri/mmio/bits/AFIO_bits.hpp"
 
 namespace deri::dev::gpio {
@@ -41,7 +41,7 @@ void AfioGd32::setExtiSource(Gpio::Pin pin, AfioGd32::ExtiSource source) {
 }
 
 void AfioGd32::init() {
-  clock::enableModules(mmio::RCU_regs::APB2EN_bits::AFEN);
+  soc::rcu.enableModules(clock::RcuGd32::APB2EN_bits::AFEN);
 }
 
 }  // namespace deri::dev::gpio

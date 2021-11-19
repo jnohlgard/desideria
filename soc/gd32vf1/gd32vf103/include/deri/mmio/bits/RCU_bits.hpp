@@ -54,6 +54,7 @@ enum class RCU_regs::CTL_shift : unsigned {
   PLL2EN = 28,
   PLL2STB = 29,
 };
+void IsBitShift(RCU_regs::CTL_shift);
 
 /**
  * Bitmasks for RCU CFG0
@@ -96,6 +97,7 @@ enum class RCU_regs::CFG0_shift : unsigned {
   ADCPSC_2 = 28,
   PLLMF_4 = 29,
 };
+void IsBitShift(RCU_regs::CFG0_shift);
 
 /**
  * Bitmasks for RCU INT
@@ -158,6 +160,7 @@ enum class RCU_regs::INT_shift : unsigned {
   PLL2STBIC = 22,
   CKMIC = 23,
 };
+void IsBitShift(RCU_regs::INT_shift);
 
 /**
  * Bitmasks for RCU APB2RST
@@ -196,6 +199,7 @@ enum class RCU_regs::APB2RST_shift : unsigned {
   SPI0RST = 12,
   USART0RST = 14,
 };
+void IsBitShift(RCU_regs::APB2RST_shift);
 
 /**
  * Bitmasks for RCU APB1RST
@@ -252,6 +256,7 @@ enum class RCU_regs::APB1RST_shift : unsigned {
   PMURST = 28,
   DACRST = 29,
 };
+void IsBitShift(RCU_regs::APB1RST_shift);
 
 /**
  * Bitmasks for RCU AHBEN
@@ -282,6 +287,7 @@ enum class RCU_regs::AHBEN_shift : unsigned {
   EXMCEN = 8,
   USBFSEN = 12,
 };
+void IsBitShift(RCU_regs::AHBEN_shift);
 
 /**
  * Bitmasks for RCU APB2EN
@@ -320,6 +326,7 @@ enum class RCU_regs::APB2EN_shift : unsigned {
   SPI0EN = 12,
   USART0EN = 14,
 };
+void IsBitShift(RCU_regs::APB2EN_shift);
 
 /**
  * Bitmasks for RCU APB1EN
@@ -376,6 +383,7 @@ enum class RCU_regs::APB1EN_shift : unsigned {
   PMUEN = 28,
   DACEN = 29,
 };
+void IsBitShift(RCU_regs::APB1EN_shift);
 
 /**
  * Bitmasks for RCU BDCTL
@@ -404,6 +412,7 @@ enum class RCU_regs::BDCTL_shift : unsigned {
   RTCEN = 15,
   BKPRST = 16,
 };
+void IsBitShift(RCU_regs::BDCTL_shift);
 
 /**
  * Bitmasks for RCU RSTSCK
@@ -438,6 +447,7 @@ enum class RCU_regs::RSTSCK_shift : unsigned {
   WWDGTRSTF = 30,
   LPRSTF = 31,
 };
+void IsBitShift(RCU_regs::RSTSCK_shift);
 
 /**
  * Bitmasks for RCU AHBRST
@@ -456,6 +466,7 @@ void HasBitwiseOperators(RCU_regs::AHBRST_bits);
 enum class RCU_regs::AHBRST_shift : unsigned {
   USBFSRST = 12,
 };
+void IsBitShift(RCU_regs::AHBRST_shift);
 
 /**
  * Bitmasks for RCU CFG1
@@ -486,6 +497,7 @@ enum class RCU_regs::CFG1_shift : unsigned {
   I2S1SEL = 17,
   I2S2SEL = 18,
 };
+void IsBitShift(RCU_regs::CFG1_shift);
 
 /**
  * Bitmasks for RCU DSV
@@ -504,6 +516,7 @@ void HasBitwiseOperators(RCU_regs::DSV_bits);
 enum class RCU_regs::DSV_shift : unsigned {
   DSLPVS = 0,
 };
+void IsBitShift(RCU_regs::DSV_shift);
 
 static_assert(offsetof(RCU_regs, CTL) == 0x0);
 static_assert(offsetof(RCU_regs, CFG0) == 0x4);

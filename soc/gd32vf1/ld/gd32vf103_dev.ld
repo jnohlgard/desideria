@@ -7,3 +7,4 @@ PROVIDE(_ZN4deri3soc5gpioeE = GPIOE$);
 PROVIDE(_ZN4deri3soc4afioE = AFIO$);
 PROVIDE(_ZN4deri3soc4extiE = EXTI$);
 PROVIDE(_ZN4deri3soc4clicE = ECLIC$);
+PROVIDE(_ZN4deri3soc3rcuE = RCU$);
