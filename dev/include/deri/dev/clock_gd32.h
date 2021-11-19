@@ -18,7 +18,33 @@ class RcuGd32 {
   void enableModules(APB1EN_bits bits) { RCU.APB1EN |= bits; }
   void enableModules(APB2EN_bits bits) { RCU.APB2EN |= bits; }
 
-  [[nodiscard]] uint32_t systemFrequency() const;
+  /**
+   * Get the frequency of the CK_SYS clock by querying the hardware.
+   *
+   * @return CK_SYS frequency
+   */
+  [[nodiscard]] uint32_t sysFreq() const;
+
+  /**
+   * Get the frequency of the CK_AHB clock by querying the hardware.
+   *
+   * @return CK_AHB frequency
+   */
+  [[nodiscard]] uint32_t ahbFreq() const;
+
+  /**
+   * Get the frequency of the CK_APB1 clock by querying the hardware.
+   *
+   * @return CK_APB1 frequency
+   */
+  [[nodiscard]] uint32_t apb1Freq() const;
+
+  /**
+   * Get the frequency of the CK_APB2 clock by querying the hardware.
+   *
+   * @return CK_APB2 frequency
+   */
+  [[nodiscard]] uint32_t apb2Freq() const;
 
  private:
   mmio::RCU_regs RCU;

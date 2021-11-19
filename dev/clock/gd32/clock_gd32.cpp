@@ -6,7 +6,7 @@
 
 namespace deri::dev::clock {
 
-uint32_t RcuGd32::systemFrequency() const {
+uint32_t RcuGd32::sysFreq() const {
   using CFG0_bits = mmio::RCU_regs::CFG0_bits;
   using CFG0_shift = mmio::RCU_regs::CFG0_shift;
 
@@ -23,4 +23,35 @@ uint32_t RcuGd32::systemFrequency() const {
   }
   return 0;
 }
+
+uint32_t RcuGd32::ahbFreq() const {
+  auto ck_sys = sysFreq();
+  auto ahbpsc = (RCU.CFG0.load() & mmio::RCU_regs::CFG0_bits::AHBPSC_mask) >>
+                mmio::RCU_regs::CFG0_shift::AHBPSC;
+  if (ahbpsc < 0b1000u) {
+    return ck_sys;
+  }
+  return ck_sys >> ((ahbpsc & 0b111u) + 1);
+}
+
+uint32_t RcuGd32::apb1Freq() const {
+  auto ck_ahb = ahbFreq();
+  auto apb1psc = (RCU.CFG0.load() & mmio::RCU_regs::CFG0_bits::APB1PSC_mask) >>
+                 mmio::RCU_regs::CFG0_shift::APB1PSC;
+  if (apb1psc < 0b100u) {
+    return ck_ahb;
+  }
+  return ck_ahb >> ((apb1psc & 0b11u) + 1);
+}
+
+uint32_t RcuGd32::apb2Freq() const {
+  auto ck_ahb = ahbFreq();
+  auto apb2psc = (RCU.CFG0.load() & mmio::RCU_regs::CFG0_bits::APB2PSC_mask) >>
+                 mmio::RCU_regs::CFG0_shift::APB2PSC;
+  if (apb2psc < 0b100u) {
+    return ck_ahb;
+  }
+  return ck_ahb >> ((apb2psc & 0b11u) + 1);
+}
+
 }  // namespace deri::dev::clock
