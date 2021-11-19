@@ -25,9 +25,28 @@ struct Gpio {
   Port port;
 };
 
-struct InputPinConfig {
-Gpio gpio;
+struct GpioIn {
+  enum class PullConfig {
+    FLOATING,
+    PULL_UP,
+    PULL_DOWN,
+  };
+  Gpio gpio;
+  PullConfig pull{PullConfig::FLOATING};
+};
 
+struct GpioOut {
+  enum class OutputMode {
+    PUSH_PULL,
+    OPEN_DRAIN,
+  };
+  enum class Polarity {
+    POSITIVE,
+    INVERTED,
+  };
+  Gpio gpio;
+  OutputMode mode{OutputMode::PUSH_PULL};
+  Polarity polarity{Polarity::POSITIVE};
 };
 
 }  // namespace deri::dev::gpio

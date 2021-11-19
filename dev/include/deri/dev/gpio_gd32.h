@@ -19,16 +19,9 @@ class GpioGd32 {
   using BOP_bits = mmio::GPIO_regs::BOP_bits;
   using BC_bits = mmio::GPIO_regs::BC_bits;
 
-  enum class DigitalIn {
-    FLOATING,
-    PULL_UP,
-    PULL_DOWN,
-  };
+  using PullConfig = GpioIn::PullConfig;
 
-  enum class DigitalOutMode {
-    PUSH_PULL,
-    OPEN_DRAIN,
-  };
+  using OutputMode = GpioOut::OutputMode;
   enum class DigitalOutSpeed {
     D10MHZ,
     D2MHZ,
@@ -36,12 +29,12 @@ class GpioGd32 {
   };
 
   void initAnalog(Pin pin);
-  void initInput(Pin pin, DigitalIn mode = DigitalIn::FLOATING);
+  void initInput(Pin pin, PullConfig pull = PullConfig::FLOATING);
   void initOutGpio(Pin pin,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
   void initOutAfio(Pin pin,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
 
   void set(Pin pin) {
@@ -54,8 +47,8 @@ class GpioGd32 {
   void clear(BC_bits pins) { GPIO.BC.store(pins); }
 
   [[nodiscard]] bool read(Pin pin) const {
-    return !!(GPIO.ISTAT.load() &
-              static_cast<mmio::GPIO_regs::ISTAT_bits>(1u << static_cast<unsigned>(pin)));
+    return !!(GPIO.ISTAT.load() & static_cast<mmio::GPIO_regs::ISTAT_bits>(
+                                      1u << static_cast<unsigned>(pin)));
   }
 
  private:
@@ -67,8 +60,8 @@ class GpioGd32 {
 
 class GpioManagerGd32 {
  public:
-  using DigitalIn = GpioGd32::DigitalIn;
-  using DigitalOutMode = GpioGd32::DigitalOutMode;
+  using PullConfig = GpioIn::PullConfig;
+  using OutputMode = GpioOut::OutputMode;
   using DigitalOutSpeed = GpioGd32::DigitalOutSpeed;
   struct Callback {
     void (*func)(uintptr_t);
@@ -82,12 +75,19 @@ class GpioManagerGd32 {
 
   void enableModule(Gpio::Port port);
   void initAnalog(Gpio gpio);
-  void initInput(Gpio gpio, DigitalIn mode = DigitalIn::FLOATING);
+
+  void initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
+
+  void initInput(GpioIn config) { initInput(config.gpio, config.pull); }
+
   void initOutGpio(Gpio gpio,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
-                   DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
+                   OutputMode mode = OutputMode::PUSH_PULL,
+                   DigitalOutSpeed speed = DigitalOutSpeed::D2MHZ);
+
+  void initOutGpio(GpioOut config) { initOutGpio(config.gpio, config.mode); }
+
   void initOutAfio(Gpio gpio,
-                   DigitalOutMode mode = DigitalOutMode::PUSH_PULL,
+                   OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
   void setInterruptHandler(Gpio gpio, Edge edge, Callback callback);
   void clearInterruptHandler(Gpio gpio);

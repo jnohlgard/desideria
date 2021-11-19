@@ -50,16 +50,16 @@ CTL_bits operator<<(uint32_t value, mmio::GPIO_regs::CTL_shift shift) {
   return static_cast<CTL_bits>(value << static_cast<unsigned>(shift));
 }
 
-void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::DigitalIn mode) {
-  switch (mode) {
-    case DigitalIn::FLOATING:
+void GpioGd32::initInput(GpioGd32::Pin pin, GpioGd32::PullConfig pull) {
+  switch (pull) {
+    case PullConfig::FLOATING:
       writeCTLReg(pin, 0b01 << CTL_shift::CTL0);
       return;
-    case DigitalIn::PULL_UP:
+    case PullConfig::PULL_UP:
       writeCTLReg(pin, 0b10 << CTL_shift::CTL0);
       GPIO.OCTL |= static_cast<OCTL_bits>(1 << static_cast<unsigned>(pin));
       return;
-    case DigitalIn::PULL_DOWN:
+    case PullConfig::PULL_DOWN:
       writeCTLReg(pin, 0b10 << CTL_shift::CTL0);
       GPIO.OCTL &= static_cast<OCTL_bits>(~(1 << static_cast<unsigned>(pin)));
       return;
@@ -79,28 +79,28 @@ CTL_bits speedBits(GpioGd32::DigitalOutSpeed speed) {
 }
 
 void GpioGd32::initOutGpio(GpioGd32::Pin pin,
-                           GpioGd32::DigitalOutMode mode,
+                           GpioGd32::OutputMode mode,
                            GpioGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
   switch (mode) {
-    case DigitalOutMode::PUSH_PULL:
+    case OutputMode::PUSH_PULL:
       bits |= 0b00 << CTL_shift::CTL0;
       break;
-    case DigitalOutMode::OPEN_DRAIN:
+    case OutputMode::OPEN_DRAIN:
       bits |= 0b01 << CTL_shift::CTL0;
       break;
   }
   writeCTLReg(pin, bits);
 }
 void GpioGd32::initOutAfio(GpioGd32::Pin pin,
-                           GpioGd32::DigitalOutMode mode,
+                           GpioGd32::OutputMode mode,
                            GpioGd32::DigitalOutSpeed speed) {
   auto bits = speedBits(speed);
   switch (mode) {
-    case DigitalOutMode::PUSH_PULL:
+    case OutputMode::PUSH_PULL:
       bits |= 0b10 << CTL_shift::CTL0;
       break;
-    case DigitalOutMode::OPEN_DRAIN:
+    case OutputMode::OPEN_DRAIN:
       bits |= 0b11 << CTL_shift::CTL0;
       break;
   }
@@ -116,20 +116,20 @@ void GpioManagerGd32::initAnalog(Gpio gpio) {
   soc::gpioPortDev(gpio.port).initAnalog(gpio.pin);
 }
 
-void GpioManagerGd32::initInput(Gpio gpio, GpioManagerGd32::DigitalIn mode) {
+void GpioManagerGd32::initInput(Gpio gpio, GpioManagerGd32::PullConfig mode) {
   enableModule(gpio.port);
   soc::gpioPortDev(gpio.port).initInput(gpio.pin, mode);
 }
 
 void GpioManagerGd32::initOutGpio(Gpio gpio,
-                                  GpioManagerGd32::DigitalOutMode mode,
+                                  GpioManagerGd32::OutputMode mode,
                                   GpioManagerGd32::DigitalOutSpeed speed) {
   enableModule(gpio.port);
   soc::gpioPortDev(gpio.port).initOutGpio(gpio.pin, mode, speed);
 }
 
 void GpioManagerGd32::initOutAfio(Gpio gpio,
-                                  GpioManagerGd32::DigitalOutMode mode,
+                                  GpioManagerGd32::OutputMode mode,
                                   GpioManagerGd32::DigitalOutSpeed speed) {
   enableModule(gpio.port);
   soc::gpioPortDev(gpio.port).initOutAfio(gpio.pin, mode, speed);
