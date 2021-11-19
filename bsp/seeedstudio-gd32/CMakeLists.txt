@@ -4,6 +4,7 @@ deri_add_library(deri_bsp STATIC
   )
 deri_add_library(deri_bsp_periph INTERFACE
   include/deri/bsp/devices.h
+  include/deri/bsp/config.h
   )
 target_include_directories(deri_bsp_periph INTERFACE include)
 target_link_libraries(deri_bsp PUBLIC
