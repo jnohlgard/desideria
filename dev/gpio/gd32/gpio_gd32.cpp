@@ -18,6 +18,10 @@ using CTL_bits = mmio::GPIO_regs::CTL_bits;
 using CTL_shift = mmio::GPIO_regs::CTL_shift;
 using OCTL_bits = mmio::GPIO_regs::OCTL_bits;
 
+namespace {
+void enableModule(Gpio::Port port) {
+  clock::enableModules(soc::gpioPortClockEnableBits(port));
+}
 constexpr unsigned ctlShift(GpioPortGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;
 }
@@ -36,6 +40,8 @@ constexpr CTL_bits applyCtlBits(CTL_bits ctl,
       static_cast<std::underlying_type_t<CTL_bits>>(bits) << ctlShift(pin));
   return ctl;
 }
+
+}  // namespace
 
 void GpioPortGd32::writeCTLReg(Pin pin, CTL_bits bits) {
   GPIO.CTL[ctlOffset(pin)].store(
@@ -108,25 +114,33 @@ void GpioPortGd32::initOutAfio(GpioPortGd32::Pin pin,
   writeCTLReg(pin, bits);
 }
 
-void GpioManagerGd32::enableModule(Gpio::Port port) {
-  clock::enableModules(soc::gpioPortClockEnableBits(port));
-}
-
 void GpioManagerGd32::initAnalog(Gpio gpio) {
   enableModule(gpio.port);
   soc::gpioPortDev(gpio.port).initAnalog(gpio.pin);
 }
 
-void GpioManagerGd32::initInput(Gpio gpio, GpioManagerGd32::PullConfig mode) {
+GpioInGd32 GpioManagerGd32::initInput(Gpio gpio,
+                                      GpioManagerGd32::PullConfig mode) {
   enableModule(gpio.port);
-  soc::gpioPortDev(gpio.port).initInput(gpio.pin, mode);
+  GpioInGd32 gpio_in{.port = soc::gpioPortDev(gpio.port), .pin = gpio.pin};
+  gpio_in.port.initInput(gpio.pin, mode);
+  return gpio_in;
 }
 
-void GpioManagerGd32::initOutGpio(Gpio gpio,
-                                  GpioManagerGd32::OutputMode mode,
-                                  GpioManagerGd32::DigitalOutSpeed speed) {
+GpioOutGd32 GpioManagerGd32::initOutGpio(
+    Gpio gpio,
+    GpioManagerGd32::OutputMode mode,
+    GpioManagerGd32::DigitalOutSpeed speed) {
   enableModule(gpio.port);
-  soc::gpioPortDev(gpio.port).initOutGpio(gpio.pin, mode, speed);
+  GpioOutGd32 gpio_out{soc::gpioPortDev(gpio.port), gpio.pin};
+  gpio_out.port.initOutGpio(gpio.pin, mode, speed);
+  return gpio_out;
+}
+
+GpioOutGd32 GpioManagerGd32::initOutGpio(GpioOutConfig config) {
+  auto gpio_out = initOutGpio(config.gpio, config.mode);
+  gpio_out.polarity = config.polarity;
+  return gpio_out;
 }
 
 void GpioManagerGd32::initOutAfio(Gpio gpio,
@@ -168,6 +182,7 @@ void GpioManagerGd32::enableInterrupt(Gpio gpio) {
   soc::exti.enableLine(line);
   dev::gpio::ExtiGd32::clicInterruptEnable(line);
 }
+
 void GpioManagerGd32::disableInterrupt(Gpio gpio) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
   soc::exti.disableLine(line);
@@ -175,8 +190,4 @@ void GpioManagerGd32::disableInterrupt(Gpio gpio) {
   // multiple pins
 }
 
-GpioOutGd32 GpioManagerGd32::initOutGpio(GpioOut config) {
-  initOutGpio(config.gpio, config.mode);
-  return {soc::gpioPortDev(config.gpio.port), config.gpio.pin, config.polarity};
-}
 }  // namespace deri::dev::gpio

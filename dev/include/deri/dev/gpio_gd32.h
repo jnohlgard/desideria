@@ -19,9 +19,9 @@ class GpioPortGd32 {
   using BOP_bits = mmio::GPIO_regs::BOP_bits;
   using BC_bits = mmio::GPIO_regs::BC_bits;
 
-  using PullConfig = GpioIn::PullConfig;
+  using PullConfig = GpioInConfig::PullConfig;
 
-  using OutputMode = GpioOut::OutputMode;
+  using OutputMode = GpioOutConfig::OutputMode;
   enum class DigitalOutSpeed {
     D10MHZ,
     D2MHZ,
@@ -58,9 +58,8 @@ class GpioPortGd32 {
   mmio::GPIO_regs GPIO;
 };
 
-class GpioOutGd32 {
- public:
-  using Polarity = GpioOut::Polarity;
+struct GpioOutGd32 {
+  using Polarity = GpioOutConfig::Polarity;
   using Pin = GpioPortGd32::Pin;
 
   GpioOutGd32(GpioPortGd32 &port,
@@ -103,47 +102,57 @@ class GpioOutGd32 {
     write(!value);
   }
 
- private:
   GpioPortGd32 &port;
   Pin pin;
   Polarity polarity{};
 };
 
+struct GpioInGd32 {
+  using Pin = GpioPortGd32::Pin;
+
+  [[nodiscard]] bool read() const { return port.read(pin); }
+
+  GpioPortGd32 &port;
+  Pin pin;
+};
+
 class GpioManagerGd32 {
  public:
-  using PullConfig = GpioIn::PullConfig;
-  using OutputMode = GpioOut::OutputMode;
+  using PullConfig = GpioInConfig::PullConfig;
+  using OutputMode = GpioOutConfig::OutputMode;
   using DigitalOutSpeed = GpioPortGd32::DigitalOutSpeed;
-  struct Callback {
-    void (*func)(uintptr_t);
-    uintptr_t arg;
-  };
-
   enum class Edge {
     RISING = 1 << 0,
     FALLING = 1 << 1,
   };
 
-  void enableModule(Gpio::Port port);
+  struct Callback {
+    void (*func)(uintptr_t);
+    uintptr_t arg;
+  };
+
+
   void initAnalog(Gpio gpio);
 
-  void initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
+  GpioInGd32 initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
 
-  void initInput(GpioIn config) { initInput(config.gpio, config.pull); }
+  GpioInGd32 initInput(GpioInConfig config) {
+    return initInput(config.gpio, config.pull);
+  }
 
-  void initOutGpio(Gpio gpio,
-                   OutputMode mode = OutputMode::PUSH_PULL,
-                   DigitalOutSpeed speed = DigitalOutSpeed::D2MHZ);
+  GpioOutGd32 initOutGpio(Gpio gpio,
+                          OutputMode mode = OutputMode::PUSH_PULL,
+                          DigitalOutSpeed speed = DigitalOutSpeed::D2MHZ);
 
-  GpioOutGd32 initOutGpio(GpioOut config);
+  GpioOutGd32 initOutGpio(GpioOutConfig config);
 
   void initOutAfio(Gpio gpio,
                    OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
   void setInterruptHandler(Gpio gpio, Edge edge, Callback callback);
   void clearInterruptHandler(Gpio gpio);
-  void enableInterrupt(Gpio gpio);
-  void disableInterrupt(Gpio gpio);
+  static void enableInterrupt(Gpio gpio);
+  static void disableInterrupt(Gpio gpio);
 
   void interruptCallback(unsigned line) {
     const auto &callback = callbacks[line];

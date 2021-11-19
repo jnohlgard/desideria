@@ -19,7 +19,7 @@ void buttonCallback(uintptr_t id) {
 }
 
 void initLeds() {
-  for (auto &&led : deri::bsp::leds) {
+  for (auto &&led : deri::bsp::config::leds) {
     auto gpio = deri::soc::gpio.initOutGpio(led);
     gpio.set();
   }
@@ -27,13 +27,13 @@ void initLeds() {
 
 void initButtons() {
   uintptr_t arg = 0;
-  for (auto &&button : deri::bsp::buttons) {
+  for (auto &&button : deri::bsp::config::buttons) {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
-        button,
+        button.gpio,
         deri::dev::gpio::GpioManagerGd32::Edge::RISING,
         {.func = &buttonCallback, .arg = arg++});
-    deri::soc::gpio.enableInterrupt(button);
+    deri::dev::gpio::GpioManagerGd32::enableInterrupt(button.gpio);
   }
 }
 

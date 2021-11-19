@@ -31,7 +31,7 @@ struct Gpio {
   Port port;
 };
 
-struct GpioIn {
+struct GpioInConfig {
   enum class PullConfig {
     FLOATING,
     PULL_UP,
@@ -41,7 +41,7 @@ struct GpioIn {
   PullConfig pull{PullConfig::FLOATING};
 };
 
-struct GpioOut {
+struct GpioOutConfig {
   enum class OutputMode {
     PUSH_PULL,
     OPEN_DRAIN,

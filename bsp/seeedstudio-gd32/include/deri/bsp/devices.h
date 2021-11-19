@@ -13,17 +13,22 @@
 namespace deri::bsp {
 extern deri::dev::uart::UsartGd32 uart0;
 
+namespace config {
+using Port = dev::gpio::Gpio::Port;
+using Polarity = dev::gpio::GpioOutConfig::Polarity;
+using Pull = dev::gpio::GpioInConfig::PullConfig;
 inline constexpr std::array leds{
-    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 5},
-                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
-    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 0},
-                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
-    dev::gpio::GpioOut{.gpio = {dev::gpio::Gpio::Port::B, 1},
-                       .polarity = dev::gpio::GpioOut::Polarity::INVERTED},
+    dev::gpio::GpioOutConfig{.gpio = {config::Port::B, 5},
+                             .polarity = config::Polarity::INVERTED},
+    dev::gpio::GpioOutConfig{.gpio = {config::Port::B, 0},
+                             .polarity = config::Polarity::INVERTED},
+    dev::gpio::GpioOutConfig{.gpio = {config::Port::B, 1},
+                             .polarity = config::Polarity::INVERTED},
 };
 
 inline constexpr std::array buttons{
-    dev::gpio::Gpio{dev::gpio::Gpio::Port::A, 0},
-    dev::gpio::Gpio{dev::gpio::Gpio::Port::C, 13},
+    dev::gpio::GpioInConfig{{config::Port::A, 0}, config::Pull::FLOATING},
+    dev::gpio::GpioInConfig{{config::Port::C, 13}, config::Pull::FLOATING},
 };
+}  // namespace config
 }  // namespace deri::bsp
