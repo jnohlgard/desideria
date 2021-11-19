@@ -8,41 +8,56 @@
 
 namespace deri::dev::gpio {
 
-class ExtiGd32 : private mmio::EXTI_regs {
+class ExtiGd32 {
  public:
+  using INTEN_bits = mmio::EXTI_regs::INTEN_bits;
+  using RTEN_bits = mmio::EXTI_regs::RTEN_bits;
+  using FTEN_bits = mmio::EXTI_regs::FTEN_bits;
+  using PD_bits = mmio::EXTI_regs::PD_bits;
+
   enum class Line : unsigned;
+
   void enableLine(Line line) {
-    INTEN |= static_cast<INTEN_bits>(1 << static_cast<unsigned>(line));
+    EXTI.INTEN |= static_cast<INTEN_bits>(1 << static_cast<unsigned>(line));
   }
+
   void disableLine(Line line) {
-    INTEN &= static_cast<INTEN_bits>(~(1 << static_cast<unsigned>(line)));
+    EXTI.INTEN &= static_cast<INTEN_bits>(~(1 << static_cast<unsigned>(line)));
   }
+
   void enableRising(Line line) {
-    RTEN |= static_cast<RTEN_bits>(1 << static_cast<unsigned>(line));
+    EXTI.RTEN |= static_cast<RTEN_bits>(1 << static_cast<unsigned>(line));
   }
+
   void disableRising(Line line) {
-    RTEN &= static_cast<RTEN_bits>(~(1 << static_cast<unsigned>(line)));
+    EXTI.RTEN &= static_cast<RTEN_bits>(~(1 << static_cast<unsigned>(line)));
   }
+
   void enableFalling(Line line) {
-    FTEN |= static_cast<FTEN_bits>(1 << static_cast<unsigned>(line));
+    EXTI.FTEN |= static_cast<FTEN_bits>(1 << static_cast<unsigned>(line));
   }
+
   void disableFalling(Line line) {
-    FTEN &= static_cast<FTEN_bits>(~(1 << static_cast<unsigned>(line)));
+    EXTI.FTEN &= static_cast<FTEN_bits>(~(1 << static_cast<unsigned>(line)));
   }
+
   void clearPending(PD_bits lines_mask) {
     // PD is write-1-to-clear
-    PD.store(lines_mask);
+    EXTI.PD.store(lines_mask);
   }
+
   void clearPending(Line line) {
     auto mask = static_cast<PD_bits>(1 << static_cast<unsigned>(line));
     clearPending(mask);
   }
-  PD_bits pending() {
-    return PD.load();
-  }
+
+  [[nodiscard]] PD_bits pending() const { return EXTI.PD.load(); }
 
   // Needs to be implemented in each SoC specific code
   static void clicInterruptEnable(Line line);
   static void clicInterruptDisable(Line line);
+
+ private:
+  mmio::EXTI_regs EXTI;
 };
-}  // namespace deri::dev
+}  // namespace deri::dev::gpio
