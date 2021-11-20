@@ -74,3 +74,14 @@ constexpr std::underlying_type_t<Mask> operator>>(const Mask lhs,
   return static_cast<std::underlying_type_t<Mask>>(lhs) >>
          static_cast<unsigned>(rhs);
 }
+
+template <Bitmask Mask, Bitshift Shift, typename ValueType = std::underlying_type_t<Mask>>
+constexpr Mask maskedBitsFromValue(ValueType value, Mask mask, Shift shift) {
+  return mask & static_cast<Mask>(value <<
+                                  static_cast<unsigned>(shift));
+}
+
+template <Bitmask Mask, Bitshift Shift, typename ValueType = std::underlying_type_t<Mask>>
+constexpr ValueType extractValueFromBits(Mask bits, Mask mask, Shift shift) {
+  return static_cast<ValueType>(bits & mask) >> static_cast<unsigned>(shift);
+}
