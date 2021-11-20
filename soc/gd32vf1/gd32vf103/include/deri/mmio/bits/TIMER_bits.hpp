@@ -11,7 +11,7 @@ namespace deri::mmio {
  *
  * control register 0
  */
-enum class TIMER_regs::CTL0_bits : uint16_t {
+enum class TIMER_regs::CTL0_bits : uint32_t {
   CKDIV_mask = (0x3u << 8),  ///< Clock division
   ARSE = (1u << 7),          ///< Auto-reload shadow enable
   CAM_mask = (0x3u << 5),    ///< Counter aligns mode selection
@@ -43,7 +43,7 @@ enum class TIMER_regs::CTL0_shift : unsigned {
  *
  * control register 1
  */
-enum class TIMER_regs::CTL1_bits : uint16_t {
+enum class TIMER_regs::CTL1_bits : uint32_t {
   ISO3 = (1u << 14),       ///< Idle state of channel 3 output
   ISO2N = (1u << 13),      ///< Idle state of channel 2 complementary output
   ISO2 = (1u << 12),       ///< Idle state of channel 2 output
@@ -83,7 +83,7 @@ enum class TIMER_regs::CTL1_shift : unsigned {
  *
  * slave mode configuration register
  */
-enum class TIMER_regs::SMCFG_bits : uint16_t {
+enum class TIMER_regs::SMCFG_bits : uint32_t {
   ETP = (1u << 15),           ///< External trigger polarity
   SMC1 = (1u << 14),          ///< Part of SMC for enable External clock mode1
   ETPSC_mask = (0x3u << 12),  ///< External trigger prescaler
@@ -113,7 +113,7 @@ enum class TIMER_regs::SMCFG_shift : unsigned {
  *
  * DMA/Interrupt enable register
  */
-enum class TIMER_regs::DMAINTEN_bits : uint16_t {
+enum class TIMER_regs::DMAINTEN_bits : uint32_t {
   TRGDEN = (1u << 14),    ///< Trigger DMA request enable
   CMTDEN = (1u << 13),    ///< Commutation DMA request enable
   CH3DEN = (1u << 12),    ///< Channel 3 capture/compare DMA request enable
@@ -159,7 +159,7 @@ enum class TIMER_regs::DMAINTEN_shift : unsigned {
  *
  * Interrupt flag register
  */
-enum class TIMER_regs::INTF_bits : uint16_t {
+enum class TIMER_regs::INTF_bits : uint32_t {
   CH3OF = (1u << 12),     ///< Channel 3 over capture flag
   CH2OF = (1u << 11),     ///< Channel 2 over capture flag
   CH1OF = (1u << 10),     ///< Channel 1 over capture flag
@@ -199,7 +199,7 @@ enum class TIMER_regs::INTF_shift : unsigned {
  *
  * Software event generation register
  */
-enum class TIMER_regs::SWEVG_bits : uint16_t {
+enum class TIMER_regs::SWEVG_bits : uint32_t {
   BRKG = (1u << 7),       ///< Break event generation
   TRGG = (1u << 6),       ///< Trigger event generation
   CMTG = (1u << 5),       ///< Channel commutation event generation
@@ -231,7 +231,7 @@ enum class TIMER_regs::SWEVG_shift : unsigned {
  *
  * Channel control register 0 (output mode)
  */
-enum class TIMER_regs::CHCTL0_Output_bits : uint16_t {
+enum class TIMER_regs::CHCTL0_Output_bits : uint32_t {
   CH1COMCEN = (1u << 15),         ///< Channel 1 output compare clear enable
   CH1COMCTL_mask = (0x7u << 12),  ///< Channel 1 compare output control
   CH1COMSEN = (1u << 11),         ///< Channel 1 output compare shadow enable
@@ -266,7 +266,7 @@ enum class TIMER_regs::CHCTL0_Output_shift : unsigned {
  *
  * Channel control register 0 (input mode)
  */
-enum class TIMER_regs::CHCTL0_Input_bits : uint16_t {
+enum class TIMER_regs::CHCTL0_Input_bits : uint32_t {
   CH1CAPFLT_mask = (0xfu << 12),  ///< Channel 1 input capture filter control
   CH1CAPPSC_mask = (0x3u << 10),  ///< Channel 1 input capture prescaler
   CH1MS_mask = (0x3u << 8),       ///< Channel 1 mode selection
@@ -293,7 +293,7 @@ enum class TIMER_regs::CHCTL0_Input_shift : unsigned {
  *
  * Channel control register 1 (output mode)
  */
-enum class TIMER_regs::CHCTL1_Output_bits : uint16_t {
+enum class TIMER_regs::CHCTL1_Output_bits : uint32_t {
   CH3COMCEN = (1u << 15),         ///< Channel 3 output compare clear enable
   CH3COMCTL_mask = (0x7u << 12),  ///< Channel 3 compare output control
   CH3COMSEN = (1u << 11),         ///< Channel 3 output compare shadow enable
@@ -328,7 +328,7 @@ enum class TIMER_regs::CHCTL1_Output_shift : unsigned {
  *
  * Channel control register 1 (input mode)
  */
-enum class TIMER_regs::CHCTL1_Input_bits : uint16_t {
+enum class TIMER_regs::CHCTL1_Input_bits : uint32_t {
   CH3CAPFLT_mask = (0xfu << 12),  ///< Channel 3 input capture filter control
   CH3CAPPSC_mask = (0x3u << 10),  ///< Channel 3 input capture prescaler
   CH3MS_mask = (0x3u << 8),       ///< Channel 3 mode selection
@@ -355,7 +355,7 @@ enum class TIMER_regs::CHCTL1_Input_shift : unsigned {
  *
  * Channel control register 2
  */
-enum class TIMER_regs::CHCTL2_bits : uint16_t {
+enum class TIMER_regs::CHCTL2_bits : uint32_t {
   CH3P = (1u << 13),      ///< Channel 3 capture/compare function polarity
   CH3EN = (1u << 12),     ///< Channel 3 capture/compare function enable
   CH2NP = (1u << 11),     ///< Channel 2 complementary output polarity
@@ -399,7 +399,7 @@ enum class TIMER_regs::CHCTL2_shift : unsigned {
  *
  * counter
  */
-enum class TIMER_regs::CNT_bits : uint16_t {
+enum class TIMER_regs::CNT_bits : uint32_t {
   CNT_mask = (0xffffu << 0),  ///< current counter value
 };
 void HasBitwiseOperators(TIMER_regs::CNT_bits);
@@ -416,7 +416,7 @@ enum class TIMER_regs::CNT_shift : unsigned {
  *
  * prescaler
  */
-enum class TIMER_regs::PSC_bits : uint16_t {
+enum class TIMER_regs::PSC_bits : uint32_t {
   PSC_mask = (0xffffu << 0),  ///< Prescaler value of the counter clock
 };
 void HasBitwiseOperators(TIMER_regs::PSC_bits);
@@ -433,7 +433,7 @@ enum class TIMER_regs::PSC_shift : unsigned {
  *
  * Counter auto reload register
  */
-enum class TIMER_regs::CAR_bits : uint16_t {
+enum class TIMER_regs::CAR_bits : uint32_t {
   CARL_mask = (0xffffu << 0),  ///< Counter auto reload value
 };
 void HasBitwiseOperators(TIMER_regs::CAR_bits);
@@ -450,7 +450,7 @@ enum class TIMER_regs::CAR_shift : unsigned {
  *
  * Counter repetition register
  */
-enum class TIMER_regs::CREP_bits : uint16_t {
+enum class TIMER_regs::CREP_bits : uint32_t {
   CREP_mask = (0xffu << 0),  ///< Counter repetition value
   Reserved_mask = 0xff00     ///< All reserved bits
 };
@@ -468,7 +468,7 @@ enum class TIMER_regs::CREP_shift : unsigned {
  *
  * Channel 0 capture/compare value register
  */
-enum class TIMER_regs::CH0CV_bits : uint16_t {
+enum class TIMER_regs::CH0CV_bits : uint32_t {
   CH0VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel0
 };
 void HasBitwiseOperators(TIMER_regs::CH0CV_bits);
@@ -485,7 +485,7 @@ enum class TIMER_regs::CH0CV_shift : unsigned {
  *
  * Channel 1 capture/compare value register
  */
-enum class TIMER_regs::CH1CV_bits : uint16_t {
+enum class TIMER_regs::CH1CV_bits : uint32_t {
   CH1VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel1
 };
 void HasBitwiseOperators(TIMER_regs::CH1CV_bits);
@@ -502,7 +502,7 @@ enum class TIMER_regs::CH1CV_shift : unsigned {
  *
  * Channel 2 capture/compare value register
  */
-enum class TIMER_regs::CH2CV_bits : uint16_t {
+enum class TIMER_regs::CH2CV_bits : uint32_t {
   CH2VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 2
 };
 void HasBitwiseOperators(TIMER_regs::CH2CV_bits);
@@ -519,7 +519,7 @@ enum class TIMER_regs::CH2CV_shift : unsigned {
  *
  * Channel 3 capture/compare value register
  */
-enum class TIMER_regs::CH3CV_bits : uint16_t {
+enum class TIMER_regs::CH3CV_bits : uint32_t {
   CH3VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 3
 };
 void HasBitwiseOperators(TIMER_regs::CH3CV_bits);
@@ -536,7 +536,7 @@ enum class TIMER_regs::CH3CV_shift : unsigned {
  *
  * channel complementary protection register
  */
-enum class TIMER_regs::CCHP_bits : uint16_t {
+enum class TIMER_regs::CCHP_bits : uint32_t {
   POEN = (1u << 15),          ///< Primary output enable
   OAEN = (1u << 14),          ///< Output automatic enable
   BRKP = (1u << 13),          ///< Break polarity
@@ -567,7 +567,7 @@ enum class TIMER_regs::CCHP_shift : unsigned {
  *
  * DMA configuration register
  */
-enum class TIMER_regs::DMACFG_bits : uint16_t {
+enum class TIMER_regs::DMACFG_bits : uint32_t {
   DMATC_mask = (0x1fu << 8),  ///< DMA transfer count
   DMATA_mask = (0x1fu << 0),  ///< DMA transfer access start address
   Reserved_mask = 0xe0e0      ///< All reserved bits
@@ -587,7 +587,7 @@ enum class TIMER_regs::DMACFG_shift : unsigned {
  *
  * DMA transfer buffer register
  */
-enum class TIMER_regs::DMATB_bits : uint16_t {
+enum class TIMER_regs::DMATB_bits : uint32_t {
   DMATB_mask = (0xffffu << 0),  ///< DMA transfer buffer
 };
 void HasBitwiseOperators(TIMER_regs::DMATB_bits);
@@ -605,10 +605,10 @@ static_assert(offsetof(TIMER_regs, SMCFG) == 0x8);
 static_assert(offsetof(TIMER_regs, DMAINTEN) == 0xc);
 static_assert(offsetof(TIMER_regs, INTF) == 0x10);
 static_assert(offsetof(TIMER_regs, SWEVG) == 0x14);
-static_assert(offsetof(TIMER_regs, CHCTL0_Output) == 0x18);
-static_assert(offsetof(TIMER_regs, CHCTL0_Input) == 0x18);
-static_assert(offsetof(TIMER_regs, CHCTL1_Output) == 0x1c);
-static_assert(offsetof(TIMER_regs, CHCTL1_Input) == 0x1c);
+static_assert(offsetof(TIMER_regs, CHCTL0.out) == 0x18);
+static_assert(offsetof(TIMER_regs, CHCTL0.in) == 0x18);
+static_assert(offsetof(TIMER_regs, CHCTL1.out) == 0x1c);
+static_assert(offsetof(TIMER_regs, CHCTL1.in) == 0x1c);
 static_assert(offsetof(TIMER_regs, CHCTL2) == 0x20);
 static_assert(offsetof(TIMER_regs, CNT) == 0x24);
 static_assert(offsetof(TIMER_regs, PSC) == 0x28);

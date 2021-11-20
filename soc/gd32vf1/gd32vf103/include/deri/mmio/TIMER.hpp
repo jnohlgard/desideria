@@ -7,28 +7,34 @@
 
 namespace deri::mmio {
 struct TIMER_regs {
-  enum class CTL0_bits : uint16_t;
-  enum class CTL1_bits : uint16_t;
-  enum class SMCFG_bits : uint16_t;
-  enum class DMAINTEN_bits : uint16_t;
-  enum class INTF_bits : uint16_t;
-  enum class SWEVG_bits : uint16_t;
-  enum class CHCTL0_Output_bits : uint16_t;
-  enum class CHCTL0_Input_bits : uint16_t;
-  enum class CHCTL1_Output_bits : uint16_t;
-  enum class CHCTL1_Input_bits : uint16_t;
-  enum class CHCTL2_bits : uint16_t;
-  enum class CNT_bits : uint16_t;
-  enum class PSC_bits : uint16_t;
-  enum class CAR_bits : uint16_t;
-  enum class CREP_bits : uint16_t;
-  enum class CH0CV_bits : uint16_t;
-  enum class CH1CV_bits : uint16_t;
-  enum class CH2CV_bits : uint16_t;
-  enum class CH3CV_bits : uint16_t;
-  enum class CCHP_bits : uint16_t;
-  enum class DMACFG_bits : uint16_t;
-  enum class DMATB_bits : uint16_t;
+  // These registers are described as 16 bits wide in the reference
+  // documentation, but they allow both 16-bit and 32-bit access. There are
+  // padding bytes between each register in the address map to align each
+  // register to an even 32-bit address, so describing them as uint32_t just
+  // makes this struct definition so much more readable because we don't need
+  // to put any Reserved<uint16_t> between each register.
+  enum class CTL0_bits : uint32_t;
+  enum class CTL1_bits : uint32_t;
+  enum class SMCFG_bits : uint32_t;
+  enum class DMAINTEN_bits : uint32_t;
+  enum class INTF_bits : uint32_t;
+  enum class SWEVG_bits : uint32_t;
+  enum class CHCTL0_Output_bits : uint32_t;
+  enum class CHCTL0_Input_bits : uint32_t;
+  enum class CHCTL1_Output_bits : uint32_t;
+  enum class CHCTL1_Input_bits : uint32_t;
+  enum class CHCTL2_bits : uint32_t;
+  enum class CNT_bits : uint32_t;
+  enum class PSC_bits : uint32_t;
+  enum class CAR_bits : uint32_t;
+  enum class CREP_bits : uint32_t;
+  enum class CH0CV_bits : uint32_t;
+  enum class CH1CV_bits : uint32_t;
+  enum class CH2CV_bits : uint32_t;
+  enum class CH3CV_bits : uint32_t;
+  enum class CCHP_bits : uint32_t;
+  enum class DMACFG_bits : uint32_t;
+  enum class DMATB_bits : uint32_t;
   enum class CTL0_shift : unsigned;
   enum class CTL1_shift : unsigned;
   enum class SMCFG_shift : unsigned;
@@ -53,60 +59,32 @@ struct TIMER_regs {
   enum class DMATB_shift : unsigned;
 
   Register<CTL0_bits> CTL0;
-  const Reserved<uint16_t> reserved_0;
-  // Base + 0x4
   Register<CTL1_bits> CTL1;
-  const Reserved<uint16_t> reserved_1;
-  // Base + 0x8
   Register<SMCFG_bits> SMCFG;
-  const Reserved<uint16_t> reserved_2;
-  // Base + 0xc
   Register<DMAINTEN_bits> DMAINTEN;
-  const Reserved<uint16_t> reserved_3;
-  // Base + 0x10
   Register<INTF_bits> INTF;
-  const Reserved<uint16_t> reserved_4;
-  // Base + 0x14
   Register<SWEVG_bits> SWEVG;
-  const Reserved<uint16_t> reserved_5;
-  // Base + 0x18
-  Register<CHCTL0_Output_bits> CHCTL0_Output;
-  Register<CHCTL0_Input_bits> CHCTL0_Input;
-  Register<CHCTL1_Output_bits> CHCTL1_Output;
-  Register<CHCTL1_Input_bits> CHCTL1_Input;
+  union CHCTL0_bits {
+    Register<CHCTL0_Output_bits> out;
+    Register<CHCTL0_Input_bits> in;
+  };
+  CHCTL0_bits CHCTL0;
+  union CHCTL1_bits {
+    Register<CHCTL1_Output_bits> out;
+    Register<CHCTL1_Input_bits> in;
+  };
+  CHCTL1_bits CHCTL1;
   Register<CHCTL2_bits> CHCTL2;
-  const Reserved<uint16_t> reserved_6;
-  // Base + 0x24
   Register<CNT_bits> CNT;
-  const Reserved<uint16_t> reserved_7;
-  // Base + 0x28
   Register<PSC_bits> PSC;
-  const Reserved<uint16_t> reserved_8;
-  // Base + 0x2c
   Register<CAR_bits> CAR;
-  const Reserved<uint16_t> reserved_9;
-  // Base + 0x30
   Register<CREP_bits> CREP;
-  const Reserved<uint16_t> reserved_10;
-  // Base + 0x34
   Register<CH0CV_bits> CH0CV;
-  const Reserved<uint16_t> reserved_11;
-  // Base + 0x38
   Register<CH1CV_bits> CH1CV;
-  const Reserved<uint16_t> reserved_12;
-  // Base + 0x3c
   Register<CH2CV_bits> CH2CV;
-  const Reserved<uint16_t> reserved_13;
-  // Base + 0x40
   Register<CH3CV_bits> CH3CV;
-  const Reserved<uint16_t> reserved_14;
-  // Base + 0x44
   Register<CCHP_bits> CCHP;
-  const Reserved<uint16_t> reserved_15;
-  // Base + 0x48
   Register<DMACFG_bits> DMACFG;
-  const Reserved<uint16_t> reserved_16;
-  // Base + 0x4c
   Register<DMATB_bits> DMATB;
 };
 }  // namespace deri::mmio
