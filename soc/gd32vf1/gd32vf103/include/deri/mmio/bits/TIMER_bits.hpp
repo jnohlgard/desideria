@@ -37,6 +37,7 @@ enum class TIMER_regs::CTL0_shift : unsigned {
   UPDIS = 1,
   CEN = 0,
 };
+void IsBitShift(TIMER_regs::CTL0_shift);
 
 /**
  * Bitmasks for TIMER CTL1
@@ -77,6 +78,7 @@ enum class TIMER_regs::CTL1_shift : unsigned {
   CCUC = 2,
   CCSE = 0,
 };
+void IsBitShift(TIMER_regs::CTL1_shift);
 
 /**
  * Bitmasks for TIMER SMCFG
@@ -107,6 +109,7 @@ enum class TIMER_regs::SMCFG_shift : unsigned {
   TRGS = 4,
   SMC = 0,
 };
+void IsBitShift(TIMER_regs::SMCFG_shift);
 
 /**
  * Bitmasks for TIMER DMAINTEN
@@ -153,6 +156,7 @@ enum class TIMER_regs::DMAINTEN_shift : unsigned {
   CH0IE = 1,
   UPIE = 0,
 };
+void IsBitShift(TIMER_regs::DMAINTEN_shift);
 
 /**
  * Bitmasks for TIMER INTF
@@ -193,6 +197,7 @@ enum class TIMER_regs::INTF_shift : unsigned {
   CH0IF = 1,
   UPIF = 0,
 };
+void IsBitShift(TIMER_regs::INTF_shift);
 
 /**
  * Bitmasks for TIMER SWEVG
@@ -225,6 +230,7 @@ enum class TIMER_regs::SWEVG_shift : unsigned {
   CH0G = 1,
   UPG = 0,
 };
+void IsBitShift(TIMER_regs::SWEVG_shift);
 
 /**
  * Bitmasks for TIMER CHCTL0_Output
@@ -260,6 +266,7 @@ enum class TIMER_regs::CHCTL0_Output_shift : unsigned {
   CH0COMFEN = 2,
   CH0MS = 0,
 };
+void IsBitShift(TIMER_regs::CHCTL0_Output_shift);
 
 /**
  * Bitmasks for TIMER CHCTL0_Input
@@ -287,6 +294,7 @@ enum class TIMER_regs::CHCTL0_Input_shift : unsigned {
   CH0CAPPSC = 2,
   CH0MS = 0,
 };
+void IsBitShift(TIMER_regs::CHCTL0_Input_shift);
 
 /**
  * Bitmasks for TIMER CHCTL1_Output
@@ -322,6 +330,7 @@ enum class TIMER_regs::CHCTL1_Output_shift : unsigned {
   CH2COMFEN = 2,
   CH2MS = 0,
 };
+void IsBitShift(TIMER_regs::CHCTL1_Output_shift);
 
 /**
  * Bitmasks for TIMER CHCTL1_Input
@@ -349,6 +358,7 @@ enum class TIMER_regs::CHCTL1_Input_shift : unsigned {
   CH2CAPPSC = 2,
   CH2MS = 0,
 };
+void IsBitShift(TIMER_regs::CHCTL1_Input_shift);
 
 /**
  * Bitmasks for TIMER CHCTL2
@@ -393,6 +403,7 @@ enum class TIMER_regs::CHCTL2_shift : unsigned {
   CH0P = 1,
   CH0EN = 0,
 };
+void IsBitShift(TIMER_regs::CHCTL2_shift);
 
 /**
  * Bitmasks for TIMER CNT
@@ -410,6 +421,7 @@ void HasBitwiseOperators(TIMER_regs::CNT_bits);
 enum class TIMER_regs::CNT_shift : unsigned {
   CNT = 0,
 };
+void IsBitShift(TIMER_regs::CNT_shift);
 
 /**
  * Bitmasks for TIMER PSC
@@ -427,6 +439,7 @@ void HasBitwiseOperators(TIMER_regs::PSC_bits);
 enum class TIMER_regs::PSC_shift : unsigned {
   PSC = 0,
 };
+void IsBitShift(TIMER_regs::PSC_shift);
 
 /**
  * Bitmasks for TIMER CAR
@@ -444,6 +457,7 @@ void HasBitwiseOperators(TIMER_regs::CAR_bits);
 enum class TIMER_regs::CAR_shift : unsigned {
   CARL = 0,
 };
+void IsBitShift(TIMER_regs::CAR_shift);
 
 /**
  * Bitmasks for TIMER CREP
@@ -462,6 +476,7 @@ void HasBitwiseOperators(TIMER_regs::CREP_bits);
 enum class TIMER_regs::CREP_shift : unsigned {
   CREP = 0,
 };
+void IsBitShift(TIMER_regs::CREP_shift);
 
 /**
  * Bitmasks for TIMER CH0CV
@@ -479,6 +494,7 @@ void HasBitwiseOperators(TIMER_regs::CH0CV_bits);
 enum class TIMER_regs::CH0CV_shift : unsigned {
   CH0VAL = 0,
 };
+void IsBitShift(TIMER_regs::CH0CV_shift);
 
 /**
  * Bitmasks for TIMER CH1CV
@@ -496,6 +512,7 @@ void HasBitwiseOperators(TIMER_regs::CH1CV_bits);
 enum class TIMER_regs::CH1CV_shift : unsigned {
   CH1VAL = 0,
 };
+void IsBitShift(TIMER_regs::CH1CV_shift);
 
 /**
  * Bitmasks for TIMER CH2CV
@@ -513,6 +530,7 @@ void HasBitwiseOperators(TIMER_regs::CH2CV_bits);
 enum class TIMER_regs::CH2CV_shift : unsigned {
   CH2VAL = 0,
 };
+void IsBitShift(TIMER_regs::CH2CV_shift);
 
 /**
  * Bitmasks for TIMER CH3CV
@@ -530,6 +548,7 @@ void HasBitwiseOperators(TIMER_regs::CH3CV_bits);
 enum class TIMER_regs::CH3CV_shift : unsigned {
   CH3VAL = 0,
 };
+void IsBitShift(TIMER_regs::CH3CV_shift);
 
 /**
  * Bitmasks for TIMER CCHP
@@ -561,6 +580,7 @@ enum class TIMER_regs::CCHP_shift : unsigned {
   PROT = 8,
   DTCFG = 0,
 };
+void IsBitShift(TIMER_regs::CCHP_shift);
 
 /**
  * Bitmasks for TIMER DMACFG
@@ -581,6 +601,7 @@ enum class TIMER_regs::DMACFG_shift : unsigned {
   DMATC = 8,
   DMATA = 0,
 };
+void IsBitShift(TIMER_regs::DMACFG_shift);
 
 /**
  * Bitmasks for TIMER DMATB
@@ -598,6 +619,7 @@ void HasBitwiseOperators(TIMER_regs::DMATB_bits);
 enum class TIMER_regs::DMATB_shift : unsigned {
   DMATB = 0,
 };
+void IsBitShift(TIMER_regs::DMATB_shift);
 
 static_assert(offsetof(TIMER_regs, CTL0) == 0x0);
 static_assert(offsetof(TIMER_regs, CTL1) == 0x4);
