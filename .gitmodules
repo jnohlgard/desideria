@@ -1,3 +1,6 @@
 [submodule "lib/picolibc/picolibc"]
 	path = lib/picolibc/picolibc
 	url = https://github.com/picolibc/picolibc.git
+[submodule "lib/delegate/delegate"]
+	path = lib/delegate/delegate
+	url = https://github.com/rosbacke/delegate.git
