@@ -3,6 +3,9 @@
  */
 
 #pragma once
+
+#include "deri/delegate.h"
+
 #include <array>
 #include <cstdint>
 
@@ -17,14 +20,8 @@ class TimerDriver {
   static constexpr auto max_value = TimerDevice::max_value;
   static constexpr auto num_channels = TimerDevice::num_channels;
 
-  struct Callback {
-    void (*func)(Channel, uintptr_t);
-    uintptr_t arg;
-  };
-  struct PeriodCallback {
-    void (*func)(uintptr_t);
-    uintptr_t arg;
-  };
+  using Callback = delegate<void(Channel)>;
+  using PeriodCallback = delegate<void()>;
 
   explicit TimerDriver(TimerDevice &timer) : timer(timer) {}
 
@@ -35,7 +32,9 @@ class TimerDriver {
   void stop() { timer.stop(); }
 
   void setPeriod(Count period) { timer.setPeriod(period); }
-  void setCompare(Channel channel, Count target) { timer.setCompare(channel, target); }
+  void setCompare(Channel channel, Count target) {
+    timer.setCompare(channel, target);
+  }
 
   void setInterruptHandler(Channel channel, Callback callback);
   void clearInterruptHandler(Channel channel);
@@ -44,17 +43,13 @@ class TimerDriver {
 
   void interruptCallback(Channel channel) {
     timer.clearInterruptFlag(channel);
-    const auto &callback = callbacks[static_cast<unsigned>(channel)];
-    if (callback.func != nullptr) {
-      callback.func(channel, callback.arg);
-    }
+    auto &&callback = callbacks[static_cast<unsigned>(channel)];
+    callback(channel);
   }
 
   void periodCallback() {
     timer.clearPeriodFlag();
-    if (period_callback.func != nullptr) {
-      period_callback.func(period_callback.arg);
-    }
+    period_callback();
   }
 
   const TimerDevice &underlyingTimer() const { return timer; }
@@ -78,7 +73,7 @@ template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::clearInterruptHandler(Channel channel) {
   timer.disableInterrupt(channel);
   timer.clearInterruptFlag(channel);
-  callbacks[static_cast<unsigned>(channel)] = {};
+  callbacks[static_cast<unsigned>(channel)].clear();
 }
 
 template <class TimerDeviceType>
