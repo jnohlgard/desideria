@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/dev/timer.h"
 #include "deri/dev/timer_gd32.h"
 
 #include <array>
@@ -30,5 +31,4 @@ inline std::array timers = {
     TimerDriver{timer6},
 };
 
-void timer_interrupt(unsigned channel);
 }  // namespace deri::soc
