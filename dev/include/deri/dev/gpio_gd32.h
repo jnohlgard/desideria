@@ -65,15 +65,19 @@ struct GpioOutGd32 {
   GpioOutGd32(GpioPortGd32 &port,
               Pin pin,
               Polarity polarity = Polarity::POSITIVE)
-      : port(port), pin(pin), polarity(polarity) {}
+      : port(&port), pin(pin), polarity(polarity) {}
+
+  GpioOutGd32() = default;
+  GpioOutGd32(const GpioOutGd32 &) = default;
+  GpioOutGd32 &operator=(const GpioOutGd32 &) = default;
 
   void set() {
     switch (polarity) {
       case Polarity::POSITIVE:
-        port.set(pin);
+        port->set(pin);
         break;
       case Polarity::INVERTED:
-        port.clear(pin);
+        port->clear(pin);
         break;
     }
   }
@@ -81,10 +85,10 @@ struct GpioOutGd32 {
   void clear() {
     switch (polarity) {
       case Polarity::POSITIVE:
-        port.clear(pin);
+        port->clear(pin);
         break;
       case Polarity::INVERTED:
-        port.set(pin);
+        port->set(pin);
         break;
     }
   }
@@ -98,12 +102,14 @@ struct GpioOutGd32 {
   }
 
   void toggle() {
-    bool value = port.read(pin);
+    bool value = read();
     write(!value);
   }
 
-  GpioPortGd32 &port;
-  Pin pin;
+  [[nodiscard]] bool read() const { return port->read(pin); }
+
+  GpioPortGd32 *port{nullptr};
+  Pin pin{};
   Polarity polarity{};
 };
 
@@ -131,7 +137,6 @@ class GpioManagerGd32 {
     uintptr_t arg;
   };
 
-
   void initAnalog(Gpio gpio);
 
   GpioInGd32 initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
@@ -154,7 +159,7 @@ class GpioManagerGd32 {
   static void enableInterrupt(Gpio gpio);
   static void disableInterrupt(Gpio gpio);
 
-  void interruptCallback(unsigned line) {
+  void interruptCallback(unsigned line) const {
     const auto &callback = callbacks[line];
     callback.func(callback.arg);
   }

@@ -134,7 +134,7 @@ GpioOutGd32 GpioManagerGd32::initOutGpio(
     GpioManagerGd32::DigitalOutSpeed speed) {
   enableModule(gpio.port);
   GpioOutGd32 gpio_out{soc::gpioPortDev(gpio.port), gpio.pin};
-  gpio_out.port.initOutGpio(gpio.pin, mode, speed);
+  gpio_out.port->initOutGpio(gpio.pin, mode, speed);
   return gpio_out;
 }
 
