@@ -3,7 +3,8 @@
  */
 
 extern "C" {
-__attribute__((__interrupt__)) void isr_unhandled() {
+[[gnu::interrupt]] void isr_unhandled();
+void isr_unhandled() {
   while (1) {
   }
 }

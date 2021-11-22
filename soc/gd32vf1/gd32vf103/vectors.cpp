@@ -3,7 +3,7 @@
 #include "deri/soc/vectors.h"
 
 namespace deri::soc {
-__attribute__((__used__, __section__(".vectors"), __aligned__(512)))
+[[gnu::used, gnu::section(".vectors"), gnu::aligned(512)]]
 arch::isr_func *const vector_table[] = {
     isr_unused,          // 0
     isr_unused,          // 1

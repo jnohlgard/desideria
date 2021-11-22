@@ -146,24 +146,24 @@ void gpio_interrupts_grouped(PD_bits pending, unsigned line) {
 }  // namespace
 
 extern "C" {
-void isr_EXTI_Line0() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_Line0();
 void isr_EXTI_Line0() { gpio_interrupt(0); }
-void isr_EXTI_Line1() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_Line1();
 void isr_EXTI_Line1() { gpio_interrupt(1); }
-void isr_EXTI_Line2() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_Line2();
 void isr_EXTI_Line2() { gpio_interrupt(2); }
-void isr_EXTI_Line3() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_Line3();
 void isr_EXTI_Line3() { gpio_interrupt(3); }
-void isr_EXTI_Line4() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_Line4();
 void isr_EXTI_Line4() { gpio_interrupt(4); }
-void isr_EXTI_line9_5() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_line9_5();
 void isr_EXTI_line9_5() {
   auto pending = exti.pending();
   unsigned line_number = 5;
   pending &= static_cast<PD_bits>(0b11111u << line_number);
   gpio_interrupts_grouped(pending, line_number);
 }
-void isr_EXTI_line15_10() __attribute__((__interrupt__));
+[[gnu::interrupt]] void isr_EXTI_line15_10();
 void isr_EXTI_line15_10() {
   auto pending = exti.pending();
   unsigned line_number = 10;
