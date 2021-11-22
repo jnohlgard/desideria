@@ -161,7 +161,9 @@ class GpioManagerGd32 {
 
   void interruptCallback(unsigned line) const {
     const auto &callback = callbacks[line];
-    callback.func(callback.arg);
+    if (callback.func != nullptr) {
+      callback.func(callback.arg);
+    }
   }
 
  private:
