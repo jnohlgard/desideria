@@ -15,7 +15,13 @@ if (SOC_MODEL MATCHES "gd32vf103")
   target_include_directories(deri_soc_obj PUBLIC gd32vf103/include)
   target_sources(deri_soc_obj PRIVATE
     gd32vf103/gpio_dev.cpp
+    gd32vf103/timer_dev.cpp
     gd32vf103/vectors.cpp
+    gd32vf103/include/deri/soc/clock_dev.h
+    gd32vf103/include/deri/soc/gpio_dev.h
+    gd32vf103/include/deri/soc/irq_dev.h
+    gd32vf103/include/deri/soc/timer_dev.h
+    gd32vf103/include/deri/soc/vectors.h
     )
   deri_target_depends(deri_soc_obj PUBLIC deri_dev_common deri_arch)
 endif()

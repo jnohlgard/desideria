@@ -7,7 +7,7 @@
 #include "deri/soc/timer_dev.h"
 
 #include <array>
-#include <ranges>
+#include <algorithm>
 
 #include <stdio.h>
 
