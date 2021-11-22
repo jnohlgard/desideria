@@ -93,6 +93,7 @@ enum class TIMER_regs::SMCFG_bits : uint32_t {
   MSM = (1u << 7),            ///< Master/Slave mode
   TRGS_mask = (0x7u << 4),    ///< Trigger selection
   SMC_mask = (0x7u << 0),     ///< Slave mode selection
+  SMC_ExternalClock0 = (0b111u << 0), ///< SMC = External clock mode 0
   Reserved_mask = 0x0008      ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::SMCFG_bits);
@@ -479,76 +480,22 @@ enum class TIMER_regs::CREP_shift : unsigned {
 void IsBitShift(TIMER_regs::CREP_shift);
 
 /**
- * Bitmasks for TIMER CH0CV
+ * Bitmasks for TIMER CHxCV
  *
  * Channel 0 capture/compare value register
  */
-enum class TIMER_regs::CH0CV_bits : uint32_t {
-  CH0VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel0
+enum class TIMER_regs::CHxCV_bits : uint32_t {
+  CHxVAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel0
 };
-void HasBitwiseOperators(TIMER_regs::CH0CV_bits);
+void HasBitwiseOperators(TIMER_regs::CHxCV_bits);
 
 /**
- * Bit shifts for TIMER CH0CV
+ * Bit shifts for TIMER CHxCV
  */
-enum class TIMER_regs::CH0CV_shift : unsigned {
-  CH0VAL = 0,
+enum class TIMER_regs::CHxCV_shift : unsigned {
+  CHxVAL = 0,
 };
-void IsBitShift(TIMER_regs::CH0CV_shift);
-
-/**
- * Bitmasks for TIMER CH1CV
- *
- * Channel 1 capture/compare value register
- */
-enum class TIMER_regs::CH1CV_bits : uint32_t {
-  CH1VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel1
-};
-void HasBitwiseOperators(TIMER_regs::CH1CV_bits);
-
-/**
- * Bit shifts for TIMER CH1CV
- */
-enum class TIMER_regs::CH1CV_shift : unsigned {
-  CH1VAL = 0,
-};
-void IsBitShift(TIMER_regs::CH1CV_shift);
-
-/**
- * Bitmasks for TIMER CH2CV
- *
- * Channel 2 capture/compare value register
- */
-enum class TIMER_regs::CH2CV_bits : uint32_t {
-  CH2VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 2
-};
-void HasBitwiseOperators(TIMER_regs::CH2CV_bits);
-
-/**
- * Bit shifts for TIMER CH2CV
- */
-enum class TIMER_regs::CH2CV_shift : unsigned {
-  CH2VAL = 0,
-};
-void IsBitShift(TIMER_regs::CH2CV_shift);
-
-/**
- * Bitmasks for TIMER CH3CV
- *
- * Channel 3 capture/compare value register
- */
-enum class TIMER_regs::CH3CV_bits : uint32_t {
-  CH3VAL_mask = (0xffffu << 0),  ///< Capture or compare value of channel 3
-};
-void HasBitwiseOperators(TIMER_regs::CH3CV_bits);
-
-/**
- * Bit shifts for TIMER CH3CV
- */
-enum class TIMER_regs::CH3CV_shift : unsigned {
-  CH3VAL = 0,
-};
-void IsBitShift(TIMER_regs::CH3CV_shift);
+void IsBitShift(TIMER_regs::CHxCV_shift);
 
 /**
  * Bitmasks for TIMER CCHP
@@ -636,10 +583,7 @@ static_assert(offsetof(TIMER_regs, CNT) == 0x24);
 static_assert(offsetof(TIMER_regs, PSC) == 0x28);
 static_assert(offsetof(TIMER_regs, CAR) == 0x2c);
 static_assert(offsetof(TIMER_regs, CREP) == 0x30);
-static_assert(offsetof(TIMER_regs, CH0CV) == 0x34);
-static_assert(offsetof(TIMER_regs, CH1CV) == 0x38);
-static_assert(offsetof(TIMER_regs, CH2CV) == 0x3c);
-static_assert(offsetof(TIMER_regs, CH3CV) == 0x40);
+static_assert(offsetof(TIMER_regs, CHxCV) == 0x34);
 static_assert(offsetof(TIMER_regs, CCHP) == 0x44);
 static_assert(offsetof(TIMER_regs, DMACFG) == 0x48);
 static_assert(offsetof(TIMER_regs, DMATB) == 0x4c);

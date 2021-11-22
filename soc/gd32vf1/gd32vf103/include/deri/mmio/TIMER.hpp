@@ -3,6 +3,7 @@
 
 #include "deri/registers.h"
 
+#include <array>
 #include <cstdint>
 
 namespace deri::mmio {
@@ -28,10 +29,7 @@ struct TIMER_regs {
   enum class PSC_bits : uint32_t;
   enum class CAR_bits : uint32_t;
   enum class CREP_bits : uint32_t;
-  enum class CH0CV_bits : uint32_t;
-  enum class CH1CV_bits : uint32_t;
-  enum class CH2CV_bits : uint32_t;
-  enum class CH3CV_bits : uint32_t;
+  enum class CHxCV_bits : uint32_t;
   enum class CCHP_bits : uint32_t;
   enum class DMACFG_bits : uint32_t;
   enum class DMATB_bits : uint32_t;
@@ -50,10 +48,7 @@ struct TIMER_regs {
   enum class PSC_shift : unsigned;
   enum class CAR_shift : unsigned;
   enum class CREP_shift : unsigned;
-  enum class CH0CV_shift : unsigned;
-  enum class CH1CV_shift : unsigned;
-  enum class CH2CV_shift : unsigned;
-  enum class CH3CV_shift : unsigned;
+  enum class CHxCV_shift : unsigned;
   enum class CCHP_shift : unsigned;
   enum class DMACFG_shift : unsigned;
   enum class DMATB_shift : unsigned;
@@ -79,10 +74,7 @@ struct TIMER_regs {
   Register<PSC_bits> PSC;
   Register<CAR_bits> CAR;
   Register<CREP_bits> CREP;
-  Register<CH0CV_bits> CH0CV;
-  Register<CH1CV_bits> CH1CV;
-  Register<CH2CV_bits> CH2CV;
-  Register<CH3CV_bits> CH3CV;
+  std::array<Register<CHxCV_bits>, 4> CHxCV;
   Register<CCHP_bits> CCHP;
   Register<DMACFG_bits> DMACFG;
   Register<DMATB_bits> DMATB;
