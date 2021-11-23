@@ -17,8 +17,8 @@ namespace config {
 using namespace deri::bsp::config;
 }
 
+static auto &timer_config = deri::soc::timer_config[0];
 static auto &timer = deri::soc::timers[0];
-using Timer = std::remove_cvref_t<decltype(timer)>;
 using GpioOut = deri::dev::gpio::GpioOutGd32;
 using GpioManager = deri::dev::gpio::GpioManagerGd32;
 static std::array<GpioOut, config::leds.size()> led_gpios;
@@ -52,16 +52,16 @@ void initButtons() {
 static unsigned led_active = 0;
 
 void initTimer() {
-  timer.init();
-  timer.underlyingTimer().setPrescaler(
+  auto &driver = timer_config.init();
+  driver.underlyingTimer().setPrescaler(
       deri::dev::timer::TimerGd32::Prescaler{8000u - 1});
-  timer.setPeriod(Timer::Count{500u - 1});
-  timer.setPeriodHandler({.func = [](uintptr_t) {
+  driver.setPeriod(deri::soc::TimerDriver::Count{500u - 1});
+  driver.setPeriodHandler({.func = [](uintptr_t) {
     led_gpios[led_active % led_gpios.size()].clear();
     ++led_active;
     led_gpios[led_active % led_gpios.size()].set();
   }});
-  timer.start();
+  driver.start();
 }
 
 int main() {

@@ -103,6 +103,12 @@ class TimerGd32 {
     // INTF is write 0 to clear
     TIMER.INTF.store(~channelInterruptFlagBit(channel));
   }
+
+  void clearInterruptFlag(mmio::TIMER_regs::INTF_bits bits) {
+    // INTF is write 0 to clear, writing 1 has no effect
+    TIMER.INTF.store(~bits);
+  }
+
   [[nodiscard]] auto interruptFlag() const { return TIMER.INTF.load(); }
 
   void disablePeriodInterrupt() {

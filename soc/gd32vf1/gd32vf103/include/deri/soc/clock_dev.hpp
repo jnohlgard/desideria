@@ -7,4 +7,4 @@
 #include "deri/dev/clock_gd32.hpp"
 namespace deri::soc {
 extern dev::clock::RcuGd32 rcu;
-}
+}  // namespace deri::soc

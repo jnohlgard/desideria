@@ -22,17 +22,22 @@ class TimerDriver {
   using Callback = deri::Callback<void(Channel, uintptr_t)>;
   using PeriodCallback = deri::Callback<void(uintptr_t)>;
 
-  explicit TimerDriver(TimerDevice &timer) : timer(timer) {}
+  explicit TimerDriver(TimerDevice &timer) : timer(&timer) {}
+  TimerDriver() = default;
+  TimerDriver(const TimerDriver &) = default;
+  TimerDriver(TimerDriver &&) noexcept = default;
+  TimerDriver &operator=(const TimerDriver &) = default;
+  TimerDriver &operator=(TimerDriver &&) noexcept = default;
 
-  void init() { timer.init(); }
+  void init() { timer->init(); }
 
-  [[nodiscard]] Count read() const { return timer.read(); }
-  void start() { timer.start(); }
-  void stop() { timer.stop(); }
+  [[nodiscard]] Count read() const { return timer->read(); }
+  void start() { timer->start(); }
+  void stop() { timer->stop(); }
 
-  void setPeriod(Count period) { timer.setPeriod(period); }
+  void setPeriod(Count period) { timer->setPeriod(period); }
   void setCompare(Channel channel, Count target) {
-    timer.setCompare(channel, target);
+    timer->setCompare(channel, target);
   }
 
   void setInterruptHandler(Channel channel, Callback callback);
@@ -41,7 +46,6 @@ class TimerDriver {
   void clearPeriodHandler();
 
   void interruptCallback(Channel channel) {
-    timer.clearInterruptFlag(channel);
     const auto &callback = callbacks[static_cast<unsigned>(channel)];
     if (callback.func != nullptr) {
       callback.func(channel, callback.arg);
@@ -49,48 +53,48 @@ class TimerDriver {
   }
 
   void periodCallback() {
-    timer.clearPeriodFlag();
     if (period_callback.func != nullptr) {
       period_callback.func(period_callback.arg);
     }
   }
 
-  const TimerDevice &underlyingTimer() const { return timer; }
-  TimerDevice &underlyingTimer() { return timer; }
+  const TimerDevice &underlyingTimer() const { return *timer; }
+  TimerDevice &underlyingTimer() { return *timer; }
 
  private:
-  TimerDevice &timer;
+  TimerDevice *timer{nullptr};
   std::array<Callback, TimerDevice::num_channels> callbacks{};
   PeriodCallback period_callback{};
 };
+
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setInterruptHandler(Channel channel,
                                                        Callback callback) {
-  timer.disableInterrupt(channel);
-  timer.clearInterruptFlag(channel);
+  timer->disableInterrupt(channel);
+  timer->clearInterruptFlag(channel);
   callbacks[static_cast<unsigned>(channel)] = callback;
-  timer.enableInterrupt(channel);
+  timer->enableInterrupt(channel);
 }
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::clearInterruptHandler(Channel channel) {
-  timer.disableInterrupt(channel);
-  timer.clearInterruptFlag(channel);
+  timer->disableInterrupt(channel);
+  timer->clearInterruptFlag(channel);
   callbacks[static_cast<unsigned>(channel)] = {};
 }
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setPeriodHandler(PeriodCallback callback) {
-  timer.disablePeriodInterrupt();
-  timer.clearPeriodFlag();
+  timer->disablePeriodInterrupt();
+  timer->clearPeriodFlag();
   period_callback = callback;
-  timer.enablePeriodInterrupt();
+  timer->enablePeriodInterrupt();
 }
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::clearPeriodHandler() {
-  timer.disablePeriodInterrupt();
-  timer.clearPeriodFlag();
+  timer->disablePeriodInterrupt();
+  timer->clearPeriodFlag();
   period_callback = {};
 }
 }  // namespace deri::dev::timer
