@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/callback.h"
-#include "deri/dev/gpio.h"
+#include "deri/callback.hpp"
+#include "deri/dev/gpio.hpp"
 #include "deri/mmio/AFIO.hpp"
 #include "deri/mmio/GPIO.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"

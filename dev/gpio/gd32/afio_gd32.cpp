@@ -2,9 +2,9 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/afio_gd32.h"
+#include "deri/dev/afio_gd32.hpp"
 
-#include "deri/soc/clock_dev.h"
+#include "deri/soc/clock_dev.hpp"
 #include "deri/mmio/bits/AFIO_bits.hpp"
 
 namespace deri::dev::gpio {

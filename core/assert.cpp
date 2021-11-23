@@ -2,7 +2,7 @@
  * Copyright (c) 2020 Joakim Nohlgård
  */
 
-#include "deri/assert.h"
+#include "deri/assert.hpp"
 
 #include <cstdint>
 extern "C" {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/bsp/console.h"
+#include "deri/bsp/console.hpp"
 
 namespace deri {
 /**

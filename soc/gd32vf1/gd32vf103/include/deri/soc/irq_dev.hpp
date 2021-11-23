@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/dev/irq_clic.h"
+#include "deri/dev/irq_clic.hpp"
 
 namespace deri::soc {
 extern dev::irq::IrqClic clic;

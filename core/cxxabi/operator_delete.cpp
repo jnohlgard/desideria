@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/die.h"
+#include "deri/die.hpp"
 #include <cstddef>
 
 // operator delete is required if we use any classes which have virtual
@@ -21,4 +21,3 @@ void operator delete(void* p, size_t t)
   (void)t;
   deri::die(123);
 }
-

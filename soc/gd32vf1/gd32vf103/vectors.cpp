@@ -1,6 +1,6 @@
 /* *** Generated with Desideria SVD converter *** */
 
-#include "deri/soc/vectors.h"
+#include "deri/soc/vectors.hpp"
 
 namespace deri::soc {
 [[gnu::used, gnu::section(".vectors"), gnu::aligned(512)]]

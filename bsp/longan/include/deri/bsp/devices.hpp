@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/dev/uart_gd32.h"
+#include "deri/dev/uart_gd32.hpp"
 
 namespace deri::bsp {
 extern deri::dev::uart::UsartGd32 usart0;

@@ -2,13 +2,13 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/soc/gpio_dev.h"
+#include "deri/soc/gpio_dev.hpp"
 
-#include "deri/dev/exti_gd32.h"
-#include "deri/dev/gpio_gd32.h"
+#include "deri/dev/exti_gd32.hpp"
+#include "deri/dev/gpio_gd32.hpp"
 #include "deri/mmio/bits/RCU_bits.hpp"
 #include "deri/mmio/interrupts.hpp"
-#include "deri/soc/irq_dev.h"
+#include "deri/soc/irq_dev.hpp"
 
 #include <array>
 #include <functional>

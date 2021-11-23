@@ -2,15 +2,15 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/gpio_gd32.h"
+#include "deri/dev/gpio_gd32.hpp"
 
-#include "deri/dev/afio_gd32.h"
-#include "deri/dev/clock_gd32.h"
-#include "deri/dev/exti_gd32.h"
+#include "deri/dev/afio_gd32.hpp"
+#include "deri/dev/clock_gd32.hpp"
+#include "deri/dev/exti_gd32.hpp"
 #include "deri/mmio/bits/AFIO_bits.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"
-#include "deri/soc/gpio_dev.h"
-#include "deri/soc/clock_dev.h"
+#include "deri/soc/gpio_dev.hpp"
+#include "deri/soc/clock_dev.hpp"
 
 #include <cstdint>
 

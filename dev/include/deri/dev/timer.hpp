@@ -3,7 +3,7 @@
  */
 
 #pragma once
-#include "deri/callback.h"
+#include "deri/callback.hpp"
 
 #include <array>
 #include <cstdint>

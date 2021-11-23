@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/die.h"
+#include "deri/die.hpp"
 namespace deri {
 
 void die(unsigned int code) {

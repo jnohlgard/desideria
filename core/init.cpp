@@ -3,7 +3,7 @@
  */
 
 #include <algorithm>
-#include "deri/bsp_init.h"
+#include "deri/bsp_init.hpp"
 
 #include <cstdint>
 

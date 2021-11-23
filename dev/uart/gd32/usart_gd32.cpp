@@ -2,8 +2,8 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/bitwise_enums.h"
-#include "deri/dev/uart_gd32.h"
+#include "deri/bitwise_enums.hpp"
+#include "deri/dev/uart_gd32.hpp"
 #include "deri/mmio/bits/USART_bits.hpp"
 
 namespace deri::dev::uart {

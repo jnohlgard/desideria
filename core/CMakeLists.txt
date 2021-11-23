@@ -1,7 +1,7 @@
 deri_add_library(deri_core STATIC
-  include/deri/assert.h
-  include/deri/console.h
-  include/deri/die.h
+  include/deri/assert.hpp
+  include/deri/console.hpp
+  include/deri/die.hpp
   assert.cpp
   die.cpp
   )

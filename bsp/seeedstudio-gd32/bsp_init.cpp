@@ -2,12 +2,12 @@
  * Copyright (c) 2020 Joakim Nohlgård
  */
 
-#include "deri/bsp_init.h"
+#include "deri/bsp_init.hpp"
 
-#include "deri/bsp/console.h"
-#include "deri/console.h"
-#include "deri/soc/init.h"
-#include "deri/span_literals.h"
+#include "deri/bsp/console.hpp"
+#include "deri/console.hpp"
+#include "deri/soc/init.hpp"
+#include "deri/span_literals.hpp"
 
 using namespace deri::literals;
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/arch/irq.h"
+#include "deri/arch/irq.hpp"
 
 extern "C" {
 void isr_unused();

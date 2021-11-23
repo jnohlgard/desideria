@@ -1,6 +1,6 @@
 deri_add_library(deri_bsp STATIC
-  include/deri/bsp/memory_map.h
-  include/deri/bsp/devices.h
+  include/deri/bsp/memory_map.hpp
+  include/deri/bsp/devices.hpp
   )
 target_include_directories(deri_bsp INTERFACE include)
 deri_target_depends(deri_bsp PUBLIC

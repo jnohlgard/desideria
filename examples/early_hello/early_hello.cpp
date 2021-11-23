@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/console.h"
+#include "deri/console.hpp"
 
 #include <span>
 

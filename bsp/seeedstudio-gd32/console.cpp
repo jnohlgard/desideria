@@ -2,11 +2,11 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/bsp/console.h"
+#include "deri/bsp/console.hpp"
 
-#include "deri/bsp/devices.h"
-#include "deri/soc/clock_dev.h"
-#include "deri/soc/gpio_dev.h"
+#include "deri/bsp/devices.hpp"
+#include "deri/soc/clock_dev.hpp"
+#include "deri/soc/gpio_dev.hpp"
 
 namespace deri {
 using namespace dev;

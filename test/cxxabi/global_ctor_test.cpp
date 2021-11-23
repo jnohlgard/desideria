@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020 Joakim Nohlgård
  */
-#include "global_ctor_test.h"
+#include "global_ctor_test.hpp"
 
 namespace test {
 Sut sut(&canary);

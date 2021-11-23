@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "deri/dev/gpio.h"
-#include "deri/dev/gpio_gd32.h"
-#include "deri/dev/exti_gd32.h"
+#include "deri/dev/gpio.hpp"
+#include "deri/dev/gpio_gd32.hpp"
+#include "deri/dev/exti_gd32.hpp"
 #include "deri/mmio/RCU.hpp"
 
 namespace deri::dev::gpio {

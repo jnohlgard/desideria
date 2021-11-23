@@ -2,7 +2,7 @@
  * Copyright (c) 2020 Joakim Nohlgård
  */
 
-#include "deri/console.h"
+#include "deri/console.hpp"
 
 extern "C" {
 #include <stdio.h>

@@ -2,7 +2,7 @@ deri_add_library(deri_arch STATIC
   startup.S
   reset.S
   irq_riscv.cpp
-  include/deri/arch/irq.h
+  include/deri/arch/irq.hpp
   include/deri/mmio/CLIC.hpp
   include/deri/mmio/bits/CLIC_bits.hpp
   )

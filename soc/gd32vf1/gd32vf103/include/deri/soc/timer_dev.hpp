@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/dev/timer.h"
-#include "deri/dev/timer_gd32.h"
+#include "deri/dev/timer.hpp"
+#include "deri/dev/timer_gd32.hpp"
 
 #include <array>
 

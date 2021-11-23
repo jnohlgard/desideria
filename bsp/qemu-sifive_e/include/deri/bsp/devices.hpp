@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/bsp/memory_map.h"
-#include "deri/dev/uart_sifive.h"
+#include "deri/bsp/memory_map.hpp"
+#include "deri/dev/uart_sifive.hpp"
 
 namespace deri::bsp {
 extern deri::dev::uart::UartSiFive uart0;

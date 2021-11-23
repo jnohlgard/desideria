@@ -2,10 +2,10 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/bsp/console.h"
+#include "deri/bsp/console.hpp"
 
-#include "deri/bsp/devices.h"
-#include "deri/console.h"
+#include "deri/bsp/devices.hpp"
+#include "deri/console.hpp"
 
 namespace deri {
 namespace bsp {

@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/dev/gpio_gd32.h"
-#include "deri/soc/gpio_dev.h"
+#include "deri/dev/gpio_gd32.hpp"
+#include "deri/soc/gpio_dev.hpp"
 
 #include <array>
 #include <cstdint>

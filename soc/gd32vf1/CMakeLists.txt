@@ -17,11 +17,11 @@ if (SOC_MODEL MATCHES "gd32vf103")
     gd32vf103/gpio_dev.cpp
     gd32vf103/timer_dev.cpp
     gd32vf103/vectors.cpp
-    gd32vf103/include/deri/soc/clock_dev.h
-    gd32vf103/include/deri/soc/gpio_dev.h
-    gd32vf103/include/deri/soc/irq_dev.h
-    gd32vf103/include/deri/soc/timer_dev.h
-    gd32vf103/include/deri/soc/vectors.h
+    gd32vf103/include/deri/soc/clock_dev.hpp
+    gd32vf103/include/deri/soc/gpio_dev.hpp
+    gd32vf103/include/deri/soc/irq_dev.hpp
+    gd32vf103/include/deri/soc/timer_dev.hpp
+    gd32vf103/include/deri/soc/vectors.hpp
     )
   deri_target_depends(deri_soc_obj PUBLIC deri_dev_common deri_arch)
 endif()

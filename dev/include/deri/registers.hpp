@@ -1,6 +1,6 @@
 #pragma once
 
-#include "deri/bitwise_enums.h"
+#include "deri/bitwise_enums.hpp"
 
 #include <cstddef>
 #include <cstdint>

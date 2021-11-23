@@ -3,11 +3,11 @@
  */
 
 #pragma once
-#include "deri/dev/charbuf.h"
-#include "deri/dev/uart_sifive.h"
+#include "deri/dev/charbuf.hpp"
+#include "deri/dev/uart_gd32.hpp"
 
 namespace deri::bsp {
-using Console = dev::BlockingDevice<dev::uart::UartSiFive>;
+using Console = dev::BlockingDevice<dev::uart::UsartGd32>;
 /**
  * Initialize the console UART settings
  */

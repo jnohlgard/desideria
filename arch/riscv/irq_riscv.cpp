@@ -3,7 +3,7 @@
  */
 
 #include "riscv/csr/encoding.h"
-#include "deri/arch/irq.h"
+#include "deri/arch/irq.hpp"
 
 namespace deri::arch {
 void init() {

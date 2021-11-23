@@ -2,8 +2,7 @@
  * Copyright (c) 2020 Joakim Nohlgård
  */
 
-#ifndef GLOBAL_CTOR_TEST_H_
-#define GLOBAL_CTOR_TEST_H_
+#pragma once
 
 namespace test {
 class Sut {
@@ -11,7 +10,7 @@ public:
   /**
    * @param expected canary value that will be compared during testing
    */
-  Sut(const void *expected);
+  explicit Sut(const void *expected);
 
   bool verify(const void *actual);
 
@@ -23,5 +22,3 @@ extern Sut sut;
 
 extern long canary;
 }
-
-#endif // GLOBAL_CTOR_TEST_H_

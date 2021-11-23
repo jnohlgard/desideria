@@ -2,7 +2,7 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/irq_clic.h"
+#include "deri/dev/irq_clic.hpp"
 
 #include "deri/mmio/bits/CLIC_bits.hpp"
 

@@ -2,7 +2,7 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/soc/timer_dev.h"
+#include "deri/soc/timer_dev.hpp"
 
 namespace deri::soc {
 

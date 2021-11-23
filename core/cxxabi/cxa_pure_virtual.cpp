@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/die.h"
+#include "deri/die.hpp"
 
 // Pure virtual function calls will end up here.
 // This should only happen if we manage to instantiate an abstract class and

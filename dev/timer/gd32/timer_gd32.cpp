@@ -2,11 +2,11 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/timer_gd32.h"
+#include "deri/dev/timer_gd32.hpp"
 
 #include "deri/mmio/bits/TIMER_bits.hpp"
-#include "deri/soc/clock_dev.h"
-#include "deri/soc/irq_dev.h"
+#include "deri/soc/clock_dev.hpp"
+#include "deri/soc/irq_dev.hpp"
 
 namespace deri::dev::timer {
 using SMCFG_bits = mmio::TIMER_regs::SMCFG_bits;

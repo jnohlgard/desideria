@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/dev/gpio.h"
+#include "deri/dev/gpio.hpp"
 #include "deri/mmio/AFIO.hpp"
 
 namespace deri::dev::gpio {

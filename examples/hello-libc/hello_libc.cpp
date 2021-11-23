@@ -2,8 +2,8 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/console.h"
-#include "deri/span_literals.h"
+#include "deri/console.hpp"
+#include "deri/span_literals.hpp"
 
 #include <span>
 

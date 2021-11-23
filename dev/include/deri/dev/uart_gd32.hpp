@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/registers.h"
+#include "deri/registers.hpp"
 #include "deri/mmio/USART.hpp"
 
 #include <atomic>

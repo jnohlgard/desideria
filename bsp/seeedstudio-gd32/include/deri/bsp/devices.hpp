@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/dev/uart_gd32.h"
+#include "deri/dev/uart_gd32.hpp"
 
 namespace deri::bsp {
 // HXTAL is populated with a 8 MHz crystal

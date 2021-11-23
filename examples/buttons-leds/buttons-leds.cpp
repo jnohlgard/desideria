@@ -2,9 +2,9 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
-#include "deri/bsp/config.h"
-#include "deri/console.h"
-#include "deri/soc/gpio_dev.h"
+#include "deri/bsp/config.hpp"
+#include "deri/console.hpp"
+#include "deri/soc/gpio_dev.hpp"
 
 #include <stdio.h>
 

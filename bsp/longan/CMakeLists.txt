@@ -3,7 +3,7 @@ deri_add_library(deri_bsp STATIC
   console.cpp
   )
 deri_add_library(deri_bsp_periph INTERFACE
-  include/deri/bsp/devices.h
+  include/deri/bsp/devices.hpp
   )
 target_include_directories(deri_bsp_periph INTERFACE include)
 target_link_libraries(deri_bsp PUBLIC

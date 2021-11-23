@@ -2,9 +2,9 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/console.h"
-#include "deri/span_literals.h"
-#include "deri/testing/finish.h"
+#include "deri/console.hpp"
+#include "deri/span_literals.hpp"
+#include "deri/testing/finish.hpp"
 
 #include <cstdlib>
 #include <span>

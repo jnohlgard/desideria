@@ -1,5 +1,5 @@
 deri_add_library(deri_bsp_sifive_common STATIC
-  include/deri/bsp/console.h
+  include/deri/bsp/console.hpp
   console.cpp
   bsp_init.cpp
   )

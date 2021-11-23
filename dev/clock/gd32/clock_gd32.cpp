@@ -2,8 +2,8 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/dev/clock_gd32.h"
-#include "deri/bsp/devices.h"
+#include "deri/dev/clock_gd32.hpp"
+#include "deri/bsp/devices.hpp"
 
 namespace deri::dev::clock {
 

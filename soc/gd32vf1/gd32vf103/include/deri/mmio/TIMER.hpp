@@ -1,7 +1,7 @@
 /* *** Generated with Desideria SVD converter *** */
 #pragma once
 
-#include "deri/registers.h"
+#include "deri/registers.hpp"
 
 #include <array>
 #include <cstdint>
