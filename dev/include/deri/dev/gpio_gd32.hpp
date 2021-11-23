@@ -138,7 +138,7 @@ class GpioManagerGd32 {
 
   GpioInGd32 initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
 
-  GpioInGd32 initInput(GpioInConfig config) {
+  GpioInGd32 initInput(const GpioInConfig &config) {
     return initInput(config.gpio, config.pull);
   }
 
@@ -146,7 +146,11 @@ class GpioManagerGd32 {
                           OutputMode mode = OutputMode::PUSH_PULL,
                           DigitalOutSpeed speed = DigitalOutSpeed::D2MHZ);
 
-  GpioOutGd32 initOutGpio(GpioOutConfig config);
+  GpioOutGd32 initOutGpio(const GpioOutConfig &config) {
+    auto gpio_out = initOutGpio(config.gpio, config.mode);
+    gpio_out.polarity = config.polarity;
+    return gpio_out;
+  }
 
   void initOutAfio(Gpio gpio,
                    OutputMode mode = OutputMode::PUSH_PULL,

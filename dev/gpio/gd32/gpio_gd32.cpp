@@ -138,12 +138,6 @@ GpioOutGd32 GpioManagerGd32::initOutGpio(
   return gpio_out;
 }
 
-GpioOutGd32 GpioManagerGd32::initOutGpio(GpioOutConfig config) {
-  auto gpio_out = initOutGpio(config.gpio, config.mode);
-  gpio_out.polarity = config.polarity;
-  return gpio_out;
-}
-
 void GpioManagerGd32::initOutAfio(Gpio gpio,
                                   GpioManagerGd32::OutputMode mode,
                                   GpioManagerGd32::DigitalOutSpeed speed) {
