@@ -57,7 +57,7 @@ class TimerGd32 {
   /**
    * Stop the timer
    */
-  void stop() { TIMER.CTL0 &= ~(mmio::TIMER_regs::CTL0_bits::CEN); }
+  void stop() { TIMER.CTL0 &= ~mmio::TIMER_regs::CTL0_bits::CEN; }
 
   /**
    * Read the current hardware counter value

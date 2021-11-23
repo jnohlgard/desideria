@@ -15,7 +15,7 @@ using SMCFG_shift = mmio::TIMER_regs::SMCFG_shift;
 namespace {
 constexpr SMCFG_bits applyTriggerSource(SMCFG_bits smcfg,
                                         unsigned trigger_number) {
-  smcfg &= ~(SMCFG_bits::TRGS_mask);
+  smcfg &= ~SMCFG_bits::TRGS_mask;
   smcfg |= static_cast<SMCFG_bits>(trigger_number
                                    << static_cast<unsigned>(SMCFG_shift::TRGS));
   smcfg |= SMCFG_bits::SMC_ExternalClock0;
@@ -32,7 +32,7 @@ void TimerGd32::init() {
 
 void TimerGd32::setSource(TimerGd32::ClockSource source) {
   auto smcfg = TIMER.SMCFG.load();
-  smcfg &= ~(SMCFG_bits::SMC_mask);
+  smcfg &= ~SMCFG_bits::SMC_mask;
   switch (source) {
     case ClockSource::CK_TIMER:
       break;
