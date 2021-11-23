@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/callback.h"
 #include "deri/dev/gpio.h"
 #include "deri/mmio/AFIO.hpp"
 #include "deri/mmio/GPIO.hpp"
@@ -132,11 +133,7 @@ class GpioManagerGd32 {
     FALLING = 1 << 1,
   };
 
-  struct Callback {
-    void (*func)(uintptr_t);
-    uintptr_t arg;
-  };
-
+  using Callback = deri::Callback<void(uintptr_t)>;
   void initAnalog(Gpio gpio);
 
   GpioInGd32 initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
@@ -167,7 +164,7 @@ class GpioManagerGd32 {
   }
 
  private:
-  std::array<Callback, 18> callbacks{};
+  std::array<Callback, 19> callbacks{};
 };
 void HasBitwiseOperators(GpioManagerGd32::Edge);
 

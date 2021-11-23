@@ -3,6 +3,8 @@
  */
 
 #pragma once
+#include "deri/callback.h"
+
 #include <array>
 #include <cstdint>
 
@@ -17,14 +19,8 @@ class TimerDriver {
   static constexpr auto max_value = TimerDevice::max_value;
   static constexpr auto num_channels = TimerDevice::num_channels;
 
-  struct Callback {
-    void (*func)(Channel, uintptr_t);
-    uintptr_t arg;
-  };
-  struct PeriodCallback {
-    void (*func)(uintptr_t);
-    uintptr_t arg;
-  };
+  using Callback = deri::Callback<void(Channel, uintptr_t)>;
+  using PeriodCallback = deri::Callback<void(uintptr_t)>;
 
   explicit TimerDriver(TimerDevice &timer) : timer(timer) {}
 
@@ -35,7 +31,9 @@ class TimerDriver {
   void stop() { timer.stop(); }
 
   void setPeriod(Count period) { timer.setPeriod(period); }
-  void setCompare(Channel channel, Count target) { timer.setCompare(channel, target); }
+  void setCompare(Channel channel, Count target) {
+    timer.setCompare(channel, target);
+  }
 
   void setInterruptHandler(Channel channel, Callback callback);
   void clearInterruptHandler(Channel channel);
