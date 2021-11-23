@@ -6,8 +6,8 @@
 #include "deri/console.h"
 #include "deri/soc/timer_dev.h"
 
-#include <algorithm>
 #include <array>
+#include <algorithm>
 
 #include <stdio.h>
 
@@ -51,18 +51,16 @@ void initButtons() {
 
 static unsigned led_active = 0;
 
-void rotateLeds() {
-  led_gpios[led_active % led_gpios.size()].clear();
-  ++led_active;
-  led_gpios[led_active % led_gpios.size()].set();
-}
-
 void initTimer() {
   timer.init();
   timer.underlyingTimer().setPrescaler(
       deri::dev::timer::TimerGd32::Prescaler{8000u - 1});
   timer.setPeriod(Timer::Count{500u - 1});
-  timer.setPeriodHandler(Timer::PeriodCallback::make(rotateLeds));
+  timer.setPeriodHandler({.func = [](uintptr_t) {
+    led_gpios[led_active % led_gpios.size()].clear();
+    ++led_active;
+    led_gpios[led_active % led_gpios.size()].set();
+  }});
   timer.start();
 }
 
