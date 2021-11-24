@@ -30,14 +30,21 @@ void timerInterrupt(TimerDriver &driver) {
 }  // namespace deri::soc
 
 using deri::soc::timerInterrupt;
+// This extra level of indirection for TIMER0 is a workaround for a bug in GCC
+// when compiling with -Os and two interrupt functions have the same body.
+// https://godbolt.org/z/Pe6s9bMj4
+void TIMER0_interrupt() {
+  timerInterrupt(deri::soc::timers[0]);
+}
+
 extern "C" {
 [[gnu::interrupt]] void isr_TIMER0_Channel();
 void isr_TIMER0_Channel() {
-  timerInterrupt(deri::soc::timers[0]);
+  TIMER0_interrupt();
 }
 [[gnu::interrupt]] void isr_TIMER0_UP();
 void isr_TIMER0_UP() {
-  timerInterrupt(deri::soc::timers[0]);
+  TIMER0_interrupt();
 }
 [[gnu::interrupt]] void isr_TIMER1();
 void isr_TIMER1() {
