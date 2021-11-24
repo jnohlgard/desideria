@@ -11,17 +11,14 @@ namespace deri::arch {
 using isr_func = void();
 
 static inline unsigned long irq_disable() {
-  unsigned long previous = __extension__ clear_csr(mstatus, MSTATUS_MIE);
+  unsigned long previous = clear_csr(mstatus, MSTATUS_MIE);
   return previous & MSTATUS_MIE;
 }
 
-static inline void irq_restore(
-    unsigned long saved) {
-  __extension__ set_csr(mstatus, saved & MSTATUS_MIE);
+static inline void irq_restore(unsigned long saved) {
+  set_csr(mstatus, saved & MSTATUS_MIE);
 }
 
-static inline void irq_enable() {
-  __extension__ set_csr(mstatus, MSTATUS_MIE);
-}
+static inline void irq_enable() { set_csr(mstatus, MSTATUS_MIE); }
 
 }  // namespace deri::arch

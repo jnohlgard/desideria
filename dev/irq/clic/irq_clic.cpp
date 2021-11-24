@@ -4,6 +4,7 @@
 
 #include "deri/dev/irq_clic.hpp"
 
+#include "deri/irq.hpp"
 #include "deri/mmio/bits/CLIC_bits.hpp"
 
 #include "riscv/csr/encoding.h"
@@ -31,6 +32,7 @@ void IrqClic::disable_irq(IrqClic::IRQ irq) {
 
 void IrqClic::init(isr_func *default_handler) {
   using CLICCFG_bits = mmio::CLIC_regs::CLICCFG_bits;
+  arch::CriticalSection cs;
   // Enable hardware vectoring
   CLIC.cliccfg.store(CLICCFG_bits::NVBITS);
   // Switch to CLIC mode
@@ -38,6 +40,7 @@ void IrqClic::init(isr_func *default_handler) {
 }
 
 void IrqClic::setVectorTable(isr_func *const *vector_table) {
+  arch::CriticalSection cs;
   write_csr(mtvt, vector_table);
 }
 
