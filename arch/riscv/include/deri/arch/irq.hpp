@@ -11,14 +11,22 @@ namespace deri::arch {
 using isr_func = void();
 
 static inline unsigned long irq_disable() {
+  asm volatile("" ::: "memory");
   unsigned long previous = clear_csr(mstatus, MSTATUS_MIE);
+  asm volatile("" ::: "memory");
   return previous & MSTATUS_MIE;
 }
 
 static inline void irq_restore(unsigned long saved) {
+  asm volatile("" ::: "memory");
   set_csr(mstatus, saved & MSTATUS_MIE);
+  asm volatile("" ::: "memory");
 }
 
-static inline void irq_enable() { set_csr(mstatus, MSTATUS_MIE); }
+static inline void irq_enable() {
+  asm volatile("" ::: "memory");
+  set_csr(mstatus, MSTATUS_MIE);
+  asm volatile("" ::: "memory");
+}
 
 }  // namespace deri::arch
