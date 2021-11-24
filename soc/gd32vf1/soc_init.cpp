@@ -13,7 +13,7 @@ void init() {
   arch::init();
   clic.init(isr_unhandled);
   dev::irq::IrqClic::setVectorTable(vector_table);
-  soc::afio.init();
+  afio.init();
   arch::irq_enable();
 }
 }  // namespace deri::soc
