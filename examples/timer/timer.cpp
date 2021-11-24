@@ -6,8 +6,8 @@
 #include "deri/console.hpp"
 #include "deri/soc/timer_dev.hpp"
 
-#include <array>
 #include <algorithm>
+#include <array>
 
 #include <stdio.h>
 
@@ -49,17 +49,19 @@ void initButtons() {
   }
 }
 
-static unsigned led_active = 0;
-
 void initTimer() {
   auto &driver = timer_config.init();
   driver.underlyingTimer().setPrescaler(
       deri::dev::timer::TimerGd32::Prescaler{8000u - 1});
   driver.setPeriod(deri::soc::TimerDriver::Count{500u - 1});
   driver.setPeriodHandler({.func = [](uintptr_t) {
-    led_gpios[led_active % led_gpios.size()].clear();
+    static unsigned led_active = 0;
+    led_gpios[led_active].clear();
     ++led_active;
-    led_gpios[led_active % led_gpios.size()].set();
+    if (led_active >= led_gpios.size()) {
+      led_active = 0;
+    }
+    led_gpios[led_active].set();
   }});
   driver.start();
 }
