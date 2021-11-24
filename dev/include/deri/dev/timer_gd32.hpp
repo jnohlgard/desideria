@@ -109,7 +109,16 @@ class TimerGd32 {
     TIMER.INTF.store(~bits);
   }
 
-  [[nodiscard]] auto interruptFlag() const { return TIMER.INTF.load(); }
+  [[nodiscard]] auto interruptFlag() const {
+    // INTF gets set regardless if the interrupt is enabled or not, so we need
+    // to check both enabled and flagged
+    using INTF_bits = mmio::TIMER_regs::INTF_bits;
+    using BitsInt = std::underlying_type_t<INTF_bits>;
+    auto inten = static_cast<BitsInt>(
+        TIMER.DMAINTEN.load() & mmio::TIMER_regs::DMAINTEN_bits::AllChannels);
+    auto intf = static_cast<BitsInt>(TIMER.INTF.load());
+    return static_cast<INTF_bits>(inten & intf);
+  }
 
   void disablePeriodInterrupt() {
     TIMER.DMAINTEN &= ~mmio::TIMER_regs::DMAINTEN_bits::UPIE;

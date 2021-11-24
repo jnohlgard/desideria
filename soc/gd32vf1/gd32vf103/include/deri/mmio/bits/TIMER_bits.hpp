@@ -133,6 +133,8 @@ enum class TIMER_regs::DMAINTEN_bits : uint32_t {
   CH1IE = (1u << 2),      ///< Channel 1 capture/compare interrupt enable
   CH0IE = (1u << 1),      ///< Channel 0 capture/compare interrupt enable
   UPIE = (1u << 0),       ///< Update interrupt enable
+  AllChannels = (0xffu),  ///< All interrupt flags, this will be combined with
+                          ///< INTF when checking interrupts
   Reserved_mask = 0x8000  ///< All reserved bits
 };
 void HasBitwiseOperators(TIMER_regs::DMAINTEN_bits);
