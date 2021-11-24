@@ -7,6 +7,7 @@
 #include "deri/arch/irq.hpp"
 
 extern "C" {
+void isr_unhandled();
 void isr_unused();
 void isr_CLIC_INT_SFT();
 void isr_CLIC_INT_TMR();

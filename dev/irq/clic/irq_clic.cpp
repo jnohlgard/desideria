@@ -29,12 +29,12 @@ void IrqClic::disable_irq(IrqClic::IRQ irq) {
   clicint.clicintie.store(static_cast<CLICINTIE_bits>(0));
 }
 
-void IrqClic::init() {
+void IrqClic::init(isr_func *default_handler) {
   using CLICCFG_bits = mmio::CLIC_regs::CLICCFG_bits;
   // Enable hardware vectoring
   CLIC.cliccfg.store(CLICCFG_bits::NVBITS);
   // Switch to CLIC mode
-  write_csr(mtvec, 0b000011u);
+  write_csr(mtvec, reinterpret_cast<uintptr_t>(default_handler) | 0b000011u);
 }
 
 void IrqClic::setVectorTable(isr_func *const *vector_table) {

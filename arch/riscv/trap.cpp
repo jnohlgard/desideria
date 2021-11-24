@@ -3,7 +3,7 @@
  */
 
 extern "C" {
-[[gnu::interrupt]] void isr_unhandled();
+[[gnu::interrupt, gnu::aligned(0b1000000)]] void isr_unhandled();
 void isr_unhandled() {
   while (1) {
   }

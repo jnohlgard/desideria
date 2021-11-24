@@ -11,7 +11,7 @@
 namespace deri::soc {
 void init() {
   arch::init();
-  clic.init();
+  clic.init(isr_unhandled);
   dev::irq::IrqClic::setVectorTable(vector_table);
   soc::afio.init();
   arch::irq_enable();
