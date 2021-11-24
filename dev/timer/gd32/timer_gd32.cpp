@@ -24,10 +24,7 @@ constexpr SMCFG_bits applyTriggerSource(SMCFG_bits smcfg,
 }  // namespace
 
 void TimerGd32::init() {
-  soc::rcu.enableModules(clock::RcuGd32::APB2EN_bits::TIMER0EN);
   TIMER.CTL0.store(static_cast<mmio::TIMER_regs::CTL0_bits>(0));
-  soc::clic.enable_irq(mmio::IRQ::TIMER0_Channel);
-  soc::clic.enable_irq(mmio::IRQ::TIMER0_UP);
 }
 
 void TimerGd32::setSource(TimerGd32::ClockSource source) {

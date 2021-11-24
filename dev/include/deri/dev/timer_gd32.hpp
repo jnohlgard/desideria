@@ -7,8 +7,6 @@
 #include "deri/mmio/TIMER.hpp"
 #include "deri/mmio/bits/TIMER_bits.hpp"
 
-#include <chrono>
-
 namespace deri::dev::timer {
 
 class TimerGd32 {
