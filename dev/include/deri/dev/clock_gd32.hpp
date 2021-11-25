@@ -46,7 +46,35 @@ class RcuGd32 {
    */
   [[nodiscard]] uint32_t apb2Freq() const;
 
+  /**
+   * Get the frequency of the CK_TIMERx clock by querying the hardware.
+   *
+   * @param index x in TIMERx
+   * @return CK_TIMERx frequency
+   */
+  [[nodiscard]] uint32_t timerFreq(unsigned index) const;
+
  private:
+  /**
+   * Get the prescaler of the CK_AHB clock by querying the hardware.
+   *
+   * @return CK_AHB shift
+   */
+  [[nodiscard]] unsigned ahbPrescaler() const;
+
+  /**
+   * Get the prescaler of the CK_APB1 clock by querying the hardware.
+   *
+   * @return CK_APB1 shift
+   */
+  [[nodiscard]] unsigned apb1Prescaler() const;
+  /**
+   * Get the prescaler of the CK_APB2 clock by querying the hardware.
+   *
+   * @return CK_APB2 shift
+   */
+  [[nodiscard]] unsigned apb2Prescaler() const;
+
   mmio::RCU_regs RCU;
 };
 
