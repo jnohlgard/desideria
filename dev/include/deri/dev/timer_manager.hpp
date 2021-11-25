@@ -53,6 +53,6 @@ class TimerManager {
 
   TimerDriver *timer{nullptr};
   Frequency tick_rate_hz{};
-  std::atomic_uint64_t count{};
+  std::atomic<Count> count{};
 };
 }  // namespace deri::dev

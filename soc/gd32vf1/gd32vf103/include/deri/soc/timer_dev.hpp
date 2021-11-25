@@ -87,10 +87,14 @@ inline void enableIrq(TimerModule module) {
   }
 }
 
+inline uint32_t moduleFrequency(TimerModule module) {
+  return rcu.timerFreq(static_cast<unsigned>(module));
+}
+
 using TimerDriver = dev::timer::TimerDriver<TimerPeriph>;
 
 struct TimerConfig {
-  TimerDriver &init() const;
+  [[nodiscard]] TimerDriver &init() const;
 
   TimerModule module_id;
   TimerPeriph &dev;
