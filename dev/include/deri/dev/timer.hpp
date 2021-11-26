@@ -16,6 +16,7 @@ class TimerDriver {
   using TimerDevice = TimerDeviceType;
   using Count = typename TimerDevice::Count;
   using Channel = typename TimerDevice::Channel;
+  using Prescaler = typename TimerDevice::Prescaler;
   static constexpr auto max_value = TimerDevice::max_value;
   static constexpr auto num_channels = TimerDevice::num_channels;
 
@@ -34,6 +35,8 @@ class TimerDriver {
   [[nodiscard]] Count read() const { return timer->read(); }
   void start() { timer->start(); }
   void stop() { timer->stop(); }
+
+  void setPrescaler(Prescaler prescaler) { timer->setPrescaler(prescaler); }
 
   void setPeriod(Count period) { timer->setPeriod(period); }
   void setCompare(Channel channel, Count target) {

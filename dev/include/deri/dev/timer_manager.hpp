@@ -8,12 +8,15 @@
 #include <chrono>
 #include <cstdint>
 
+#include "deri/dev/timer.hpp"
+
 namespace deri::dev {
 
-template <class TimerDriverType, typename CountType = std::uint64_t>
+template <class TimerDeviceType, typename CountType = std::int64_t>
 class TimerManager {
  public:
-  using TimerDriver = TimerDriverType;
+  using TimerDevice = TimerDeviceType;
+  using TimerDriver = timer::TimerDriver<TimerDevice>;
   using Count = CountType;
   enum class Frequency : unsigned long;
   static constexpr auto num_channels = TimerDriver::num_channels;

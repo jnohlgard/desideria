@@ -44,6 +44,7 @@ add_subdirectory(bsp)
 add_subdirectory(dev)
 add_subdirectory(lib)
 add_subdirectory(soc)
+add_subdirectory(sys)
 
 if (BUILD_TESTING AND DERI_STANDALONE_BUILD)
   add_subdirectory(test)

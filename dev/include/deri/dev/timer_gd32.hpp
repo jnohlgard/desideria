@@ -33,6 +33,7 @@ class TimerGd32 {
   enum class Count : uint16_t {};
   using Period = mmio::TIMER_regs::CAR_bits;
   using Target = mmio::TIMER_regs::CHxCV_bits;
+  using Prescaler = mmio::TIMER_regs::PSC_bits;
 
   void init();
 
@@ -45,9 +46,16 @@ class TimerGd32 {
    *
    * @param prescaler Prescaler value of the counter clock
    */
-  void setPrescaler(Count prescaler) {
-    TIMER.PSC.store(mmio::TIMER_regs::PSC_bits{
-        static_cast<uint16_t>(prescaler)});
+  void setPrescaler(Prescaler prescaler) { TIMER.PSC.store(prescaler); }
+
+  /**
+   * Compute the prescaler given the module clock and the desired counting
+   * frequency
+   */
+  [[nodiscard]] static constexpr Prescaler computePrescaler(
+      unsigned module_clock, unsigned desired_freq) {
+    unsigned divider = module_clock / desired_freq;
+    return mmio::TIMER_regs::PSC_bits{divider - 1};
   }
 
   /**

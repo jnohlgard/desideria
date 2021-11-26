@@ -51,8 +51,8 @@ void initButtons() {
 
 void initTimer() {
   auto &driver = timer_config.init();
-  driver.underlyingTimer().setPrescaler(
-      deri::dev::timer::TimerGd32::Count{8000u - 1});
+  auto prescaler = timer_config.computePrescaler(1000);
+  driver.setPrescaler(prescaler);
   driver.setPeriod(deri::soc::TimerDriver::Count{500u - 1});
   driver.setPeriodHandler({.func = [](uintptr_t) {
     static unsigned led_active = 0;
@@ -67,7 +67,7 @@ void initTimer() {
 }
 
 int main() {
-  puts("Timer example");
+  puts("Low level timer example");
   initLeds();
   initButtons();
   initTimer();

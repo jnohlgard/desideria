@@ -13,6 +13,4 @@ namespace deri::bsp {
 inline constexpr uint32_t hxtal_freq = 8'000'000u;
 
 extern deri::dev::uart::UsartGd32 uart0;
-
-inline config::TimerManagerConfig::TimerManager utime;
 }  // namespace deri::bsp

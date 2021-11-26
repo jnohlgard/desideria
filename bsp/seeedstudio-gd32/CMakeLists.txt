@@ -13,6 +13,7 @@ target_link_libraries(deri_bsp PUBLIC
   deri_arch
   deri_soc
   deri_bsp_periph
+  deri_sys_time
   )
 target_link_libraries(deri_bsp_periph INTERFACE
   deri_dev_clock_gd32

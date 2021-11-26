@@ -5,11 +5,11 @@
 #pragma once
 
 #include "deri/dev/gpio_gd32.hpp"
-#include "deri/soc/gpio_dev.hpp"
-#include "deri/soc/timer_dev.hpp"
-#include "deri/dev/timer_manager.hpp"
 #include "deri/dev/timer.hpp"
 #include "deri/dev/timer_gd32.hpp"
+#include "deri/dev/timer_manager.hpp"
+#include "deri/soc/gpio_dev.hpp"
+#include "deri/soc/timer_dev.hpp"
 
 #include <array>
 #include <cstdint>
@@ -32,14 +32,16 @@ inline constexpr std::array buttons{
     dev::gpio::GpioInConfig{{config::Port::C, 13}, config::Pull::FLOATING},
 };
 
-struct TimerManagerConfig {
-  using TimerManager = dev::TimerManager<dev::timer::TimerDriver<dev::timer::TimerGd32>>;
-  const soc::TimerConfig& config;
-  uint32_t tick_rate_hz;
-};
-inline constexpr TimerManagerConfig utime {
-    .config = soc::timer_config[4],
-    .tick_rate_hz = 1'000'000,
+namespace time {
+
+struct UsecTimerConfig {
+  using TimerManager = dev::TimerManager<dev::timer::TimerGd32>;
+  static constexpr uint32_t tick_rate_hz = 1'000'000;
+  static constexpr soc::TimerConfig driver_config = soc::timer_config[4];
 };
 
+using SystemTimerConfig = UsecTimerConfig;
+using HighResolutionTimerConfig = UsecTimerConfig;
+using LowPowerTimerConfig = UsecTimerConfig;
+}  // namespace time
 }  // namespace deri::bsp::config

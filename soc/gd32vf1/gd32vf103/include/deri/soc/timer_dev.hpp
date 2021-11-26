@@ -96,6 +96,14 @@ using TimerDriver = dev::timer::TimerDriver<TimerPeriph>;
 struct TimerConfig {
   [[nodiscard]] TimerDriver &init() const;
 
+  [[nodiscard]] uint32_t module_clock() const {
+    return soc::rcu.timerFreq(static_cast<unsigned>(module_id));
+  }
+
+  [[nodiscard]] auto computePrescaler(uint32_t tick_rate) const {
+    return TimerPeriph::computePrescaler(module_clock(), tick_rate);
+  }
+
   TimerModule module_id;
   TimerPeriph &dev;
   TimerPeriph::ClockSource clock_source{TimerPeriph::ClockSource::CK_TIMER};
