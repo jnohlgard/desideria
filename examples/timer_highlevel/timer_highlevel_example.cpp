@@ -51,6 +51,42 @@ void initButtons() {
   }
 }
 
+struct ScheduledLed : public deri::SystemTimer::Schedulable {
+  GpioOut led{};
+  deri::SystemTimer::TimerManager::Count timeout{};
+};
+
+static std::array<ScheduledLed, config::leds.size()> schedulables;
+
+void timerCallback(deri::SystemTimer::TimerManager &timer,
+                   deri::SystemTimer::Schedulable &schedulable,
+                   uintptr_t arg) {
+  auto led_schedule = reinterpret_cast<ScheduledLed *>(arg);
+  led_schedule->led.toggle();
+  schedulable.target = led_schedule->timeout +
+                       deri::SystemTimer::now().time_since_epoch().count();
+  timer.schedule(schedulable);
+}
+
+void initTimers() {
+  auto arg = 0;
+  auto timeout_prev = 1;
+  auto timeout = 1;
+  auto base = deri::SystemTimer::now().time_since_epoch().count();
+
+  for (auto &&schedulable : schedulables) {
+    auto tmp = timeout;
+    timeout += timeout_prev;
+    timeout_prev = tmp;
+    schedulable.led = led_gpios[arg++];
+    schedulable.timeout = timeout * 250000;
+    schedulable.callback.arg = reinterpret_cast<uintptr_t>(&schedulable);
+    schedulable.callback.func = timerCallback;
+    schedulable.target = schedulable.timeout + base;
+    deri::SystemTimer::schedule(schedulable);
+  }
+}
+
 int main() {
   puts("High level timer example");
   printf("Each timer tick is %ld / %ld seconds\n",
@@ -58,6 +94,7 @@ int main() {
          static_cast<long>(deri::SystemTimer::period::den));
   initLeds();
   initButtons();
+  initTimers();
 
   while (1) {
     asm volatile("" ::: "memory");

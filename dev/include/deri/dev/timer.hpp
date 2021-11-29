@@ -4,6 +4,7 @@
 
 #pragma once
 #include "deri/callback.hpp"
+#include "deri/irq.hpp"
 
 #include <array>
 #include <cstdint>
@@ -40,22 +41,25 @@ class TimerDriver {
 
   void setPeriod(Count period) { timer->setPeriod(period); }
   void setCompare(Channel channel, Count target) {
+    timer->disableInterrupt(channel);
+    timer->clearInterruptFlag(channel);
     timer->setCompare(channel, target);
+    timer->enableInterrupt(channel);
   }
 
-  void setInterruptHandler(Channel channel, Callback callback);
-  void clearInterruptHandler(Channel channel);
+  void setCompareHandler(Channel channel, Callback callback);
+  void clearCompareHandler(Channel channel);
   void setPeriodHandler(PeriodCallback callback);
   void clearPeriodHandler();
 
-  void interruptCallback(Channel channel) {
+  void interruptCallback(Channel channel) const {
     const auto &callback = callbacks[static_cast<unsigned>(channel)];
     if (callback.func != nullptr) {
       callback.func(channel, callback.arg);
     }
   }
 
-  void periodCallback() {
+  void periodCallback() const {
     if (period_callback.func != nullptr) {
       period_callback.func(period_callback.arg);
     }
@@ -71,16 +75,14 @@ class TimerDriver {
 };
 
 template <class TimerDeviceType>
-void TimerDriver<TimerDeviceType>::setInterruptHandler(Channel channel,
-                                                       Callback callback) {
-  timer->disableInterrupt(channel);
-  timer->clearInterruptFlag(channel);
+void TimerDriver<TimerDeviceType>::setCompareHandler(Channel channel,
+                                                     Callback callback) {
+  arch::CriticalSection cs;
   callbacks[static_cast<unsigned>(channel)] = callback;
-  timer->enableInterrupt(channel);
 }
 
 template <class TimerDeviceType>
-void TimerDriver<TimerDeviceType>::clearInterruptHandler(Channel channel) {
+void TimerDriver<TimerDeviceType>::clearCompareHandler(Channel channel) {
   timer->disableInterrupt(channel);
   timer->clearInterruptFlag(channel);
   callbacks[static_cast<unsigned>(channel)] = {};

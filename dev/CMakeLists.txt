@@ -8,3 +8,4 @@ deri_add_library(deri_dev_common INTERFACE
   include/deri/registers.hpp
   )
 target_include_directories(deri_dev_common INTERFACE include)
+deri_target_depends(deri_dev_common INTERFACE deri_core_include)

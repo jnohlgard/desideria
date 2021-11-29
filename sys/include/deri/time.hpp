@@ -14,6 +14,8 @@ template <class Config>
 class Timer {
  public:
   using TimerManager = typename Config::TimerManager;
+  using Schedulable = typename TimerManager::Schedulable;
+  using Callback = typename TimerManager::TimerCallback;
 
   // Clock required types (https://en.cppreference.com/w/cpp/named_req/Clock)
   using rep = typename TimerManager::Count;
@@ -25,6 +27,9 @@ class Timer {
   static void init();
 
   static time_point now() { return time_point{duration{timer.read()}}; }
+  static void schedule(Schedulable &schedulable) {
+    timer.schedule(schedulable);
+  }
 
  private:
   inline static TimerManager timer{};
