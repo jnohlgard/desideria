@@ -107,7 +107,13 @@ struct GpioOutGd32 {
     write(!value);
   }
 
-  [[nodiscard]] bool read() const { return port->read(pin); }
+  [[nodiscard]] bool read() const {
+    auto value = port->read(pin);
+    if (polarity == Polarity::INVERTED) {
+      return !value;
+    }
+    return value;
+  }
 
   GpioPortGd32 *port{nullptr};
   Pin pin{};
