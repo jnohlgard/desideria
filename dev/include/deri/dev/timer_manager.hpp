@@ -61,11 +61,13 @@ class TimerManager {
                              {[](auto, uintptr_t arg) {
                                 auto *self =
                                     reinterpret_cast<decltype(this)>(arg);
-                                self->update();
+                                auto now = self->read();
+                                self->update(now);
                               },
                               reinterpret_cast<uintptr_t>(this)});
     timer->start();
-    update();
+    auto now = read();
+    update(now);
   }
 
   Count read() {
@@ -81,8 +83,9 @@ class TimerManager {
   void schedule(Schedulable &schedulable) {
     arch::CriticalSection cs;
     queue.remove(schedulable);
+    auto now = read();
     queue.push(schedulable);
-    update();
+    update(now);
   }
 
  private:
@@ -91,7 +94,7 @@ class TimerManager {
   LowerCount read_lower() const {
     return static_cast<LowerCount>(timer->read());
   }
-  void update() {
+  void update(Count now) {
     arch::CriticalSection cs;
     if (in_update) {
       return;
@@ -101,7 +104,6 @@ class TimerManager {
     // pop periodic_update from list
     queue.remove(periodic_update);
 
-    auto now = read();
     while (!queue.empty()) {
       auto &scheduled = queue.front();
       if (scheduled > now) {
