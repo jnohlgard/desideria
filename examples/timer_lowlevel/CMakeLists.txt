@@ -1,2 +1,2 @@
-add_executable(timer_lowlevel_example timer_lowlevel_example.cpp)
-deri_configure_target(timer_lowlevel_example)
+add_executable(example_timer_lowlevel example_timer_lowlevel.cpp)
+deri_configure_target(example_timer_lowlevel)

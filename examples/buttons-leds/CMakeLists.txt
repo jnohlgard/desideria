@@ -1,2 +1,2 @@
-add_executable(buttons-leds buttons-leds.cpp)
-deri_configure_target(buttons-leds)
+add_executable(example_buttons_leds example_buttons_leds.cpp)
+deri_configure_target(example_buttons_leds)

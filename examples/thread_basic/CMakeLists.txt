@@ -1,0 +1,3 @@
+add_executable(example_thread_basic example_thread_basic.cpp)
+deri_target_depends(example_thread_basic PUBLIC deri_sys_time)
+deri_configure_target(example_thread_basic)

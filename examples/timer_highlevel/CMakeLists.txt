@@ -1,3 +1,3 @@
-add_executable(timer_highlevel_example timer_highlevel_example.cpp)
-deri_target_depends(timer_highlevel_example PUBLIC deri_sys_time)
-deri_configure_target(timer_highlevel_example)
+add_executable(example_timer_highlevel example_timer_highlevel.cpp)
+deri_target_depends(example_timer_highlevel PUBLIC deri_sys_time)
+deri_configure_target(example_timer_highlevel)
