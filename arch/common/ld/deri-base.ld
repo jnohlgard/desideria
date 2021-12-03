@@ -93,6 +93,9 @@ SECTIONS
     _bss_begin = .;
     *(.sbss .sbss.*)
     *(.bss .bss.*)
+    _main_stack_start = .;
+    . += _main_stack_size;
+    _main_stack_end = .;
     _bss_end = .;
     . = ALIGN(8);
   } >ram AT>ram :bss

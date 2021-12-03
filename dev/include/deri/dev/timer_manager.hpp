@@ -42,13 +42,13 @@ class TimerManager {
       : timer{&timer}, tick_rate_hz{tick_rate_hz} {}
   TimerManager() = default;
   TimerManager(const TimerManager &) = default;
-  TimerManager &operator=(const TimerManager &rhs) noexcept {
+  TimerManager &operator=(TimerManager &&rhs) noexcept {
     if (this == &rhs) {
       return *this;
     }
     timer = rhs.timer;
     tick_rate_hz = rhs.tick_rate_hz;
-    queue = rhs.queue;
+    queue = std::move(rhs.queue);
     count.store(rhs.count.load());
     return *this;
   }

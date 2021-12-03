@@ -29,4 +29,8 @@ using isr_func = void();
   asm volatile("" ::: "memory");
 }
 
+[[gnu::always_inline]] inline void wait_for_interrupt() {
+  asm volatile("wfi" ::: "memory");
+}
+
 }  // namespace deri::arch

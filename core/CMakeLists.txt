@@ -3,8 +3,10 @@ deri_add_library(deri_core STATIC
   include/deri/console.hpp
   include/deri/list.hpp
   include/deri/die.hpp
+  include/deri/thread.hpp
   assert.cpp
   die.cpp
+  thread.cpp
   )
 deri_add_library(deri_core_obj OBJECT
   init.cpp

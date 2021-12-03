@@ -13,5 +13,8 @@ MEMORY
   ram (wxa!ri) : ORIGIN = _ram_origin, LENGTH = _ram_length
 }
 
+/* Default stack size for the main function */
+_main_stack_size = DEFINED(_main_stack_size) ? _main_stack_size : 2048 ;
+
 INCLUDE deri-base.ld
 INCLUDE global_pointer.ld

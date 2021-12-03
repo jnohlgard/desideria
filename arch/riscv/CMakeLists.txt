@@ -8,6 +8,7 @@ deri_add_library(deri_arch STATIC
   )
 deri_add_library(deri_arch_obj OBJECT
   trap.cpp
+  trap.S
   )
 target_link_libraries(deri_arch PUBLIC deri_arch_obj $<TARGET_OBJECTS:deri_arch_obj>)
 target_include_directories(deri_arch PUBLIC include)

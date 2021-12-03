@@ -48,6 +48,14 @@ class OrderedForwardList {
   using Node = ForwardListNode<Value>;
   using Iterator = typename Node::Iterator;
 
+  // We disallow copying because the heads of the lists would get out of sync.
+  OrderedForwardList() : OrderedForwardList(Compare{}){};
+  OrderedForwardList(const OrderedForwardList &) = delete;
+  OrderedForwardList &operator=(const OrderedForwardList &) = delete;
+  OrderedForwardList(OrderedForwardList &&) noexcept = default;
+  OrderedForwardList &operator=(OrderedForwardList &&) noexcept = default;
+  explicit OrderedForwardList(Compare compare) : compare(compare) {}
+
   Iterator begin() { return {head}; }
   Iterator end() { return {.current = nullptr}; }
 
@@ -59,7 +67,11 @@ class OrderedForwardList {
       head = head->next;
     }
   }
-  void push(ValueType &to_insert) {
+
+  void push(ValueType &to_insert) { push(to_insert, compare); }
+
+  template <class Callable>
+  void push(ValueType &to_insert, Callable do_compare) {
     if (head == nullptr) {
       head = &to_insert;
       return;
@@ -67,7 +79,7 @@ class OrderedForwardList {
     ValueType *before = nullptr;
     ValueType *after = nullptr;
     for (auto &element : *this) {
-      if (!compare(element, to_insert)) {
+      if (!do_compare(element, to_insert)) {
         after = &element;
         break;
       }
