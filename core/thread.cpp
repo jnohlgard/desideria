@@ -5,6 +5,7 @@
 #include "deri/thread.hpp"
 
 #include "deri/arch/irq.hpp"
+#include "deri/arch/syscall.hpp"
 #include "deri/span_literals.hpp"
 
 extern "C" {
@@ -31,21 +32,21 @@ std::array<std::byte, deri::arch::idle_stack_size> idle_stack;
 
 void Scheduler::init() {
   using namespace deri::literals;
-  auto idle_thread = Thread::create(
-      std::span(idle_stack), Thread::Priority::IDLE, idle_loop, "idle"_span);
+  auto &idle_thread = Thread::create(
+      std::span(idle_stack), Thread::Priority::IDLE, "idle"_span, idle_loop);
   idle_thread.start();
 
-  auto main_thread =
+  auto &main_thread =
       Thread::create(std::span(_main_stack_start, _main_stack_end),
                      Thread::Priority::NORMAL,
-                     main,
-                     "main"_span);
+                     "main"_span,
+                     main);
   main_thread.start();
-  auto next_to_run = Scheduler::run();
-  deri_restore_context(next_to_run->context());
+  // Switch to the main thread
+  arch::syscall(Syscall::SCHEDULER_UPDATE);
+  // we will never return here.
   __builtin_unreachable();
 }
 
-Thread *Scheduler::run() { return &run_queue.front(); }
-void Thread::start() { Scheduler::enqueue(*this); }
+void Thread::start() { Scheduler::yield(*this); }
 }  // namespace deri

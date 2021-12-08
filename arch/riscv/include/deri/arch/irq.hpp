@@ -5,6 +5,11 @@
 
 #include "riscv/csr/encoding.h"
 
+extern "C" {
+// trap.S
+void deri_exception_handler();
+}
+
 namespace deri::arch {
 
 /// IRQ handler function signature

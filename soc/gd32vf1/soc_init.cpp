@@ -3,6 +3,7 @@
  */
 
 #include "deri/arch_init.hpp"
+#include "deri/arch/irq.hpp"
 #include "deri/dev/afio_gd32.hpp"
 #include "deri/soc/gpio_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
@@ -11,7 +12,7 @@
 namespace deri::soc {
 void init() {
   arch::init();
-  clic.init(isr_unhandled);
+  clic.init(deri_exception_handler);
   dev::irq::IrqClic::setVectorTable(vector_table);
   afio.init();
   arch::irq_enable();

@@ -23,7 +23,7 @@ struct SavedContext {
   using FunctionAddressRegister = void (*)();
 
   template <typename Function>
-  void setProgramCounter(Function function) {
+  void setProgramCounter(Function &&function) {
     pc = reinterpret_cast<FunctionAddressRegister>(function);
   }
 
@@ -31,11 +31,13 @@ struct SavedContext {
     sp = stack.data() + stack.size();
   }
 
+  void setArg0(auto *arg_0) { a0 = reinterpret_cast<IntRegister>(arg_0); }
+
   FunctionAddressRegister pc{};
   FunctionAddressRegister ra{};
   AddressRegister sp{};
   AddressRegister gp{__global_pointer$};
-  AddressRegister tp{};
+  AddressRegister tp{this};
   IntRegister t0{};
   IntRegister t1{};
   IntRegister t2{};

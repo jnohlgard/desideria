@@ -4,6 +4,7 @@ deri_add_library(deri_core STATIC
   include/deri/list.hpp
   include/deri/die.hpp
   include/deri/thread.hpp
+  include/deri/syscall.hpp
   assert.cpp
   die.cpp
   thread.cpp

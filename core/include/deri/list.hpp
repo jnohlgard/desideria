@@ -112,8 +112,8 @@ class OrderedForwardList {
   }
 
  private:
-  Compare compare{};
   ValueType *head{nullptr};
+  [[no_unique_address]] Compare compare{};
 };
 
 template <class Value>
