@@ -34,4 +34,4 @@ class CriticalSection {
   IrqLock irq_lock{};
 };
 
-}
+}  // namespace deri::arch
