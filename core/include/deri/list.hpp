@@ -73,6 +73,7 @@ class OrderedForwardList {
   template <class Callable>
   void push(ValueType &to_insert, Callable do_compare) {
     if (head == nullptr) {
+      to_insert.next = nullptr;
       head = &to_insert;
       return;
     }
