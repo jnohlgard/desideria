@@ -2,6 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
+#include "deri/arch/perf.hpp"
 #include "deri/span_literals.hpp"
 #include "deri/thread.hpp"
 #include "deri/time.hpp"
@@ -23,23 +24,41 @@ class BenchContextSwitch {
  public:
   [[noreturn]] static void countThread() {
     while (true) {
-      deri::Scheduler::yield();
       ++count;
+      deri::Scheduler::yield();
     }
   }
   static void printEvent(deri::SystemTimer::TimerManager &timer,
                          deri::SystemTimer::Schedulable &schedulable,
                          uintptr_t /* arg */) {
+    static auto last_cycles = deri::arch::Perf::cycles();
+    static auto last_inst = deri::arch::Perf::instructionsRetired();
     static auto last_update = deri::HighResolutionTimer::now();
+    auto now_cycles = deri::arch::Perf::cycles();
+    auto now_inst = deri::arch::Perf::instructionsRetired();
     auto now = deri::HighResolutionTimer::now();
     auto interval = now - last_update;
     auto interval_us(
         std::chrono::duration_cast<std::chrono::microseconds>(interval));
+    long cycles_diff = now_cycles - last_cycles;
+    long inst_diff = now_inst - last_inst;
+    auto count_now = count.load();
+    long cycles_per_count = cycles_diff / count_now;
+    long inst_per_count = inst_diff / count_now;
 
-    printf("%lu context switches in %ld us\n",
-           count.load(),
-           static_cast<long>(interval_us.count()));
+    printf(
+        "%lu context switches in %ld us (%ld core cycles, %ld instructions). "
+        "%ld cycles per "
+        "switch, %ld instructions per switch\n",
+        count_now,
+        static_cast<long>(interval_us.count()),
+        cycles_diff,
+        inst_diff,
+        cycles_per_count,
+        inst_per_count);
     last_update = deri::HighResolutionTimer::now();
+    last_cycles = deri::arch::Perf::cycles();
+    last_inst = deri::arch::Perf::instructionsRetired();
     count.store(0);
     schedulable.target =
         (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch().count();
