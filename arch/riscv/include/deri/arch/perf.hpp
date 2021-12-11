@@ -12,15 +12,15 @@ class Perf {
   [[nodiscard, gnu::always_inline]] static uint64_t cycles() {
     uint32_t lo;
     uint32_t hi;
-    asm volatile("csrr %0, mcycle" : "=r"(lo)::);
-    asm volatile("csrr %0, mcycleh" : "=r"(hi)::);
+    asm volatile("csrr %0, cycle" : "=r"(lo)::);
+    asm volatile("csrr %0, cycleh" : "=r"(hi)::);
     return (static_cast<uint64_t>(hi) << 32 | lo);
   }
   [[nodiscard, gnu::always_inline]] static uint64_t instructionsRetired() {
     uint32_t lo;
     uint32_t hi;
-    asm volatile("csrr %0, minstret" : "=r"(lo)::);
-    asm volatile("csrr %0, minstreth" : "=r"(hi)::);
+    asm volatile("csrr %0, instret" : "=r"(lo)::);
+    asm volatile("csrr %0, instreth" : "=r"(hi)::);
     return (static_cast<uint64_t>(hi) << 32 | lo);
   }
 };
