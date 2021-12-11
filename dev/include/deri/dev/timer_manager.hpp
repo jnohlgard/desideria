@@ -91,7 +91,7 @@ class TimerManager {
  private:
   static constexpr auto checkpoint_step = TimerDriver::max_value / 2;
 
-  LowerCount read_lower() const {
+  [[nodiscard]] LowerCount read_lower() const {
     return static_cast<LowerCount>(timer->read());
   }
   void update(Count now) {
