@@ -14,13 +14,13 @@ deri_exception_handler:
   // Disable interrupts globally
   //csrc mstatus, MSTATUS_MIE
   addi sp, sp, -(2 * SIZEOF_REG)
-  sw t0, SIZEOF_REG(sp)
+  sw t0, 0*SIZEOF_REG(sp)
   csrr t0, mcause
   // if the sign bit in mcause is set, then we are handling an interrupt
   bltz t0, interrupt
   // pick out the bottom 11 bits of mcause to check for the exception number
   andi t0, t0, 0x7ff
-  sw t1, 2*SIZEOF_REG(sp)
+  sw t1, 1*SIZEOF_REG(sp)
   li t1, MCAUSE_ECALL_M
   // ecall from M-mode is used to trigger context switches from interrupts
   beq t0, t1, do_sched_update
@@ -34,8 +34,8 @@ do_sched_update:
   addi t0, t0, 4
   csrw mepc, t0
   // restore all register state
-  lw t0, SIZEOF_REG*1(sp)
-  lw t1, SIZEOF_REG*2(sp)
+  lw t0, SIZEOF_REG*0(sp)
+  lw t1, SIZEOF_REG*1(sp)
   addi sp, sp, SIZEOF_REG*2
   j deri_arch_sched_update
 .globl ecall_handler
@@ -45,8 +45,8 @@ ecall_handler:
   addi t0, t0, 4
   csrw mepc, t0
   // restore all register state
-  lw t0, SIZEOF_REG*1(sp)
-  lw t1, SIZEOF_REG*2(sp)
+  lw t0, SIZEOF_REG*0(sp)
+  lw t1, SIZEOF_REG*1(sp)
   addi sp, sp, SIZEOF_REG*2
   // Same register numbers that Linux uses for syscalls.
   // a7 contains the syscall number
@@ -57,10 +57,10 @@ other_ecall:
   // ecall that is not one of the recognized numbers above
 other_exception:
   // Exception that is not handled above
-  lw t1, SIZEOF_REG*2(sp)
+  lw t1, SIZEOF_REG*1(sp)
 interrupt:
   // Interrupt that was not vectorized
-  lw t0, SIZEOF_REG*1(sp)
+  lw t0, SIZEOF_REG*0(sp)
   addi sp, sp, SIZEOF_REG*2
   tail deri_arch_unhandled_interrupt
 .cfi_endproc
@@ -79,7 +79,7 @@ deri_arch_sched_update:
   csrrw a1, mscratch, a1
   // Get a pointer to the new context
   addi sp, sp, -(1*SIZEOF_REG)
-  sw a0, (1*SIZEOF_REG)(sp)
+  sw a0, (0*SIZEOF_REG)(sp)
   // This is dependent on the layout of ForwardListNode and OrderedForwardList
   lui a0, %hi(_ZN4deri9Scheduler9run_queueE) // &deri::Scheduler::run_queue.head
   lw  a0, %lo(_ZN4deri9Scheduler9run_queueE)(a0) // deri::Scheduler::run_queue.head
@@ -88,7 +88,7 @@ deri_arch_sched_update:
 no_context_change:
   // restore user a1 and a0
   csrrw a1, mscratch, a1
-  lw a0, (1*SIZEOF_REG)(sp)
+  lw a0, (0*SIZEOF_REG)(sp)
   addi sp, sp, (1*SIZEOF_REG)
   mret
 switch_context:
@@ -101,7 +101,7 @@ save_context:
   // temporarily store new context pointer in pc position
   sw a0, REG_OFFSET( 0)(a1)
   // restore user a0
-  lw a0, (1*SIZEOF_REG)(sp)
+  lw a0, (0*SIZEOF_REG)(sp)
   addi sp, sp, (1*SIZEOF_REG)
   // save user sp
   sw sp, REG_OFFSET( 2)(a1)
