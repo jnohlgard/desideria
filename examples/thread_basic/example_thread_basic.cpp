@@ -35,20 +35,19 @@ struct ButtonThread {
         deri::Scheduler::yield();
       }
       self.button = false;
+      led_gpios[self.id % led_gpios.size()].toggle();
       printf("Thread for button %u activated.\n", self.id);
     }
   }
+  static ButtonThread &instance(unsigned index) {
+    static std::array<ButtonThread, config::buttons.size()> instances;
+    return instances[index];
+  }
+  static void callback(uintptr_t id) {
+    printf("Callback for button %u\n", static_cast<unsigned>(id));
+    instance(id).button = true;
+  }
 };
-
-ButtonThread &buttonThread(unsigned instance) {
-  static std::array<ButtonThread, config::buttons.size()> instances;
-  return instances[instance];
-}
-
-void buttonCallback(uintptr_t id) {
-  printf("Callback for button %u\n", static_cast<unsigned>(id));
-  buttonThread(id).button = true;
-}
 
 void initLeds() {
   std::transform(
@@ -62,7 +61,7 @@ void initButtons() {
   using deri::Thread;
   uintptr_t arg = 0;
   for (auto &&button : config::buttons) {
-    auto &button_thread = buttonThread(arg);
+    auto &button_thread = ButtonThread::instance(arg);
     button_thread.id = arg;
     auto &thread = Thread::create(std::span(button_thread.stack),
                                   Thread::Priority::NORMAL,
@@ -74,7 +73,7 @@ void initButtons() {
     deri::soc::gpio.setInterruptHandler(
         button.gpio,
         GpioManager::Edge::RISING,
-        {.func = &buttonCallback, .arg = arg++});
+        {.func = &ButtonThread::callback, .arg = arg++});
     GpioManager::enableInterrupt(button.gpio);
   }
 }
@@ -88,8 +87,6 @@ int main() {
   while (true) {
     deri::Scheduler::yield();
     asm volatile("" ::: "memory");
-  }
-  while (true) {
   }
   return 0;
 }
