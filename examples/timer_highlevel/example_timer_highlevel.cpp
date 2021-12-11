@@ -76,7 +76,7 @@ void initTimers() {
   auto arg = 0;
   auto timeout_prev = 1;
   auto timeout = 1;
-  auto base = 0;  // deri::SystemTimer::now().time_since_epoch().count();
+  auto base = deri::SystemTimer::now().time_since_epoch().count();
 
   for (auto &&schedulable : schedulables) {
     auto tmp = timeout;
