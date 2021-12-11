@@ -1,10 +1,11 @@
 deri_add_library(deri_core STATIC
   include/deri/assert.hpp
   include/deri/console.hpp
-  include/deri/list.hpp
   include/deri/die.hpp
-  include/deri/thread.hpp
+  include/deri/list.hpp
+  include/deri/mutex.hpp
   include/deri/syscall.hpp
+  include/deri/thread.hpp
   assert.cpp
   die.cpp
   thread.cpp
