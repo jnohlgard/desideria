@@ -23,4 +23,4 @@ void failed_assertion(const char *msg) {
   }
 }
 
-} // namespace deri
+}  // namespace deri

@@ -11,10 +11,11 @@ namespace deri {
 
 [[gnu::cold]] void failed_assertion(const char *msg);
 
-[[gnu::always_inline]] inline void assert(bool check, const char *msg = nullptr) {
+[[gnu::always_inline]] inline void assert(bool check,
+                                          const char *msg = nullptr) {
   if (!check) [[unlikely]] {
     failed_assertion(msg);
   }
 }
 
-}
+}  // namespace deri

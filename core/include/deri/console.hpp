@@ -13,4 +13,4 @@ namespace deri {
  * Should be set up in early boot by the board initialization code
  */
 extern bsp::Console console;
-}
+}  // namespace deri
