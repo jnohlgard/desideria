@@ -12,10 +12,6 @@ deri_add_library(deri_arch STATIC
   include/deri/mmio/CLIC.hpp
   include/deri/mmio/bits/CLIC_bits.hpp
   )
-deri_add_library(deri_arch_obj OBJECT
-  trap.cpp
-  )
-target_link_libraries(deri_arch PUBLIC deri_arch_obj $<TARGET_OBJECTS:deri_arch_obj>)
 target_include_directories(deri_arch PUBLIC include)
 target_include_directories(deri_arch PUBLIC vendor/include)
 deri_target_depends(deri_arch PUBLIC deri_arch_common deri_core_include)

@@ -191,6 +191,7 @@ load_context:
 .cfi_endproc
 
 .globl deri_arch_unhandled_interrupt
+.align 6
 deri_arch_unhandled_interrupt:
 .cfi_startproc
   tail _ZN4deri5panicEv

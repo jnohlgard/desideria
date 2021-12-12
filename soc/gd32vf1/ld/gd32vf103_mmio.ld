@@ -98,6 +98,7 @@ PROVIDE(_ZN4deri4mmio5WWDGTE = WWDGT$);
 
 
 /* Interrupt handlers weakly defined to point to the default handler */
+PROVIDE(isr_unhandled = deri_arch_unhandled_interrupt);
 PROVIDE(isr_unused = isr_unhandled);
 PROVIDE(isr_CLIC_INT_SFT = isr_unhandled);
 PROVIDE(isr_CLIC_INT_TMR = isr_unhandled);
