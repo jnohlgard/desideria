@@ -1,0 +1,2 @@
+add_executable(example_panic example_panic.cpp)
+deri_configure_target(example_panic)

@@ -1,9 +1,14 @@
 deri_add_library(deri_arch STATIC
-  startup.S
   reset.S
-  irq_riscv.cpp
+  startup.S
   trap.S
+  irq_riscv.cpp
+  panic_riscv.cpp
+  thread_arch.cpp
   include/deri/arch/irq.hpp
+  include/deri/arch/perf.hpp
+  include/deri/arch/syscall.hpp
+  include/deri/arch/thread.hpp
   include/deri/mmio/CLIC.hpp
   include/deri/mmio/bits/CLIC_bits.hpp
   )
