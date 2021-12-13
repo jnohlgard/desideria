@@ -4,37 +4,35 @@
 
 #include "deri/thread.hpp"
 
-#include "deri/arch/irq.hpp"
 #include "deri/arch/syscall.hpp"
+#include "deri/idle.hpp"
 #include "deri/span_literals.hpp"
 
 extern "C" {
+// defined in linker script:
 extern std::byte _main_stack_start[];
 extern std::byte _main_stack_end[];
 
 int main();
 }
 
-extern "C" {
-void deri_restore_context(deri::arch::SavedContext *);
-}
-
 namespace deri {
 
-namespace {
-std::array<std::byte, deri::arch::idle_stack_size> idle_stack;
-[[noreturn]] int idle_loop() {
-  while (true) {
-    arch::wait_for_interrupt();
-  }
+void Thread::start() { Scheduler::yield(*this); }
+
+void Thread::block(Status blocked_status) {
+  status = blocked_status;
+  Scheduler::block(*this);
 }
-}  // namespace
+
+void Thread::unblock() {
+  status = Status::WAITING;
+  Scheduler::yield(*this);
+}
 
 void Scheduler::init() {
   using namespace deri::literals;
-  auto &idle_thread = Thread::create(
-      std::span(idle_stack), Thread::Priority::IDLE, "idle"_span, idle_loop);
-  idle_thread.start();
+  IdleThread::init();
 
   auto &main_thread =
       Thread::create(std::span(_main_stack_start, _main_stack_end),
@@ -48,5 +46,18 @@ void Scheduler::init() {
   __builtin_unreachable();
 }
 
-void Thread::start() { Scheduler::yield(*this); }
+void Scheduler::yield(Thread &thread) {
+  run_queue.remove(thread);
+  run_queue.push(thread);
+}
+
+void Scheduler::block(Thread &thread) { run_queue.remove(thread); }
+
+void Scheduler::yield() {
+  auto &current_thread = run_queue.front();
+  run_queue.pop();
+  run_queue.push(current_thread);
+  update();
+}
+
 }  // namespace deri

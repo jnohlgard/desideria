@@ -15,6 +15,7 @@
 #include <span>
 
 namespace deri {
+class Scheduler;
 class Thread : public ForwardListNode<Thread> {
  public:
   enum class Id : unsigned {};
@@ -27,26 +28,29 @@ class Thread : public ForwardListNode<Thread> {
     IDLE = 127,
   };
   enum class Status {
-    WAITING,
-    RUNNING,
+    WAITING = 0,
+    RUNNING = 1,  // Must match the arch specific context switch code
     BLOCKED,
-    // TODO: MUTEX_WAIT etc
+    MUTEX_WAIT,
+
   };
+
+  template <class Compare = std::less_equal<>>
+  class PriorityCompare {
+   public:
+    constexpr bool operator()(const Thread &lhs, const Thread &rhs) const {
+      return compare(lhs.priority, rhs.priority);
+    }
+
+   private:
+    [[no_unique_address]] Compare compare{};
+  };
+
+  using PriorityList =
+      OrderedForwardList<Thread, Thread::PriorityCompare<std::less_equal<>>>;
 
   Thread(const Thread &) = delete;
   Thread &operator=(const Thread &) = delete;
-
-  Thread(std::span<std::byte> stack,
-         Priority priority,
-         std::span<const char> name,
-         uintptr_t initial_pc)
-      : priority{priority},
-        id{next_thread_id++},
-        stack_area(stack),
-        name{name} {
-    saved_context.setProgramCounter(initial_pc);
-    saved_context.setStackPointer(stack_area);
-  }
 
   [[nodiscard]] static Thread &create(std::span<std::byte> stack,
                                       Priority priority,
@@ -89,20 +93,25 @@ class Thread : public ForwardListNode<Thread> {
 
   void setPriority(Priority new_priority) { priority = new_priority; }
 
-  template <class Compare = std::less_equal<>>
-  class PriorityCompare {
-   public:
-    constexpr bool operator()(const Thread &lhs, const Thread &rhs) const {
-      return compare(lhs.priority, rhs.priority);
-    }
-
-   private:
-    [[no_unique_address]] Compare compare{};
-  };
+  void block(Status status);
+  void block() { block(Status::BLOCKED); }
+  void unblock();
 
   arch::SavedContext &context() { return saved_context; }
 
  private:
+  Thread(std::span<std::byte> stack,
+         Priority priority,
+         std::span<const char> name,
+         uintptr_t initial_pc)
+      : priority{priority},
+        id{next_thread_id++},
+        stack_area(stack),
+        name{name} {
+    saved_context.setProgramCounter(initial_pc);
+    saved_context.setStackPointer(stack_area);
+  }
+
   arch::SavedContext saved_context{};
   Priority priority{};
   Status status{};
@@ -115,24 +124,32 @@ class Thread : public ForwardListNode<Thread> {
 
 class Scheduler {
  public:
-  static Thread *run() { return &run_queue.front(); }
-  static void request_run();
   [[noreturn]] static void init();
-  static void yield(Thread &thread) {
-    run_queue.remove(thread);
-    run_queue.push(thread);
-  }
-  static void yield() {
-    auto &current_thread = run_queue.front();
-    run_queue.pop();
-    run_queue.push(current_thread);
-    arch::syscall(Syscall::SCHEDULER_UPDATE);
-  }
+
+  static Thread &activeThread() { return run_queue.front(); }
+
+  /**
+   * Move a Thread to the end of the run queue for its given priority
+   */
+  static void yield(Thread &thread);
+
+  /**
+   * Yield the currently running Thread
+   */
+  static void yield();
+
+  /**
+   * Remove a Thread from the run queue
+   */
+  static void block(Thread &thread);
+
+  /**
+   * Perform a context switch iff the currently active thread has changed
+   */
+  static void update() { arch::syscall(Syscall::SCHEDULER_UPDATE); }
 
  private:
-  inline static OrderedForwardList<Thread,
-                                   Thread::PriorityCompare<std::less_equal<>>>
-      run_queue{};
+  inline static Thread::PriorityList run_queue{};
 };
 
 }  // namespace deri

@@ -2,6 +2,7 @@ deri_add_library(deri_core STATIC
   include/deri/assert.hpp
   include/deri/console.hpp
   include/deri/die.hpp
+  include/deri/idle.hpp
   include/deri/list.hpp
   include/deri/mutex.hpp
   include/deri/panic.hpp
@@ -9,6 +10,7 @@ deri_add_library(deri_core STATIC
   include/deri/thread.hpp
   assert.cpp
   die.cpp
+  idle.cpp
   thread.cpp
   )
 deri_add_library(deri_core_obj OBJECT

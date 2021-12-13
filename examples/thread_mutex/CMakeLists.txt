@@ -1,0 +1,2 @@
+add_executable(example_thread_mutex example_thread_mutex.cpp)
+deri_configure_target(example_thread_mutex)
