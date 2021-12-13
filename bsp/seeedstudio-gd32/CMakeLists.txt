@@ -1,10 +1,11 @@
 deri_add_library(deri_bsp STATIC
   bsp_init.cpp
   console.cpp
+  include/deri/bsp/config.hpp
+  include/deri/bsp/console.hpp
   )
 deri_add_library(deri_bsp_periph INTERFACE
   include/deri/bsp/devices.hpp
-  include/deri/bsp/config.hpp
   )
 target_include_directories(deri_bsp_periph INTERFACE include)
 target_include_directories(deri_bsp PUBLIC include)
@@ -24,6 +25,5 @@ target_link_libraries(deri_bsp_periph INTERFACE
   )
 
 target_link_libraries(deri_bsp INTERFACE deri_libc)
-target_link_directories(deri_bsp PUBLIC ld)
 
 add_subdirectory(testing)
