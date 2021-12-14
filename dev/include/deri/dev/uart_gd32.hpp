@@ -22,16 +22,6 @@ class UsartGd32 {
   void init();
 
   /**
-   * Turn on the transmitter
-   */
-  void transmitterOn();
-
-  /**
-   * Turn off the transmitter
-   */
-  void transmitterOff();
-
-  /**
    * Set the baud rate divider register
    *
    * No checking is made to ensure that the desired baud can be reached

@@ -20,10 +20,6 @@ void UsartGd32::init() {
   USART.CTL0.store(ctl0);
 }
 
-void UsartGd32::transmitterOn() { USART.CTL0 |= CTL0_bits::TEN; }
-
-void UsartGd32::transmitterOff() { USART.CTL0 &= ~CTL0_bits::TEN; }
-
 void UsartGd32::setBaud(unsigned pclk, unsigned baudrate) {
   auto baud = USART.BAUD.load();
   baud &= BAUD_bits::Reserved_mask;
@@ -36,6 +32,7 @@ void UsartGd32::setBaud(unsigned pclk, unsigned baudrate) {
 auto UsartGd32::write(std::span<const std::byte> buffer) -> decltype(buffer) {
   while (!buffer.empty() && USART.STAT.any(STAT_bits::TBE)) {
     USART.DATA.store(static_cast<DATA_bits>(buffer.front()));
+    USART.CTL0 |= CTL0_bits::TEN;
     buffer = buffer.last(buffer.size() - 1);
   }
   return buffer;

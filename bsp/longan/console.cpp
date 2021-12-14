@@ -18,7 +18,6 @@ void console_init() {
   soc::rcu.enableModules(clock::RcuGd32::APB2EN_bits::USART0EN);
   uart0.init();
   uart0.setBaud(soc::rcu.apb2Freq(), 115200);
-  uart0.transmitterOn();
 }
 }  // namespace bsp
 bsp::Console console{bsp::uart0};
