@@ -15,33 +15,35 @@ namespace deri::arch {
 /// IRQ handler function signature
 using isr_func = void();
 
-[[gnu::always_inline]] [[nodiscard]] inline unsigned long irqDisable() {
+[[gnu::always_inline]] [[nodiscard]] inline unsigned long
+irqDisable() noexcept {
   asm volatile("" ::: "memory");
   auto previous = clear_csr(mstatus, MSTATUS_MIE);
   asm volatile("" ::: "memory");
   return previous & MSTATUS_MIE;
 }
 
-[[gnu::always_inline]] inline void irqRestore(unsigned long saved) {
+[[gnu::always_inline]] inline void irqRestore(unsigned long saved) noexcept {
   asm volatile("" ::: "memory");
   set_csr(mstatus, saved & MSTATUS_MIE);
   asm volatile("" ::: "memory");
 }
 
-[[gnu::always_inline]] inline void irqEnable() {
+[[gnu::always_inline]] inline void irqEnable() noexcept {
   asm volatile("" ::: "memory");
   set_csr(mstatus, MSTATUS_MIE);
   asm volatile("" ::: "memory");
 }
 
-[[gnu::always_inline]] [[nodiscard]] inline unsigned long isIrqEnabled() {
+[[gnu::always_inline]] [[nodiscard]] inline unsigned long
+isIrqEnabled() noexcept {
   asm volatile("" ::: "memory");
   auto mstatus = read_csr(mstatus);
   asm volatile("" ::: "memory");
   return mstatus & MSTATUS_MIE;
 }
 
-[[gnu::always_inline]] inline void waitForInterrupt() {
+[[gnu::always_inline]] inline void waitForInterrupt() noexcept {
   asm volatile("wfi" ::: "memory");
 }
 
