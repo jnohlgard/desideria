@@ -54,26 +54,26 @@ void ExtiGd32::clicInterruptEnable(ExtiGd32::Line line) {
   using IRQ = deri::mmio::IRQ;
   switch (line_number) {
     case 0:
-      soc::clic.enable_irq(IRQ::EXTI_Line0);
+      soc::clic.enableIrq(IRQ::EXTI_Line0);
       break;
     case 1:
-      soc::clic.enable_irq(IRQ::EXTI_Line1);
+      soc::clic.enableIrq(IRQ::EXTI_Line1);
       break;
     case 2:
-      soc::clic.enable_irq(IRQ::EXTI_Line2);
+      soc::clic.enableIrq(IRQ::EXTI_Line2);
       break;
     case 3:
-      soc::clic.enable_irq(IRQ::EXTI_Line3);
+      soc::clic.enableIrq(IRQ::EXTI_Line3);
       break;
     case 4:
-      soc::clic.enable_irq(IRQ::EXTI_Line4);
+      soc::clic.enableIrq(IRQ::EXTI_Line4);
       break;
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
-      soc::clic.enable_irq(IRQ::EXTI_line9_5);
+      soc::clic.enableIrq(IRQ::EXTI_line9_5);
       break;
     case 10:
     case 11:
@@ -81,7 +81,7 @@ void ExtiGd32::clicInterruptEnable(ExtiGd32::Line line) {
     case 13:
     case 14:
     case 15:
-      soc::clic.enable_irq(IRQ::EXTI_line15_10);
+      soc::clic.enableIrq(IRQ::EXTI_line15_10);
       break;
   }
 }
@@ -90,26 +90,26 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
   using IRQ = deri::mmio::IRQ;
   switch (line_number) {
     case 0:
-      soc::clic.disable_irq(IRQ::EXTI_Line0);
+      soc::clic.disableIrq(IRQ::EXTI_Line0);
       break;
     case 1:
-      soc::clic.disable_irq(IRQ::EXTI_Line1);
+      soc::clic.disableIrq(IRQ::EXTI_Line1);
       break;
     case 2:
-      soc::clic.disable_irq(IRQ::EXTI_Line2);
+      soc::clic.disableIrq(IRQ::EXTI_Line2);
       break;
     case 3:
-      soc::clic.disable_irq(IRQ::EXTI_Line3);
+      soc::clic.disableIrq(IRQ::EXTI_Line3);
       break;
     case 4:
-      soc::clic.disable_irq(IRQ::EXTI_Line4);
+      soc::clic.disableIrq(IRQ::EXTI_Line4);
       break;
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
-      soc::clic.disable_irq(IRQ::EXTI_line9_5);
+      soc::clic.disableIrq(IRQ::EXTI_line9_5);
       break;
     case 10:
     case 11:
@@ -117,7 +117,7 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
     case 13:
     case 14:
     case 15:
-      soc::clic.disable_irq(IRQ::EXTI_line15_10);
+      soc::clic.disableIrq(IRQ::EXTI_line15_10);
       break;
   }
 }

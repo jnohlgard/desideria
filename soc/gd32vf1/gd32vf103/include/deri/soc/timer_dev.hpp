@@ -63,26 +63,26 @@ inline void enableIrq(TimerModule module) {
   using IRQ = mmio::IRQ;
   switch (module) {
     case TimerModule::TIMER0:
-      clic.enable_irq(IRQ::TIMER0_UP);
-      clic.enable_irq(IRQ::TIMER0_Channel);
+      clic.enableIrq(IRQ::TIMER0_UP);
+      clic.enableIrq(IRQ::TIMER0_Channel);
       break;
     case TimerModule::TIMER1:
-      clic.enable_irq(IRQ::TIMER1);
+      clic.enableIrq(IRQ::TIMER1);
       break;
     case TimerModule::TIMER2:
-      clic.enable_irq(IRQ::TIMER2);
+      clic.enableIrq(IRQ::TIMER2);
       break;
     case TimerModule::TIMER3:
-      clic.enable_irq(IRQ::TIMER3);
+      clic.enableIrq(IRQ::TIMER3);
       break;
     case TimerModule::TIMER4:
-      clic.enable_irq(IRQ::TIMER4);
+      clic.enableIrq(IRQ::TIMER4);
       break;
     case TimerModule::TIMER5:
-      clic.enable_irq(IRQ::TIMER5);
+      clic.enableIrq(IRQ::TIMER5);
       break;
     case TimerModule::TIMER6:
-      clic.enable_irq(IRQ::TIMER6);
+      clic.enableIrq(IRQ::TIMER6);
       break;
   }
 }
