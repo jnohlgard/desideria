@@ -3,12 +3,9 @@
  */
 
 #include "deri/bsp/config.hpp"
-#include "deri/console.hpp"
 #include "deri/soc/gpio_dev.hpp"
 
 #include <stdio.h>
-
-using deri::console;
 
 void buttonCallback(uintptr_t id) {
   printf("Callback for button %u\n", static_cast<unsigned>(id));

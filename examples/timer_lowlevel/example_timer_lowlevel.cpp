@@ -3,15 +3,12 @@
  */
 
 #include "deri/bsp/config.hpp"
-#include "deri/console.hpp"
 #include "deri/soc/timer_dev.hpp"
 
 #include <algorithm>
 #include <array>
 
 #include <stdio.h>
-
-using deri::console;
 
 namespace config {
 using namespace deri::bsp::config;

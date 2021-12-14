@@ -3,7 +3,6 @@
  */
 
 #include "deri/bsp/config.hpp"
-#include "deri/console.hpp"
 #include "deri/span_literals.hpp"
 #include "deri/thread.hpp"
 
@@ -13,7 +12,6 @@
 
 #include <stdio.h>
 
-using deri::console;
 using namespace deri::literals;
 
 namespace config {
