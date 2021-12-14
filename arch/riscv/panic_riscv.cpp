@@ -20,9 +20,6 @@ arch::SavedContext panic_context;
       "la a0, _ZN4deri13panic_contextE\n\t"
       // save ra
       "sw ra, 4(a0)\n\t"
-      // save pc pointing to deri::panic
-      "la ra, _ZN4deri5panicEv\n\t"
-      "sw ra, 0(a0)\n\t"
       // save all general purpose registers
       "call _ZN4deri4arch11saveContextERNS0_12SavedContextE\n\t"
       // save the stacked a0

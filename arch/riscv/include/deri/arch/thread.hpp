@@ -65,15 +65,18 @@ struct SavedContext {
   IntRegister t4{};
   IntRegister t5{};
   IntRegister t6{};
+  IntRegister mstatus{0x1880u};  // MPP = 0b11 (M-mode), MPIE = 1
+  AddressRegister mtval{};
+  IntRegister mcause{};
 
   /**
    * Names of the registers, in the order the fields appear in @c SavedContext
    */
   static inline const std::array register_names = {
-      "pc", "ra", "sp", "gp", "tp",  "t0",  "t1", "t2", "s0", "s1", "a0",
-      "a1", "a2", "a3", "a4", "a5",  "a6",  "a7", "s2", "s3", "s4", "s5",
-      "s6", "s7", "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6",
-  };
+      "mepc", "ra", "sp", "gp", "tp", "t0",      "t1",    "t2",    "s0",
+      "s1",   "a0", "a1", "a2", "a3", "a4",      "a5",    "a6",    "a7",
+      "s2",   "s3", "s4", "s5", "s6", "s7",      "s8",    "s9",    "s10",
+      "s11",  "t3", "t4", "t5", "t6", "mstatus", "mtval", "mcause"};
 };
 
 /**

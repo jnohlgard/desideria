@@ -146,14 +146,30 @@ save_context:
   // Store the program counter in old context
   csrr t0, mepc
   sw t0, REG_OFFSET(0)(sp)
+  // Store the interrupt status in the old context
+  csrr t0, mstatus
+  csrr t1, mtval
+  csrr t2, mcause
+  sw t0, REG_OFFSET(32)(sp)
+  sw t1, REG_OFFSET(33)(sp)
+  sw t2, REG_OFFSET(34)(sp)
 load_context:
   // save new context pointer in mscratch
   csrw mscratch, a0
   // put context pointer in sp for better instruction compression for the block below
   mv sp, a0
   // Reload program counter
-  lw t0,   REG_OFFSET(0)(sp)
+  lw t0, REG_OFFSET(0)(sp)
   csrw mepc, t0
+  // Reload interrupt status
+  lw t0, REG_OFFSET(32)(sp)
+  lw t1, REG_OFFSET(33)(sp)
+  lw t2, REG_OFFSET(34)(sp)
+  csrw mcause, t2
+  csrw mtval, t1
+  // GD32VF1 wires MPP and MPIE into mcause which requires us to restore mstatus last
+  // in order to maintain interrupts enabled after creating a new thread
+  csrw mstatus, t0
   // Reload all registers
   lw SAVED_REG( 1)
   lw SAVED_REG( 3)

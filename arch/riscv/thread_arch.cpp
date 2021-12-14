@@ -68,6 +68,14 @@ const std::array mcause_descriptions = {
       "sw t4,  29 * REG_SIZE(sp)\n\t"
       "sw t5,  30 * REG_SIZE(sp)\n\t"
       "sw t6,  31 * REG_SIZE(sp)\n\t"
+      "csrr t0, mepc\n\t"
+      "sw t0,  0 * REG_SIZE(sp)\n\t"
+      "csrr t0, mstatus\n\t"
+      "csrr t1, mtval\n\t"
+      "csrr t2, mcause\n\t"
+      "sw t0,  32 * REG_SIZE(sp)\n\t"
+      "sw t1,  33 * REG_SIZE(sp)\n\t"
+      "sw t2,  34 * REG_SIZE(sp)\n\t"
       "lw sp,   2 * REG_SIZE(sp)\n\t"
       "ret");
 }
@@ -93,11 +101,7 @@ void dumpContext(const SavedContext &context) {
   for (unsigned k = 0; k < SavedContext::register_names.size(); ++k) {
     printf("%8s: %p\n", SavedContext::register_names[k], saved_registers[k]);
   }
-  printf(" mstatus: %p\n", reinterpret_cast<const void *>(read_csr(mstatus)));
   printf("mscratch: %p\n", reinterpret_cast<const void *>(read_csr(mscratch)));
-  printf("    mepc: %p\n", reinterpret_cast<const void *>(read_csr(mepc)));
-  printf("  mcause: %p\n", reinterpret_cast<const void *>(mcause));
-  printf("   mtval: %p\n", reinterpret_cast<const void *>(read_csr(mtval)));
   if (do_ebreak) {
     asm volatile("ebreak" ::: "memory");
   }
