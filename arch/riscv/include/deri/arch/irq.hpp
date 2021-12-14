@@ -15,9 +15,9 @@ namespace deri::arch {
 /// IRQ handler function signature
 using isr_func = void();
 
-[[gnu::always_inline]] inline unsigned long irq_disable() {
+[[gnu::always_inline]] [[nodiscard]] inline unsigned long irq_disable() {
   asm volatile("" ::: "memory");
-  unsigned long previous = clear_csr(mstatus, MSTATUS_MIE);
+  auto previous = clear_csr(mstatus, MSTATUS_MIE);
   asm volatile("" ::: "memory");
   return previous & MSTATUS_MIE;
 }
@@ -32,6 +32,13 @@ using isr_func = void();
   asm volatile("" ::: "memory");
   set_csr(mstatus, MSTATUS_MIE);
   asm volatile("" ::: "memory");
+}
+
+[[gnu::always_inline]] [[nodiscard]] inline unsigned long is_irq_enabled() {
+  asm volatile("" ::: "memory");
+  auto mstatus = read_csr(mstatus);
+  asm volatile("" ::: "memory");
+  return mstatus & MSTATUS_MIE;
 }
 
 [[gnu::always_inline]] inline void wait_for_interrupt() {
