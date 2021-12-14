@@ -33,16 +33,24 @@ void Thread::unblock() {
 
 void Scheduler::init() {
   using namespace deri::literals;
+
+  // Start the idle thread
   IdleThread::init();
 
+  // Start the main thread
   auto &main_thread =
       Thread::create(std::span(_main_stack_start, _main_stack_end),
                      Thread::Priority::NORMAL,
                      "main"_span,
                      main);
   main_thread.start();
+
+  // Enable interrupts globally
+  arch::irqEnable();
+
   // Switch to the main thread
   arch::syscall(Syscall::SCHEDULER_UPDATE);
+
   // we will never return here.
   __builtin_unreachable();
 }

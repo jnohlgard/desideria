@@ -15,6 +15,5 @@ void init() {
   clic.init(deri_exception_handler);
   dev::irq::IrqClic::setVectorTable(vector_table);
   afio.init();
-  arch::irqEnable();
 }
 }  // namespace deri::soc
