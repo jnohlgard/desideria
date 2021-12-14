@@ -6,6 +6,7 @@
 
 #include "deri/arch/syscall.hpp"
 #include "deri/idle.hpp"
+#include "deri/irq.hpp"
 #include "deri/span_literals.hpp"
 
 extern "C" {
@@ -47,14 +48,19 @@ void Scheduler::init() {
 }
 
 void Scheduler::yield(Thread &thread) {
+  arch::CriticalSection cs{};
   run_queue.remove(thread);
   run_queue.push(thread);
 }
 
-void Scheduler::block(Thread &thread) { run_queue.remove(thread); }
+void Scheduler::block(Thread &thread) {
+  arch::CriticalSection cs{};
+  run_queue.remove(thread);
+}
 
 void Scheduler::yield() {
-  auto &current_thread = run_queue.front();
+  arch::CriticalSection cs{};
+  auto &current_thread = activeThread();
   run_queue.pop();
   run_queue.push(current_thread);
   update();
