@@ -12,14 +12,14 @@ namespace deri::arch {
  */
 class IrqLock {
  public:
-  [[gnu::always_inline]] void lock() noexcept { mask = irq_disable(); }
+  [[gnu::always_inline]] void lock() noexcept { mask = irqDisable(); }
 
   [[gnu::always_inline]] bool try_lock() noexcept {
     lock();
     return true;
   }
 
-  [[gnu::always_inline]] void unlock() noexcept { irq_restore(mask); }
+  [[gnu::always_inline]] void unlock() noexcept { irqRestore(mask); }
 
  private:
   unsigned long mask{};

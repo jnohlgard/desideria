@@ -32,10 +32,10 @@ inline uint32_t *statePtrFromGuard(__int64_t *guard_object) {
  * @return 1 if the initialization is not yet complete; 0 otherwise
  */
 int __cxa_guard_acquire(__int64_t *guard_object) {
-  auto state = deri::arch::irq_disable();
+  auto state = deri::arch::irqDisable();
   auto &first_byte = *reinterpret_cast<std::byte *>(guard_object);
   if (first_byte != std::byte{0}) {
-    deri::arch::irq_restore(state);
+    deri::arch::irqRestore(state);
     return 0;
   }
   auto state_ptr = statePtrFromGuard(guard_object);
@@ -56,7 +56,7 @@ void __cxa_guard_release(__int64_t *guard_object) {
   auto &first_byte = *reinterpret_cast<std::byte *>(guard_object);
   first_byte = std::byte{1};
   auto &state = *statePtrFromGuard(guard_object);
-  deri::arch::irq_restore(state);
+  deri::arch::irqRestore(state);
 }
 
 /**
@@ -70,5 +70,5 @@ void __cxa_guard_release(__int64_t *guard_object) {
  */
 void __cxa_guard_abort(__int64_t *guard_object) {
   auto &state = *statePtrFromGuard(guard_object);
-  deri::arch::irq_restore(state);
+  deri::arch::irqRestore(state);
 }

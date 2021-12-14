@@ -9,7 +9,7 @@
 namespace deri::arch {
 void init() {
   // Clear all IRQ enable flags
-  irq_disable();
+  (void)irqDisable();
   clear_csr(mie, 0b1111'1111'1111u);
 }
 

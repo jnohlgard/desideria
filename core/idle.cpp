@@ -16,7 +16,7 @@ namespace deri {
 
 int IdleThread::loop() {
   while (true) {
-    arch::wait_for_interrupt();
+    arch::waitForInterrupt();
   }
 }
 
