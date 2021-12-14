@@ -11,8 +11,10 @@ cpu_family = '@CMAKE_SYSTEM_PROCESSOR@'
 cpu = '@CMAKE_SYSTEM_PROCESSOR@'
 endian = 'little'
 
-[properties]
+[built-in options]
 c_args = ['$<JOIN:$<FILTER:$<TARGET_PROPERTY:deri_libc,INTERFACE_COMPILE_OPTIONS>,EXCLUDE,-Werror>,', '>']
+
+[properties]
 link_args = ['$<JOIN:$<TARGET_PROPERTY:deri_libc,INTERFACE_LINK_OPTIONS>,', '>']
 needs_exe_wrapper = true
 skip_sanity_check = true
