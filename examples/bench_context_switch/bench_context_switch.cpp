@@ -86,9 +86,42 @@ void initTimer() {
   deri::SystemTimer::schedule(print_event);
 }
 
+void baseline() {
+  static constexpr long unsigned baseline_count = 50000u;
+  printf("Testing %lu no-op context switches as baseline\n", baseline_count);
+  auto last_update = deri::HighResolutionTimer::now();
+  auto last_cycles = deri::arch::Perf::cycles();
+  auto last_inst = deri::arch::Perf::instructionsRetired();
+  for (auto k = 0; k < baseline_count; ++k) {
+    asm volatile("" ::: "memory");
+    deri::Scheduler::yield();
+    asm volatile("" ::: "memory");
+  }
+  auto now_cycles = deri::arch::Perf::cycles();
+  auto now_inst = deri::arch::Perf::instructionsRetired();
+  auto now = deri::HighResolutionTimer::now();
+  auto interval = now - last_update;
+  auto interval_us(
+      std::chrono::duration_cast<std::chrono::microseconds>(interval));
+  long cycles_diff = now_cycles - last_cycles;
+  long inst_diff = now_inst - last_inst;
+  auto cycles_per_count = cycles_diff / baseline_count;
+  auto inst_per_count = inst_diff / baseline_count;
+  printf(
+      "%lu no-op context switches in %ld us (%ld core cycles, %ld "
+      "instructions). %lu cycles per switch, %lu instructions per switch\n",
+      baseline_count,
+      static_cast<long>(interval_us.count()),
+      cycles_diff,
+      inst_diff,
+      cycles_per_count,
+      inst_per_count);
+}
+
 int main() {
   puts("Context switch benchmark");
 
+  baseline();
   initTimer();
   initThreads();
   deri::Scheduler::yield();
