@@ -77,12 +77,13 @@ class TimerDriver {
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setCompareHandler(Channel channel,
                                                      Callback callback) {
-  arch::CriticalSection cs;
+  arch::CriticalSection cs{};
   callbacks[static_cast<unsigned>(channel)] = callback;
 }
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::clearCompareHandler(Channel channel) {
+  arch::CriticalSection cs{};
   timer->disableInterrupt(channel);
   timer->clearInterruptFlag(channel);
   callbacks[static_cast<unsigned>(channel)] = {};
@@ -90,6 +91,7 @@ void TimerDriver<TimerDeviceType>::clearCompareHandler(Channel channel) {
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setPeriodHandler(PeriodCallback callback) {
+  arch::CriticalSection cs{};
   timer->disablePeriodInterrupt();
   timer->clearPeriodFlag();
   period_callback = callback;
@@ -98,6 +100,7 @@ void TimerDriver<TimerDeviceType>::setPeriodHandler(PeriodCallback callback) {
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::clearPeriodHandler() {
+  arch::CriticalSection cs{};
   timer->disablePeriodInterrupt();
   timer->clearPeriodFlag();
   period_callback = {};
