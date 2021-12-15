@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "deri/registers.hpp"
 #include "deri/mmio/USART.hpp"
+#include "deri/mutex.hpp"
+#include "deri/registers.hpp"
 
 #include <atomic>
 #include <cstddef>
@@ -16,6 +17,8 @@ namespace deri::dev::uart {
 
 class UsartGd32 {
  public:
+  explicit UsartGd32(mmio::USART_regs &regs) : regs{regs} {}
+
   /**
    * Initialize the hardware module
    */
@@ -29,11 +32,17 @@ class UsartGd32 {
    * This function must be called every time the peripheral clock frequency is
    * changed.
    *
-   * @param[in] pclk peripheral clock (Hz)
    * @param[in] baudrate desired baud rate (baud)
    */
-  void setBaud(unsigned pclk, unsigned baudrate);
+  void setBaud(unsigned new_baudrate) {
+    baudrate = new_baudrate;
+    updateBaudReg();
+  }
 
+  void updateModuleClock(unsigned new_clock) {
+    module_clock = new_clock;
+    updateBaudReg();
+  }
   /**
    * Write some bytes to the UART.
    *
@@ -44,13 +53,32 @@ class UsartGd32 {
    * @return @p buffer trimmed to contain only what was not yet written to the
    * transmit register
    */
-  [[nodiscard]] auto write(std::span<const std::byte> buffer)
+  [[nodiscard]] auto try_write(std::span<const std::byte> buffer)
       -> decltype(buffer);
 
- private:
-  mmio::USART_regs USART;
-};
+  /**
+   * Blocking write
+   *
+   * This will use either interrupts or spinning until all bytes have been
+   * written to the wire.
+   *
+   * @param buffer Data to write to the UART
+   */
+  void write(std::span<const std::byte> buffer);
 
-static_assert(sizeof(UsartGd32) == sizeof(mmio::USART_regs));
+  void interrupt();
+
+ private:
+  void writeIrq(std::span<const std::byte> buffer);
+  void writeSpin(std::span<const std::byte> buffer);
+  void updateBaudReg();
+
+  mmio::USART_regs &regs;
+
+  Mutex mutex{};
+  Mutex irq_signal{};
+  unsigned module_clock{};
+  unsigned baudrate{};
+};
 
 }  // namespace deri::dev::uart

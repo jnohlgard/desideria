@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/dev/gpio.hpp"
 #include "deri/dev/gpio_gd32.hpp"
 #include "deri/dev/timer.hpp"
 #include "deri/dev/timer_gd32.hpp"
@@ -31,6 +32,8 @@ inline constexpr std::array buttons{
     dev::gpio::GpioInConfig{{config::Port::A, 0}, config::Pull::FLOATING},
     dev::gpio::GpioInConfig{{config::Port::C, 13}, config::Pull::FLOATING},
 };
+
+inline constexpr dev::gpio::Gpio console_pin{dev::gpio::Gpio::Port::A, 9};
 
 namespace time {
 

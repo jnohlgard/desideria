@@ -1,6 +1,5 @@
 deri_add_library(deri_bsp STATIC
   bsp_init.cpp
-  console.cpp
   include/deri/bsp/config.hpp
   include/deri/bsp/console.hpp
   )
