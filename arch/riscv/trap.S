@@ -212,3 +212,42 @@ deri_arch_unhandled_interrupt:
 .cfi_startproc
   tail _ZN4deri5panicEv
 .cfi_endproc
+
+.globl deri_arch_defer_syscall
+deri_arch_defer_syscall:
+.cfi_startproc
+  addi sp, sp, -(2 * SIZEOF_REG)
+  sw t0, 0*SIZEOF_REG(sp)
+  sw t1, 1*SIZEOF_REG(sp)
+  csrr t1, mscratch
+  la t0, deferred_ecall_hook
+  // hook into interrupt return by placing our deferred update in mepc
+  csrrw t0, mepc, t0
+  // store original mepc and syscall arguments in current saved context
+  sw t0, 0*SIZEOF_REG(t1)
+  sw a7, 17*SIZEOF_REG(t1)
+  // return normally back to interrupt handler
+  lw t0, 0*SIZEOF_REG(sp)
+  lw t1, 1*SIZEOF_REG(sp)
+  addi sp, sp, (2 * SIZEOF_REG)
+  ret
+.cfi_endproc
+
+.globl deri_arch_deferred_syscall
+deri_arch_deferred_ecall:
+deferred_ecall_hook:
+  addi sp, sp, -(3 * SIZEOF_REG)
+  sw a7, 0*SIZEOF_REG(sp)
+  sw t0, 1*SIZEOF_REG(sp)
+  sw t1, 2*SIZEOF_REG(sp)
+  csrr t1, mscratch
+  lw ra, 0*SIZEOF_REG(t1)
+  lw a7, 17*SIZEOF_REG(t1)
+  ecall
+  lw a7, 0*SIZEOF_REG(sp)
+  lw t0, 1*SIZEOF_REG(sp)
+  lw t1, 2*SIZEOF_REG(sp)
+  addi sp, sp, (3 * SIZEOF_REG)
+  ret
+.cfi_startproc
+.cfi_endproc
