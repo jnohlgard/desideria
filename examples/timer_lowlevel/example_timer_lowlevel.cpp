@@ -69,7 +69,7 @@ int main() {
   initButtons();
   initTimer();
 
-  while (1) {
+  while (true) {
     asm volatile("" ::: "memory");
   }
   return 0;
