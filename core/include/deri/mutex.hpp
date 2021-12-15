@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/irq.hpp"
 #include "deri/thread.hpp"
 
 #include <atomic>
@@ -13,6 +14,7 @@ class Mutex {
  public:
   void lock() noexcept {
     while (!try_lock()) {
+      arch::CriticalSection cs{};
       auto &thread = Scheduler::activeThread();
       thread.block(Thread::Status::MUTEX_WAIT);
       waiters.push(thread);
@@ -23,6 +25,7 @@ class Mutex {
     return !state.test_and_set(std::memory_order_acquire);
   }
   void unlock() noexcept {
+    arch::CriticalSection cs{};
     state.clear(std::memory_order_release);
     if (!waiters.empty()) {
       auto &thread = waiters.front();
