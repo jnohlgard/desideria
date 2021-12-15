@@ -9,12 +9,12 @@
 
 #include <stdio.h>
 
-using deri::console;
+using deri::Console;
 using namespace deri::literals;
 
 int main() {
   auto buffer_view = "Hello world!\n"_span;
-  console.write(std::as_bytes(buffer_view));
+  Console::write(std::as_bytes(buffer_view));
   puts("Hello world from puts\n");
   while (1) {
     asm volatile("" ::: "memory");

@@ -37,7 +37,7 @@ namespace {
 
 int stdio_put(char c, FILE *) {
   std::span<const char, sizeof c> buffer{&c, sizeof c};
-  deri::console.write(as_bytes(buffer));
+  deri::Console::write(as_bytes(buffer));
   return buffer.size();
 }
 int stdio_get(FILE *) { return 0; }

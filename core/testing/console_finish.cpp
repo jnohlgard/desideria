@@ -14,11 +14,11 @@ using namespace deri::literals;
 namespace deri::testing {
 namespace {
 [[noreturn]] void finish_pass() {
-  console.write(std::as_bytes("\n\n === TESTS PASS === \n\n"_span));
+  Console::write(std::as_bytes("\n\n === TESTS PASS === \n\n"_span));
   std::exit(EXIT_SUCCESS);
 }
 [[noreturn]] void finish_fail(int code) {
-  console.write(std::as_bytes("\n\n >>> TESTS FAILED <<<\n\n"_span));
+  Console::write(std::as_bytes("\n\n >>> TESTS FAILED <<<\n\n"_span));
   std::exit(code);
 }
 }  // namespace

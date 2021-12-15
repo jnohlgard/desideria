@@ -19,6 +19,14 @@ void console_init() {
   uart0.init();
   uart0.setBaud(soc::rcu.apb2Freq(), 115200);
 }
+bsp::Console &console() {
+  static bsp::Console &instance = []() -> auto & {
+    static bsp::Console instance{bsp::uart0};
+    bsp::console_init();
+    return instance;
+  }
+  ();
+  return instance;
+}
 }  // namespace bsp
-bsp::Console console{bsp::uart0};
 }  // namespace deri

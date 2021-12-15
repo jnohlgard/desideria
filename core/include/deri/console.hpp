@@ -9,8 +9,11 @@
 namespace deri {
 /**
  * Kernel console device
- *
- * Should be set up in early boot by the board initialization code
  */
-extern bsp::Console console;
+class Console {
+ public:
+  static void write(std::span<const std::byte> buffer) {
+    bsp::console().write(buffer);
+  }
+};
 }  // namespace deri

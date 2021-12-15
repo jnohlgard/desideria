@@ -8,8 +8,5 @@
 
 namespace deri::bsp {
 using Console = dev::BlockingDevice<dev::uart::UsartGd32>;
-/**
- * Initialize the console UART settings
- */
-void console_init();
+Console &console();
 }  // namespace deri::bsp

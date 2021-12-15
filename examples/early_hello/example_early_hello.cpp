@@ -6,12 +6,12 @@
 
 #include <span>
 
-using deri::console;
+using deri::Console;
 
 int main() {
   const char msg[] = "Hello world\n";
   std::span<const char> buffer_view{msg, sizeof msg};
-  console.write(std::as_bytes(buffer_view));
+  Console::write(std::as_bytes(buffer_view));
   while (1) {
     asm volatile("" ::: "memory");
   }
