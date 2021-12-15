@@ -21,7 +21,7 @@ class Timer {
   using rep = typename TimerManager::Count;
   using period = std::ratio<1, Config::tick_rate_hz>;
   using duration = std::chrono::duration<rep, period>;
-  using time_point = std::chrono::time_point<Timer<Config>>;
+  using time_point = std::chrono::time_point<Timer>;
   static const bool is_steady = false;
 
   static void init();
