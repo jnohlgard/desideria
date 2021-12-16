@@ -33,4 +33,14 @@ function(deri_configure_target target_name)
       WORKING_DIRECTORY "$<TARGET_FILE_DIR:${target_name}>"
       COMMENT "Size report for ${target_name}")
   endif ()
+  if (CMAKE_OBJCOPY)
+    add_custom_command(TARGET ${target_name} POST_BUILD
+      COMMAND ${CMAKE_OBJCOPY} "$<TARGET_FILE_NAME:${target_name}>" -O ihex "$<TARGET_FILE_NAME:${target_name}>.hex"
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:${target_name}>"
+      COMMENT "Produce ihex file for ${target_name}")
+    add_custom_command(TARGET ${target_name} POST_BUILD
+      COMMAND ${CMAKE_OBJCOPY} "$<TARGET_FILE_NAME:${target_name}>" -O binary "$<TARGET_FILE_NAME:${target_name}>.bin"
+      WORKING_DIRECTORY "$<TARGET_FILE_DIR:${target_name}>"
+      COMMENT "Produce bin file for ${target_name}")
+  endif ()
 endfunction()
