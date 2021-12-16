@@ -3,6 +3,7 @@
  */
 
 .equ MSTATUS_MIE, 8
+.equ MSTATUS_MPIE, 0x80
 .equ MCAUSE_ECALL_U, 8
 .equ MCAUSE_ECALL_M, 11
 .equ SIZEOF_REG, (__SIZEOF_POINTER__)
@@ -226,6 +227,9 @@ deri_arch_defer_syscall:
   // store original mepc and syscall arguments in current saved context
   sw t0, 0*SIZEOF_REG(t1)
   sw a7, 17*SIZEOF_REG(t1)
+  // disable interrupts upon return so that we have time to process the deferred handler
+  li t0, MSTATUS_MPIE
+  csrc mstatus, t0
   // return normally back to interrupt handler
   lw t0, 0*SIZEOF_REG(sp)
   lw t1, 1*SIZEOF_REG(sp)
@@ -236,6 +240,7 @@ deri_arch_defer_syscall:
 .globl deri_arch_deferred_syscall
 deri_arch_deferred_ecall:
 deferred_ecall_hook:
+  // Assume interrupts are disabled when we get here
   addi sp, sp, -(3 * SIZEOF_REG)
   sw a7, 0*SIZEOF_REG(sp)
   sw t0, 1*SIZEOF_REG(sp)
@@ -248,6 +253,7 @@ deferred_ecall_hook:
   lw t0, 1*SIZEOF_REG(sp)
   lw t1, 2*SIZEOF_REG(sp)
   addi sp, sp, (3 * SIZEOF_REG)
+  csrs mstatus, MSTATUS_MIE
   ret
 .cfi_startproc
 .cfi_endproc
