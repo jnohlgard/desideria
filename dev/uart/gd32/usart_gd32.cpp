@@ -43,10 +43,10 @@ void UsartGd32::write(std::span<const std::byte> buffer) {
 }
 
 void UsartGd32::writeIrq(std::span<const std::byte> buffer) {
-  std::scoped_lock lock{mutex};
+  std::scoped_lock lock{tx_mutex};
   // We have exclusive access to the UART (except for any interrupt handlers
   // using writeSpin() to print stuff)
-  irq_signal.lock();
+  tx_irq_signal.lock();
   regs.CTL0 &= ~(CTL0_bits::TCIE | CTL0_bits::TBEIE);
   while (!buffer.empty()) {
     if (regs.STAT.any(STAT_bits::TBE)) {
@@ -68,11 +68,11 @@ void UsartGd32::writeIrq(std::span<const std::byte> buffer) {
         }
       }
       // Block until interrupt handler has run
-      irq_signal.lock();
+      tx_irq_signal.lock();
     }
   }
   regs.CTL0 &= ~(CTL0_bits::TCIE | CTL0_bits::TBEIE);
-  irq_signal.unlock();
+  tx_irq_signal.unlock();
 }
 
 void UsartGd32::writeSpin(std::span<const std::byte> buffer) {
@@ -85,8 +85,14 @@ void UsartGd32::writeSpin(std::span<const std::byte> buffer) {
 
 void UsartGd32::interrupt() {
   if (regs.STAT.any(STAT_bits::TC | STAT_bits::TBE)) {
-    regs.STAT.store(~(STAT_bits::TC));
-    irq_signal.unlock();
+    regs.STAT.store(~STAT_bits::TC);
+    tx_irq_signal.unlock();
+  }
+  if (regs.STAT.any(STAT_bits::RBNE)) {
+    auto data = static_cast<std::byte>(regs.DATA.load());
+    if (rx_callback.func != nullptr) {
+      rx_callback.func(data, rx_callback.arg);
+    }
   }
 }
 
@@ -102,4 +108,16 @@ void UsartGd32::updateBaudReg() {
           (BAUD_bits::INTDIV_mask | BAUD_bits::FRADIV_mask);
   regs.BAUD.store(baud);
 }
+
+void UsartGd32::setRxCallback(UsartGd32::RxCallback new_callback) {
+  rx_callback = new_callback;
+  if (rx_callback.func != nullptr) {
+    // Enable receiver and RX interrupt
+    regs.CTL0 |= CTL0_bits::RBNEIE | CTL0_bits::REN;
+  } else {
+    // Disable RX interrupt
+    regs.CTL0 &= ~(CTL0_bits::RBNEIE | CTL0_bits::REN);
+  }
+}
+
 }  // namespace deri::dev::uart

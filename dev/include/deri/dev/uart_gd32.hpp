@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/callback.hpp"
 #include "deri/mmio/USART.hpp"
 #include "deri/mutex.hpp"
 #include "deri/registers.hpp"
@@ -17,6 +18,8 @@ namespace deri::dev::uart {
 
 class UsartGd32 {
  public:
+  using RxCallback = Callback<void(std::byte, uintptr_t)>;
+
   explicit UsartGd32(mmio::USART_regs &regs) : regs{regs} {}
 
   /**
@@ -67,6 +70,8 @@ class UsartGd32 {
    */
   void write(std::span<const std::byte> buffer);
 
+  void setRxCallback(RxCallback new_callback);
+
   void interrupt();
 
  private:
@@ -76,8 +81,9 @@ class UsartGd32 {
 
   mmio::USART_regs &regs;
 
-  Mutex mutex{};
-  Mutex irq_signal{};
+  Mutex tx_mutex{};
+  Mutex tx_irq_signal{};
+  RxCallback rx_callback{};
   unsigned module_clock{};
   unsigned baudrate{};
 };
