@@ -24,7 +24,7 @@ void UsartGd32::init() {
   regs.CTL0.store(ctl0);
 }
 
-auto UsartGd32::try_write(std::span<const std::byte> buffer)
+auto UsartGd32::tryWrite(std::span<const std::byte> buffer)
     -> decltype(buffer) {
   while (!buffer.empty() && regs.STAT.any(STAT_bits::TBE)) {
     regs.DATA.store(static_cast<DATA_bits>(buffer.front()));
@@ -53,14 +53,14 @@ void UsartGd32::writeIrq(std::span<const std::byte> buffer) {
       {
         arch::CriticalSection cs{};
         // Clear STAT_TC flag
-        regs.STAT.store(~(STAT_bits::TC));
+        regs.STAT.store(~STAT_bits::TC);
         // Put outgoing data in transmit buffer
         regs.DATA.store(static_cast<DATA_bits>(buffer.front()));
         buffer = buffer.last(buffer.size() - 1);
         // Enable transmitter and interrupt
         if (buffer.empty()) {
           // Wait for transmission complete
-          regs.CTL0 &= ~(CTL0_bits::TBEIE);
+          regs.CTL0 &= ~CTL0_bits::TBEIE;
           regs.CTL0 |= CTL0_bits::TEN | CTL0_bits::TCIE;
         } else {
           // Wait for empty transmit buffer
@@ -79,7 +79,7 @@ void UsartGd32::writeSpin(std::span<const std::byte> buffer) {
   // Disable IRQ for transmit buffer
   regs.CTL0 &= ~(CTL0_bits::TCIE | CTL0_bits::TBEIE);
   while (!buffer.empty()) {
-    buffer = try_write(buffer);
+    buffer = tryWrite(buffer);
   }
 }
 

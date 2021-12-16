@@ -43,6 +43,7 @@ class UsartGd32 {
     module_clock = new_clock;
     updateBaudReg();
   }
+
   /**
    * Write some bytes to the UART.
    *
@@ -53,7 +54,7 @@ class UsartGd32 {
    * @return @p buffer trimmed to contain only what was not yet written to the
    * transmit register
    */
-  [[nodiscard]] auto try_write(std::span<const std::byte> buffer)
+  [[nodiscard]] auto tryWrite(std::span<const std::byte> buffer)
       -> decltype(buffer);
 
   /**
