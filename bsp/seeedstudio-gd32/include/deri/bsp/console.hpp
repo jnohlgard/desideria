@@ -16,7 +16,10 @@ inline Console &console() {
     auto &instance = soc::uart0();
     instance.init();
     instance.setBaud(115200);
-    soc::gpio.initOutAfio(config::console_pin);
+    soc::gpio.initOutAfio(config::console_tx_pin);
+    if (config::console_rx_pin) {
+      soc::gpio.initInput(*config::console_rx_pin);
+    }
     return instance;
   }
   ();

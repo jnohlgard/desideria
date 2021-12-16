@@ -14,6 +14,7 @@
 
 #include <array>
 #include <cstdint>
+#include <optional>
 
 namespace deri::bsp::config {
 using Port = dev::gpio::Gpio::Port;
@@ -33,7 +34,9 @@ inline constexpr std::array buttons{
     dev::gpio::GpioInConfig{{config::Port::C, 13}, config::Pull::FLOATING},
 };
 
-inline constexpr dev::gpio::Gpio console_pin{dev::gpio::Gpio::Port::A, 9};
+inline constexpr dev::gpio::Gpio console_tx_pin{dev::gpio::Gpio::Port::A, 9};
+inline constexpr std::optional<dev::gpio::Gpio> console_rx_pin{
+    {dev::gpio::Gpio::Port::A, 10}};
 
 namespace time {
 
