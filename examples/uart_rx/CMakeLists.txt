@@ -1,0 +1,2 @@
+add_executable(example_uart_rx example_uart_rx.cpp)
+deri_configure_target(example_uart_rx)
