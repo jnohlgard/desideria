@@ -4,9 +4,7 @@
 
 #include "deri/console.hpp"
 
-extern "C" {
-#include <stdio.h>
-}
+#include <cstdio>
 #include <span>
 
 namespace {
@@ -16,7 +14,7 @@ int stdio_flush(FILE *);
 
 // Bare minimum stdout
 FILE _stdio{
-    .unget = decltype(FILE::unget)(0),
+    .unget = decltype(FILE::unget){},
     .flags = _FDEV_SETUP_RW,
     .put = stdio_put,
     .get = stdio_get,
@@ -24,7 +22,6 @@ FILE _stdio{
 };
 }  // namespace
 
-extern "C" {
 extern FILE *const stdout;
 extern FILE *const stdin;
 extern FILE *const stderr;
@@ -32,11 +29,11 @@ extern FILE *const stderr;
 FILE *const stdout = &_stdio;
 FILE *const stdin = &_stdio;
 FILE *const stderr = &_stdio;
-}
+
 namespace {
 
 int stdio_put(char c, FILE *) {
-  std::span<const char, sizeof c> buffer{&c, sizeof c};
+  std::span<const char, 1> buffer{&c, 1};
   deri::Console::write(as_bytes(buffer));
   return buffer.size();
 }
