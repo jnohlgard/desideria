@@ -28,6 +28,7 @@ ssize_t write(int fildes, const void *buf, size_t nbyte);
 }
 
 #include "deri/console.hpp"
+#include "deri/panic.hpp"
 
 int close(int) {
   errno = ENOSYS;
@@ -80,7 +81,4 @@ _READ_WRITE_RETURN_TYPE write(int, const void *ptr, size_t len) {
   return len;
 }
 
-[[noreturn]] void _exit(int code) {
-  while (true) {
-  }
-}
+[[noreturn]] void _exit(int code) { deri::panic(); }
