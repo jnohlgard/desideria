@@ -10,7 +10,7 @@
 #include "deri/soc/uart_dev.hpp"
 
 namespace deri::bsp {
-using Console = dev::uart::UsartGd32;
+using Console = dev::uart::UartIrqDriver<dev::uart::UsartGd32>;
 inline Console &console() {
   static auto &instance = []() -> auto & {
     auto &instance = soc::uart0();

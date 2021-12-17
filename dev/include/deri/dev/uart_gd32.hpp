@@ -4,24 +4,20 @@
 
 #pragma once
 
-#include "deri/callback.hpp"
 #include "deri/mmio/USART.hpp"
-#include "deri/mutex.hpp"
+#include "deri/mmio/bits/USART_bits.hpp"
 #include "deri/registers.hpp"
 
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <span>
 
 namespace deri::dev::uart {
 
 class UsartGd32 {
  public:
-  using RxCallback = Callback<void(std::byte, uintptr_t)>;
-
-  explicit UsartGd32(mmio::USART_regs &regs) : regs{regs} {}
-
   /**
    * Initialize the hardware module
    */
@@ -35,17 +31,10 @@ class UsartGd32 {
    * This function must be called every time the peripheral clock frequency is
    * changed.
    *
+   * @param[in] pclk peripheral clock (Hz)
    * @param[in] baudrate desired baud rate (baud)
    */
-  void setBaud(unsigned new_baudrate) {
-    baudrate = new_baudrate;
-    updateBaudReg();
-  }
-
-  void updateModuleClock(unsigned new_clock) {
-    module_clock = new_clock;
-    updateBaudReg();
-  }
+  void setBaud(unsigned pclk, unsigned baudrate);
 
   /**
    * Write some bytes to the UART.
@@ -60,32 +49,56 @@ class UsartGd32 {
   [[nodiscard]] auto tryWrite(std::span<const std::byte> buffer)
       -> decltype(buffer);
 
-  /**
-   * Blocking write
-   *
-   * This will use either interrupts or spinning until all bytes have been
-   * written to the wire.
-   *
-   * @param buffer Data to write to the UART
-   */
-  void write(std::span<const std::byte> buffer);
+  void disableTxInterrupts() {
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    USART.CTL0 &= ~(CTL0_bits::TCIE | CTL0_bits::TBEIE);
+  }
 
-  void setRxCallback(RxCallback new_callback);
+  void enableTxCompleteInterrupt() {
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    USART.CTL0 |= CTL0_bits::TCIE;
+  }
+  void enableTxBufferAvailableInterrupt() {
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    USART.CTL0 |= CTL0_bits::TBEIE;
+  }
 
-  void interrupt();
+  bool checkAndClearTxIrq() {
+    using STAT_bits = mmio::USART_regs::STAT_bits;
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    if (USART.STAT.any(STAT_bits::TC | STAT_bits::TBE)) {
+      USART.STAT.store(~STAT_bits::TC);
+      // Disable transmit buffer empty IRQ to avoid an infinite interrupt loop
+      USART.CTL0 &= ~CTL0_bits::TBEIE;
+      return true;
+    }
+    return false;
+  }
+
+  std::optional<std::byte> getRxByte() {
+    using STAT_bits = mmio::USART_regs::STAT_bits;
+    if (USART.STAT.any(STAT_bits::RBNE)) {
+      return static_cast<std::byte>(USART.DATA.load());
+    }
+    return std::nullopt;
+  }
+
+  void enableRxInterrupt() {
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    // Enable receiver and RX interrupt
+    USART.CTL0 |= CTL0_bits::RBNEIE | CTL0_bits::REN;
+  }
+
+  void disableRxInterrupt() {
+    using CTL0_bits = mmio::USART_regs::CTL0_bits;
+    // Disable receiver and RX interrupt
+    USART.CTL0 &= ~(CTL0_bits::RBNEIE | CTL0_bits::REN);
+  }
 
  private:
-  void writeIrq(std::span<const std::byte> buffer);
-  void writeSpin(std::span<const std::byte> buffer);
-  void updateBaudReg();
-
-  mmio::USART_regs &regs;
-
-  Mutex tx_mutex{};
-  Mutex tx_irq_signal{};
-  RxCallback rx_callback{};
-  unsigned module_clock{};
-  unsigned baudrate{};
+  mmio::USART_regs USART;
 };
+
+static_assert(sizeof(UsartGd32) == sizeof(mmio::USART_regs));
 
 }  // namespace deri::dev::uart
