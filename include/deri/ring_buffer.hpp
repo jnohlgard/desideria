@@ -4,14 +4,21 @@
 
 #pragma once
 
-#include "deri/irq.hpp"
-
 #include <array>
 #include <cstddef>
 #include <optional>
 
 namespace deri {
 
+/**
+ * Ring buffer
+ *
+ * This buffer is safe to use lock-free if there is a single producer and a
+ * single consumer.
+ *
+ * @tparam ValueType type of the contained values
+ * @tparam size length of the buffer
+ */
 template <typename ValueType, size_t size>
 class RingBuffer {
   static_assert(size > 1);
@@ -34,9 +41,13 @@ class RingBuffer {
     return false;
   }
 
+  void clear() { read_offset = write_offset; }
+
   [[nodiscard]] size_t available() const { return write_offset - read_offset; }
   [[nodiscard]] bool empty() const { return (available() == 0); }
   [[nodiscard]] bool full() const { return (available() == size); }
+
+  static constexpr size_t capacity() { return size; }
 
  private:
   size_t read_offset{};
