@@ -1,26 +1,26 @@
 #pragma once
 
+#include <algorithm>
 #include <span>
 
 namespace deri::literals {
-constexpr std::span<const char> operator""_span(const char *literal,
-                                                std::size_t length) {
-  return std::span<const char>{literal, length};
-}
-constexpr std::span<const wchar_t> operator""_span(const wchar_t *literal,
-                                                   std::size_t length) {
-  return std::span<const wchar_t>{literal, length};
-}
-constexpr std::span<const char8_t> operator""_span(const char8_t *literal,
-                                                   std::size_t length) {
-  return std::span<const char8_t>{literal, length};
-}
-constexpr std::span<const char16_t> operator""_span(const char16_t *literal,
-                                                    std::size_t length) {
-  return std::span<const char16_t>{literal, length};
-}
-constexpr std::span<const char32_t> operator""_span(const char32_t *literal,
-                                                    std::size_t length) {
-  return std::span<const char32_t>{literal, length};
+template <typename ValueType, std::size_t literal_length_including_terminator>
+struct SpanLiteral {
+  inline static constexpr std::size_t literal_length =
+      literal_length_including_terminator - 1;
+
+  using SpanType = std::span<const ValueType, literal_length>;
+  ValueType data[literal_length];
+
+  constexpr SpanLiteral(
+      ValueType const (&literal)[literal_length_including_terminator]) {
+    std::copy_n(literal, literal_length, data);
+  };
+
+  constexpr SpanType span() const { return SpanType{data}; }
+};
+template <SpanLiteral literal>
+constexpr auto operator"" _span() {
+  return literal.span();
 }
 }  // namespace deri::literals
