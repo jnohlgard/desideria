@@ -111,6 +111,12 @@ class Logger {
   requires std::is_convertible_v<Message, std::span<const char>>
   static inline void printf(Message &&message) { Output::write(message); }
 
+  template <size_t length>
+  static inline void printf(char const (&message)[length]) {
+    // Trim terminating null byte
+    Output::write(std::span<const char, length - 1>(message, length - 1));
+  }
+
   template <Level message_level, typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
   static inline void log(Message &&message) {
