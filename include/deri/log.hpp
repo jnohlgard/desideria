@@ -11,6 +11,10 @@
 
 #include <unistd.h>
 
+#if __has_include("logging_conf.hpp")
+#include "logging_conf.hpp"
+#endif
+
 namespace deri::log {
 enum class Level : int {
   OFF = -1,
