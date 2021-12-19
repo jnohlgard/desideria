@@ -60,4 +60,7 @@ class ExtiGd32 {
  private:
   mmio::EXTI_regs EXTI;
 };
+
+static_assert(sizeof(ExtiGd32) == sizeof(mmio::EXTI_regs));
+
 }  // namespace deri::dev::gpio

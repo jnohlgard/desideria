@@ -68,10 +68,28 @@ class TimerDriver {
   const TimerDevice &underlyingTimer() const { return *timer; }
   TimerDevice &underlyingTimer() { return *timer; }
 
+  void setTickRateHz(unsigned new_tick_rate_hz) {
+    tick_rate_hz = new_tick_rate_hz;
+    updatePrescaler();
+  }
+
+  void updateModuleClock(unsigned new_clock) {
+    module_clock = new_clock;
+    updatePrescaler();
+  }
+
  private:
+  void updatePrescaler() {
+    if (tick_rate_hz == 0) {
+      return;
+    }
+    timer->setPrescaler(timer->computePrescaler(module_clock, tick_rate_hz));
+  }
   TimerDevice *timer{nullptr};
   std::array<Callback, TimerDevice::num_channels> callbacks{};
   PeriodCallback period_callback{};
+  unsigned module_clock{};
+  unsigned tick_rate_hz{};
 };
 
 template <class TimerDeviceType>

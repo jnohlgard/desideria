@@ -40,8 +40,6 @@ void AfioGd32::setExtiSource(Gpio::Pin pin, AfioGd32::ExtiSource source) {
   }
 }
 
-void AfioGd32::init() {
-  soc::rcu.enableModules(clock::RcuGd32::APB2EN_bits::AFEN);
-}
+void AfioGd32::init() { soc::Clock::enable(soc::Clock::APB2::AFEN); }
 
 }  // namespace deri::dev::gpio

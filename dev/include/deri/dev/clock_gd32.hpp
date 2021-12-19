@@ -49,12 +49,26 @@ class RcuGd32 {
   /**
    * Get the frequency of the CK_TIMERx clock by querying the hardware.
    *
-   * @param index x in TIMERx
    * @return CK_TIMERx frequency
    */
-  [[nodiscard]] uint32_t timerFreq(unsigned index) const;
+  [[nodiscard]] uint32_t timerFreq(APB1EN_bits) const {
+    return timerFreq(apb1Prescaler());
+  }
+  [[nodiscard]] uint32_t timerFreq(APB2EN_bits) const {
+    return timerFreq(apb2Prescaler());
+  }
 
  private:
+  [[nodiscard]] uint32_t timerFreq(unsigned bus_divider) const {
+    auto ck_ahb = ahbFreq();
+    // TIMER clocks have a x2 multiplier when the APB bus divider is > (x / 1)
+    if (bus_divider < 2) {
+      return ck_ahb;
+    } else {
+      return ck_ahb >> (bus_divider - 1);
+    }
+  }
+
   /**
    * Get the prescaler of the CK_AHB clock by querying the hardware.
    *

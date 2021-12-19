@@ -42,24 +42,6 @@ uint32_t RcuGd32::apb2Freq() const {
   return ck_ahb >> apb2Prescaler();
 }
 
-uint32_t RcuGd32::timerFreq(unsigned index) const {
-  auto ck_ahb = ahbFreq();
-  unsigned bus_divider = 0;
-
-  // TIMER clocks have a x2 multiplier when the APB bus divider is > (x / 1)
-  if (index == 0) {
-    bus_divider = apb2Prescaler();
-  } else {
-    bus_divider = apb1Prescaler();
-  }
-
-  if (bus_divider < 2) {
-    return ck_ahb;
-  } else {
-    return ck_ahb >> (bus_divider - 1);
-  }
-}
-
 using CFG0_bits = mmio::RCU_regs::CFG0_bits;
 using CFG0_shift = mmio::RCU_regs::CFG0_shift;
 

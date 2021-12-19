@@ -8,126 +8,100 @@
 #include "deri/dev/timer_gd32.hpp"
 #include "deri/soc/clock_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
+#include "deri/soc/soc.hpp"
 
 #include <array>
 
 namespace deri::soc {
 using TimerPeriph = dev::timer::TimerGd32;
-extern TimerPeriph timer0;
-extern TimerPeriph timer1;
-extern TimerPeriph timer2;
-extern TimerPeriph timer3;
-extern TimerPeriph timer4;
-extern TimerPeriph timer5;
-extern TimerPeriph timer6;
-
-enum class TimerModule {
-  TIMER0,
-  TIMER1,
-  TIMER2,
-  TIMER3,
-  TIMER4,
-  TIMER5,
-  TIMER6,
-};
-
-inline void enableModule(TimerModule module) {
-  using APB2EN_bits = dev::clock::RcuGd32::APB2EN_bits;
-  using APB1EN_bits = dev::clock::RcuGd32::APB1EN_bits;
-  switch (module) {
-    case TimerModule::TIMER0:
-      rcu.enableModules(APB2EN_bits::TIMER0EN);
-      break;
-    case TimerModule::TIMER1:
-      rcu.enableModules(APB1EN_bits::TIMER1EN);
-      break;
-    case TimerModule::TIMER2:
-      rcu.enableModules(APB1EN_bits::TIMER2EN);
-      break;
-    case TimerModule::TIMER3:
-      rcu.enableModules(APB1EN_bits::TIMER3EN);
-      break;
-    case TimerModule::TIMER4:
-      rcu.enableModules(APB1EN_bits::TIMER4EN);
-      break;
-    case TimerModule::TIMER5:
-      rcu.enableModules(APB1EN_bits::TIMER5EN);
-      break;
-    case TimerModule::TIMER6:
-      rcu.enableModules(APB1EN_bits::TIMER6EN);
-      break;
-  }
 }
+namespace deri::mmio {
+extern soc::TimerPeriph TIMER0;
+extern soc::TimerPeriph TIMER1;
+extern soc::TimerPeriph TIMER2;
+extern soc::TimerPeriph TIMER3;
+extern soc::TimerPeriph TIMER4;
+extern soc::TimerPeriph TIMER5;
+extern soc::TimerPeriph TIMER6;
+}  // namespace deri::mmio
 
-inline void enableIrq(TimerModule module) {
-  using IRQ = mmio::IRQ;
-  switch (module) {
-    case TimerModule::TIMER0:
-      clic.enableIrq(IRQ::TIMER0_UP);
-      clic.enableIrq(IRQ::TIMER0_Channel);
-      break;
-    case TimerModule::TIMER1:
-      clic.enableIrq(IRQ::TIMER1);
-      break;
-    case TimerModule::TIMER2:
-      clic.enableIrq(IRQ::TIMER2);
-      break;
-    case TimerModule::TIMER3:
-      clic.enableIrq(IRQ::TIMER3);
-      break;
-    case TimerModule::TIMER4:
-      clic.enableIrq(IRQ::TIMER4);
-      break;
-    case TimerModule::TIMER5:
-      clic.enableIrq(IRQ::TIMER5);
-      break;
-    case TimerModule::TIMER6:
-      clic.enableIrq(IRQ::TIMER6);
-      break;
-  }
-}
-
-inline uint32_t moduleFrequency(TimerModule module) {
-  return rcu.timerFreq(static_cast<unsigned>(module));
-}
-
+namespace deri::soc {
 using TimerDriver = dev::timer::TimerDriver<TimerPeriph>;
 
-struct TimerConfig {
-  [[nodiscard]] TimerDriver &init() const;
+inline std::array<TimerDriver *, 7> timers;
 
-  [[nodiscard]] uint32_t module_clock() const {
-    return soc::rcu.timerFreq(static_cast<unsigned>(module_id));
+inline auto &timer0() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER0};
+    moduleEnable(instance,
+                 soc::Clock::APB2::TIMER0EN,
+                 mmio::IRQ::TIMER0_Channel,
+                 mmio::IRQ::TIMER0_UP);
+    timers[0] = &instance;
+    return instance;
   }
-
-  [[nodiscard]] auto computePrescaler(uint32_t tick_rate) const {
-    return TimerPeriph::computePrescaler(module_clock(), tick_rate);
+  ();
+  return instance;
+}
+inline auto &timer1() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER1};
+    moduleEnable(instance, soc::Clock::APB1::TIMER1EN, mmio::IRQ::TIMER1);
+    return instance;
+    timers[1] = &instance;
   }
-
-  TimerModule module_id;
-  TimerPeriph &dev;
-  TimerPeriph::ClockSource clock_source{TimerPeriph::ClockSource::CK_TIMER};
-};
-
-inline constexpr std::array timer_config = {
-    TimerConfig{TimerModule::TIMER0, timer0},
-    TimerConfig{TimerModule::TIMER1, timer1},
-    TimerConfig{TimerModule::TIMER2, timer2},
-    TimerConfig{TimerModule::TIMER3, timer3},
-    TimerConfig{TimerModule::TIMER4, timer4},
-    TimerConfig{TimerModule::TIMER5, timer5},
-    TimerConfig{TimerModule::TIMER6, timer6},
-};
-
-inline std::array<TimerDriver, timer_config.size()> timers;
-
-inline TimerDriver &TimerConfig::init() const {
-  enableModule(module_id);
-  enableIrq(module_id);
-  auto &driver = timers[static_cast<unsigned>(module_id)];
-  driver = TimerDriver{dev};
-  driver.init();
-  return driver;
+  ();
+  return instance;
+}
+inline auto &timer2() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER2};
+    moduleEnable(instance, soc::Clock::APB1::TIMER2EN, mmio::IRQ::TIMER2);
+    timers[2] = &instance;
+    return instance;
+  }
+  ();
+  return instance;
+}
+inline auto &timer3() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER3};
+    moduleEnable(instance, soc::Clock::APB1::TIMER3EN, mmio::IRQ::TIMER3);
+    timers[3] = &instance;
+    return instance;
+  }
+  ();
+  return instance;
+}
+inline auto &timer4() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER4};
+    moduleEnable(instance, soc::Clock::APB1::TIMER4EN, mmio::IRQ::TIMER4);
+    timers[4] = &instance;
+    return instance;
+  }
+  ();
+  return instance;
+}
+inline auto &timer5() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER5};
+    moduleEnable(instance, soc::Clock::APB1::TIMER5EN, mmio::IRQ::TIMER5);
+    timers[5] = &instance;
+    return instance;
+  }
+  ();
+  return instance;
+}
+inline auto &timer6() {
+  static auto &instance = []() -> auto & {
+    static auto instance = TimerDriver{mmio::TIMER6};
+    moduleEnable(instance, soc::Clock::APB1::TIMER6EN, mmio::IRQ::TIMER6);
+    timers[6] = &instance;
+    return instance;
+  }
+  ();
+  return instance;
 }
 
 }  // namespace deri::soc

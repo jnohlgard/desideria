@@ -21,7 +21,7 @@ using OCTL_bits = mmio::GPIO_regs::OCTL_bits;
 
 namespace {
 void enableModule(Gpio::Port port) {
-  soc::rcu.enableModules(soc::gpioPortClockEnableBits(port));
+  soc::Clock::enable(soc::gpioPortClockEnableBits(port));
 }
 constexpr unsigned ctlShift(GpioPortGd32::Pin pin) {
   return static_cast<unsigned>(pin) % 8 * 4;
@@ -149,38 +149,38 @@ void GpioManagerGd32::setInterruptHandler(Gpio gpio,
                                           GpioManagerGd32::Edge edge,
                                           GpioManagerGd32::Callback callback) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
-  soc::exti.disableLine(line);
-  soc::exti.disableRising(line);
-  soc::exti.disableFalling(line);
-  soc::exti.clearPending(line);
-  soc::afio.setExtiSource(gpio.pin, gpio.port);
+  mmio::EXTI.disableLine(line);
+  mmio::EXTI.disableRising(line);
+  mmio::EXTI.disableFalling(line);
+  mmio::EXTI.clearPending(line);
+  mmio::AFIO.setExtiSource(gpio.pin, gpio.port);
   if (!!(edge & Edge::RISING)) {
-    soc::exti.enableRising(line);
+    mmio::EXTI.enableRising(line);
   }
   if (!!(edge & Edge::FALLING)) {
-    soc::exti.enableFalling(line);
+    mmio::EXTI.enableFalling(line);
   }
   callbacks[static_cast<unsigned>(line)] = callback;
 }
 
 void GpioManagerGd32::clearInterruptHandler(Gpio gpio) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
-  soc::exti.disableLine(line);
-  soc::exti.disableRising(line);
-  soc::exti.disableFalling(line);
-  soc::exti.clearPending(line);
+  mmio::EXTI.disableLine(line);
+  mmio::EXTI.disableRising(line);
+  mmio::EXTI.disableFalling(line);
+  mmio::EXTI.clearPending(line);
   callbacks[static_cast<unsigned>(line)] = {};
 }
 
 void GpioManagerGd32::enableInterrupt(Gpio gpio) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
-  soc::exti.enableLine(line);
+  mmio::EXTI.enableLine(line);
   dev::gpio::ExtiGd32::clicInterruptEnable(line);
 }
 
 void GpioManagerGd32::disableInterrupt(Gpio gpio) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
-  soc::exti.disableLine(line);
+  mmio::EXTI.disableLine(line);
   // we don't disable the CLIC line because some of them are shared between
   // multiple pins
 }

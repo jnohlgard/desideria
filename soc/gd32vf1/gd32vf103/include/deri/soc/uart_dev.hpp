@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "deri/soc/soc.hpp"
 #include "deri/dev/uart.hpp"
 #include "deri/dev/uart_gd32.hpp"
 #include "deri/soc/clock_dev.hpp"
@@ -29,9 +30,7 @@ namespace deri::soc {
 inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart0() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::USART0};
-    soc::rcu.enableModules(dev::clock::RcuGd32::APB2EN_bits::USART0EN);
-    instance.updateModuleClock(rcu.apb2Freq());
-    clic.enableIrq(mmio::IRQ::USART0);
+    moduleEnable(instance, Clock::APB2::USART0EN, Irq::IRQ::USART0);
     return instance;
   }
   ();
@@ -40,9 +39,7 @@ inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart0() {
 inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart1() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::USART1};
-    soc::rcu.enableModules(dev::clock::RcuGd32::APB1EN_bits::USART1EN);
-    instance.updateModuleClock(rcu.apb1Freq());
-    clic.enableIrq(mmio::IRQ::USART1);
+    moduleEnable(instance, Clock::APB1::USART1EN, Irq::IRQ::USART1);
     return instance;
   }
   ();
@@ -51,9 +48,7 @@ inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart1() {
 inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart2() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::USART2};
-    soc::rcu.enableModules(dev::clock::RcuGd32::APB1EN_bits::USART2EN);
-    instance.updateModuleClock(rcu.apb1Freq());
-    clic.enableIrq(mmio::IRQ::USART2);
+    moduleEnable(instance, Clock::APB1::USART2EN, Irq::IRQ::USART2);
     return instance;
   }
   ();
@@ -62,9 +57,7 @@ inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart2() {
 inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart3() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::UART3};
-    soc::rcu.enableModules(dev::clock::RcuGd32::APB1EN_bits::UART3EN);
-    instance.updateModuleClock(rcu.apb1Freq());
-    clic.enableIrq(mmio::IRQ::UART3);
+    moduleEnable(instance, Clock::APB1::UART3EN, Irq::IRQ::UART3);
     return instance;
   }
   ();
@@ -73,9 +66,7 @@ inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart3() {
 inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart4() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::UART4};
-    soc::rcu.enableModules(dev::clock::RcuGd32::APB1EN_bits::UART4EN);
-    instance.updateModuleClock(rcu.apb1Freq());
-    clic.enableIrq(mmio::IRQ::UART4);
+    moduleEnable(instance, Clock::APB1::UART4EN, Irq::IRQ::UART4);
     return instance;
   }
   ();

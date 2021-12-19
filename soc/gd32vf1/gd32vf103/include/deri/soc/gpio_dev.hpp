@@ -7,14 +7,10 @@
 #include "deri/dev/gpio.hpp"
 #include "deri/dev/gpio_gd32.hpp"
 #include "deri/dev/exti_gd32.hpp"
+#include "deri/dev/afio_gd32.hpp"
 #include "deri/mmio/RCU.hpp"
 
 namespace deri::dev::gpio {
-
-class AfioGd32;
-class ExtiGd32;
-class GpioPortGd32;
-class GpioManagerGd32;
 
 enum class Gpio::Port : unsigned {
   A = 0,
@@ -26,6 +22,11 @@ enum class Gpio::Port : unsigned {
 
 }  // namespace deri::dev::gpio
 
+namespace deri::mmio {
+extern dev::gpio::AfioGd32 AFIO;
+extern dev::gpio::ExtiGd32 EXTI;
+}  // namespace deri::mmio
+
 namespace deri::soc {
 
 extern dev::gpio::GpioPortGd32 gpioa;
@@ -33,8 +34,6 @@ extern dev::gpio::GpioPortGd32 gpiob;
 extern dev::gpio::GpioPortGd32 gpioc;
 extern dev::gpio::GpioPortGd32 gpiod;
 extern dev::gpio::GpioPortGd32 gpioe;
-extern dev::gpio::AfioGd32 afio;
-extern dev::gpio::ExtiGd32 exti;
 extern dev::gpio::GpioManagerGd32 gpio;
 
 dev::gpio::GpioPortGd32 &gpioPortDev(dev::gpio::Gpio::Port port);

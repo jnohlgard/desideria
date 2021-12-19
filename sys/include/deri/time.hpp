@@ -37,11 +37,9 @@ class Timer {
 template <class Config>
 void Timer<Config>::init() {
   using Frequency = typename TimerManager::Frequency;
-  auto &&driver_config = Config::driver_config;
-  timer = TimerManager{driver_config.init(), Frequency{Config::tick_rate_hz}};
-  auto prescaler = Config::TimerManager::TimerDevice::computePrescaler(
-      driver_config.module_clock(), Config::tick_rate_hz);
-  driver_config.dev.setPrescaler(prescaler);
+  auto &driver = Config::driver();
+  timer = TimerManager{driver, Frequency{Config::tick_rate_hz}};
+  driver.setTickRateHz(Config::tick_rate_hz);
   timer.init();
 }
 

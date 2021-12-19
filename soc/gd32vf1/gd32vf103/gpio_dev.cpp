@@ -4,6 +4,7 @@
 
 #include "deri/soc/gpio_dev.hpp"
 
+#include "deri/dev/afio_gd32.hpp"
 #include "deri/dev/exti_gd32.hpp"
 #include "deri/dev/gpio_gd32.hpp"
 #include "deri/mmio/bits/RCU_bits.hpp"
@@ -54,26 +55,26 @@ void ExtiGd32::clicInterruptEnable(ExtiGd32::Line line) {
   using IRQ = deri::mmio::IRQ;
   switch (line_number) {
     case 0:
-      soc::clic.enableIrq(IRQ::EXTI_Line0);
+      soc::Irq::enable(IRQ::EXTI_Line0);
       break;
     case 1:
-      soc::clic.enableIrq(IRQ::EXTI_Line1);
+      soc::Irq::enable(IRQ::EXTI_Line1);
       break;
     case 2:
-      soc::clic.enableIrq(IRQ::EXTI_Line2);
+      soc::Irq::enable(IRQ::EXTI_Line2);
       break;
     case 3:
-      soc::clic.enableIrq(IRQ::EXTI_Line3);
+      soc::Irq::enable(IRQ::EXTI_Line3);
       break;
     case 4:
-      soc::clic.enableIrq(IRQ::EXTI_Line4);
+      soc::Irq::enable(IRQ::EXTI_Line4);
       break;
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
-      soc::clic.enableIrq(IRQ::EXTI_line9_5);
+      soc::Irq::enable(IRQ::EXTI_line9_5);
       break;
     case 10:
     case 11:
@@ -81,7 +82,7 @@ void ExtiGd32::clicInterruptEnable(ExtiGd32::Line line) {
     case 13:
     case 14:
     case 15:
-      soc::clic.enableIrq(IRQ::EXTI_line15_10);
+      soc::Irq::enable(IRQ::EXTI_line15_10);
       break;
   }
 }
@@ -90,26 +91,26 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
   using IRQ = deri::mmio::IRQ;
   switch (line_number) {
     case 0:
-      soc::clic.disableIrq(IRQ::EXTI_Line0);
+      soc::Irq::disable(IRQ::EXTI_Line0);
       break;
     case 1:
-      soc::clic.disableIrq(IRQ::EXTI_Line1);
+      soc::Irq::disable(IRQ::EXTI_Line1);
       break;
     case 2:
-      soc::clic.disableIrq(IRQ::EXTI_Line2);
+      soc::Irq::disable(IRQ::EXTI_Line2);
       break;
     case 3:
-      soc::clic.disableIrq(IRQ::EXTI_Line3);
+      soc::Irq::disable(IRQ::EXTI_Line3);
       break;
     case 4:
-      soc::clic.disableIrq(IRQ::EXTI_Line4);
+      soc::Irq::disable(IRQ::EXTI_Line4);
       break;
     case 5:
     case 6:
     case 7:
     case 8:
     case 9:
-      soc::clic.disableIrq(IRQ::EXTI_line9_5);
+      soc::Irq::disable(IRQ::EXTI_line9_5);
       break;
     case 10:
     case 11:
@@ -117,27 +118,27 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
     case 13:
     case 14:
     case 15:
-      soc::clic.disableIrq(IRQ::EXTI_line15_10);
+      soc::Irq::disable(IRQ::EXTI_line15_10);
       break;
   }
 }
 
 }  // namespace deri::dev::gpio
 
-using namespace deri::soc;
+using namespace deri;
 
 namespace {
 void gpio_interrupt(unsigned line) {
-  exti.clearPending(static_cast<ExtiGd32::Line>(line));
-  gpio.interruptCallback(line);
+  mmio::EXTI.clearPending(static_cast<ExtiGd32::Line>(line));
+  soc::gpio.interruptCallback(line);
 }
 using PD_bits = deri::mmio::EXTI_regs::PD_bits;
 void gpio_interrupts_grouped(PD_bits pending, unsigned line) {
-  exti.clearPending(pending);
+  mmio::EXTI.clearPending(pending);
   unsigned pending_lines = static_cast<unsigned>(pending) >> line;
   while (pending_lines != 0) {
     if ((pending_lines & 1) != 0) {
-      gpio.interruptCallback(line);
+      soc::gpio.interruptCallback(line);
     }
     pending_lines >>= 1;
     ++line;
@@ -158,15 +159,15 @@ void isr_EXTI_Line3() { gpio_interrupt(3); }
 void isr_EXTI_Line4() { gpio_interrupt(4); }
 [[gnu::interrupt]] void isr_EXTI_line9_5();
 void isr_EXTI_line9_5() {
-  auto pending = exti.pending();
-  unsigned line_number = 5;
+  auto pending = mmio::EXTI.pending();
+  constexpr unsigned line_number = 5;
   pending &= static_cast<PD_bits>(0b11111u << line_number);
   gpio_interrupts_grouped(pending, line_number);
 }
 [[gnu::interrupt]] void isr_EXTI_line15_10();
 void isr_EXTI_line15_10() {
-  auto pending = exti.pending();
-  unsigned line_number = 10;
+  auto pending = mmio::EXTI.pending();
+  constexpr unsigned line_number = 10;
   pending &= static_cast<PD_bits>(0b111111u << line_number);
   gpio_interrupts_grouped(pending, line_number);
 }
