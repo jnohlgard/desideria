@@ -7,6 +7,7 @@
 #include "deri/arch/syscall.hpp"
 #include "deri/arch/thread.hpp"
 #include "deri/list.hpp"
+#include "deri/log.hpp"
 #include "deri/span_align.hpp"
 #include "deri/syscall.hpp"
 
@@ -15,8 +16,17 @@
 #include <span>
 
 namespace deri {
+namespace log {
+struct Thread;
+// struct Thread {
+//   static inline Level level{Level::DEBUG};
+// };
+}  // namespace log
 class Scheduler;
 class Thread : public ForwardListNode<Thread> {
+ private:
+  using Logger = log::Logger<log::Thread>;
+
  public:
   enum class Id : unsigned {};
   enum class Priority : int8_t {
@@ -61,6 +71,15 @@ class Thread : public ForwardListNode<Thread> {
     void *tcb_address = aligned_stack.data();
     // advance the stack
     aligned_stack = aligned_stack.last(stack.size() - sizeof(Thread));
+    Logger::debug(
+        "Creating thread %.*s @ %p, stack @ %p-%p (%zu B), initial pc = %p\n",
+        int(name.size()),
+        name.data(),
+        tcb_address,
+        &aligned_stack.front(),
+        &aligned_stack.back(),
+        aligned_stack.size_bytes(),
+        reinterpret_cast<const void *>(initial_pc));
     Thread &thread =
         *new (tcb_address) Thread(aligned_stack, priority, name, initial_pc);
 
