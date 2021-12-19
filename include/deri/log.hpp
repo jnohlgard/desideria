@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <cstdarg>
 #include <cstdio>
 #include <cstring>
 #include <span>
@@ -33,18 +34,16 @@ concept HasLevel = requires(Domain config) {
 
 class LogToStdout {
  public:
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0 && std::is_convertible_v<Format, const char *>)
-      // attribute(format) only works with C-style ellipsis variadic functions
-      // (va_list)
-      /*[[gnu::format(__printf__, 1, 2)]]*/ static inline void printf(
-          Format &&format, Args... args) {
-#pragma GCC diagnostic push
-    // We can't use -Wformat-nonliteral right now because of the missing
-    // attribute above
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    ::printf(format, args...);
-#pragma GCC diagnostic pop
+  [[gnu::format(__printf__, 1, 0)]] static inline void printf(
+      const char *format, std::va_list args) {
+    ::vprintf(format, args);
+  }
+  [[gnu::format(__printf__, 1, 2)]] static inline void printf(
+      const char *format, ...) {
+    std::va_list args;
+    va_start(args, format);
+    printf(format, args);
+    va_end(args);
   }
 
   static inline void write(std::span<const char> message) {
@@ -58,52 +57,104 @@ class Logger {
   using Output = OutputClass;
 
   // printf-style logging methods
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0)
-      /*[[gnu::format(__printf__, 1, 2)]]*/ static inline void printf(
-          Format &&format, Args... args) {
-    Output::printf(std::forward<Format>(format), args...);
+  [[gnu::format(__printf__, 1, 0)]] static inline void printf(
+      const char *format, std::va_list args) {
+    Output::printf(format, args);
   }
 
-  template <Level message_level, typename Format, typename... Args>
-  requires(sizeof...(Args) > 0)
-      /*[[gnu::format(__printf__, 1, 2)]]*/ static inline void log(
-          Format &&format, Args... args) {
+  template <Level message_level>
+  [[gnu::format(__printf__, 1, 0)]] static inline void log(const char *format,
+                                                           std::va_list args) {
     if (level<Domain>() < message_level) {
       return;
     }
-    printf(std::forward<Format>(format), args...);
+    printf(format, args);
   }
 
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void critical(Format &&format,
-                                                            Args... args) {
-    log<Level::CRITICAL>(std::forward<Format>(format), args...);
+  // These need to be templates in order to resolve the ambiguity between these
+  // and the verbatim write methods further down. We pretend const char * is a
+  // template argument but restricting it with std::is_same
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto printf(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    printf(format, args);
+    va_end(args);
   }
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void error(Format &&format,
-                                                         Args... args) {
-    log<Level::ERROR>(std::forward<Format>(format), args...);
+
+  template <Level message_level, typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto log(ConstCharPtr format,
+                                                           ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    if (level<Domain>() < message_level) {
+      return;
+    }
+    std::va_list args;
+    va_start(args, format);
+    printf(format, args);
+    va_end(args);
   }
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void warning(Format &&format,
-                                                           Args... args) {
-    log<Level::WARNING>(std::forward<Format>(format), args...);
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto critical(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::CRITICAL>(format, args);
+    va_end(args);
   }
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void info(Format &&format,
-                                                        Args... args) {
-    log<Level::INFO>(std::forward<Format>(format), args...);
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto error(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::ERROR>(format, args);
+    va_end(args);
   }
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void debug(Format &&format,
-                                                         Args... args) {
-    log<Level::DEBUG>(std::forward<Format>(format), args...);
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto warning(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::WARNING>(format, args);
+    va_end(args);
   }
-  template <typename Format, typename... Args>
-  requires(sizeof...(Args) > 0) static inline void trace(Format &&format,
-                                                         Args... args) {
-    log<Level::TRACE>(std::forward<Format>(format), args...);
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto info(ConstCharPtr format,
+                                                            ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::INFO>(format, args);
+    va_end(args);
+  }
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto debug(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::DEBUG>(format, args);
+    va_end(args);
+  }
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 1, 2)]] static inline auto trace(
+      ConstCharPtr format, ...)
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+    std::va_list args;
+    va_start(args, format);
+    log<Level::TRACE>(format, args);
+    va_end(args);
   }
 
   // Verbatim copy of the message string when there are no format arguments
@@ -115,6 +166,44 @@ class Logger {
   static inline void printf(char const (&message)[length]) {
     // Trim terminating null byte
     Output::write(std::span<const char, length - 1>(message, length - 1));
+  }
+
+  template <Level message_level, size_t length>
+  static inline void log(char const (&message)[length]) {
+    if (level<Domain>() < message_level) {
+      return;
+    }
+    printf(message);
+  }
+
+  template <size_t length>
+  static inline void critical(char const (&message)[length]) {
+    log<Level::CRITICAL>(message);
+  }
+
+  template <size_t length>
+  static inline void error(char const (&message)[length]) {
+    log<Level::ERROR>(message);
+  }
+
+  template <size_t length>
+  static inline void warning(char const (&message)[length]) {
+    log<Level::WARNING>(message);
+  }
+
+  template <size_t length>
+  static inline void info(char const (&message)[length]) {
+    log<Level::INFO>(message);
+  }
+
+  template <size_t length>
+  static inline void debug(char const (&message)[length]) {
+    log<Level::DEBUG>(message);
+  }
+
+  template <size_t length>
+  static inline void trace(char const (&message)[length]) {
+    log<Level::TRACE>(message);
   }
 
   template <Level message_level, typename Message>
