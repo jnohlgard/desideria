@@ -9,13 +9,18 @@
 #include "deri/soc/clock_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
 
+namespace deri::soc {
+// USART low level operations
+using UartPeriph = dev::uart::UsartGd32;
+}  // namespace deri::soc
+
 namespace deri::mmio {
 // Defined by gd32vf103_mmio.ld
-extern deri::dev::uart::UsartGd32 USART0;
-extern deri::dev::uart::UsartGd32 USART1;
-extern deri::dev::uart::UsartGd32 USART2;
-extern deri::dev::uart::UsartGd32 UART3;
-extern deri::dev::uart::UsartGd32 UART4;
+extern soc::UartPeriph USART0;
+extern soc::UartPeriph USART1;
+extern soc::UartPeriph USART2;
+extern soc::UartPeriph UART3;
+extern soc::UartPeriph UART4;
 }  // namespace deri::mmio
 
 namespace deri::soc {
