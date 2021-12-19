@@ -27,10 +27,35 @@ enum class Level : int {
   TRACE,
 };
 
+class LogToStdout;
+template <typename Domain, class OutputClass>
+class LoggerImpl;
+
+struct DefaultConfig {
+  using Output = LogToStdout;
+  static inline Level level = Level::CRITICAL;
+};
+
 template <typename Domain>
 concept HasLevel = requires(Domain config) {
   { Domain::level } -> std::convertible_to<Level>;
 };
+
+template <class, class = void>
+struct HasOutput : std::false_type {};
+// specialization recognizes types that do have a nested ::Output member:
+template <class Domain>
+struct HasOutput<Domain, std::void_t<typename Domain::Output>>
+    : std::true_type {};
+
+template <class Domain,
+          class Output = typename std::conditional_t<HasOutput<Domain>::value,
+                                                     Domain,
+                                                     DefaultConfig>::Output>
+class Logger : public LoggerImpl<Domain, Output> {};
+
+template <typename Domain>
+class ConsoleLogger : public LoggerImpl<Domain, LogToStdout> {};
 
 class LogToStdout {
  public:
@@ -52,7 +77,7 @@ class LogToStdout {
 };
 
 template <typename Domain, class OutputClass>
-class Logger {
+class LoggerImpl {
  public:
   using Output = OutputClass;
 
@@ -251,9 +276,9 @@ class Logger {
   static constexpr Level level() {
     return Config::level;
   }
-  template <typename NotConfig>
+  template <typename ConfigMissingLevel>
   static constexpr Level level() {
-    return default_level;
+    return DefaultConfig::level;
   }
 
   template <typename Label, Level level = Level::TRACE>
@@ -280,12 +305,6 @@ class Logger {
       -> Tracer<decltype(label), level> {
     return Tracer<decltype(label), level>(std::forward<decltype(label)>(label));
   }
-
- private:
-  static constexpr Level default_level = Level::CRITICAL;
 };
-
-template <typename Domain>
-class ConsoleLogger : public Logger<Domain, LogToStdout> {};
 
 }  // namespace deri::log
