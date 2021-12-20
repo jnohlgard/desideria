@@ -2,6 +2,7 @@
  * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
+#include "deri/arch/irq.hpp"
 #include "deri/arch/perf.hpp"
 #include "deri/span_literals.hpp"
 #include "deri/thread.hpp"
@@ -19,7 +20,7 @@ using namespace std::literals;
 using namespace deri::literals;
 
 class BenchContextSwitch {
-  inline static volatile std::atomic_ulong count{};
+  inline static volatile std::atomic_ulong count{1};
 
  public:
   [[noreturn]] static void countThread() {
@@ -28,8 +29,8 @@ class BenchContextSwitch {
       deri::Scheduler::yield();
     }
   }
-  static void printEvent(deri::SystemTimer::TimerManager &timer,
-                         deri::SystemTimer::Schedulable &schedulable,
+  static void printEvent(deri::HighResolutionTimer::TimerManager &timer,
+                         deri::HighResolutionTimer::Schedulable &schedulable,
                          uintptr_t /* arg */) {
     static auto last_cycles = deri::arch::Perf::cycles();
     static auto last_inst = deri::arch::Perf::instructionsRetired();
@@ -59,11 +60,13 @@ class BenchContextSwitch {
     last_update = deri::HighResolutionTimer::now();
     last_cycles = deri::arch::Perf::cycles();
     last_inst = deri::arch::Perf::instructionsRetired();
-    count.store(0);
+    count.store(1);
+    ++iterations;
     schedulable.target =
         (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch().count();
     timer.schedule(schedulable);
   }
+  static inline unsigned iterations{};
 };
 
 void initThreads() {
@@ -79,11 +82,13 @@ void initThreads() {
 }
 
 void initTimer() {
-  static deri::SystemTimer::Schedulable print_event{
-      .target = deri::SystemTimer::now().time_since_epoch().count(),
+  static deri::HighResolutionTimer::Schedulable print_event{
+      .target = (deri::HighResolutionTimer::now() + 1000ms)
+                    .time_since_epoch()
+                    .count(),
       .callback = {.func = BenchContextSwitch::printEvent},
   };
-  deri::SystemTimer::schedule(print_event);
+  deri::HighResolutionTimer::schedule(print_event);
 }
 
 void baseline() {
@@ -118,11 +123,23 @@ void baseline() {
       inst_per_count);
 }
 
+void measureTimer() {
+  unsigned wakeups{};
+  while (BenchContextSwitch::iterations < 2) {
+    deri::arch::waitForInterrupt();
+    ++wakeups;
+  }
+  printf("%u wakeups during idle\n", wakeups);
+}
+
 int main() {
   puts("Context switch benchmark");
 
   baseline();
+  puts("measure twice without switching to get timer instruction overhead");
   initTimer();
+  measureTimer();
+  puts("Start two threads to switch between");
   initThreads();
   deri::Scheduler::yield();
   while (true) {
