@@ -8,12 +8,7 @@
 namespace deri::sys::time {
 void init() {
   LowPowerTimer::init();
-  if constexpr (!std::is_same_v<LowPowerTimer, SystemTimer>) {
-    SystemTimer::init();
-  }
-  if constexpr (!std::is_same_v<SystemTimer, HighResolutionTimer> &&
-                !std::is_same_v<LowPowerTimer, HighResolutionTimer>) {
-    HighResolutionTimer::init();
-  }
+  SystemTimer::init();
+  HighResolutionTimer::init();
 }
 }  // namespace deri::sys::time

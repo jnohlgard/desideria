@@ -37,10 +37,14 @@ class Timer {
 template <class Config>
 void Timer<Config>::init() {
   using Frequency = typename TimerManager::Frequency;
-  auto &driver = Config::driver();
-  timer = TimerManager{driver, Frequency{Config::tick_rate_hz}};
-  driver.setTickRateHz(Config::tick_rate_hz);
-  timer.init();
+  static auto &once = []() -> auto & {
+    auto &driver = Config::driver();
+    timer = TimerManager{driver, Frequency{Config::tick_rate_hz}};
+    driver.setTickRateHz(Config::tick_rate_hz);
+    timer.init();
+    return driver;
+  }
+  ();
 }
 
 void init();
