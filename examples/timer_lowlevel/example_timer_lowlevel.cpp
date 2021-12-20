@@ -14,7 +14,6 @@ namespace config {
 using namespace deri::bsp::config;
 }
 
-static auto &timer_config = deri::soc::timer_config[0];
 static auto &timer = deri::soc::timers[0];
 using GpioOut = deri::dev::gpio::GpioOutGd32;
 using GpioManager = deri::dev::gpio::GpioManagerGd32;
@@ -23,7 +22,7 @@ static std::array<GpioOut, config::leds.size()> led_gpios;
 void buttonCallback(uintptr_t id) {
   printf("Callback for button %u at time %lu\n",
          static_cast<unsigned>(id),
-         static_cast<unsigned long>(timer.read()));
+         static_cast<unsigned long>(timer->read()));
 }
 
 void initLeds() {
@@ -47,9 +46,8 @@ void initButtons() {
 }
 
 void initTimer() {
-  auto &driver = timer_config.init();
-  auto prescaler = timer_config.computePrescaler(1000);
-  driver.setPrescaler(prescaler);
+  auto &driver = deri::soc::timer0();
+  driver.setTickRateHz(1000);
   driver.setPeriod(deri::soc::TimerDriver::Count{500u - 1});
   driver.setPeriodHandler({.func = [](uintptr_t) {
     static unsigned led_active = 0;
