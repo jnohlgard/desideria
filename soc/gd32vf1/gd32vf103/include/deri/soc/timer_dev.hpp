@@ -6,6 +6,7 @@
 
 #include "deri/dev/timer.hpp"
 #include "deri/dev/timer_gd32.hpp"
+#include "deri/dev/timer_riscv.hpp"
 #include "deri/soc/clock_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
 #include "deri/soc/soc.hpp"
@@ -23,6 +24,7 @@ extern soc::TimerPeriph TIMER3;
 extern soc::TimerPeriph TIMER4;
 extern soc::TimerPeriph TIMER5;
 extern soc::TimerPeriph TIMER6;
+extern dev::timer::TimerRiscv MTIME;
 }  // namespace deri::mmio
 
 namespace deri::soc {
@@ -99,6 +101,15 @@ inline auto &timer6() {
     moduleEnable(instance, soc::Clock::APB1::TIMER6EN, mmio::IRQ::TIMER6);
     timers[6] = &instance;
     return instance;
+  }
+  ();
+  return instance;
+}
+inline auto &mtime() {
+  static auto &instance = []() -> auto & {
+    static auto driver =
+        dev::timer::TimerDriver<dev::timer::TimerRiscv>{mmio::MTIME};
+    return driver;
   }
   ();
   return instance;

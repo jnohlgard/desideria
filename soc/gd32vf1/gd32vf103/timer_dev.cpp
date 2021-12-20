@@ -52,4 +52,9 @@ void isr_TIMER4() { timerInterrupt(*deri::soc::timers[4]); }
 void isr_TIMER5() { timerInterrupt(*deri::soc::timers[5]); }
 [[gnu::interrupt]] void isr_TIMER6();
 void isr_TIMER6() { timerInterrupt(*deri::soc::timers[6]); }
+
+[[gnu::interrupt]] void isr_CLIC_INT_TMR();
+void isr_CLIC_INT_TMR() {
+  deri::soc::mtime().channelInterrupt(deri::dev::timer::TimerRiscv::Channel{});
+}
 }

@@ -47,6 +47,7 @@ PROVIDE(USBFS_HOST$      = 0x50000400);
 PROVIDE(USBFS_DEVICE$    = 0x50000800);
 PROVIDE(USBFS_PWRCLK$    = 0x50000e00);
 PROVIDE(WWDGT$           = 0x40002c00);
+PROVIDE(MTIME$           = 0xd1000000);
 
 /* C++ mangled names below */
 PROVIDE(_ZN4deri4mmio4ADC0E = ADC0$);
@@ -95,6 +96,7 @@ PROVIDE(_ZN4deri4mmio10USBFS_HOSTE = USBFS_HOST$);
 PROVIDE(_ZN4deri4mmio12USBFS_DEVICEE = USBFS_DEVICE$);
 PROVIDE(_ZN4deri4mmio12USBFS_PWRCLKE = USBFS_PWRCLK$);
 PROVIDE(_ZN4deri4mmio5WWDGTE = WWDGT$);
+PROVIDE(_ZN4deri4mmio5MTIMEE = MTIME$);
 
 
 /* Interrupt handlers weakly defined to point to the default handler */

@@ -10,6 +10,7 @@ deri_add_library(deri_arch STATIC
   include/deri/arch/syscall.hpp
   include/deri/arch/thread.hpp
   include/deri/mmio/CLIC.hpp
+  include/deri/mmio/MTIME.hpp
   include/deri/mmio/bits/CLIC_bits.hpp
   )
 target_include_directories(deri_arch PUBLIC include)
