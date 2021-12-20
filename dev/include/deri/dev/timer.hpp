@@ -52,14 +52,14 @@ class TimerDriver {
   void setPeriodHandler(PeriodCallback callback);
   void clearPeriodHandler();
 
-  void interruptCallback(Channel channel) const {
-    const auto &callback = callbacks[static_cast<unsigned>(channel)];
+  void channelInterrupt(Channel channel) const {
+    const auto &callback = channel_callbacks[static_cast<unsigned>(channel)];
     if (callback.func != nullptr) {
       callback.func(channel, callback.arg);
     }
   }
 
-  void periodCallback() const {
+  void periodInterrupt() const {
     if (period_callback.func != nullptr) {
       period_callback.func(period_callback.arg);
     }
@@ -86,7 +86,7 @@ class TimerDriver {
     timer->setPrescaler(timer->computePrescaler(module_clock, tick_rate_hz));
   }
   TimerDevice *timer{nullptr};
-  std::array<Callback, TimerDevice::num_channels> callbacks{};
+  std::array<Callback, TimerDevice::num_channels> channel_callbacks{};
   PeriodCallback period_callback{};
   unsigned module_clock{};
   unsigned tick_rate_hz{};
@@ -96,7 +96,7 @@ template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setCompareHandler(Channel channel,
                                                      Callback callback) {
   arch::CriticalSection cs{};
-  callbacks[static_cast<unsigned>(channel)] = callback;
+  channel_callbacks[static_cast<unsigned>(channel)] = callback;
 }
 
 template <class TimerDeviceType>
@@ -104,7 +104,7 @@ void TimerDriver<TimerDeviceType>::clearCompareHandler(Channel channel) {
   arch::CriticalSection cs{};
   timer->disableInterrupt(channel);
   timer->clearInterruptFlag(channel);
-  callbacks[static_cast<unsigned>(channel)] = {};
+  channel_callbacks[static_cast<unsigned>(channel)] = {};
 }
 
 template <class TimerDeviceType>

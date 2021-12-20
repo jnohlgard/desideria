@@ -12,19 +12,19 @@ void timerInterrupt(TimerDriver &driver) {
   dev.clearInterruptFlag(intf);
   using INTF = decltype(intf);
   if (!!(intf & INTF::UPIF)) {
-    driver.periodCallback();
+    driver.periodInterrupt();
   }
   if (!!(intf & INTF::CH0IF)) {
-    driver.interruptCallback(TimerDriver::Channel::CH0);
+    driver.channelInterrupt(TimerDriver::Channel::CH0);
   }
   if (!!(intf & INTF::CH1IF)) {
-    driver.interruptCallback(TimerDriver::Channel::CH1);
+    driver.channelInterrupt(TimerDriver::Channel::CH1);
   }
   if (!!(intf & INTF::CH2IF)) {
-    driver.interruptCallback(TimerDriver::Channel::CH2);
+    driver.channelInterrupt(TimerDriver::Channel::CH2);
   }
   if (!!(intf & INTF::CH3IF)) {
-    driver.interruptCallback(TimerDriver::Channel::CH3);
+    driver.channelInterrupt(TimerDriver::Channel::CH3);
   }
 }
 }  // namespace deri::soc
