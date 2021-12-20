@@ -11,6 +11,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
+#include <limits>
 
 namespace deri::dev {
 
@@ -20,7 +21,7 @@ class TimerManager {
   using TimerDevice = TimerDeviceType;
   using TimerDriver = timer::TimerDriver<TimerDevice>;
   using Count = CountType;
-  using LowerCount = uint32_t;
+  using LowerCount = std::underlying_type_t<typename TimerDevice::Count>;
   enum class Frequency : unsigned long;
   struct Schedulable;
   using TimerCallback =
@@ -72,9 +73,12 @@ class TimerManager {
 
   Count read() {
     auto now_lower = read_lower();
-    if (now_lower < checkpoint) {
-      // Counter wrapped around, update long count
-      count += static_cast<Count>(TimerDriver::max_value) + 1;
+    if constexpr (!std::is_same_v<Count, LowerCount> ||
+                  TimerDriver::max_value < std::numeric_limits<Count>::max()) {
+      if (now_lower < checkpoint) {
+        // Counter wrapped around, update long count
+        count += static_cast<Count>(TimerDriver::max_value) + 1;
+      }
     }
     checkpoint = now_lower;
     return count + now_lower;
