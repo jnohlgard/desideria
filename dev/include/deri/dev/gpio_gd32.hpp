@@ -166,7 +166,7 @@ class GpioManagerGd32 {
   static void enableInterrupt(Gpio gpio);
   static void disableInterrupt(Gpio gpio);
 
-  void interruptCallback(unsigned line) const {
+  void interrupt(unsigned line) const {
     const auto &callback = callbacks[line];
     if (callback.func != nullptr) {
       callback.func(callback.arg);

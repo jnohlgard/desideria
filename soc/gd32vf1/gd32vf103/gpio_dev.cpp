@@ -21,14 +21,14 @@ namespace deri::soc {
 using APB2EN_bits = mmio::RCU_regs::APB2EN_bits;
 
 namespace {
-constexpr std::array gpioPorts{
+constexpr std::array gpio_ports{
     std::ref(gpioa),
     std::ref(gpiob),
     std::ref(gpioc),
     std::ref(gpiod),
     std::ref(gpioe),
 };
-constexpr std::array gpioPortClockEnableBitMasks{
+constexpr std::array gpio_port_clock_enable_bit_masks{
     APB2EN_bits::PAEN,
     APB2EN_bits::PBEN,
     APB2EN_bits::PCEN,
@@ -40,11 +40,11 @@ constexpr std::array gpioPortClockEnableBitMasks{
 GpioManagerGd32 gpio;
 
 GpioPortGd32 &gpioPortDev(Gpio::Port port) {
-  return gpioPorts[static_cast<std::underlying_type_t<Gpio::Port>>(port)];
+  return gpio_ports[static_cast<std::underlying_type_t<Gpio::Port>>(port)];
 }
 
 APB2EN_bits gpioPortClockEnableBits(Gpio::Port port) {
-  return gpioPortClockEnableBitMasks
+  return gpio_port_clock_enable_bit_masks
       [static_cast<std::underlying_type_t<Gpio::Port>>(port)];
 }
 }  // namespace deri::soc
@@ -128,47 +128,56 @@ void ExtiGd32::clicInterruptDisable(ExtiGd32::Line line) {
 using namespace deri;
 
 namespace {
-void gpio_interrupt(unsigned line) {
-  mmio::EXTI.clearPending(static_cast<ExtiGd32::Line>(line));
-  soc::gpio.interruptCallback(line);
-}
 using PD_bits = deri::mmio::EXTI_regs::PD_bits;
-void gpio_interrupts_grouped(PD_bits pending, unsigned line) {
+
+void gpioInterrupt(unsigned line) {
+  mmio::EXTI.clearPending(static_cast<ExtiGd32::Line>(line));
+  soc::gpio.interrupt(line);
+}
+
+void gpioInterruptsGrouped(PD_bits pending, unsigned line) {
   mmio::EXTI.clearPending(pending);
   unsigned pending_lines = static_cast<unsigned>(pending) >> line;
   while (pending_lines != 0) {
     if ((pending_lines & 1) != 0) {
-      soc::gpio.interruptCallback(line);
+      soc::gpio.interrupt(line);
     }
     pending_lines >>= 1;
     ++line;
   }
 }
+
+constexpr PD_bits pendingMask(unsigned group_first, unsigned group_last) {
+  auto group_width = group_last - group_first + 1;
+  return static_cast<PD_bits>(((1u << group_width) - 1) << group_first);
+}
 }  // namespace
 
 extern "C" {
 [[gnu::interrupt]] void isr_EXTI_Line0();
-void isr_EXTI_Line0() { gpio_interrupt(0); }
+void isr_EXTI_Line0() { gpioInterrupt(0); }
 [[gnu::interrupt]] void isr_EXTI_Line1();
-void isr_EXTI_Line1() { gpio_interrupt(1); }
+void isr_EXTI_Line1() { gpioInterrupt(1); }
 [[gnu::interrupt]] void isr_EXTI_Line2();
-void isr_EXTI_Line2() { gpio_interrupt(2); }
+void isr_EXTI_Line2() { gpioInterrupt(2); }
 [[gnu::interrupt]] void isr_EXTI_Line3();
-void isr_EXTI_Line3() { gpio_interrupt(3); }
+void isr_EXTI_Line3() { gpioInterrupt(3); }
 [[gnu::interrupt]] void isr_EXTI_Line4();
-void isr_EXTI_Line4() { gpio_interrupt(4); }
+void isr_EXTI_Line4() { gpioInterrupt(4); }
 [[gnu::interrupt]] void isr_EXTI_line9_5();
 void isr_EXTI_line9_5() {
   auto pending = mmio::EXTI.pending();
-  constexpr unsigned line_number = 5;
-  pending &= static_cast<PD_bits>(0b11111u << line_number);
-  gpio_interrupts_grouped(pending, line_number);
+  constexpr auto group_first = 5u;
+  constexpr auto group_last = 9u;
+  pending &= pendingMask(group_first, group_last);
+  gpioInterruptsGrouped(pending, group_first);
 }
 [[gnu::interrupt]] void isr_EXTI_line15_10();
 void isr_EXTI_line15_10() {
   auto pending = mmio::EXTI.pending();
-  constexpr unsigned line_number = 10;
-  pending &= static_cast<PD_bits>(0b111111u << line_number);
-  gpio_interrupts_grouped(pending, line_number);
+  constexpr auto group_first = 10u;
+  constexpr auto group_last = 15u;
+  pending &= pendingMask(group_first, group_last);
+  gpioInterruptsGrouped(pending, group_first);
 }
 }
