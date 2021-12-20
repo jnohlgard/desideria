@@ -25,15 +25,15 @@ enum class Gpio::Port : unsigned {
 namespace deri::mmio {
 extern dev::gpio::AfioGd32 AFIO;
 extern dev::gpio::ExtiGd32 EXTI;
+extern dev::gpio::GpioPortGd32 GPIOA;
+extern dev::gpio::GpioPortGd32 GPIOB;
+extern dev::gpio::GpioPortGd32 GPIOC;
+extern dev::gpio::GpioPortGd32 GPIOD;
+extern dev::gpio::GpioPortGd32 GPIOE;
 }  // namespace deri::mmio
 
 namespace deri::soc {
 
-extern dev::gpio::GpioPortGd32 gpioa;
-extern dev::gpio::GpioPortGd32 gpiob;
-extern dev::gpio::GpioPortGd32 gpioc;
-extern dev::gpio::GpioPortGd32 gpiod;
-extern dev::gpio::GpioPortGd32 gpioe;
 extern dev::gpio::GpioManagerGd32 gpio;
 
 dev::gpio::GpioPortGd32 &gpioPortDev(dev::gpio::Gpio::Port port);

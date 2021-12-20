@@ -9,7 +9,6 @@ target_include_directories(deri_soc_obj PUBLIC include)
 target_include_directories(deri_soc PUBLIC include)
 if (SOC_MODEL MATCHES "gd32vf103")
   target_link_libraries(deri_soc INTERFACE
-    "${CMAKE_CURRENT_SOURCE_DIR}/ld/gd32vf103_dev.ld"
     "${CMAKE_CURRENT_SOURCE_DIR}/ld/gd32vf103_mmio.ld"
     )
   target_include_directories(deri_soc_obj PUBLIC gd32vf103/include)

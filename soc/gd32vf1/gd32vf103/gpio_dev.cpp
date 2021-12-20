@@ -22,11 +22,11 @@ using APB2EN_bits = mmio::RCU_regs::APB2EN_bits;
 
 namespace {
 constexpr std::array gpio_ports{
-    std::ref(gpioa),
-    std::ref(gpiob),
-    std::ref(gpioc),
-    std::ref(gpiod),
-    std::ref(gpioe),
+    std::ref(mmio::GPIOA),
+    std::ref(mmio::GPIOB),
+    std::ref(mmio::GPIOC),
+    std::ref(mmio::GPIOD),
+    std::ref(mmio::GPIOE),
 };
 constexpr std::array gpio_port_clock_enable_bit_masks{
     APB2EN_bits::PAEN,
