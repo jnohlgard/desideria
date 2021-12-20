@@ -1,0 +1,2 @@
+add_executable(example_hello_log example_hello_log.cpp)
+deri_configure_target(example_hello_log)
