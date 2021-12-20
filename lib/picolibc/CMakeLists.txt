@@ -7,6 +7,7 @@ set(picolibc_extra_config_default
   -Dpicocrt=false
   -Dtinystdio=true
   -Dformat-default=integer
+  -Dio-long-long=true
   )
 if (ARCH STREQUAL hosted)
   list(APPEND picolibc_extra_config_default
