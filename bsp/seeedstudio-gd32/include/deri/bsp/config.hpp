@@ -45,9 +45,14 @@ struct UsecTimerConfig {
   static constexpr uint32_t tick_rate_hz = 1'000'000;
   static auto &driver() { return soc::timer4(); };
 };
+struct MtimeTimerConfig {
+  using TimerManager = dev::TimerManager<dev::timer::TimerRiscv>;
+  static constexpr uint32_t tick_rate_hz = 2'000'000;
+  static auto &driver() { return soc::mtime(); };
+};
 
 using SystemTimerConfig = UsecTimerConfig;
 using HighResolutionTimerConfig = UsecTimerConfig;
-using LowPowerTimerConfig = UsecTimerConfig;
+using LowPowerTimerConfig = MtimeTimerConfig;
 }  // namespace time
 }  // namespace deri::bsp::config
