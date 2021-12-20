@@ -7,7 +7,7 @@
 
 #include <span>
 
-#include <stdio.h>
+#include <cstdio>
 
 using deri::Console;
 using namespace deri::literals;
@@ -16,7 +16,7 @@ int main() {
   auto buffer_view = "Hello world!\n"_span;
   Console::write(std::as_bytes(buffer_view));
   puts("Hello world from puts\n");
-  while (1) {
+  while (true) {
     asm volatile("" ::: "memory");
   }
   __builtin_unreachable();
