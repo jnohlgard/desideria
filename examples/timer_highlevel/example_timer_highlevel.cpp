@@ -3,16 +3,21 @@
  */
 
 #include "deri/bsp/config.hpp"
+#include "deri/log.hpp"
 #include "deri/time.hpp"
 
 #include <algorithm>
 #include <array>
 
-#include <stdio.h>
-
 namespace config {
 using namespace deri::bsp::config;
 }
+
+namespace log {
+struct Example;
+}
+
+using Logger = deri::log::Logger<log::Example>;
 
 using GpioOut = deri::dev::gpio::GpioOutGd32;
 using GpioManager = deri::dev::gpio::GpioManagerGd32;
@@ -22,10 +27,10 @@ void buttonCallback(uintptr_t id) {
   auto now = deri::SystemTimer::now().time_since_epoch();
   long now_ticks = now.count();
   auto now_ms(std::chrono::duration_cast<std::chrono::milliseconds>(now));
-  printf("Callback for button %u at time %ld ms (%ld ticks)\n",
-         static_cast<unsigned>(id),
-         static_cast<long>(now_ms.count()),
-         now_ticks);
+  Logger::printf("Callback for button %u at time %ld ms (%ld ticks)\n",
+                 static_cast<unsigned>(id),
+                 static_cast<long>(now_ms.count()),
+                 now_ticks);
 }
 
 void initLeds() {
@@ -89,10 +94,10 @@ void initTimers() {
 }
 
 int main() {
-  puts("High level timer example");
-  printf("Each timer tick is %ld / %ld seconds\n",
-         static_cast<long>(deri::SystemTimer::period::num),
-         static_cast<long>(deri::SystemTimer::period::den));
+  Logger::printf("High level timer example\n");
+  Logger::printf("Each timer tick is %ld / %ld seconds\n",
+                 static_cast<long>(deri::SystemTimer::period::num),
+                 static_cast<long>(deri::SystemTimer::period::den));
   initLeds();
   initButtons();
   initTimers();
@@ -102,14 +107,14 @@ int main() {
       asm volatile("" ::: "memory");
     }
     unsigned num_updates = ScheduledLed::num_updates.exchange(0);
-    printf("after %4u updates: %ld: %10ld %ld: %10ld %ld: %10ld\n",
-           num_updates,
-           static_cast<long>(schedulables[0].timeout),
-           static_cast<long>(schedulables[0].last_event),
-           static_cast<long>(schedulables[1].timeout),
-           static_cast<long>(schedulables[1].last_event),
-           static_cast<long>(schedulables[2].timeout),
-           static_cast<long>(schedulables[2].last_event));
+    Logger::printf("after %4u updates: %ld: %10ld %ld: %10ld %ld: %10ld\n",
+                   num_updates,
+                   static_cast<long>(schedulables[0].timeout),
+                   static_cast<long>(schedulables[0].last_event),
+                   static_cast<long>(schedulables[1].timeout),
+                   static_cast<long>(schedulables[1].last_event),
+                   static_cast<long>(schedulables[2].timeout),
+                   static_cast<long>(schedulables[2].last_event));
   }
   return 0;
 }
