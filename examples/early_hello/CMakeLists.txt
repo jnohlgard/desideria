@@ -1,2 +1,0 @@
-add_executable(example_early_hello example_early_hello.cpp)
-deri_configure_target(example_early_hello)
