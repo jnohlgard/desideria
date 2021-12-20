@@ -19,12 +19,13 @@ struct Example;
 
 using Logger = deri::log::Logger<log::Example>;
 
+using Timer = deri::SystemTimer;
 using GpioOut = deri::dev::gpio::GpioOutGd32;
 using GpioManager = deri::dev::gpio::GpioManagerGd32;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 void buttonCallback(uintptr_t id) {
-  auto now = deri::SystemTimer::now().time_since_epoch();
+  auto now = Timer::now().time_since_epoch();
   long now_ticks = now.count();
   auto now_ms(std::chrono::duration_cast<std::chrono::milliseconds>(now));
   Logger::printf("Callback for button %u at time %ld ms (%ld ticks)\n",
@@ -53,22 +54,21 @@ void initButtons() {
   }
 }
 
-struct ScheduledLed : public deri::SystemTimer::Schedulable {
+struct ScheduledLed : public Timer::Schedulable {
   GpioOut led{};
-  deri::SystemTimer::TimerManager::Count timeout{};
-  deri::SystemTimer::TimerManager::Count last_event{};
+  Timer::TimerManager::Count timeout{};
+  Timer::TimerManager::Count last_event{};
   inline static std::atomic_uint num_updates{0};
 };
 
 static std::array<ScheduledLed, config::leds.size()> schedulables;
 
-void timerCallback(deri::SystemTimer::TimerManager &timer,
-                   deri::SystemTimer::Schedulable &schedulable,
+void timerCallback(Timer::TimerManager &timer,
+                   Timer::Schedulable &schedulable,
                    uintptr_t arg) {
   auto led_schedule = reinterpret_cast<ScheduledLed *>(arg);
   led_schedule->led.toggle();
-  led_schedule->last_event =
-      deri::SystemTimer::now().time_since_epoch().count();
+  led_schedule->last_event = Timer::now().time_since_epoch().count();
   schedulable.target += led_schedule->timeout;
   timer.schedule(schedulable);
   ++ScheduledLed::num_updates;
@@ -78,7 +78,7 @@ void initTimers() {
   auto arg = 0;
   auto timeout_prev = 1;
   auto timeout = 1;
-  auto base = deri::SystemTimer::now().time_since_epoch().count();
+  auto base = Timer::now().time_since_epoch().count();
 
   for (auto &&schedulable : schedulables) {
     auto tmp = timeout;
@@ -89,15 +89,15 @@ void initTimers() {
     schedulable.callback.arg = reinterpret_cast<uintptr_t>(&schedulable);
     schedulable.callback.func = timerCallback;
     schedulable.target = schedulable.timeout + base;
-    deri::SystemTimer::schedule(schedulable);
+    Timer::schedule(schedulable);
   }
 }
 
 int main() {
   Logger::printf("High level timer example\n");
   Logger::printf("Each timer tick is %ld / %ld seconds\n",
-                 static_cast<long>(deri::SystemTimer::period::num),
-                 static_cast<long>(deri::SystemTimer::period::den));
+                 static_cast<long>(Timer::period::num),
+                 static_cast<long>(Timer::period::den));
   initLeds();
   initButtons();
   initTimers();
