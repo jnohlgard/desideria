@@ -5,7 +5,7 @@
 #include "deri/bsp/config.hpp"
 #include "deri/soc/gpio_dev.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 
 void buttonCallback(uintptr_t id) {
   printf("Callback for button %u\n", static_cast<unsigned>(id));
