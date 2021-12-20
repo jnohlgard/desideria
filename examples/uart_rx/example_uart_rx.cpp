@@ -3,12 +3,17 @@
  */
 
 #include "deri/bsp/console.hpp"
+#include "deri/log.hpp"
 #include "deri/mutex.hpp"
 #include "deri/ring_buffer.hpp"
 
 #include <cstddef>
 
-#include <stdio.h>
+namespace log {
+struct Example;
+}  // namespace log
+
+using Logger = deri::log::Logger<log::Example>;
 
 deri::Mutex rx_signal{};
 
@@ -21,8 +26,8 @@ void onUartRx(std::byte data, uintptr_t) {
 }
 
 int main() {
-  puts("UART RX tester");
-  puts("Anything received over this UART will be reported back");
+  Logger::printf("UART RX tester\n");
+  Logger::printf("Anything received over this UART will be reported back\n");
 
   deri::bsp::console().setRxCallback({onUartRx});
 
@@ -30,9 +35,9 @@ int main() {
   while (true) {
     rx_signal.lock();
     while (auto data = rx_buffer.get()) {
-      printf("RX: %02x '%c'\n",
-             static_cast<unsigned>(*data),
-             static_cast<char>(*data));
+      Logger::printf("RX: %02x '%c'\n",
+                     static_cast<unsigned>(*data),
+                     static_cast<char>(*data));
     }
   }
   return 0;
