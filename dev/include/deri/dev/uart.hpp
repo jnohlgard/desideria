@@ -64,6 +64,13 @@ class UartIrqDriver {
     }
   }
 
+  /**
+   * Write a single byte, blocking
+   *
+   * @param data
+   */
+  void write(std::byte data) { write(std::span<const std::byte, 1>(&data, 1)); }
+
   void setRxCallback(RxCallback new_callback) {
     rx_callback = new_callback;
     if (rx_callback.func != nullptr) {
