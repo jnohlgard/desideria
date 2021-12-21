@@ -15,6 +15,6 @@ namespace deri::bsp {
 void init() {
   soc::init();
   sys::time::init();
-  deri::Console::write(std::as_bytes("Board init done\n"_span));
+  Console::write(std::as_bytes("Board init done\n"_span));
 }
 }  // namespace deri::bsp
