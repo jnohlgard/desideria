@@ -14,7 +14,6 @@ using Console = dev::uart::UartIrqDriver<dev::uart::UsartGd32>;
 inline Console &console() {
   static auto &instance = []() -> auto & {
     auto &instance = soc::uart0();
-    instance.init();
     instance.setBaud(115200);
     soc::gpio.initOutAfio(config::console_tx_pin);
     if (config::console_rx_pin) {
