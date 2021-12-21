@@ -20,6 +20,7 @@ target_link_libraries(deri_bsp_periph INTERFACE
   deri_dev_gpio_gd32
   deri_dev_irq_clic
   deri_dev_timer_gd32
+  deri_dev_timer_riscv
   deri_dev_usart_gd32
   )
 
