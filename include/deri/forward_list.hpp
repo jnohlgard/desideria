@@ -9,6 +9,9 @@
 
 namespace deri {
 
+template <typename ValueType>
+class ForwardList;
+
 // Use CRTP to include this class in the ValueType class.
 template <class ValueType>
 class ForwardListNode {
@@ -83,14 +86,10 @@ class ForwardListNode {
     friend typename ForwardListNode<const Value>::Iterator;
   };
 
-  Value *next;
+  friend ForwardList<Value>;
 
  private:
-};
-
-template <typename Element>
-concept ForwardListCompatible = requires(Element element) {
-  { element.next } -> std::convertible_to<Element *>;
+  Value *next;
 };
 
 /**
@@ -99,8 +98,12 @@ concept ForwardListCompatible = requires(Element element) {
  * @tparam ValueType Type of the list elements, must have a ValueType * next
  * member.
  */
-template <ForwardListCompatible ValueType>
+template <typename ValueType>
 class ForwardList {
+  static_assert(requires(ValueType element) {
+    { element.next } -> std::convertible_to<ValueType *>;
+  });
+
  public:
   using Value = ValueType;
   using Iterator = typename ForwardListNode<Value>::Iterator;
