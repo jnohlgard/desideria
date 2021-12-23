@@ -108,8 +108,6 @@ class Thread : public ForwardListNode<Thread> {
 
   void start();
 
-  void yield();
-
   void setPriority(Priority new_priority) { priority = new_priority; }
 
   void block(Status status);
@@ -139,18 +137,22 @@ class Thread : public ForwardListNode<Thread> {
   std::span<const char> name{};
 
   inline static std::atomic<unsigned> next_thread_id{};
+
+  friend Scheduler;
 };
 
 class Scheduler {
  public:
   [[noreturn]] static void init();
 
-  static Thread &activeThread() { return run_queue.front(); }
+  static Thread &activeThread() { return *active_thread; }
 
   /**
-   * Move a Thread to the end of the run queue for its given priority
+   * Start a thread
+   *
+   * @param thread A created but not yet started Thread
    */
-  static void yield(Thread &thread);
+  static void start(Thread &thread);
 
   /**
    * Yield the currently running Thread
@@ -163,11 +165,17 @@ class Scheduler {
   static void block(Thread &thread);
 
   /**
+   * Add a Thread to the run queue
+   */
+  static void unblock(Thread &thread);
+
+  /**
    * Perform a context switch iff the currently active thread has changed
    */
   static void update() { arch::syscall(Syscall::SCHEDULER_UPDATE); }
 
  private:
+  inline static Thread *volatile active_thread{nullptr};
   inline static Thread::PriorityQueue run_queue{};
 };
 

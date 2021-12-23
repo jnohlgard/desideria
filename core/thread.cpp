@@ -19,7 +19,7 @@ int main();
 
 namespace deri {
 
-void Thread::start() { Scheduler::yield(*this); }
+void Thread::start() { Scheduler::start(*this); }
 
 void Thread::block(Status blocked_status) {
   status = blocked_status;
@@ -28,7 +28,7 @@ void Thread::block(Status blocked_status) {
 
 void Thread::unblock() {
   status = Status::WAITING;
-  Scheduler::yield(*this);
+  Scheduler::unblock(*this);
 }
 
 void Scheduler::init() {
@@ -55,10 +55,12 @@ void Scheduler::init() {
   __builtin_unreachable();
 }
 
-void Scheduler::yield(Thread &thread) {
+void Scheduler::start(Thread &thread) {
   arch::CriticalSection cs{};
-  run_queue.remove(thread);
-  run_queue.push(thread);
+  if (thread.status == Thread::Status::WAITING) {
+    run_queue.remove(thread);
+    run_queue.push(thread);
+  }
 }
 
 void Scheduler::block(Thread &thread) {
@@ -66,11 +68,20 @@ void Scheduler::block(Thread &thread) {
   run_queue.remove(thread);
 }
 
+void Scheduler::unblock(Thread &thread) {
+  arch::CriticalSection cs{};
+  run_queue.remove(thread);
+  thread.status = Thread::Status::WAITING;
+  run_queue.push(thread);
+}
+
 void Scheduler::yield() {
   arch::CriticalSection cs{};
-  auto &current_thread = activeThread();
-  run_queue.pop();
-  run_queue.push(current_thread);
+  if (active_thread != nullptr) {
+    run_queue.remove(*active_thread);
+    active_thread->status = Thread::Status::WAITING;
+    run_queue.push(*active_thread);
+  }
   update();
 }
 
