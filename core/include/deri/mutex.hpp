@@ -36,7 +36,7 @@ class Mutex {
   }
 
  private:
-  Thread::PriorityList waiters{};
+  Thread::PriorityQueue waiters{};
   std::atomic_flag state{};
 };
 }  // namespace deri

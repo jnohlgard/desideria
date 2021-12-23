@@ -56,7 +56,7 @@ class Thread : public ForwardListNode<Thread> {
     [[no_unique_address]] Compare compare{};
   };
 
-  using PriorityList =
+  using PriorityQueue =
       OrderedForwardList<Thread, Thread::PriorityCompare<std::less_equal<>>>;
 
   Thread(const Thread &) = delete;
@@ -168,7 +168,7 @@ class Scheduler {
   static void update() { arch::syscall(Syscall::SCHEDULER_UPDATE); }
 
  private:
-  inline static Thread::PriorityList run_queue{};
+  inline static Thread::PriorityQueue run_queue{};
 };
 
 }  // namespace deri
