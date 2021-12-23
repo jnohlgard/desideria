@@ -6,8 +6,8 @@
 
 #include "deri/arch/syscall.hpp"
 #include "deri/arch/thread.hpp"
-#include "deri/list.hpp"
 #include "deri/log.hpp"
+#include "deri/ordered_forward_list.hpp"
 #include "deri/span_align.hpp"
 #include "deri/syscall.hpp"
 

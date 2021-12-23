@@ -6,12 +6,13 @@
 
 #include "deri/dev/timer.hpp"
 #include "deri/irq.hpp"
-#include "deri/list.hpp"
+#include "deri/ordered_forward_list.hpp"
 
 #include <atomic>
 #include <chrono>
 #include <cstdint>
 #include <limits>
+#include <type_traits>
 
 namespace deri::dev {
 
