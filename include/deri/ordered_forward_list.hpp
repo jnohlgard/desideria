@@ -44,7 +44,7 @@ class OrderedForwardList {
     while (iterator != list.end() && do_compare(*iterator, to_insert)) {
       ++iterator;
     }
-    iterator.insertBeforeMe(to_insert);
+    list.insert(iterator, to_insert);
     return iterator;
   }
 

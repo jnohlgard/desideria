@@ -59,6 +59,11 @@ class ForwardListNode {
       return old;
     }
 
+    constexpr static typename ForwardListNode<const Value>::Iterator end() {
+      return {end_sentinel};
+    }
+
+   private:
     void remove() requires(!std::is_const_v<Value>) {
       auto &removed = *before;
       *before = next();
@@ -70,11 +75,6 @@ class ForwardListNode {
       *before = &element;
     }
 
-    constexpr static typename ForwardListNode<const Value>::Iterator end() {
-      return {end_sentinel};
-    }
-
-   private:
     ValuePtr next() const { return (*before)->next; }
     // We keep a pointer to the ::next member of the element before this element
     // in order to allow us to insert before the given item
@@ -84,6 +84,7 @@ class ForwardListNode {
     // Let const and non-const iterators access each other's before pointers:
     friend typename ForwardListNode<std::remove_const_t<Value>>::Iterator;
     friend typename ForwardListNode<const Value>::Iterator;
+    friend ForwardList<Value>;
   };
 
   friend ForwardList<Value>;
@@ -139,7 +140,7 @@ class ForwardList {
   }
 
   Iterator insert(Iterator pos, Value &element) {
-    pos.insert(element);
+    pos.insertBeforeMe(element);
     return pos;
   }
 
