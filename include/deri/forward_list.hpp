@@ -65,7 +65,7 @@ class ForwardListNode {
 
    private:
     void remove() requires(!std::is_const_v<Value>) {
-      auto &removed = *before;
+      auto *removed = *before;
       *before = next();
       removed->next = nullptr;
     }
