@@ -99,15 +99,17 @@ class UartIrqDriver {
     // using writeSpin() to print stuff)
     tx_irq_signal.lock();
     while (!buffer.empty()) {
-      arch::CriticalSection cs{};
-      buffer = tryWrite(buffer);
-      if (buffer.empty()) {
-        // Wait for transmission complete
-        uart.disableTxInterrupts();
-        uart.enableTxCompleteInterrupt();
-      } else {
-        // Wait for empty transmit buffer
-        uart.enableTxBufferAvailableInterrupt();
+      {
+        arch::CriticalSection cs{};
+        buffer = tryWrite(buffer);
+        if (buffer.empty()) {
+          // Wait for transmission complete
+          uart.disableTxInterrupts();
+          uart.enableTxCompleteInterrupt();
+        } else {
+          // Wait for empty transmit buffer
+          uart.enableTxBufferAvailableInterrupt();
+        }
       }
       // Block until interrupt handler has run
       tx_irq_signal.lock();
