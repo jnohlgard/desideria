@@ -107,8 +107,7 @@ inline auto &timer6() {
 }
 inline auto &mtime() {
   static auto &instance = []() -> auto & {
-    static auto driver =
-        dev::timer::TimerDriver<dev::timer::TimerRiscv>{mmio::MTIME};
+    static auto driver = dev::timer::TimerDriver{mmio::MTIME};
     return driver;
   }
   ();
