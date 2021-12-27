@@ -2,6 +2,7 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
+#include "deri/log.hpp"
 #include "deri/arch/thread.hpp"
 
 #define DECLARE_CAUSE(description, label) \
@@ -10,6 +11,10 @@
 #include "riscv/csr/encoding.h"
 
 #include <cstdio>
+
+namespace deri::log {
+struct Kernel;
+}
 
 namespace deri::arch {
 
@@ -81,28 +86,34 @@ const std::array mcause_descriptions = {
 }
 
 void dumpContext(const SavedContext &context) {
-  long mcause = read_csr(mcause);
-  auto hartid = read_csr(mhartid);
+  using Logger = log::Logger<log::Kernel>;
   bool do_ebreak = true;
-  if (mcause < 0) {
-    printf("Unhandled interrupt on hart %lu\n", hartid);
-  } else {
-    auto description = "unknown";
-    if ((mcause & 0xff) == CAUSE_BREAKPOINT) {
-      do_ebreak = false;
+  auto hartid = read_csr(mhartid);
+  if (context.pc != 0) {
+    long mcause = read_csr(mcause);
+    if (mcause < 0) {
+      Logger::printf("Unhandled interrupt on hart %lu\n", hartid);
+    } else {
+      auto description = "unknown";
+      if ((mcause & 0xff) == CAUSE_BREAKPOINT) {
+        do_ebreak = false;
+      }
+      if ((mcause & 0xff) < mcause_descriptions.size()) {
+        description = mcause_descriptions[mcause & 0xff];
+      }
+      Logger::printf("Exception on hart %lu: %s\n", hartid, description);
     }
-    if ((mcause & 0xff) < mcause_descriptions.size()) {
-      description = mcause_descriptions[mcause & 0xff];
-    }
-    printf("Exception on hart %lu: %s\n", hartid, description);
   }
-  printf("Context:\n");
+  Logger::critical("Context dump on hart %lu:\n", hartid);
   auto saved_registers = reinterpret_cast<const void *const *>(&context);
   for (unsigned k = 0; k < SavedContext::register_names.size(); ++k) {
-    printf("%8s: %p\n", SavedContext::register_names[k], saved_registers[k]);
+    Logger::critical(
+        "%8s: %p\n", SavedContext::register_names[k], saved_registers[k]);
   }
-  printf("mscratch: %p\n", reinterpret_cast<const void *>(read_csr(mscratch)));
+  Logger::critical("mscratch: %p\n",
+                   reinterpret_cast<const void *>(read_csr(mscratch)));
   if (do_ebreak) {
+    Logger::critical("Break for debugger...\n");
     asm volatile("ebreak" ::: "memory");
   }
 }
