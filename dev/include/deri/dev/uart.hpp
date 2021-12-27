@@ -72,60 +72,14 @@ class UartIrqDriver {
    */
   void write(std::byte data) { write(std::span<const std::byte, 1>(&data, 1)); }
 
-  void setRxCallback(RxCallback new_callback) {
-    rx_callback = new_callback;
-    if (rx_callback.func != nullptr) {
-      uart.enableRxInterrupt();
-    } else {
-      uart.disableRxInterrupt();
-    }
-  }
+  void setRxCallback(RxCallback new_callback);
 
-  void interrupt() {
-    if (uart.checkAndClearTxIrq()) {
-      tx_irq_signal.unlock();
-    }
-    // drain the RX buffer
-    while (auto data = uart.getRxByte()) {
-      if (rx_callback.func != nullptr) {
-        rx_callback.func(*data, rx_callback.arg);
-      }
-    }
-  }
+  void interrupt();
 
  private:
-  void writeIrq(std::span<const std::byte> buffer) {
-    std::scoped_lock lock{tx_mutex};
-    // We have exclusive access to the UART (except for any interrupt handlers
-    // using writeSpin() to print stuff)
-    tx_irq_signal.lock();
-    while (!buffer.empty()) {
-      {
-        arch::CriticalSection cs{};
-        buffer = tryWrite(buffer);
-        if (buffer.empty()) {
-          // Wait for transmission complete
-          uart.disableTxInterrupts();
-          uart.enableTxCompleteInterrupt();
-        } else {
-          // Wait for empty transmit buffer
-          uart.enableTxBufferAvailableInterrupt();
-        }
-      }
-      // Block until interrupt handler has run
-      tx_irq_signal.lock();
-    }
-    uart.disableTxInterrupts();
-    tx_irq_signal.unlock();
-  }
+  void writeIrq(std::span<const std::byte> buffer);
 
-  void writeSpin(std::span<const std::byte> buffer) {
-    // Intentionally not taking the tx_mutex to allow writing from interrupt
-    // context, e.g. for console debug messages from within an interrupt handler
-    while (!buffer.empty()) {
-      buffer = tryWrite(buffer);
-    }
-  }
+  void writeSpin(std::span<const std::byte> buffer);
   void updateBaudReg() { uart.setBaud(module_clock, baudrate); }
 
   UartDevice &uart{};
@@ -135,4 +89,62 @@ class UartIrqDriver {
   unsigned module_clock{};
   unsigned baudrate{};
 };
+
+template <class UartDeviceType>
+void UartIrqDriver<UartDeviceType>::setRxCallback(
+    UartIrqDriver::RxCallback new_callback) {
+  rx_callback = new_callback;
+  if (rx_callback.func != nullptr) {
+    uart.enableRxInterrupt();
+  } else {
+    uart.disableRxInterrupt();
+  }
+}
+template <class UartDeviceType>
+void UartIrqDriver<UartDeviceType>::interrupt() {
+  if (uart.checkAndClearTxIrq()) {
+    tx_irq_signal.unlock();
+  }
+  // drain the RX buffer
+  while (auto data = uart.getRxByte()) {
+    if (rx_callback.func != nullptr) {
+      rx_callback.func(*data, rx_callback.arg);
+    }
+  }
+}
+template <class UartDeviceType>
+void UartIrqDriver<UartDeviceType>::writeIrq(
+    std::span<const std::byte> buffer) {
+  std::scoped_lock lock{tx_mutex};
+  // We have exclusive access to the UART (except for any interrupt handlers
+  // using writeSpin() to print stuff)
+  tx_irq_signal.lock();
+  while (!buffer.empty()) {
+    {
+      arch::CriticalSection cs{};
+      buffer = tryWrite(buffer);
+      if (buffer.empty()) {
+        // Wait for transmission complete
+        uart.disableTxInterrupts();
+        uart.enableTxCompleteInterrupt();
+      } else {
+        // Wait for empty transmit buffer
+        uart.enableTxBufferAvailableInterrupt();
+      }
+    }
+    // Block until interrupt handler has run
+    tx_irq_signal.lock();
+  }
+  uart.disableTxInterrupts();
+  tx_irq_signal.unlock();
+}
+template <class UartDeviceType>
+void UartIrqDriver<UartDeviceType>::writeSpin(
+    std::span<const std::byte> buffer) {
+  // Intentionally not taking the tx_mutex to allow writing from interrupt
+  // context, e.g. for console debug messages from within an interrupt handler
+  while (!buffer.empty()) {
+    buffer = tryWrite(buffer);
+  }
+}
 }  // namespace deri::dev::uart
