@@ -11,6 +11,7 @@
 #include "deri/dev/timer_manager.hpp"
 #include "deri/soc/gpio_dev.hpp"
 #include "deri/soc/timer_dev.hpp"
+#include "deri/soc/clock_dev.hpp"
 
 #include <array>
 #include <cstdint>
@@ -37,6 +38,8 @@ inline constexpr std::array buttons{
 inline constexpr dev::gpio::Gpio console_tx_pin{dev::gpio::Gpio::Port::A, 9};
 inline constexpr std::optional<dev::gpio::Gpio> console_rx_pin{
     {dev::gpio::Gpio::Port::A, 10}};
+
+inline constexpr auto clock = soc::Clock::HxtalConfig{};
 
 namespace time {
 
