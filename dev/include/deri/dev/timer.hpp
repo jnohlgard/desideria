@@ -18,6 +18,7 @@ class TimerDriver {
   using Count = typename TimerDevice::Count;
   using Channel = typename TimerDevice::Channel;
   using Prescaler = typename TimerDevice::Prescaler;
+  static constexpr auto driver_name = "TimerDriver";
   static constexpr auto max_value = TimerDevice::max_value;
   static constexpr auto num_channels = TimerDevice::num_channels;
 

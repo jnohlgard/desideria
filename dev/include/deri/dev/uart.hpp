@@ -19,6 +19,7 @@ class UartIrqDriver {
  public:
   using UartDevice = UartDeviceType;
   using RxCallback = Callback<void(std::byte, uintptr_t)>;
+  static constexpr auto driver_name = "UartIrqDriver";
 
   explicit UartIrqDriver(UartDevice &uart) : uart(uart) {}
 
