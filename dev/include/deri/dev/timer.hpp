@@ -26,9 +26,9 @@ class TimerDriver {
 
   explicit TimerDriver(TimerDevice &timer) : timer(&timer) {}
   TimerDriver() = default;
-  TimerDriver(const TimerDriver &) = default;
+  TimerDriver(const TimerDriver &) = delete;
   TimerDriver(TimerDriver &&) noexcept = default;
-  TimerDriver &operator=(const TimerDriver &) = default;
+  TimerDriver &operator=(const TimerDriver &) = delete;
   TimerDriver &operator=(TimerDriver &&) noexcept = default;
 
   void init() { timer->init(); }
