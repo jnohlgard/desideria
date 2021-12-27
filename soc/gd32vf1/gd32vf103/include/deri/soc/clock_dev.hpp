@@ -31,6 +31,7 @@ class Clock {
 
   using HxtalConfig = dev::clock::RcuGd32::HxtalConfig;
   using Irc8MConfig = dev::clock::RcuGd32::Irc8MConfig;
+  using PllConfig = dev::clock::RcuGd32::PllConfig;
 
   template <typename Bits>
   static void enable(Bits bits) {
