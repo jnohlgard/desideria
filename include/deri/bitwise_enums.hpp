@@ -14,7 +14,7 @@ concept Bitmask = requires(Enum mask) {
 };
 
 template <Bitmask Enum>
-bool operator!(Enum operand) {
+constexpr bool operator!(Enum operand) {
   return operand == static_cast<Enum>(0);
 }
 
