@@ -31,9 +31,16 @@ class LogToStdout;
 template <typename Domain, class OutputClass>
 class LoggerImpl;
 
+/// Default logger config when nothing is defined
 struct DefaultConfig {
   using Output = LogToStdout;
-  static inline Level level = Level::CRITICAL;
+  static constexpr Level level = Level::CRITICAL;
+};
+
+/// Convenience base class to set the log level with less typing.
+template <Level log_level>
+struct LogConfig {
+  static constexpr Level level{log_level};
 };
 
 template <typename Domain>
