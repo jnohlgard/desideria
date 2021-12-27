@@ -5,14 +5,21 @@
 #pragma once
 
 #include "deri/irq.hpp"
+#include "deri/log.hpp"
 #include "deri/mmio/bits/RCU_bits.hpp"
 #include "deri/panic.hpp"
 
 #include <optional>
 
+namespace deri::log {
+struct RcuGd32;
+}
+
 namespace deri::dev::clock {
 
 class RcuGd32 {
+  using Logger = log::Logger<log::RcuGd32>;
+
  public:
   using AHBEN_bits = mmio::RCU_regs::AHBEN_bits;
   using APB1EN_bits = mmio::RCU_regs::APB1EN_bits;
@@ -31,21 +38,25 @@ class RcuGd32 {
       auto ahb_bits = ahbBits(ahb);
       CFG0_bits cfg0{};
       if (!ahb_bits.has_value()) {
+        Logger::error("Invalid AHB prescaler setting %u\n", ahb);
         panic();
       }
       cfg0 |= *ahb_bits;
       auto apb1_bits = apb1Bits(apb1);
       if (!apb1_bits.has_value()) {
+        Logger::error("Invalid APB1 prescaler setting %u\n", apb1);
         panic();
       }
       cfg0 |= *apb1_bits;
       auto apb2_bits = apb2Bits(apb2);
       if (!apb2_bits.has_value()) {
+        Logger::error("Invalid APB2 prescaler setting %u\n", apb2);
         panic();
       }
       cfg0 |= *apb2_bits;
       auto adc_bits = adcBits(adc);
       if (!adc_bits.has_value()) {
+        Logger::error("Invalid ADC prescaler setting %u\n", adc);
         panic();
       }
       cfg0 |= *adc_bits;
