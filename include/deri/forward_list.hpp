@@ -71,6 +71,9 @@ class ForwardListNode {
     }
 
     void insertBeforeMe(Value &element) {
+      if (*before != nullptr && element.next == *before) {
+        asm volatile("ebreak");
+      }
       element.next = *before;
       *before = &element;
     }
@@ -90,7 +93,7 @@ class ForwardListNode {
   friend ForwardList<Value>;
 
  private:
-  Value *next;
+  Value *next{nullptr};
 };
 
 /**
