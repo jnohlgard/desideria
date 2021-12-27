@@ -38,59 +38,40 @@ class TimerDriver {
   void stop() { timer->stop(); }
 
   void setPrescaler(Prescaler prescaler) { timer->setPrescaler(prescaler); }
+  void setTickRateHz(unsigned new_tick_rate_hz);
+  void updateModuleClock(unsigned new_clock);
 
   void setPeriod(Count period) { timer->setPeriod(period); }
-  void setCompare(Channel channel, Count target) {
-    timer->disableInterrupt(channel);
-    timer->clearInterruptFlag(channel);
-    timer->setCompare(channel, target);
-    timer->enableInterrupt(channel);
-  }
+  void setCompare(Channel channel, Count target);
 
   void setCompareHandler(Channel channel, Callback callback);
   void clearCompareHandler(Channel channel);
   void setPeriodHandler(PeriodCallback callback);
   void clearPeriodHandler();
 
-  void channelInterrupt(Channel channel) const {
-    const auto &callback = channel_callbacks[static_cast<unsigned>(channel)];
-    if (callback.func != nullptr) {
-      callback.func(channel, callback.arg);
-    }
-  }
-
-  void periodInterrupt() const {
-    if (period_callback.func != nullptr) {
-      period_callback.func(period_callback.arg);
-    }
-  }
+  void channelInterrupt(Channel channel) const;
+  void periodInterrupt() const;
 
   const TimerDevice &underlyingTimer() const { return *timer; }
   TimerDevice &underlyingTimer() { return *timer; }
 
-  void setTickRateHz(unsigned new_tick_rate_hz) {
-    tick_rate_hz = new_tick_rate_hz;
-    updatePrescaler();
-  }
-
-  void updateModuleClock(unsigned new_clock) {
-    module_clock = new_clock;
-    updatePrescaler();
-  }
-
  private:
-  void updatePrescaler() {
-    if (tick_rate_hz == 0) {
-      return;
-    }
-    timer->setPrescaler(timer->computePrescaler(module_clock, tick_rate_hz));
-  }
+  void updatePrescaler();
+
   TimerDevice *timer{nullptr};
   std::array<Callback, TimerDevice::num_channels> channel_callbacks{};
   PeriodCallback period_callback{};
   unsigned module_clock{};
   unsigned tick_rate_hz{};
 };
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::setCompare(Channel channel, Count target) {
+  timer->disableInterrupt(channel);
+  timer->clearInterruptFlag(channel);
+  timer->setCompare(channel, target);
+  timer->enableInterrupt(channel);
+}
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::setCompareHandler(Channel channel,
@@ -123,4 +104,41 @@ void TimerDriver<TimerDeviceType>::clearPeriodHandler() {
   timer->clearPeriodFlag();
   period_callback = {};
 }
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::updateModuleClock(unsigned int new_clock) {
+  module_clock = new_clock;
+  updatePrescaler();
+}
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::updatePrescaler() {
+  if (tick_rate_hz == 0) {
+    return;
+  }
+  timer->setPrescaler(timer->computePrescaler(module_clock, tick_rate_hz));
+}
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::setTickRateHz(
+    unsigned int new_tick_rate_hz) {
+  tick_rate_hz = new_tick_rate_hz;
+  updatePrescaler();
+}
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::channelInterrupt(Channel channel) const {
+  const auto &callback = channel_callbacks[static_cast<unsigned>(channel)];
+  if (callback.func != nullptr) {
+    callback.func(channel, callback.arg);
+  }
+}
+
+template <class TimerDeviceType>
+void TimerDriver<TimerDeviceType>::periodInterrupt() const {
+  if (period_callback.func != nullptr) {
+    period_callback.func(period_callback.arg);
+  }
+}
+
 }  // namespace deri::dev::timer
