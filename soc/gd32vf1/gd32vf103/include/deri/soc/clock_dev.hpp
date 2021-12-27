@@ -15,9 +15,6 @@ extern dev::clock::RcuGd32 RCU;
 
 namespace deri::log {
 struct Clock;
-struct Clock {
-  static constexpr inline auto level = Level::INFO;
-};
 }  // namespace deri::log
 
 namespace deri::soc {
