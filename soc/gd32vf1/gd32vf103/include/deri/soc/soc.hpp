@@ -35,5 +35,6 @@ inline void moduleEnable(Driver &driver, ClockEnable clock_bits, Irqs... irqs) {
   driver.init();
   driver.updateModuleClock(moduleClock(clock_bits));
   (Irq::enable(irqs), ...);
+  Clock::onClockChange(driver.clockChangeCallback(), clock_bits);
 }
 }  // namespace deri::soc

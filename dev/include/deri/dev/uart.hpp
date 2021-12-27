@@ -75,6 +75,7 @@ class UartIrqDriver {
   void setRxCallback(RxCallback new_callback);
 
   void interrupt();
+  clock::OnClockChange &clockChangeCallback() { return on_clock_change; }
 
  private:
   void writeIrq(std::span<const std::byte> buffer);
@@ -86,6 +87,10 @@ class UartIrqDriver {
   Mutex tx_mutex{};
   Mutex tx_irq_signal{};
   RxCallback rx_callback{};
+  clock::OnClockChange on_clock_change{
+      .callback = {.func = clock::updateModuleClockCallback<
+                       std::remove_pointer_t<decltype(this)>>,
+                   .arg = reinterpret_cast<uintptr_t>(this)}};
   unsigned module_clock{};
   unsigned baudrate{};
 };

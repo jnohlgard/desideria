@@ -4,6 +4,7 @@
 
 #pragma once
 #include "deri/callback.hpp"
+#include "deri/dev/clock.hpp"
 #include "deri/irq.hpp"
 
 #include <array>
@@ -56,12 +57,18 @@ class TimerDriver {
   const TimerDevice &underlyingTimer() const { return *timer; }
   TimerDevice &underlyingTimer() { return *timer; }
 
+  clock::OnClockChange &clockChangeCallback() { return on_clock_change; }
+
  private:
   void updatePrescaler();
 
   TimerDevice *timer{nullptr};
   std::array<Callback, TimerDevice::num_channels> channel_callbacks{};
   PeriodCallback period_callback{};
+  clock::OnClockChange on_clock_change{
+      .callback = {.func = clock::updateModuleClockCallback<
+                       std::remove_pointer_t<decltype(this)>>,
+                   .arg = reinterpret_cast<uintptr_t>(this)}};
   unsigned module_clock{};
   unsigned tick_rate_hz{};
 };
