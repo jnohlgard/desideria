@@ -6,6 +6,7 @@
 
 #include "deri/arch/irq.hpp"
 #include "deri/callback.hpp"
+#include "deri/dev/clock.hpp"
 #include "deri/mutex.hpp"
 
 #include <cstdint>
