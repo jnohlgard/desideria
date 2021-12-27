@@ -22,6 +22,7 @@ class Clock {
     mmio::RCU.enableModules(bits);
   }
 
+  [[nodiscard]] static unsigned current(Core) { return mmio::RCU.sysFreq(); }
   [[nodiscard]] static unsigned current(AHB) { return mmio::RCU.ahbFreq(); }
   [[nodiscard]] static unsigned current(APB1) { return mmio::RCU.apb1Freq(); }
   [[nodiscard]] static unsigned current(APB2) { return mmio::RCU.apb2Freq(); }
