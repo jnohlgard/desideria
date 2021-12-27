@@ -42,22 +42,42 @@ class Clock {
   [[nodiscard]] static unsigned current(APB1) { return mmio::RCU.apb1Freq(); }
   [[nodiscard]] static unsigned current(APB2) { return mmio::RCU.apb2Freq(); }
 
-  static void onClockChange(OnClockChange &callback, AHB) {
+  static void onClockChange(OnClockChange &on_clock_change, AHB) {
     arch::CriticalSection cs{};
-    ahb_users.remove(callback);
-    ahb_users.push_front(callback);
+    ahb_users.remove(on_clock_change);
+    ahb_users.push_front(on_clock_change);
   }
 
-  static void onClockChange(OnClockChange &callback, APB1) {
+  static void onClockChange(OnClockChange &on_clock_change,
+                            APB1 clock_enable_bits) {
     arch::CriticalSection cs{};
-    apb1_users.remove(callback);
-    apb1_users.push_front(callback);
+    switch (clock_enable_bits) {
+      case APB1::TIMER1EN:
+      case APB1::TIMER2EN:
+      case APB1::TIMER3EN:
+      case APB1::TIMER4EN:
+      case APB1::TIMER5EN:
+      case APB1::TIMER6EN:
+        apb1timer_users.remove(on_clock_change);
+        apb1timer_users.push_front(on_clock_change);
+        break;
+      default:
+        apb1_users.remove(on_clock_change);
+        apb1_users.push_front(on_clock_change);
+        break;
+    }
   }
 
-  static void onClockChange(OnClockChange &callback, APB2) {
+  static void onClockChange(OnClockChange &on_clock_change,
+                            APB2 clock_enable_bits) {
     arch::CriticalSection cs{};
-    apb2_users.remove(callback);
-    apb2_users.push_front(callback);
+    if (clock_enable_bits == APB2::TIMER0EN) {
+      apb2timer_users.remove(on_clock_change);
+      apb2timer_users.push_front(on_clock_change);
+    } else {
+      apb2_users.remove(on_clock_change);
+      apb2_users.push_front(on_clock_change);
+    }
   }
 
   template <class Config>
@@ -66,15 +86,45 @@ class Clock {
     mmio::RCU.setConfig(config);
     auto ahb_freq = current(AHB{});
     for (const auto &on_clock_change : ahb_users) {
+      Logger::debug(
+          "onClockChange(AHB %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(ahb_freq));
       on_clock_change.callback.func(ahb_freq, on_clock_change.callback.arg);
     }
     auto apb1_freq = current(APB1{});
     for (const auto &on_clock_change : apb1_users) {
+      Logger::debug(
+          "onClockChange(APB1 %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(apb1_freq));
       on_clock_change.callback.func(apb1_freq, on_clock_change.callback.arg);
     }
     auto apb2_freq = current(APB2{});
     for (const auto &on_clock_change : apb2_users) {
+      Logger::debug(
+          "onClockChange(APB2 %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(apb2_freq));
       on_clock_change.callback.func(apb2_freq, on_clock_change.callback.arg);
+    }
+    auto apb1timer_freq = mmio::RCU.timerFreq(APB1{});
+    for (const auto &on_clock_change : apb1timer_users) {
+      Logger::debug(
+          "onClockChange(APB1 Timer %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(apb1timer_freq));
+      on_clock_change.callback.func(apb1timer_freq,
+                                    on_clock_change.callback.arg);
+    }
+    auto apb2timer_freq = mmio::RCU.timerFreq(APB2{});
+    for (const auto &on_clock_change : apb2timer_users) {
+      Logger::debug(
+          "onClockChange(APB2 Timer %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(apb2timer_freq));
+      on_clock_change.callback.func(apb2timer_freq,
+                                    on_clock_change.callback.arg);
     }
     Logger::info("New clocks:\n");
     Logger::info("Core = %u, AHB = %u, APB1 = %u, APB2 = %u\n",
@@ -88,5 +138,7 @@ class Clock {
   static inline ForwardList<OnClockChange> ahb_users{};
   static inline ForwardList<OnClockChange> apb1_users{};
   static inline ForwardList<OnClockChange> apb2_users{};
+  static inline ForwardList<OnClockChange> apb1timer_users{};
+  static inline ForwardList<OnClockChange> apb2timer_users{};
 };
 }  // namespace deri::soc
