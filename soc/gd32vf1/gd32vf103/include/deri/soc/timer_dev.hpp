@@ -49,8 +49,8 @@ inline auto &timer1() {
   static auto &instance = []() -> auto & {
     static auto instance = TimerDriver{mmio::TIMER1};
     moduleEnable(instance, soc::Clock::APB1::TIMER1EN, mmio::IRQ::TIMER1);
-    return instance;
     timers[1] = &instance;
+    return instance;
   }
   ();
   return instance;
