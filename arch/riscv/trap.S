@@ -112,18 +112,10 @@ deri_arch_sched_update:
   lui a0, %hi(_ZN4deri9Scheduler9run_queueE)     // &deri::Scheduler::run_queue.head
   lw  a0, %lo(_ZN4deri9Scheduler9run_queueE)(a0) // deri::Scheduler::run_queue.head
   addi a0, a0, 4                                 // &deri::Scheduler::run_queue.head->saved_context
-  bne a0, a1, switch_context
-no_context_change:
-  // restore user a1 and a0
-  csrrw a1, mscratch, a1
-  lw a0, (0*SIZEOF_REG)(sp)
-  addi sp, sp, (1*SIZEOF_REG)
-  mret
+  beq a0, a1, no_context_change
 switch_context:
   // context pointer stored in mscratch is 0 when initializing the scheduler, avoid saving the init context
-  bnez a1, save_context
-  // no need to restore anything because we are discarding the current state
-  j load_context
+  beqz a1, load_context
 save_context:
   // Save everything to *a1
   // temporarily store new context pointer in pc position
@@ -177,10 +169,10 @@ save_context:
   // Store the interrupt status in the old context
   csrr s0, mstatus
   csrr s1, mtval
-  csrr t2, mcause
+  csrr a2, mcause
   sw s0, REG_OFFSET(32)(sp)
   sw s1, REG_OFFSET(33)(sp)
-  sw t2, REG_OFFSET(34)(sp)
+  sw a2, REG_OFFSET(34)(sp)
 load_context:
   // save new context pointer in mscratch
   csrw mscratch, a0
@@ -196,9 +188,9 @@ load_context:
   // Reload interrupt status
   lw s0, REG_OFFSET(32)(sp)
   lw s1, REG_OFFSET(33)(sp)
-  lw t2, REG_OFFSET(34)(sp)
-  csrw mcause, t2
+  lw a2, REG_OFFSET(34)(sp)
   csrw mtval, s1
+  csrw mcause, a2
   // GD32VF1 wires MPP and MPIE into mcause which requires us to restore mstatus last
   // in order to maintain interrupts enabled after creating a new thread
   csrw mstatus, s0
@@ -236,6 +228,12 @@ load_context:
   // finally load the stack pointer
   lw SAVED_REG( 2)
   mret
+no_context_change:
+  // restore user a1 and a0
+  csrrw a1, mscratch, a1
+  lw a0, (0*SIZEOF_REG)(sp)
+  addi sp, sp, (1*SIZEOF_REG)
+  mret
 .cfi_endproc
 
 .globl deri_arch_unhandled_interrupt
@@ -248,38 +246,44 @@ deri_arch_unhandled_interrupt:
 .globl deri_arch_defer_scheduler_update
 deri_arch_defer_scheduler_update:
 .cfi_startproc
-  addi sp, sp, -(2 * SIZEOF_REG)
-  sw s0, 0*SIZEOF_REG(sp)
-  sw s1, 1*SIZEOF_REG(sp)
+  addi sp, sp, -(4 * SIZEOF_REG)
+  sw a0, REG_OFFSET(0)(sp)
+  sw a1, REG_OFFSET(1)(sp)
+  sw a2, REG_OFFSET(2)(sp)
+  sw a3, REG_OFFSET(3)(sp)
   // hook into interrupt return by placing our deferred update in mepc
-  la s1, deferred_scheduler_update_ecall_hook
-  csrrw s0, mepc, s1
-  beq s0, s1, already_queued
+  la a1, deferred_scheduler_update_ecall_hook
+  csrrw a0, mepc, a1
+  beq a0, a1, already_queued
   // store original mepc in current saved context
-  csrr s1, mscratch
-  sw s0, 0*SIZEOF_REG(s1)
+  csrr a1, mscratch
+  sw a0, REG_OFFSET(0)(a1)
   // store original interrupt status in saved context
-  csrr s0, mstatus
-  sw s0, REG_OFFSET(32)(s1)
-  csrr s0, mtval
-  sw s0, REG_OFFSET(33)(s1)
-  csrr s0, mcause
-  sw s0, REG_OFFSET(34)(s1)
+  csrr a0, mstatus
+  csrr a2, mtval
+  csrr a3, mcause
+  sw a0, REG_OFFSET(32)(a1)
+  sw a2, REG_OFFSET(33)(a1)
+  sw a3, REG_OFFSET(34)(a1)
   // disable interrupts upon return so that we have time to process the deferred handler
-  li s0, MSTATUS_MPIE
-  csrc mstatus, s0
+  li a0, MSTATUS_MPIE
+  csrc mstatus, a0
   // return normally back to interrupt handler
-  lw s0, 0*SIZEOF_REG(sp)
-  lw s1, 1*SIZEOF_REG(sp)
-  addi sp, sp, (2 * SIZEOF_REG)
+  lw a0, REG_OFFSET(0)(sp)
+  lw a1, REG_OFFSET(1)(sp)
+  lw a2, REG_OFFSET(2)(sp)
+  lw a3, REG_OFFSET(3)(sp)
+  addi sp, sp, (4 * SIZEOF_REG)
   ret
 already_queued:
   // We have already queued a scheduler update via mepc, be sure to not overwrite
   // the original mepc in the saved context
   csrrw s1, mepc, s0
-  lw s0, 0*SIZEOF_REG(sp)
-  lw s1, 1*SIZEOF_REG(sp)
-  addi sp, sp, (2 * SIZEOF_REG)
+  lw a0, REG_OFFSET(0)(sp)
+  lw a1, REG_OFFSET(1)(sp)
+  lw a2, REG_OFFSET(2)(sp)
+  lw a3, REG_OFFSET(3)(sp)
+  addi sp, sp, (4 * SIZEOF_REG)
   ret
 .cfi_endproc
 
