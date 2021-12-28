@@ -12,7 +12,7 @@
     <name>other</name>
     <revision>r1p0</revision>
     <endian>little</endian>
-    <mpuPresent>1</mpuPresent>
+    <mpuPresent>0</mpuPresent>
     <fpuPresent>0</fpuPresent>
     <vendorSystickConfig>0</vendorSystickConfig>
     <nvicPrioBits>4</nvicPrioBits>
