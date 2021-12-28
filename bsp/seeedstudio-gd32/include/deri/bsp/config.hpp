@@ -9,9 +9,9 @@
 #include "deri/dev/timer.hpp"
 #include "deri/dev/timer_gd32.hpp"
 #include "deri/dev/timer_manager.hpp"
+#include "deri/soc/clock_dev.hpp"
 #include "deri/soc/gpio_dev.hpp"
 #include "deri/soc/timer_dev.hpp"
-#include "deri/soc/clock_dev.hpp"
 
 #include <array>
 #include <cstdint>
