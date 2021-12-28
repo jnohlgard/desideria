@@ -24,7 +24,6 @@ extern soc::TimerPeriph TIMER3;
 extern soc::TimerPeriph TIMER4;
 extern soc::TimerPeriph TIMER5;
 extern soc::TimerPeriph TIMER6;
-extern dev::timer::TimerRiscv MTIME;
 }  // namespace deri::mmio
 
 namespace deri::soc {
