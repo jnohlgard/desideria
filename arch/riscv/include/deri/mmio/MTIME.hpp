@@ -10,10 +10,8 @@
 #include <cstdint>
 
 namespace deri::mmio {
-struct MTIME_regs {
-  enum class MTIME_bits : int64_t;
+enum class MTIME_bits : int64_t;
 
-  Register<MTIME_bits> mtime;
-  Register<MTIME_bits> mtimecmp;
-};
+extern Register<MTIME_bits> mtime;
+extern Register<MTIME_bits> mtimecmp;
 }  // namespace deri::mmio

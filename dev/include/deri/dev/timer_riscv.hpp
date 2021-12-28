@@ -22,8 +22,8 @@ class TimerRiscv {
   enum class Channel {};
   enum class Prescaler {};
 
-  using Period = mmio::MTIME_regs::MTIME_bits;
-  using Target = mmio::MTIME_regs::MTIME_bits;
+  using Period = mmio::MTIME_bits;
+  using Target = mmio::MTIME_bits;
 
   void init() {
     // Always running
@@ -52,7 +52,7 @@ class TimerRiscv {
    * @return Current count
    */
   [[nodiscard]] Count read() const {
-    return static_cast<Count>(TIMER.mtime.load());
+    return static_cast<Count>(mmio::mtime.load());
   }
 
   /**
@@ -62,7 +62,7 @@ class TimerRiscv {
    * @param target value to compare
    */
   void setCompare(Channel, Count target) {
-    TIMER.mtimecmp.store(Target{target});
+    mmio::mtimecmp.store(Target{target});
   }
 
   void disableInterrupt(Channel);
@@ -72,12 +72,7 @@ class TimerRiscv {
   void clearInterruptFlag(Channel) {
     // Cleared by writing a new compare target
   }
-
- private:
-  mmio::MTIME_regs TIMER;
 };
 void HasArithmeticOperators(TimerRiscv::Count);
-
-static_assert(sizeof(TimerRiscv) == sizeof(mmio::MTIME_regs));
 
 }  // namespace deri::dev::timer
