@@ -31,7 +31,7 @@ inline uintptr_t syscall(Syscall syscall_number) {
         "ecall"
         : "=r"(return_value)
         : "r"(syscall_number)
-        : "memory");
+        : "a7", "memory");
     return return_value;
   }
 }
