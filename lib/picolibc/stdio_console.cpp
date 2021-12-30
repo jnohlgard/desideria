@@ -26,9 +26,9 @@ extern FILE *const stdout;
 extern FILE *const stdin;
 extern FILE *const stderr;
 
-FILE *const stdout = &_stdio;
-FILE *const stdin = &_stdio;
-FILE *const stderr = &_stdio;
+[[gnu::used]] FILE *const stdout = &_stdio;
+[[gnu::used]] FILE *const stdin = &_stdio;
+[[gnu::used]] FILE *const stderr = &_stdio;
 
 namespace {
 
