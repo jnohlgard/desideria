@@ -48,7 +48,7 @@ void initButtons() {
 void initTimer() {
   auto &driver = deri::soc::timer0();
   driver.setTickRateHz(1000);
-  driver.setPeriod(deri::soc::TimerDriver::Count{500u - 1});
+  driver.setPeriod(std::remove_cvref_t<decltype(driver)>::Count{500u - 1});
   driver.setPeriodHandler({.func = [](uintptr_t) {
     static unsigned led_active = 0;
     led_gpios[led_active].clear();
