@@ -16,6 +16,76 @@
 namespace deri::dev::uart {
 
 template <class UartDeviceType>
+class UartBlockingDriver {
+ public:
+  using UartDevice = UartDeviceType;
+  using RxCallback = Callback<void(std::byte, uintptr_t)>;
+  static constexpr auto driver_name = "UartBlockingDriver";
+
+  explicit UartBlockingDriver(UartDevice &uart) : uart(uart) {}
+
+  void init() { uart.init(); }
+
+  void setBaud(unsigned new_baudrate) {
+    baudrate = new_baudrate;
+    updateBaudReg();
+  }
+
+  void updateModuleClock(unsigned new_clock) {
+    module_clock = new_clock;
+    updateBaudReg();
+  }
+
+  /**
+   * Write some bytes to the UART.
+   *
+   * This function will never block and will only write data if there is space
+   * available in the hardware transmit register.
+   *
+   * @param buffer Data to write to the UART
+   * @return @p buffer trimmed to contain only what was not yet written to the
+   * transmit register
+   */
+  [[nodiscard]] auto tryWrite(std::span<const std::byte> buffer) {
+    return uart.tryWrite(buffer);
+  }
+
+  /**
+   * Blocking write
+   *
+   * This will use either interrupts or spinning until all bytes have been
+   * written to the wire.
+   *
+   * @param buffer Data to write to the UART
+   */
+  void write(std::span<const std::byte> buffer) {
+    while (!buffer.empty()) {
+      buffer = tryWrite(buffer);
+    }
+  }
+
+  /**
+   * Write a single byte, blocking
+   *
+   * @param data
+   */
+  void write(std::byte data) { write(std::span<const std::byte, 1>(&data, 1)); }
+
+  clock::OnClockChange &clockChangeCallback() { return on_clock_change; }
+
+ private:
+  void updateBaudReg() { uart.setBaud(module_clock, baudrate); }
+
+  UartDevice &uart{};
+  clock::OnClockChange on_clock_change{
+      .callback = {.func = clock::updateModuleClockCallback<
+                       std::remove_pointer_t<decltype(this)>>,
+                   .arg = reinterpret_cast<uintptr_t>(this)}};
+  unsigned module_clock{};
+  unsigned baudrate{};
+};
+
+template <class UartDeviceType>
 class UartIrqDriver {
  public:
   using UartDevice = UartDeviceType;
