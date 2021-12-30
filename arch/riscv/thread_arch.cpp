@@ -10,8 +10,6 @@
 
 #include "riscv/csr/encoding.h"
 
-#include <cstdio>
-
 namespace deri::log {
 struct Kernel;
 }
@@ -36,7 +34,7 @@ const std::array mcause_descriptions = {
     DESC_CAUSE_STORE_PAGE_FAULT,
 };
 
-[[gnu::naked]] void saveContext(SavedContext &context) {
+[[gnu::naked, gnu::used]] void saveContext(SavedContext &context) {
   asm volatile(
       ".equ REG_SIZE, 4\n\t"
       // save sp first
@@ -85,7 +83,7 @@ const std::array mcause_descriptions = {
       "ret");
 }
 
-void dumpContext(const SavedContext &context) {
+[[gnu::used]] void dumpContext(const SavedContext &context) {
   using Logger = log::Logger<log::Kernel>;
   bool do_ebreak = true;
   auto hartid = read_csr(mhartid);

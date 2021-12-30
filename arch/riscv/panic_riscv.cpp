@@ -7,7 +7,7 @@
 namespace deri {
 [[noreturn]] void panic();
 
-arch::SavedContext panic_context;
+[[gnu::used]] arch::SavedContext panic_context;
 
 [[gnu::naked]] void panic() {
   asm volatile(
