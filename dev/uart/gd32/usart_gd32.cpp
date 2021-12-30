@@ -2,13 +2,9 @@
  * Copyright (c) 2021 Joakim Nohlgård
  */
 
-#include "deri/arch/irq.hpp"
 #include "deri/bitwise_enums.hpp"
 #include "deri/dev/uart_gd32.hpp"
-#include "deri/irq.hpp"
 #include "deri/mmio/bits/USART_bits.hpp"
-
-#include <mutex>
 
 namespace deri::dev::uart {
 
