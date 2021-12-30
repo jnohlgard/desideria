@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <atomic>
 #include <type_traits>
 
 namespace deri::mmio {
@@ -41,8 +42,9 @@ class Reserved {
  * an enum
  */
 template <typename BitsType,
-          typename StorageType = volatile std::underlying_type_t<BitsType>,
-          typename UnderlyingBitsType = std::underlying_type_t<BitsType>>
+          typename StorageType =
+              volatile std::atomic<std::underlying_type_t<BitsType>>,
+          typename RawStorageType = typename StorageType::value_type>
 class Register {
  public:
   // These objects are hardware constructs, a constructor in software does not
@@ -53,17 +55,25 @@ class Register {
   Register &operator=(const Register &) = delete;
   Register &operator=(Register &&) noexcept = delete;
 
-  [[nodiscard]] BitsType load() const { return static_cast<BitsType>(bits); }
+  [[nodiscard]] BitsType load() const { return BitsType{bits.load()}; }
 
-  void store(const BitsType op) { bits = static_cast<StorageType>(op); }
+  void store(const BitsType op) { bits.store(static_cast<RawStorageType>(op)); }
 
-  void operator|=(const BitsType op) { store(load() | op); }
-  void operator&=(const BitsType op) { store(load() & op); }
-  void operator^=(const BitsType op) { store(load() ^ op); }
+  void operator|=(const BitsType op) { fetch_or(op); }
+  void operator&=(const BitsType op) { fetch_and(op); }
+  void operator^=(const BitsType op) { fetch_xor(op); }
 
-  bool any(const BitsType mask) {
-    return bool(static_cast<UnderlyingBitsType>(load() & mask));
+  BitsType fetch_or(const BitsType op) {
+    return BitsType{bits.fetch_or(static_cast<RawStorageType>(op))};
   }
+  BitsType fetch_and(const BitsType op) {
+    return BitsType{bits.fetch_and(static_cast<RawStorageType>(op))};
+  }
+  BitsType fetch_xor(const BitsType op) {
+    return BitsType{bits.fetch_xor(static_cast<RawStorageType>(op))};
+  }
+
+  bool any(const BitsType mask) { return !!(load() & mask); }
 
  private:
   StorageType bits;
@@ -71,4 +81,4 @@ class Register {
 
 static_assert(sizeof(Register<std::byte>) == sizeof(std::uint8_t));
 static_assert(sizeof(Reserved<std::byte>) == sizeof(std::uint8_t));
-}  // namespace deri::dev
+}  // namespace deri::mmio
