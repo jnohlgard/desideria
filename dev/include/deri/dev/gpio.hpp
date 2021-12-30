@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <optional>
+#include <type_traits>
 
 namespace deri::dev::gpio {
 
