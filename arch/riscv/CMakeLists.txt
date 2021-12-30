@@ -4,7 +4,6 @@ deri_add_library(deri_arch STATIC
   trap.S
   irq_riscv.cpp
   panic_riscv.cpp
-  thread_arch.cpp
   include/deri/arch/irq.hpp
   include/deri/arch/perf.hpp
   include/deri/arch/syscall.hpp
@@ -13,9 +12,12 @@ deri_add_library(deri_arch STATIC
   include/deri/mmio/MTIME.hpp
   include/deri/mmio/bits/CLIC_bits.hpp
   )
-target_include_directories(deri_arch PUBLIC include)
-target_include_directories(deri_arch PUBLIC vendor/include)
-deri_target_depends(deri_arch PUBLIC deri_arch_common deri_core_include)
+deri_add_library(deri_arch_obj OBJECT
+  thread_arch.cpp
+  )
+target_include_directories(deri_arch_obj PUBLIC include vendor/include)
+target_include_directories(deri_arch PUBLIC include vendor/include)
+deri_target_depends(deri_arch PUBLIC deri_arch_common deri_core_include $<TARGET_OBJECTS:deri_arch_obj>)
 target_link_options(deri_arch_flags INTERFACE
   "LINKER:--defsym=_ram_origin=${RISCV_RAM_ORIGIN}"
   "LINKER:--defsym=_ram_length=${RISCV_RAM_LENGTH}"
