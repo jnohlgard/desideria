@@ -7,6 +7,7 @@
 #include "deri/callback.hpp"
 #include "deri/dev/clock.hpp"
 #include "deri/dev/clock_gd32.hpp"
+#include "deri/irq.hpp"
 #include "deri/log.hpp"
 
 namespace deri::mmio {
