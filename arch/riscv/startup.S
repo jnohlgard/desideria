@@ -31,6 +31,9 @@ _start:
   // Disable interrupts globally
   csrc mstatus, MSTATUS_MIE
 
+  // Clear mscratch used for keeping track of current thread
+  csrw mscratch, zero
+
   // Set up an exception vector for any machine exceptions in early boot
   la t0, early_trap
   csrw mtvec, t0
