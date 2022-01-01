@@ -29,8 +29,7 @@ class TimerRiscv {
   enum class Channel {};
   enum class Prescaler {};
 
-  using Period = mmio::MTIME_bits;
-  using Target = mmio::MTIME_bits;
+  using Period = mmio::MTIME64_bits;
 
   void init() {
     // Always running
@@ -63,9 +62,7 @@ class TimerRiscv {
    * Read the current hardware counter value
    * @return Current count
    */
-  [[nodiscard]] Count read() const {
-    return static_cast<Count>(mmio::mtime.load());
-  }
+  [[nodiscard]] Count read() const;
 
   /**
    * Set the compare value for the given channel
@@ -73,9 +70,7 @@ class TimerRiscv {
    * @param channel channel to configure
    * @param target value to compare
    */
-  void setCompare(Channel, Count target) {
-    mmio::mtimecmp.store(Target{target});
-  }
+  void setCompare(Channel, Count target);
 
   void disableInterrupt(Channel);
 
