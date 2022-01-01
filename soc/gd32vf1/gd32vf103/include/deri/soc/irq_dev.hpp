@@ -5,27 +5,8 @@
 #pragma once
 
 #include "deri/dev/irq_clic.hpp"
-
-namespace deri::mmio {
-extern dev::irq::IrqClic CLIC;
-}
+#include "deri/irq/platform_clic.hpp"
 
 namespace deri::soc {
-class Irq {
- public:
-  using IRQ = dev::irq::IrqClic::IRQ;
-
-  template <typename Bits>
-  static void enable(Bits bits) {
-    mmio::CLIC.enable(bits);
-  }
-  template <typename Bits>
-  static void disable(Bits bits) {
-    mmio::CLIC.disable(bits);
-  }
-  template <typename Table>
-  static void setVectorTable(Table &&table) {
-    dev::irq::IrqClic::setVectorTable(std::forward<Table>(table));
-  }
-};
-}
+using Irq = irq::IrqPlatformClic;
+}  // namespace deri::soc
