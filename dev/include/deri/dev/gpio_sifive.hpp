@@ -117,12 +117,7 @@ class GpioManagerSifive {
   using Polarity = GpioOutConfig::Polarity;
   using DriveStrength = GpioPortSifive::DriveStrength;
   using Iof = GpioPortSifive::Iof;
-  enum class Trigger {
-    RISING = (1 << 0),
-    FALLING = (1 << 1),
-    HIGH = (1 << 2),
-    LOW = (1 << 3),
-  };
+  using Trigger = GpioInConfig::Trigger;
 
   using Callback = deri::Callback<void(uintptr_t)>;
 
@@ -130,7 +125,7 @@ class GpioManagerSifive {
 
   GpioInSifive initInGpio(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
 
-  GpioInSifive initInGpio(const GpioInConfig &config) {
+  GpioInSifive initInput(const GpioInConfig &config) {
     return initInGpio(config.gpio, config.pull);
   }
   GpioOutSifive initOutGpio(Gpio gpio,
