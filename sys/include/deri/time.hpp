@@ -31,6 +31,18 @@ class Timer {
     timer.schedule(schedulable);
   }
 
+  template <typename Duration>
+  [[nodiscard]] static typename TimerManager::Count count(Duration duration1) {
+    return std::chrono::duration_cast<duration>(duration1).count();
+  }
+  template <typename TimePoint>
+  requires(requires(TimePoint tp) { tp.time_since_epoch(); })
+      [[nodiscard]] static typename TimerManager::Count
+      count(TimePoint time_point1) {
+    return std::chrono::duration_cast<duration>(time_point1.time_since_epoch())
+        .count();
+  }
+
  private:
   inline static TimerManager timer{};
 };
