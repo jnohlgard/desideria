@@ -5,27 +5,11 @@
 #pragma once
 
 #include "deri/dev/irq_clic.hpp"
-
-namespace deri::mmio {
-extern dev::irq::IrqClic CLIC;
-}
+#include "deri/irq/platform_clic.hpp"
 
 namespace deri::soc {
-class Irq {
+class Irq : public irq::IrqPlatformClic {
  public:
-  using IRQ = dev::irq::IrqClic::IRQ;
-
-  template <typename Bits>
-  static void enable(Bits bits) {
-    mmio::CLIC.enableIrq(bits);
-  }
-  template <typename Bits>
-  static void disable(Bits bits) {
-    mmio::CLIC.disableIrq(bits);
-  }
-  template <typename Table>
-  static void setVectorTable(Table &&table) {
-    dev::irq::IrqClic::setVectorTable(std::forward<Table>(table));
-  }
+  static constexpr auto mtime_irq = IRQ::CLIC_INT_TMR;
 };
-}
+}  // namespace deri::soc
