@@ -62,7 +62,7 @@ void initButtons() {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
         button.gpio,
-        GpioManager::Edge::RISING,
+        GpioManager::Trigger::RISING,
         {.func = &ConsumerThread::callback, .arg = arg++});
     GpioManager::enableInterrupt(button.gpio);
   }
