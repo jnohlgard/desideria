@@ -63,7 +63,9 @@ class BenchContextSwitch {
     count.store(1);
     ++iterations;
     schedulable.target =
-        (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch().count();
+        std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
+            (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch())
+            .count();
     timer.schedule(schedulable);
   }
   static inline unsigned iterations{};
@@ -83,9 +85,10 @@ void initThreads() {
 
 void initTimer() {
   static deri::HighResolutionTimer::Schedulable print_event{
-      .target = (deri::HighResolutionTimer::now() + 1000ms)
-                    .time_since_epoch()
-                    .count(),
+      .target =
+          std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
+              (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch())
+              .count(),
       .callback = {.func = BenchContextSwitch::printEvent},
   };
   deri::HighResolutionTimer::schedule(print_event);
