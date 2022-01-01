@@ -9,6 +9,9 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
+
+using namespace std::literals;
 
 namespace config {
 using namespace deri::bsp::config;
@@ -82,11 +85,12 @@ void initTimers() {
   auto base = Timer::now().time_since_epoch().count();
 
   for (auto &&schedulable : schedulables) {
+    // Fibonacci series of timer durations
     auto tmp = timeout;
     timeout += timeout_prev;
     timeout_prev = tmp;
     schedulable.led = led_gpios[arg++];
-    schedulable.timeout = timeout * 250000;
+    schedulable.timeout = Timer::count(timeout * 250ms);
     schedulable.callback.arg = reinterpret_cast<uintptr_t>(&schedulable);
     schedulable.callback.func = timerCallback;
     schedulable.target = schedulable.timeout + base;
