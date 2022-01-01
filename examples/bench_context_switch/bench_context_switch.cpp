@@ -4,6 +4,7 @@
 
 #include "deri/arch/irq.hpp"
 #include "deri/arch/perf.hpp"
+#include "deri/log.hpp"
 #include "deri/span_literals.hpp"
 #include "deri/thread.hpp"
 #include "deri/time.hpp"
@@ -13,8 +14,12 @@
 #include <chrono>
 #include <cstddef>
 
-#include <stdio.h>
-
+namespace log {
+struct Example {
+  static constexpr auto level = deri::log::Level::INFO;
+};
+}  // namespace log
+using Logger = deri::log::Logger<log::Example>;
 using namespace std::literals;
 
 using namespace deri::literals;
@@ -47,7 +52,7 @@ class BenchContextSwitch {
     long cycles_per_count = cycles_diff / count_now;
     long inst_per_count = inst_diff / count_now;
 
-    printf(
+    Logger::printf(
         "%lu context switches in %ld us (%ld core cycles, %ld instructions). "
         "%ld cycles per "
         "switch, %ld instructions per switch\n",
@@ -91,12 +96,16 @@ void initTimer() {
               .count(),
       .callback = {.func = BenchContextSwitch::printEvent},
   };
+  Logger::printf("Initial timer target = %lld, now = %lld\n",
+                 print_event.target,
+                 deri::HighResolutionTimer::now().time_since_epoch().count());
   deri::HighResolutionTimer::schedule(print_event);
 }
 
 void baseline() {
   static constexpr long unsigned baseline_count = 50000u;
-  printf("Testing %lu no-op context switches as baseline\n", baseline_count);
+  Logger::printf("Testing %lu no-op context switches as baseline\n",
+                 baseline_count);
   auto last_update = deri::HighResolutionTimer::now();
   auto last_cycles = deri::arch::Perf::cycles();
   auto last_inst = deri::arch::Perf::instructionsRetired();
@@ -132,17 +141,22 @@ void measureTimer() {
     deri::arch::waitForInterrupt();
     ++wakeups;
   }
-  printf("%u wakeups during idle\n", wakeups);
+  Logger::printf("%u wakeups during idle\n", wakeups);
 }
 
 int main() {
-  puts("Context switch benchmark");
-
+  Logger::printf("Context switch benchmark\n");
+  Logger::printf(
+      "HighResolutionTimer resolution: %lld ticks in 1000ms\n",
+      std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
+          deri::HighResolutionTimer::duration{} + 1000ms)
+          .count());
   baseline();
-  puts("measure twice without switching to get timer instruction overhead");
+  Logger::printf(
+      "measure twice without switching to get timer instruction overhead\n");
   initTimer();
   measureTimer();
-  puts("Start two threads to switch between");
+  Logger::printf("Start two threads to switch between\n");
   initThreads();
   deri::Scheduler::yield();
   while (true) {
