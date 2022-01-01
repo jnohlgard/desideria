@@ -1,6 +1,8 @@
 /* *** Generated with Desideria SVD converter *** */
 #pragma once
 
+using isr_func = void();
+
 namespace deri::mmio {
 enum class IRQ {
   WATCHDOG = 1,

@@ -1,9 +1,10 @@
 /* *** Generated with Desideria SVD converter *** */
 #pragma once
 
-#include "deri/registers.h"
+#include "deri/registers.hpp"
 
 #include <cstdint>
+#include <array>
 
 namespace deri::mmio {
 struct PLIC_regs {
@@ -24,7 +25,7 @@ struct PLIC_regs {
   Register<pending_bits> pending[2];
   const Reserved<uint32_t> reserved_1[1022];
   // Base + 0x2000
-  Register<enable_bits> enable[2];
+  std::array<Register<enable_bits>, 2> enable;
   const Reserved<uint32_t> reserved_2[522238];
   // Base + 0x200000
   Register<threshold_bits> threshold;

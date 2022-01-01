@@ -1,7 +1,7 @@
 /* *** Generated with Desideria SVD converter *** */
 #pragma once
 
-#include "deri/registers.h"
+#include "deri/registers.hpp"
 
 #include <cstdint>
 
@@ -22,7 +22,7 @@ struct UART_regs {
   enum class ip_shift : unsigned;
   enum class div_shift : unsigned;
 
-  Register<txdata_bits> txdata;
+  AtomicRegister<txdata_bits> txdata;
   Register<rxdata_bits> rxdata;
   Register<txctrl_bits> txctrl;
   Register<rxctrl_bits> rxctrl;
