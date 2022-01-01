@@ -67,10 +67,8 @@ class BenchContextSwitch {
     last_inst = deri::arch::Perf::instructionsRetired();
     count.store(1);
     ++iterations;
-    schedulable.target =
-        std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
-            (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch())
-            .count();
+    schedulable.target = deri::HighResolutionTimer::count(
+        deri::HighResolutionTimer::now() + 1000ms);
     timer.schedule(schedulable);
   }
   static inline unsigned iterations{};
@@ -90,10 +88,8 @@ void initThreads() {
 
 void initTimer() {
   static deri::HighResolutionTimer::Schedulable print_event{
-      .target =
-          std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
-              (deri::HighResolutionTimer::now() + 1000ms).time_since_epoch())
-              .count(),
+      .target = deri::HighResolutionTimer::count(
+          deri::HighResolutionTimer::now() + 1000ms),
       .callback = {.func = BenchContextSwitch::printEvent},
   };
   Logger::printf("Initial timer target = %lld, now = %lld\n",
@@ -146,11 +142,8 @@ void measureTimer() {
 
 int main() {
   Logger::printf("Context switch benchmark\n");
-  Logger::printf(
-      "HighResolutionTimer resolution: %lld ticks in 1000ms\n",
-      std::chrono::duration_cast<deri::HighResolutionTimer::duration>(
-          deri::HighResolutionTimer::duration{} + 1000ms)
-          .count());
+  Logger::printf("HighResolutionTimer resolution: %lld ticks in 1000ms\n",
+                 deri::HighResolutionTimer::count(1000ms));
   baseline();
   Logger::printf(
       "measure twice without switching to get timer instruction overhead\n");
