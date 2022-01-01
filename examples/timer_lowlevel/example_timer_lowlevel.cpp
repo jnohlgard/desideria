@@ -15,8 +15,7 @@ using namespace deri::bsp::config;
 }
 
 static auto &timer = deri::soc::timers[0];
-using GpioOut = deri::dev::gpio::GpioOutGd32;
-using GpioManager = deri::dev::gpio::GpioManagerGd32;
+using GpioOut = deri::soc::GpioOut;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 void buttonCallback(uintptr_t id) {
@@ -39,9 +38,9 @@ void initButtons() {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
         button.gpio,
-        GpioManager::Edge::RISING,
+        deri::dev::gpio::GpioInConfig::Trigger::RISING,
         {.func = &buttonCallback, .arg = arg++});
-    GpioManager::enableInterrupt(button.gpio);
+    deri::soc::GpioManager::enableInterrupt(button.gpio);
   }
 }
 

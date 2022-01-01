@@ -146,7 +146,7 @@ void GpioManagerGd32::initOutAfio(Gpio gpio,
 }
 
 void GpioManagerGd32::setInterruptHandler(Gpio gpio,
-                                          GpioManagerGd32::Edge edge,
+                                          GpioManagerGd32::Trigger trigger,
                                           GpioManagerGd32::Callback callback) {
   auto line = static_cast<ExtiGd32::Line>(gpio.pin);
   mmio::EXTI.disableLine(line);
@@ -154,10 +154,10 @@ void GpioManagerGd32::setInterruptHandler(Gpio gpio,
   mmio::EXTI.disableFalling(line);
   mmio::EXTI.clearPending(line);
   mmio::AFIO.setExtiSource(gpio.pin, gpio.port);
-  if (!!(edge & Edge::RISING)) {
+  if (!!(trigger & Trigger::RISING)) {
     mmio::EXTI.enableRising(line);
   }
-  if (!!(edge & Edge::FALLING)) {
+  if (!!(trigger & Trigger::FALLING)) {
     mmio::EXTI.enableFalling(line);
   }
   callbacks[static_cast<unsigned>(line)] = callback;

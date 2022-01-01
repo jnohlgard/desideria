@@ -18,8 +18,9 @@ namespace config {
 using namespace deri::bsp::config;
 }
 
-using GpioOut = deri::dev::gpio::GpioOutGd32;
-using GpioManager = deri::dev::gpio::GpioManagerGd32;
+using GpioOut = deri::soc::GpioOut;
+using GpioManager = deri::soc::GpioManager;
+using GpioTrigger = deri::dev::gpio::GpioInConfig::Trigger;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 struct ButtonThread {
@@ -70,7 +71,7 @@ void initButtons() {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
         button.gpio,
-        GpioManager::Edge::RISING,
+        GpioTrigger::RISING,
         {.func = &ButtonThread::callback, .arg = arg++});
     GpioManager::enableInterrupt(button.gpio);
   }

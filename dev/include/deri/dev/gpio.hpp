@@ -32,6 +32,12 @@ struct Gpio {
 };
 
 struct GpioInConfig {
+  enum class Trigger {
+    RISING = (1 << 0),
+    FALLING = (1 << 1),
+    HIGH = (1 << 2),
+    LOW = (1 << 3),
+  };
   enum class PullConfig {
     FLOATING,
     PULL_UP,

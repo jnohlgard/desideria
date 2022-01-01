@@ -4,6 +4,7 @@
 
 #include "deri/bsp/config.hpp"
 #include "deri/log.hpp"
+#include "deri/soc/gpio_dev.hpp"
 #include "deri/time.hpp"
 
 #include <algorithm>
@@ -20,8 +21,8 @@ struct Example;
 using Logger = deri::log::Logger<log::Example>;
 
 using Timer = deri::SystemTimer;
-using GpioOut = deri::dev::gpio::GpioOutGd32;
-using GpioManager = deri::dev::gpio::GpioManagerGd32;
+using GpioOut = deri::soc::GpioOut;
+using GpioManager = deri::soc::GpioManager;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 void buttonCallback(uintptr_t id) {
@@ -48,7 +49,7 @@ void initButtons() {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
         button.gpio,
-        GpioManager::Edge::RISING,
+        GpioManager::Trigger::RISING,
         {.func = &buttonCallback, .arg = arg++});
     GpioManager::enableInterrupt(button.gpio);
   }

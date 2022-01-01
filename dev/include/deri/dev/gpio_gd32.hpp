@@ -134,10 +134,7 @@ class GpioManagerGd32 {
   using PullConfig = GpioInConfig::PullConfig;
   using OutputMode = GpioOutConfig::OutputMode;
   using DigitalOutSpeed = GpioPortGd32::DigitalOutSpeed;
-  enum class Edge {
-    RISING = 1 << 0,
-    FALLING = 1 << 1,
-  };
+  using Trigger = GpioInConfig::Trigger;
 
   using Callback = deri::Callback<void(uintptr_t)>;
   void initAnalog(Gpio gpio);
@@ -161,7 +158,7 @@ class GpioManagerGd32 {
   void initOutAfio(Gpio gpio,
                    OutputMode mode = OutputMode::PUSH_PULL,
                    DigitalOutSpeed speed = DigitalOutSpeed::D10MHZ);
-  void setInterruptHandler(Gpio gpio, Edge edge, Callback callback);
+  void setInterruptHandler(Gpio gpio, Trigger edge, Callback callback);
   void clearInterruptHandler(Gpio gpio);
   static void enableInterrupt(Gpio gpio);
   static void disableInterrupt(Gpio gpio);
@@ -176,6 +173,6 @@ class GpioManagerGd32 {
  private:
   std::array<Callback, 19> callbacks{};
 };
-void HasBitwiseOperators(GpioManagerGd32::Edge);
+void HasBitwiseOperators(GpioManagerGd32::Trigger);
 
 }  // namespace deri::dev::gpio

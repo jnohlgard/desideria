@@ -34,7 +34,10 @@ extern dev::gpio::GpioPortGd32 GPIOE;
 
 namespace deri::soc {
 
-extern dev::gpio::GpioManagerGd32 gpio;
+using GpioManager = dev::gpio::GpioManagerGd32;
+using GpioOut = dev::gpio::GpioOutGd32;
+using GpioIn = dev::gpio::GpioInGd32;
+extern GpioManager gpio;
 
 dev::gpio::GpioPortGd32 &gpioPortDev(dev::gpio::Gpio::Port port);
 
