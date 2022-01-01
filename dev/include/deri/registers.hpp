@@ -133,4 +133,24 @@ using AtomicRegister = Register<
     typename std::atomic<std::underlying_type_t<BitsType>>::value_type>;
 
 static_assert(sizeof(AtomicRegister<std::byte>) == sizeof(std::uint8_t));
+
+/**
+ * Hardware register that is split across two separate words
+ *
+ * Handling this kind of register usually needs specially crafted code to cope
+ * with changes from hardware in the middle of a two-word read or write.
+ *
+ * @tparam Word single word register contents type
+ * @tparam DoubleWord type of the full register width
+ */
+template <typename Word, typename DoubleWord>
+union SplitRegister {
+  Register<DoubleWord> whole;
+  struct {
+    Register<Word> lo;
+    Register<Word> hi;
+  };
+  static_assert(sizeof(Register<Word>) * 2 == sizeof(Register<DoubleWord>));
+};
+
 }  // namespace deri::mmio
