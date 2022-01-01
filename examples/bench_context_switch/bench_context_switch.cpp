@@ -120,7 +120,7 @@ void baseline() {
   long inst_diff = now_inst - last_inst;
   auto cycles_per_count = cycles_diff / baseline_count;
   auto inst_per_count = inst_diff / baseline_count;
-  printf(
+  Logger::printf(
       "%lu no-op context switches in %ld us (%ld core cycles, %ld "
       "instructions). %lu cycles per switch, %lu instructions per switch\n",
       baseline_count,
