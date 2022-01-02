@@ -45,9 +45,6 @@ void Scheduler::init() {
                      main);
   main_thread.start();
 
-  // Enable interrupts globally
-  arch::irqEnable();
-
   // Switch to the main thread
   arch::syscall(Syscall::SCHEDULER_UPDATE);
 
