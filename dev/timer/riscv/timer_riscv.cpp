@@ -13,11 +13,11 @@ namespace deri::dev::timer {
 using IRQ = soc::Irq::IRQ;
 void TimerRiscv::disableInterrupt(TimerRiscv::Channel) {
   Logger::debug("TimerRiscv::disableInterrupt\n");
-  soc::Irq::disable(soc::Irq::mtime_irq);
+  soc::Irq::disable(IRQ::CLIC_INT_TMR);
 }
 void TimerRiscv::enableInterrupt(TimerRiscv::Channel) {
   Logger::debug("TimerRiscv::enableInterrupt\n");
-  soc::Irq::enable(soc::Irq::mtime_irq);
+  soc::Irq::enable(IRQ::CLIC_INT_TMR);
 }
 TimerRiscv::Count TimerRiscv::read() const {
   while (true) {

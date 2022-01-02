@@ -43,6 +43,14 @@ isIrqEnabled() noexcept {
   return mstatus & MSTATUS_MIE;
 }
 
+[[gnu::always_inline]] [[nodiscard]] inline unsigned long isInIrq() noexcept {
+  asm volatile("" ::: "memory");
+  // NB: mintstatus requires CLIC interrupt controller.
+  auto mintstatus = read_csr(mintstatus);
+  asm volatile("" ::: "memory");
+  return mintstatus;
+}
+
 [[gnu::always_inline]] inline void waitForInterrupt() noexcept {
   asm volatile("wfi" ::: "memory");
 }

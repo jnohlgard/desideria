@@ -13,8 +13,8 @@ class IrqClic {
  public:
   using IRQ = mmio::IRQ;
   void init(isr_func *default_handler);
-  void enable(IRQ irq);
-  void disable(IRQ irq);
+  void enableIrq(IRQ irq);
+  void disableIrq(IRQ irq);
 
   /**
    * Set the interrupt vector table address

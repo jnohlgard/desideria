@@ -13,7 +13,7 @@ namespace deri::dev::irq {
 
 using CLICINT_regs = mmio::CLIC_regs::CLICINT_regs;
 
-void IrqClic::enable(IrqClic::IRQ irq) {
+void IrqClic::enableIrq(IrqClic::IRQ irq) {
   using CLICINTIE_bits = CLICINT_regs::CLICINTIE_bits;
   using CLICINTATTR_bits = CLICINT_regs::CLICINTATTR_bits;
 
@@ -23,7 +23,7 @@ void IrqClic::enable(IrqClic::IRQ irq) {
   clicint.clicintie.store(CLICINTIE_bits::IE);
 }
 
-void IrqClic::disable(IrqClic::IRQ irq) {
+void IrqClic::disableIrq(IrqClic::IRQ irq) {
   using CLICINTIE_bits = CLICINT_regs::CLICINTIE_bits;
 
   auto &clicint = CLIC.clicint[static_cast<size_t>(irq)];
