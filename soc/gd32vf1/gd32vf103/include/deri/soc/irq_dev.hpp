@@ -17,11 +17,11 @@ class Irq {
 
   template <typename Bits>
   static void enable(Bits bits) {
-    mmio::CLIC.enableIrq(bits);
+    mmio::CLIC.enable(bits);
   }
   template <typename Bits>
   static void disable(Bits bits) {
-    mmio::CLIC.disableIrq(bits);
+    mmio::CLIC.disable(bits);
   }
   template <typename Table>
   static void setVectorTable(Table &&table) {
