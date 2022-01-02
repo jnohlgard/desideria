@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/arch/irq.hpp"
+#include "deri/soc/irq_dev.hpp"
 #include "deri/syscall.hpp"
 
 #include <cstdint>
@@ -15,7 +15,7 @@ namespace deri::arch {
 // I have not been able to figure out how to turn this into a variadic template
 // while reliably matching ABI with trap.S
 inline uintptr_t syscall(Syscall syscall_number) {
-  if (isInIrq() && syscall_number == Syscall::SCHEDULER_UPDATE) {
+  if (soc::Irq::isInIrq() && syscall_number == Syscall::SCHEDULER_UPDATE) {
     // If called from within an interrupt service routine we will need to
     // postpone the actual update by jacking into the interrupt handler return
     // address
