@@ -13,8 +13,8 @@ namespace deri {
 class Mutex {
  public:
   void lock() noexcept {
+    arch::CriticalSection cs{};
     while (!try_lock()) {
-      arch::CriticalSection cs{};
       auto &thread = Scheduler::activeThread();
       thread.block(Thread::Status::MUTEX_WAIT);
       waiters.push(thread);
