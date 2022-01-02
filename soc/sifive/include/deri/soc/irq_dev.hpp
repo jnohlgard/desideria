@@ -9,9 +9,7 @@
 #include "deri/irq/platform_clint_plic.hpp"
 
 namespace deri::soc {
-class Irq : public irq::IrqPlatformPlicClint {
- public:
-  constexpr static auto mtime_irq = dev::irq::IrqClint::IRQ::TIMER;
-  constexpr static auto external_irq = dev::irq::IrqClint::IRQ::EXTERNAL;
-};
+constexpr static auto mtime_irq = dev::irq::IrqClint::IRQ::TIMER;
+constexpr static auto external_irq = dev::irq::IrqClint::IRQ::EXTERNAL;
+using Irq = irq::IrqPlatformPlicClint;
 }  // namespace deri::soc

@@ -27,7 +27,7 @@ void irq::IrqPlic::init() {
     enable.store({});
   }
   // Enable the external interrupt source in CLINT
-  soc::Irq::enable(soc::Irq::external_irq);
+  soc::Irq::enable(soc::external_irq);
 }
 
 void IrqPlic::enable(IrqPlic::IRQ irq) {
