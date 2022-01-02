@@ -9,4 +9,5 @@
 
 namespace deri::soc {
 using Irq = irq::IrqPlatformClic;
+static constexpr auto mtime_irq = Irq::IRQ::CLIC_INT_TMR;
 }  // namespace deri::soc
