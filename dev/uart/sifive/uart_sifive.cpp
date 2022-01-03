@@ -73,22 +73,22 @@ bool UartSiFive::checkAndClearTxIrq() {
 }
 
 void UartSiFive::enableTxBufferAvailableInterrupt() {
-  using ie_bits = mmio::UART_regs::ie_bits;
-  using txctrl_bits = mmio::UART_regs::txctrl_bits;
-  UART.ie |= ie_bits::txwm;
-  UART.txctrl |= txctrl_bits::counter_mask;
+  enableTxCompleteInterrupt();
 }
 
 void UartSiFive::enableTxCompleteInterrupt() {
   using ie_bits = mmio::UART_regs::ie_bits;
   using txctrl_bits = mmio::UART_regs::txctrl_bits;
   using txctrl_shift = mmio::UART_regs::txctrl_shift;
-  UART.ie |= ie_bits::txwm;
+  // Set TX watermark level to 1 (trigger interrupt when hardware TX buffer
+  // contains <1 byte)
   auto txctrl = UART.txctrl.load();
   txctrl &= ~txctrl_bits::counter_mask;
   txctrl |=
       maskedBitsFromValue(1u, txctrl_bits::counter_mask, txctrl_shift::counter);
   UART.txctrl.store(txctrl);
+  // Enable TX watermark IRQ
+  UART.ie |= ie_bits::txwm;
 }
 
 void UartSiFive::disableTxInterrupts() {
