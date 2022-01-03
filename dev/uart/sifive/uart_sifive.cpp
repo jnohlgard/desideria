@@ -62,9 +62,8 @@ void UartSiFive::disableRxInterrupt() {
 bool UartSiFive::checkAndClearTxIrq() {
   using ie_bits = mmio::UART_regs::ie_bits;
   using ip_bits = mmio::UART_regs::ip_bits;
-  auto ip = static_cast<uint32_t>(UART.ip.load());
-  auto ie = static_cast<uint32_t>(UART.ie.load());
-  if (!!(static_cast<ip_bits>(ip & ie) & ip_bits::txwm)) {
+  if (!!(static_cast<ip_bits>(UART.ie.load()) & UART.ip.load() &
+         ip_bits::txwm)) {
     // Disable transmit buffer empty IRQ to avoid an infinite interrupt loop
     UART.ie &= ~ie_bits::txwm;
     return true;
