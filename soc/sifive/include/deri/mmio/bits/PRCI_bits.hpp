@@ -29,6 +29,7 @@ enum class PRCI_regs::hfrosccfg_shift : unsigned {
   trim = 16,
   div = 0,
 };
+void IsBitShift(PRCI_regs::hfrosccfg_shift);
 
 /**
  * Bitmasks for PRCI hfxosccfg
@@ -49,6 +50,7 @@ enum class PRCI_regs::hfxosccfg_shift : unsigned {
   ready = 31,
   enable = 30,
 };
+void IsBitShift(PRCI_regs::hfxosccfg_shift);
 
 /**
  * Bitmasks for PRCI pllcfg
@@ -79,6 +81,7 @@ enum class PRCI_regs::pllcfg_shift : unsigned {
   pllf = 4,
   pllr = 0,
 };
+void IsBitShift(PRCI_regs::pllcfg_shift);
 
 /**
  * Bitmasks for PRCI plloutdiv
@@ -99,6 +102,7 @@ enum class PRCI_regs::plloutdiv_shift : unsigned {
   divby1 = 8,
   div = 0,
 };
+void IsBitShift(PRCI_regs::plloutdiv_shift);
 
 /**
  * Bitmasks for PRCI coreclkcfg
@@ -114,6 +118,7 @@ void HasBitwiseOperators(PRCI_regs::coreclkcfg_bits);
  * Bit shifts for PRCI coreclkcfg
  */
 enum class PRCI_regs::coreclkcfg_shift : unsigned {};
+void IsBitShift(PRCI_regs::coreclkcfg_shift);
 
 static_assert(offsetof(PRCI_regs, hfrosccfg) == 0x0);
 static_assert(offsetof(PRCI_regs, hfxosccfg) == 0x4);
