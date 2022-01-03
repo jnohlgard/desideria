@@ -25,12 +25,17 @@ extern soc::UartPeriph UART1;
 }  // namespace deri::mmio
 
 namespace deri::soc {
+
+extern std::array<dev::uart::UartIrqDriver<soc::UartPeriph> *, 2> uart;
 // avoiding C++ static initialization order fiasco by wrapping each device in a
 // function
-inline dev::uart::UartBlockingDriver<dev::uart::UartSiFive> &uart0() {
+inline auto &uart0() {
   static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartBlockingDriver{mmio::UART0};
+    static auto instance = dev::uart::UartIrqDriver{mmio::UART0};
     instance.init();
+    instance.setBaud(115200);
+    soc::Irq::enable(mmio::IRQ::UART0);
+    uart[0] = &instance;
     return instance;
   }
   ();
