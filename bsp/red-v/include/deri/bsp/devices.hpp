@@ -5,6 +5,6 @@
 #pragma once
 
 namespace deri::bsp {
-// HXTAL is populated with a 8 MHz crystal
-inline constexpr uint32_t hxtal_freq = 8'000'000u;
+// XTAL is populated with a 16 MHz crystal
+inline constexpr uint32_t hfxosc_freq = 16'000'000u;
 }  // namespace deri::bsp

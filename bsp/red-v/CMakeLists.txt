@@ -16,7 +16,7 @@ target_link_libraries(deri_bsp PUBLIC
   deri_sys_time
   )
 target_link_libraries(deri_bsp_periph INTERFACE
-  #  deri_dev_clock_sifive
+  deri_dev_clock_sifive
   deri_dev_gpio_sifive
   deri_dev_irq_plic
   deri_dev_irq_clint

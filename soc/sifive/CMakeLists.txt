@@ -3,9 +3,9 @@ deri_add_library(deri_soc_obj OBJECT
   timer_dev.cpp
   uart_dev.cpp
   vectors.cpp
-  #  include/deri/soc/clock_dev.hpp
+  include/deri/soc/clock_dev.hpp
   include/deri/soc/gpio_dev.hpp
-  #  include/deri/soc/irq_dev.hpp
+  include/deri/soc/irq_dev.hpp
   include/deri/soc/timer_dev.hpp
   include/deri/soc/uart_dev.hpp
   include/deri/soc/vectors.hpp

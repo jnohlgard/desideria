@@ -30,6 +30,10 @@ inline constexpr std::array<dev::gpio::GpioInConfig, 0> buttons{};
 inline constexpr dev::gpio::Gpio console_tx_pin{{}, 17};
 inline constexpr std::optional<dev::gpio::Gpio> console_rx_pin{{{}, 16}};
 
+inline constexpr auto clock = soc::Clock::HfxoscConfig{};
+//    soc::Clock::PllConfig{soc::Clock::PllConfig::PllFactors{
+//        .div_R = 2, .mult_F = 80, .div_Q = 2, .div_final = 1}};
+
 namespace time {
 
 struct MtimeTimerConfig {

@@ -6,12 +6,17 @@
 
 #include "deri/callback.hpp"
 #include "deri/dev/clock.hpp"
+#include "deri/dev/clock_sifive.hpp"
 #include "deri/irq.hpp"
 #include "deri/log.hpp"
 
 namespace deri::log {
 struct Clock;
 }  // namespace deri::log
+
+namespace deri::mmio {
+extern dev::clock::PrciSifive PRCI;
+}
 
 namespace deri::soc {
 class Clock {
@@ -22,13 +27,43 @@ class Clock {
   enum class Core {};
   enum class TileLink {};
 
-  [[nodiscard]] static unsigned current(Core) { return 16'000'000u; }
-  [[nodiscard]] static unsigned current(TileLink) { return current(Core{}); }
+  using HfxoscConfig = deri::dev::clock::PrciSifive::HfxoscConfig;
+  using HfroscConfig = deri::dev::clock::PrciSifive::HfroscConfig;
+  using PllConfig = deri::dev::clock::PrciSifive::PllConfig;
+
+  // Base frequency of the HFROSC oscillator.
+  static constexpr unsigned hfrosc_center_freq = 72'000'000;
+
+  [[nodiscard]] static unsigned current(Core) { return mmio::PRCI.coreFreq(); }
+  [[nodiscard]] static unsigned current(TileLink) {
+    return mmio::PRCI.tlFreq();
+  }
+
+  // The FE310 does not provide any module clock gating
+  static void enable(TileLink) {}
 
   static void onClockChange(OnClockChange &on_clock_change, TileLink) {
     arch::CriticalSection cs{};
     tlclk_users.remove(on_clock_change);
     tlclk_users.push_front(on_clock_change);
+  }
+
+  template <class Config>
+  static void apply(const Config &config) {
+    arch::CriticalSection cs{};
+    Logger::info("Applying new clock config\n");
+    mmio::PRCI.setConfig(config);
+    auto tl_freq = current(TileLink{});
+    for (const auto &on_clock_change : tlclk_users) {
+      Logger::debug(
+          "onClockChange(tlclk %p: %lu)\n",
+          reinterpret_cast<const void *>(on_clock_change.callback.arg),
+          static_cast<unsigned long>(tl_freq));
+      on_clock_change.callback.func(tl_freq, on_clock_change.callback.arg);
+    }
+    Logger::info("New clocks:\n");
+    Logger::info(
+        "Core = %u, tlclk = %u\n", current(Core{}), current(TileLink{}));
   }
 
  private:

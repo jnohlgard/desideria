@@ -1,17 +1,12 @@
 /*
- * Copyright (c) 2021 Joakim Nohlgård
- */
-
-#pragma once
-
-/*
- * Copyright (c) 2021 Joakim Nohlgård
+ * Copyright (c) 2021-2022 Joakim Nohlgård
  */
 
 #pragma once
 
 #include "deri/dev/uart.hpp"
 #include "deri/dev/uart_sifive.hpp"
+#include "deri/dev/static_init.hpp"
 
 namespace deri::soc {
 // USART low level operations
@@ -33,8 +28,10 @@ inline auto &uart0() {
   static auto &instance = []() -> auto & {
     static auto instance = dev::uart::UartIrqDriver{mmio::UART0};
     instance.init();
+    instance.updateModuleClock(Clock::current(Clock::TileLink{}));
     instance.setBaud(115200);
     soc::Irq::enable(mmio::IRQ::UART0);
+    Clock::onClockChange(instance.clockChangeCallback(), Clock::TileLink{});
     uart[0] = &instance;
     return instance;
   }
