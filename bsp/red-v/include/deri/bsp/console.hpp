@@ -11,12 +11,13 @@
 #include "deri/soc/uart_dev.hpp"
 
 namespace deri::bsp {
-using ConsoleDriver = dev::uart::UartBlockingDriver<dev::uart::UartSiFive>;
-inline ConsoleDriver &console() {
+inline auto &console() {
   static auto &instance = []() -> auto & {
     auto &instance = soc::uart0();
-    instance.setBaud(115200);
     soc::gpio.initOutIof(config::console_tx_pin);
+    if (config::console_rx_pin.has_value()) {
+      soc::gpio.initInIof(*config::console_rx_pin);
+    }
     return instance;
   }
   ();
