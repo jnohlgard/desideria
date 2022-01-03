@@ -1,14 +1,14 @@
 /*
- * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
+ * Copyright (C) 2020-2022 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
 #pragma once
 
-#include "deri/registers.hpp"
 #include "deri/mmio/UART.hpp"
+#include "deri/registers.hpp"
 
-#include <optional>
 #include <cstddef>
+#include <optional>
 #include <span>
 
 namespace deri::dev::uart {
@@ -45,6 +45,17 @@ class UartSiFive {
    */
   [[nodiscard]] auto tryWrite(std::span<const std::byte> buffer)
       -> decltype(buffer);
+
+  void disableTxInterrupts();
+
+  void enableTxCompleteInterrupt();
+  void enableTxBufferAvailableInterrupt();
+
+  bool checkAndClearTxIrq();
+
+  void enableRxInterrupt();
+
+  void disableRxInterrupt();
 
   std::optional<std::byte> getRxByte();
 

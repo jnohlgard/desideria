@@ -67,6 +67,7 @@ enum class UART_regs::txctrl_shift : unsigned {
   nstop = 1,
   enable = 0,
 };
+void IsBitShift(UART_regs::txctrl_shift);
 
 /**
  * Bitmasks for UART rxctrl
