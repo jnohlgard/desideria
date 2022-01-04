@@ -41,7 +41,7 @@ namespace time {
 struct UsecTimerConfig {
   using TimerManager = dev::TimerManager<dev::timer::TimerGd32>;
   static constexpr uint32_t tick_rate_hz = 1'000'000;
-  static auto &driver() { return soc::timer4(); };
+  static auto &driver() { return soc::timer<4>(); };
 };
 struct MtimeTimerConfig {
   using TimerManager = dev::TimerManager<dev::timer::TimerRiscv>;

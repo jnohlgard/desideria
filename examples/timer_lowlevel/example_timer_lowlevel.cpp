@@ -14,14 +14,14 @@ namespace config {
 using namespace deri::bsp::config;
 }
 
-static auto &timer = deri::soc::timers[0];
+static auto &timer = deri::soc::timer<0>();
 using GpioOut = deri::soc::GpioOut;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 void buttonCallback(uintptr_t id) {
   printf("Callback for button %u at time %lu\n",
          static_cast<unsigned>(id),
-         static_cast<unsigned long>(timer->read()));
+         static_cast<unsigned long>(timer.read()));
 }
 
 void initLeds() {
@@ -45,7 +45,7 @@ void initButtons() {
 }
 
 void initTimer() {
-  auto &driver = deri::soc::timer0();
+  auto &driver = deri::soc::timer<0>();
   driver.setTickRateHz(1000);
   driver.setPeriod(std::remove_cvref_t<decltype(driver)>::Count{500u - 1});
   driver.setPeriodHandler({.func = [](uintptr_t) {
