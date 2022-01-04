@@ -14,7 +14,7 @@ namespace deri::bsp {
 using ConsoleDriver = dev::uart::UartIrqDriver<dev::uart::UsartGd32>;
 inline ConsoleDriver &console() {
   static auto &instance = []() -> auto & {
-    auto &instance = soc::uart0();
+    auto &instance = soc::uart<0>();
     instance.setBaud(115200);
     soc::gpio.initOutAfio(config::console_tx_pin);
     if (config::console_rx_pin) {
