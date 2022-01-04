@@ -6,7 +6,7 @@
 
 #include "deri/dev/uart.hpp"
 #include "deri/dev/uart_sifive.hpp"
-#include "deri/dev/static_init.hpp"
+#include "deri/dev/mmio_driver.hpp"
 
 namespace deri::soc {
 // USART low level operations

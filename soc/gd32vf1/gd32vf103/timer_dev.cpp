@@ -24,7 +24,7 @@ Driver &driverInstance() {
   driver.init();
   driver.updateModuleClock(moduleClock(clock_enable_bits));
   (Irq::enable(irqs), ...);
-  Clock::onClockChange(driver.clockChangeCallback(), clock_enable_bits);
+  Clock::onClockChange<clock_enable_bits>(driver.clockChangeCallback());
   timers[index] = &driver;
   return driver;
 }

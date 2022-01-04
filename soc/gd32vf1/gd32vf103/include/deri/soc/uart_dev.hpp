@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include "deri/soc/soc.hpp"
+#include "deri/dev/mmio_driver.hpp"
 #include "deri/dev/uart.hpp"
 #include "deri/dev/uart_gd32.hpp"
 #include "deri/soc/clock_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
+#include "deri/soc/soc.hpp"
 
 namespace deri::soc {
 // USART low level operations
@@ -25,51 +26,73 @@ extern soc::UartPeriph UART4;
 }  // namespace deri::mmio
 
 namespace deri::soc {
-// avoiding C++ static initialization order fiasco by wrapping each device in a
-// function
-inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart0() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::USART0};
-    moduleEnable(instance, Clock::APB2::USART0EN, Irq::IRQ::USART0);
-    return instance;
-  }
-  ();
-  return instance;
+
+template <>
+struct DefaultConfig<UartPeriph> {
+  using Driver = dev::uart::UartIrqDriver<UartPeriph>;
+};
+
+template <>
+struct HardwareMap<mmio::USART0>
+    : public detail::HardwareMapDefinition<mmio::USART0,
+                                           Clock::APB2::USART0EN,
+                                           Irq::IRQ::USART0> {};
+template <>
+struct HardwareMap<mmio::USART1>
+    : public detail::HardwareMapDefinition<mmio::USART1,
+                                           Clock::APB1::USART1EN,
+                                           Irq::IRQ::USART0> {};
+template <>
+struct HardwareMap<mmio::USART2>
+    : public detail::HardwareMapDefinition<mmio::USART2,
+                                           Clock::APB1::USART2EN,
+                                           Irq::IRQ::USART2> {};
+template <>
+struct HardwareMap<mmio::UART3>
+    : public detail::HardwareMapDefinition<mmio::UART3,
+                                           Clock::APB1::UART3EN,
+                                           Irq::IRQ::UART3> {};
+template <>
+struct HardwareMap<mmio::UART4>
+    : public detail::HardwareMapDefinition<mmio::UART4,
+                                           Clock::APB1::UART4EN,
+                                           Irq::IRQ::UART4> {};
+
+}  // namespace deri::soc
+
+namespace deri::soc {
+template <unsigned index>
+struct UartDevice;
+
+template <unsigned index>
+inline auto &uart_device{UartDevice<index>::device};
+
+template <unsigned index>
+using Uart = MmioDriver<uart_device<index>>;
+
+template <unsigned index>
+inline auto &uart() {
+  return Uart<index>::get();
 }
-inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart1() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::USART1};
-    moduleEnable(instance, Clock::APB1::USART1EN, Irq::IRQ::USART1);
-    return instance;
-  }
-  ();
-  return instance;
-}
-inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart2() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::USART2};
-    moduleEnable(instance, Clock::APB1::USART2EN, Irq::IRQ::USART2);
-    return instance;
-  }
-  ();
-  return instance;
-}
-inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart3() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::UART3};
-    moduleEnable(instance, Clock::APB1::UART3EN, Irq::IRQ::UART3);
-    return instance;
-  }
-  ();
-  return instance;
-}
-inline dev::uart::UartIrqDriver<dev::uart::UsartGd32> &uart4() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::UART4};
-    moduleEnable(instance, Clock::APB1::UART4EN, Irq::IRQ::UART4);
-    return instance;
-  }
-  ();
-  return instance;
-}
+
+template <>
+struct UartDevice<0> {
+  static inline auto &device{mmio::USART0};
+};
+template <>
+struct UartDevice<1> {
+  static inline auto &device{mmio::USART1};
+};
+template <>
+struct UartDevice<2> {
+  static inline auto &device{mmio::USART2};
+};
+template <>
+struct UartDevice<3> {
+  static inline auto &device{mmio::UART3};
+};
+template <>
+struct UartDevice<4> {
+  static inline auto &device{mmio::UART4};
+};
 }  // namespace deri::soc
