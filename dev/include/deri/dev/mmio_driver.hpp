@@ -35,9 +35,7 @@ struct MmioDriver {
       static auto driver = Driver{device};
       driver.init();
       driver.updateModuleClock(HardwareMap<device>::moduleClock());
-      for (auto irq : HardwareMap<device>::irqs) {
-        Irq::enable(irq);
-      }
+      HardwareMap<device>::enableIrqs();
       Clock::onClockChange<HardwareMap<device>::clock_enable>(
           driver.clockChangeCallback());
       static_instance = &driver;
@@ -52,7 +50,7 @@ namespace detail {
 template <auto &device, auto clock_bits, auto... irq_signals>
 struct HardwareMapDefinition {
   static constexpr auto clock_enable{clock_bits};
-  static constexpr auto irqs = {(irq_signals, ...)};
+  static void enableIrqs() { (Irq::enable(irq_signals), ...); }
   static auto moduleClock() { return soc::Clock::current(clock_enable); }
 };
 }  // namespace detail
