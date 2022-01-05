@@ -58,23 +58,6 @@ struct HardwareMap<mmio::UART4>
                                            Clock::APB1::UART4EN,
                                            Irq::IRQ::UART4> {};
 
-}  // namespace deri::soc
-
-namespace deri::soc {
-template <unsigned index>
-struct UartDevice;
-
-template <unsigned index>
-inline auto &uart_device{UartDevice<index>::device};
-
-template <unsigned index>
-using Uart = MmioDriver<uart_device<index>>;
-
-template <unsigned index>
-inline auto &uart() {
-  return Uart<index>::get();
-}
-
 template <>
 struct UartDevice<0> {
   static inline auto &device{mmio::USART0};

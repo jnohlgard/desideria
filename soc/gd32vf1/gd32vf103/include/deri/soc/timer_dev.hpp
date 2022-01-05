@@ -72,19 +72,6 @@ struct HardwareMap<mmio::TIMER6>
 }  // namespace deri::soc
 
 namespace deri::soc {
-template <unsigned index>
-struct TimerDevice;
-
-template <unsigned index>
-inline auto &timer_device{TimerDevice<index>::device};
-
-template <unsigned index>
-using Timer = MmioDriver<timer_device<index>>;
-
-template <unsigned index>
-inline auto &timer() {
-  return Timer<index>::get();
-}
 
 template <>
 struct TimerDevice<0> {
