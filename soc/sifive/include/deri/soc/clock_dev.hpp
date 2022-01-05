@@ -12,6 +12,7 @@
 
 namespace deri::log {
 struct Clock;
+struct Clock : public LogConfig<Level::INFO> {};
 }  // namespace deri::log
 
 namespace deri::mmio {
@@ -42,10 +43,14 @@ class Clock {
   // The FE310 does not provide any module clock gating
   static void enable(TileLink) {}
 
-  static void onClockChange(OnClockChange &on_clock_change, TileLink) {
+  template <TileLink clock_bits>
+  static void onClockChange(OnClockChange &on_clock_change) {
     arch::CriticalSection cs{};
     tlclk_users.remove(on_clock_change);
     tlclk_users.push_front(on_clock_change);
+  }
+  static void onClockChange(OnClockChange &on_clock_change, TileLink) {
+    onClockChange<TileLink{}>(on_clock_change);
   }
 
   template <class Config>

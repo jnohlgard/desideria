@@ -4,12 +4,8 @@
 
 #include "deri/soc/uart_dev.hpp"
 
-#include <array>
-
-namespace deri::soc {
-std::array<dev::uart::UartIrqDriver<soc::UartPeriph> *, 2> uart;
-}
+using namespace deri::soc;
 
 extern "C" {
-void plic_UART0() { deri::soc::uart[0]->interrupt(); }
+void plic_UART0() { Uart<0>::static_instance->interrupt(); }
 }

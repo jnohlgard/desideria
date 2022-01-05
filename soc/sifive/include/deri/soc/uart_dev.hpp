@@ -4,9 +4,9 @@
 
 #pragma once
 
+#include "deri/dev/mmio_driver.hpp"
 #include "deri/dev/uart.hpp"
 #include "deri/dev/uart_sifive.hpp"
-#include "deri/dev/mmio_driver.hpp"
 
 namespace deri::soc {
 // USART low level operations
@@ -21,21 +21,28 @@ extern soc::UartPeriph UART1;
 
 namespace deri::soc {
 
-extern std::array<dev::uart::UartIrqDriver<soc::UartPeriph> *, 2> uart;
-// avoiding C++ static initialization order fiasco by wrapping each device in a
-// function
-inline auto &uart0() {
-  static auto &instance = []() -> auto & {
-    static auto instance = dev::uart::UartIrqDriver{mmio::UART0};
-    instance.init();
-    instance.updateModuleClock(Clock::current(Clock::TileLink{}));
-    instance.setBaud(115200);
-    soc::Irq::enable(mmio::IRQ::UART0);
-    Clock::onClockChange(instance.clockChangeCallback(), Clock::TileLink{});
-    uart[0] = &instance;
-    return instance;
-  }
-  ();
-  return instance;
-}
+template <>
+struct DefaultConfig<UartPeriph> {
+  using Driver = dev::uart::UartIrqDriver<UartPeriph>;
+};
+
+template <>
+struct HardwareMap<mmio::UART0>
+    : public detail::HardwareMapDefinition<mmio::UART0,
+                                           Clock::TileLink{},
+                                           Irq::IRQ::UART0> {};
+template <>
+struct HardwareMap<mmio::UART1>
+    : public detail::HardwareMapDefinition<mmio::UART1,
+                                           Clock::TileLink{},
+                                           Irq::IRQ::UART1> {};
+
+template <>
+struct UartDevice<0> {
+  static inline auto &device{mmio::UART0};
+};
+template <>
+struct UartDevice<1> {
+  static inline auto &device{mmio::UART1};
+};
 }  // namespace deri::soc

@@ -13,7 +13,7 @@
 namespace deri::bsp {
 inline auto &console() {
   static auto &instance = []() -> auto & {
-    auto &instance = soc::uart0();
+    auto &instance = soc::uart<0>();
     soc::gpio.initOutIof(config::console_tx_pin);
     if (config::console_rx_pin.has_value()) {
       soc::gpio.initInIof(*config::console_rx_pin);
