@@ -19,8 +19,8 @@ namespace config {
 using namespace deri::bsp::config;
 }
 
-using GpioOut = deri::dev::gpio::GpioOutGd32;
-using GpioManager = deri::dev::gpio::GpioManagerGd32;
+using GpioOut = deri::soc::GpioOut;
+using GpioManager = deri::soc::GpioManager;
 static std::array<GpioOut, config::leds.size()> led_gpios;
 
 struct ConsumerThread {
