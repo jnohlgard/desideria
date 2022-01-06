@@ -69,6 +69,15 @@ struct HardwareMap<mmio::TIMER6>
     : public detail::HardwareMapDefinition<mmio::TIMER6,
                                            Clock::APB1::TIMER6EN,
                                            Irq::IRQ::TIMER6> {};
+
+template <>
+struct HardwareMap<mtime_dev>
+    : public detail::HardwareMapDefinition<mtime_dev, Clock::AHB{}> {
+  // The RISC-V System Tick timer is clocked from the AHB clock divided by 4
+  // There is no clock gate on the mtime counter in this SOC.
+  static auto moduleClock() { return soc::Clock::current(clock_enable) / 4; }
+};
+
 }  // namespace deri::soc
 
 namespace deri::soc {
@@ -102,6 +111,17 @@ struct TimerDevice<6> {
   static inline auto &device{mmio::TIMER6};
 };
 
-dev::timer::TimerDriver<dev::timer::TimerRiscv> &mtime();
+// Timer number 7 is mapped to the RISC-V mtime timer.
+inline auto &mtime() { return MTimer::get(); }
+
+template <>
+inline auto &timer<7>() {
+  return mtime();
+}
+
+template <>
+struct TimerDevice<7> {
+  static inline dev::timer::TimerRiscv device{};
+};
 
 }  // namespace deri::soc

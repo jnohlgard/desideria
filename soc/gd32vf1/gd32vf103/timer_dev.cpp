@@ -9,16 +9,6 @@
 
 namespace deri::soc {
 
-dev::timer::TimerDriver<dev::timer::TimerRiscv> &mtime() {
-  static auto &instance = []() -> auto & {
-    static auto device = dev::timer::TimerRiscv{};
-    static auto driver = dev::timer::TimerDriver{device};
-    return driver;
-  }
-  ();
-  return instance;
-}
-
 template <class Driver>
 void timerInterrupt(Driver &driver) {
   auto &dev = driver.underlyingTimer();
