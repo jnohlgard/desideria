@@ -9,7 +9,6 @@
 #include "deri/dev/uart_gd32.hpp"
 #include "deri/soc/clock_dev.hpp"
 #include "deri/soc/irq_dev.hpp"
-#include "deri/soc/soc.hpp"
 
 namespace deri::soc {
 // USART low level operations

@@ -8,7 +8,7 @@
 #include "deri/dev/timer.hpp"
 #include "deri/dev/timer_gd32.hpp"
 #include "deri/dev/timer_riscv.hpp"
-#include "deri/soc/soc.hpp"
+#include "deri/soc/mtime_dev.hpp"
 
 #include <array>
 
