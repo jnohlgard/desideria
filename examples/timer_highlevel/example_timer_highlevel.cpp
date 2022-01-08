@@ -13,9 +13,7 @@
 
 using namespace std::literals;
 
-namespace config {
-using namespace deri::bsp::config;
-}
+namespace config = deri::bsp::config;
 
 namespace log {
 struct Example;
