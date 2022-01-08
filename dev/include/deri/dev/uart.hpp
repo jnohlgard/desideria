@@ -19,7 +19,6 @@ template <class UartDeviceType>
 class UartBlockingDriver {
  public:
   using UartDevice = UartDeviceType;
-  using RxCallback = Callback<void(std::byte, uintptr_t)>;
   static constexpr auto driver_name = "UartBlockingDriver";
 
   explicit UartBlockingDriver(UartDevice &uart) : uart(uart) {}
