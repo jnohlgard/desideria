@@ -83,24 +83,46 @@ class LogToStdout {
   }
 };
 
+template <class Logger, Level level>
+class LoggerStream {
+ public:
+  template <typename Value>
+  LoggerStream &operator<<(Value &&value) {
+    Logger::template log<level>(value);
+    return *this;
+  }
+
+  LoggerStream &operator<<(std::signed_integral auto &&number) {
+    Logger::template log<level>("%d", number);
+    return *this;
+  }
+  LoggerStream &operator<<(std::unsigned_integral auto &&number) {
+    Logger::template log<level>("%u", number);
+    return *this;
+  }
+};
+
 template <typename Domain, class OutputClass>
 class LoggerImpl {
  public:
   using Output = OutputClass;
+  template <Level level>
+  using Stream = LoggerStream<LoggerImpl<Domain, OutputClass>, level>;
 
   // printf-style logging methods
-  [[gnu::format(__printf__, 1, 0)]] static inline void printf(
+  [[gnu::format(__printf__, 1, 0)]] static inline auto printf(
       const char *format, std::va_list args) {
     Output::printf(format, args);
   }
 
   template <Level message_level>
-  [[gnu::format(__printf__, 1, 0)]] static inline void log(const char *format,
-                                                           std::va_list args) {
+  [[gnu::format(__printf__, 1, 0)]] static inline Stream<message_level> log(
+      const char *format, std::va_list args) {
     if (level<Domain>() < message_level) {
-      return;
+      return {};
     }
     printf(format, args);
+    return {};
   }
 
   // These need to be templates in order to resolve the ambiguity between these
@@ -119,74 +141,88 @@ class LoggerImpl {
   template <Level message_level, typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto log(ConstCharPtr format,
                                                            ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<message_level>> {
     if (level<Domain>() < message_level) {
-      return;
+      return {};
     }
     std::va_list args;
     va_start(args, format);
     printf(format, args);
     va_end(args);
+    return {};
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto critical(
       ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::CRITICAL>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::CRITICAL>(format, args);
+    auto stream = log<Level::CRITICAL>(format, args);
     va_end(args);
+    return stream;
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto error(
       ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::ERROR>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::ERROR>(format, args);
+    auto stream = log<Level::ERROR>(format, args);
     va_end(args);
+    return stream;
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto warning(
       ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::WARNING>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::WARNING>(format, args);
+    auto stream = log<Level::WARNING>(format, args);
     va_end(args);
+    return stream;
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto info(ConstCharPtr format,
                                                             ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::INFO>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::INFO>(format, args);
+    auto stream = log<Level::INFO>(format, args);
     va_end(args);
+    return stream;
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto debug(
       ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::DEBUG>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::DEBUG>(format, args);
+    auto stream = log<Level::DEBUG>(format, args);
     va_end(args);
+    return stream;
   }
 
   template <typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto trace(
       ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
+                          Stream<Level::TRACE>> {
     std::va_list args;
     va_start(args, format);
-    log<Level::TRACE>(format, args);
+    auto stream = log<Level::TRACE>(format, args);
     va_end(args);
+    return stream;
   }
 
   // Verbatim copy of the message string when there are no format arguments
@@ -201,81 +237,93 @@ class LoggerImpl {
   }
 
   template <Level message_level, size_t length>
-  static inline void log(char const (&message)[length]) {
+  static inline Stream<message_level> log(char const (&message)[length]) {
     if (level<Domain>() < message_level) {
-      return;
+      return {};
     }
     printf(message);
+    return {};
   }
 
   template <size_t length>
-  static inline void critical(char const (&message)[length]) {
-    log<Level::CRITICAL>(message);
+  static inline auto critical(char const (&message)[length]) {
+    return log<Level::CRITICAL>(message);
   }
 
   template <size_t length>
-  static inline void error(char const (&message)[length]) {
-    log<Level::ERROR>(message);
+  static inline auto error(char const (&message)[length]) {
+    return log<Level::ERROR>(message);
   }
 
   template <size_t length>
-  static inline void warning(char const (&message)[length]) {
-    log<Level::WARNING>(message);
+  static inline auto warning(char const (&message)[length]) {
+    return log<Level::WARNING>(message);
   }
 
   template <size_t length>
-  static inline void info(char const (&message)[length]) {
-    log<Level::INFO>(message);
+  static inline auto info(char const (&message)[length]) {
+    return log<Level::INFO>(message);
   }
 
   template <size_t length>
-  static inline void debug(char const (&message)[length]) {
-    log<Level::DEBUG>(message);
+  static inline auto debug(char const (&message)[length]) {
+    return log<Level::DEBUG>(message);
   }
 
   template <size_t length>
-  static inline void trace(char const (&message)[length]) {
-    log<Level::TRACE>(message);
+  static inline auto trace(char const (&message)[length]) {
+    return log<Level::TRACE>(message);
   }
 
   template <Level message_level, typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void log(Message &&message) {
+  static inline Stream<message_level> log(Message &&message) {
     if (level<Domain>() < message_level) {
-      return;
+      return {};
     }
     printf(std::forward<Message>(message));
+    return {};
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void critical(Message &&message) {
-    log<Level::CRITICAL>(std::forward<Message>(message));
+  static inline auto critical(Message &&message) {
+    return log<Level::CRITICAL>(std::forward<Message>(message));
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void error(Message &&message) {
-    log<Level::ERROR>(std::forward<Message>(message));
+  static inline auto error(Message &&message) {
+    return log<Level::ERROR>(std::forward<Message>(message));
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void warning(Message &&message) {
-    log<Level::WARNING>(std::forward<Message>(message));
+  static inline auto warning(Message &&message) {
+    return log<Level::WARNING>(std::forward<Message>(message));
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void info(Message &&message) {
-    log<Level::INFO>(std::forward<Message>(message));
+  static inline auto info(Message &&message) {
+    return log<Level::INFO>(std::forward<Message>(message));
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void debug(Message &&message) {
-    log<Level::DEBUG>(std::forward<Message>(message));
+  static inline auto debug(Message &&message) {
+    return log<Level::DEBUG>(std::forward<Message>(message));
   }
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline void trace(Message &&message) {
-    log<Level::TRACE>(std::forward<Message>(message));
+  static inline auto trace(Message &&message) {
+    return log<Level::TRACE>(std::forward<Message>(message));
   }
+
+  template <Level message_level>
+  static inline Stream<message_level> log() {
+    return {};
+  }
+  static inline auto critical() { return log<Level::CRITICAL>(); }
+  static inline auto error() { return log<Level::ERROR>(); }
+  static inline auto info() { return log<Level::INFO>(); }
+  static inline auto debug() { return log<Level::DEBUG>(); }
+  static inline auto trace() { return log<Level::TRACE>(); }
 
   // Use the default log level if there is no definition of the given domain
   // config
