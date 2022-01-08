@@ -57,6 +57,10 @@ class Function<Return(Args...)> {
     new (&inline_storage) Callable(std::forward<Callable>(callable));
   }
 
+  explicit operator bool() const {
+    return call != reinterpret_cast<const Call *>(default_call);
+  }
+
   Return operator()(Args... args) const { call(&inline_storage, args...); }
 
   Call *call{reinterpret_cast<const Call *>(default_call)};
