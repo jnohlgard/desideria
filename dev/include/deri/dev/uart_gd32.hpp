@@ -66,7 +66,7 @@ class UsartGd32 {
   bool checkAndClearTxIrq() {
     using STAT_bits = mmio::USART_regs::STAT_bits;
     using CTL0_bits = mmio::USART_regs::CTL0_bits;
-    if (USART.STAT.any(STAT_bits::TC | STAT_bits::TBE)) {
+    if (!!(flagsEnabledAndSet() & (STAT_bits::TC | STAT_bits::TBE))) {
       USART.STAT.store(~STAT_bits::TC);
       // Disable transmit buffer empty IRQ to avoid an infinite interrupt loop
       USART.CTL0 &= ~CTL0_bits::TBEIE;
@@ -96,6 +96,11 @@ class UsartGd32 {
   }
 
  private:
+  mmio::USART_regs::STAT_bits flagsEnabledAndSet() {
+    using STAT_bits = mmio::USART_regs::STAT_bits;
+    return static_cast<STAT_bits>(static_cast<uint32_t>(USART.STAT.load()) &
+                                  static_cast<uint32_t>(USART.CTL0.load()));
+  }
   mmio::USART_regs USART;
 };
 
