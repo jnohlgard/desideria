@@ -19,9 +19,10 @@ class Function;
 
 template <class Return, typename... Args>
 class Function<Return(Args...)> {
-  static constexpr auto max_size = 1 * sizeof(void *);
   using Call = Return(const void *, Args...);
   using FunctionType = Return(Args...);
+  static constexpr auto max_size = 1 * sizeof(void *);
+  static constexpr auto *default_call = panic;
 
   template <class Callable>
   class Invoker {
@@ -38,13 +39,9 @@ class Function<Return(Args...)> {
       return func(args...);
     }
   };
-  class Panic {
-   public:
-    [[noreturn]] static Return call(const void *, Args...) { panic(); }
-  };
 
  public:
-  Function() : call{Panic::call} {}
+  Function() = default;
   Function(const Function &) = default;
   Function &operator=(const Function &) = default;
   ~Function() = default;
@@ -62,7 +59,7 @@ class Function<Return(Args...)> {
 
   Return operator()(Args... args) const { call(&inline_storage, args...); }
 
-  Call *call;
+  Call *call{reinterpret_cast<const Call *>(default_call)};
   std::aligned_storage_t<max_size, alignof(void *)> inline_storage{};
 };
 }  // namespace deri
