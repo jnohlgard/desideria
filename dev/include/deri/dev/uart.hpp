@@ -5,8 +5,8 @@
 #pragma once
 
 #include "deri/arch/irq.hpp"
-#include "deri/function.hpp"
 #include "deri/dev/clock.hpp"
+#include "deri/function.hpp"
 #include "deri/mutex.hpp"
 
 #include <cstdint>
@@ -77,9 +77,7 @@ class UartBlockingDriver {
 
   UartDevice &uart{};
   clock::OnClockChange on_clock_change{
-      .callback = {.func = clock::updateModuleClockCallback<
-                       std::remove_pointer_t<decltype(this)>>,
-                   .arg = reinterpret_cast<uintptr_t>(this)}};
+      .callback = [this](unsigned new_clock) { updateModuleClock(new_clock); }};
   unsigned module_clock{};
   unsigned baudrate{};
 };
@@ -158,9 +156,7 @@ class UartIrqDriver {
   Mutex tx_irq_signal{};
   RxCallback rx_callback{};
   clock::OnClockChange on_clock_change{
-      .callback = {.func = clock::updateModuleClockCallback<
-                       std::remove_pointer_t<decltype(this)>>,
-                   .arg = reinterpret_cast<uintptr_t>(this)}};
+      .callback = [this](unsigned new_clock) { updateModuleClock(new_clock); }};
   unsigned module_clock{};
   unsigned baudrate{};
 };

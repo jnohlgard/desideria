@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/callback.hpp"
+#include "deri/function.hpp"
 #include "deri/dev/clock.hpp"
 #include "deri/dev/clock_gd32.hpp"
 #include "deri/irq.hpp"
@@ -88,12 +88,10 @@ class Clock {
   template <typename ClockBits>
   static void runEvents(unsigned new_clock_frequency) {
     for (const auto &on_clock_change : bus_users<ClockBits>) {
-      Logger::debug(
-          "onClockChange(%lu, %p)\n",
-          static_cast<unsigned long>(new_clock_frequency),
-          reinterpret_cast<const void *>(on_clock_change.callback.arg));
-      on_clock_change.callback.func(new_clock_frequency,
-                                    on_clock_change.callback.arg);
+      Logger::debug("onClockChange(%u, %p)\n",
+                    new_clock_frequency,
+                    reinterpret_cast<const void *>(&on_clock_change));
+      on_clock_change.callback(new_clock_frequency);
     }
   }
 

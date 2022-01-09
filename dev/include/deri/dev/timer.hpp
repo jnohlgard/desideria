@@ -66,9 +66,7 @@ class TimerDriver {
   std::array<Callback, TimerDevice::num_channels> channel_callbacks{};
   PeriodCallback period_callback{};
   clock::OnClockChange on_clock_change{
-      .callback = {.func = clock::updateModuleClockCallback<
-                       std::remove_pointer_t<decltype(this)>>,
-                   .arg = reinterpret_cast<uintptr_t>(this)}};
+      .callback = [this](unsigned new_clock) { updateModuleClock(new_clock); }};
   unsigned module_clock{};
   unsigned tick_rate_hz{};
 };

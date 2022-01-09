@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "deri/callback.hpp"
+#include "deri/function.hpp"
 #include "deri/dev/clock.hpp"
 #include "deri/dev/clock_sifive.hpp"
 #include "deri/irq.hpp"
@@ -60,11 +60,10 @@ class Clock {
     mmio::PRCI.setConfig(config);
     auto tl_freq = current(TileLink{});
     for (const auto &on_clock_change : tlclk_users) {
-      Logger::debug(
-          "onClockChange(tlclk %p: %lu)\n",
-          reinterpret_cast<const void *>(on_clock_change.callback.arg),
-          static_cast<unsigned long>(tl_freq));
-      on_clock_change.callback.func(tl_freq, on_clock_change.callback.arg);
+      Logger::debug("onClockChange(tlclk %p: %lu)\n",
+                    reinterpret_cast<const void *>(&on_clock_change),
+                    static_cast<unsigned long>(tl_freq));
+      on_clock_change.callback(tl_freq);
     }
     Logger::info("New clocks:\n");
     Logger::info(
