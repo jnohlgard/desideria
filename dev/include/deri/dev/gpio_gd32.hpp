@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/callback.hpp"
 #include "deri/dev/gpio.hpp"
+#include "deri/function.hpp"
 #include "deri/mmio/AFIO.hpp"
 #include "deri/mmio/GPIO.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"
@@ -136,7 +136,7 @@ class GpioManagerGd32 {
   using DigitalOutSpeed = GpioPortGd32::DigitalOutSpeed;
   using Trigger = GpioInConfig::Trigger;
 
-  using Callback = deri::Callback<void(uintptr_t)>;
+  using Callback = deri::Function<void()>;
   void initAnalog(Gpio gpio);
 
   GpioInGd32 initInput(Gpio gpio, PullConfig pull = PullConfig::FLOATING);
@@ -165,8 +165,8 @@ class GpioManagerGd32 {
 
   void interrupt(unsigned line) const {
     const auto &callback = callbacks[line];
-    if (callback.func != nullptr) {
-      callback.func(callback.arg);
+    if (callback) {
+      callback();
     }
   }
 

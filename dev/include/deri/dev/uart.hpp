@@ -5,7 +5,7 @@
 #pragma once
 
 #include "deri/arch/irq.hpp"
-#include "deri/callback.hpp"
+#include "deri/function.hpp"
 #include "deri/dev/clock.hpp"
 #include "deri/mutex.hpp"
 
@@ -88,7 +88,7 @@ template <class UartDeviceType>
 class UartIrqDriver {
  public:
   using UartDevice = UartDeviceType;
-  using RxCallback = Callback<void(std::byte, uintptr_t)>;
+  using RxCallback = Function<void(std::byte)>;
   static constexpr auto driver_name = "UartIrqDriver";
 
   explicit UartIrqDriver(UartDevice &uart) : uart(uart) {}
@@ -169,7 +169,7 @@ template <class UartDeviceType>
 void UartIrqDriver<UartDeviceType>::setRxCallback(
     UartIrqDriver::RxCallback new_callback) {
   rx_callback = new_callback;
-  if (rx_callback.func != nullptr) {
+  if (rx_callback) {
     uart.enableRxInterrupt();
   } else {
     uart.disableRxInterrupt();
@@ -180,10 +180,12 @@ void UartIrqDriver<UartDeviceType>::interrupt() {
   if (uart.checkAndClearTxIrq()) {
     tx_irq_signal.unlock();
   }
-  // drain the RX buffer
-  while (auto data = uart.getRxByte()) {
-    if (rx_callback.func != nullptr) {
-      rx_callback.func(*data, rx_callback.arg);
+  if (uart.checkRxIrq()) {
+    // drain the RX buffer
+    while (auto data = uart.getRxByte()) {
+      if (rx_callback) {
+        rx_callback(*data);
+      }
     }
   }
 }

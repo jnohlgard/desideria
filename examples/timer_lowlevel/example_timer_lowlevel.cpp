@@ -37,10 +37,11 @@ void initButtons() {
   for (auto &&button : config::buttons) {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
-        button.gpio,
-        deri::dev::gpio::GpioInConfig::Trigger::RISING,
-        {.func = &buttonCallback, .arg = arg++});
+        button.gpio, deri::dev::gpio::GpioInConfig::Trigger::RISING, [arg]() {
+          buttonCallback(arg);
+        });
     deri::soc::GpioManager::enableInterrupt(button.gpio);
+    ++arg;
   }
 }
 
@@ -48,7 +49,7 @@ void initTimer() {
   auto &driver = deri::soc::timer<0>();
   driver.setTickRateHz(1000);
   driver.setPeriod(std::remove_cvref_t<decltype(driver)>::Count{500u - 1});
-  driver.setPeriodHandler({.func = [](uintptr_t) {
+  driver.setPeriodHandler([] {
     static unsigned led_active = 0;
     led_gpios[led_active].clear();
     ++led_active;
@@ -56,7 +57,7 @@ void initTimer() {
       led_active = 0;
     }
     led_gpios[led_active].set();
-  }});
+  });
   driver.start();
 }
 

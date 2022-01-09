@@ -48,11 +48,11 @@ void initButtons() {
   uintptr_t arg = 0;
   for (auto &&button : config::buttons) {
     deri::soc::gpio.initInput(button);
-    deri::soc::gpio.setInterruptHandler(
-        button.gpio,
-        GpioManager::Trigger::RISING,
-        {.func = &buttonCallback, .arg = arg++});
+    deri::soc::gpio.setInterruptHandler(button.gpio,
+                                        GpioManager::Trigger::RISING,
+                                        [arg] { buttonCallback(arg); });
     GpioManager::enableInterrupt(button.gpio);
+    ++arg;
   }
 }
 
@@ -89,8 +89,14 @@ void initTimers() {
     timeout_prev = tmp;
     schedulable.led = led_gpios[arg++];
     schedulable.timeout = Timer::count(timeout * 250ms);
-    schedulable.callback.arg = reinterpret_cast<uintptr_t>(&schedulable);
-    schedulable.callback.func = timerCallback;
+    schedulable.callback = [&schedulable](Timer::TimerManager &timer,
+                                          Timer::Schedulable &) {
+      schedulable.led.toggle();
+      schedulable.last_event = Timer::now().time_since_epoch().count();
+      schedulable.target += schedulable.timeout;
+      timer.schedule(schedulable);
+      ++ScheduledLed::num_updates;
+    };
     schedulable.target = schedulable.timeout + base;
     Timer::schedule(schedulable);
   }

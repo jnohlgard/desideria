@@ -52,6 +52,7 @@ class UartSiFive {
   void enableTxBufferAvailableInterrupt();
 
   bool checkAndClearTxIrq();
+  bool checkRxIrq();
 
   void enableRxInterrupt();
 

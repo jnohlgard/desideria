@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "deri/callback.hpp"
 #include "deri/dev/gpio.hpp"
+#include "deri/function.hpp"
 #include "deri/mmio/GPIO.hpp"
 #include "deri/mmio/bits/GPIO_bits.hpp"
 
@@ -119,7 +119,7 @@ class GpioManagerSifive {
   using Iof = GpioPortSifive::Iof;
   using Trigger = GpioInConfig::Trigger;
 
-  using Callback = deri::Callback<void(uintptr_t)>;
+  using Callback = deri::Function<void()>;
 
   static constexpr unsigned num_gpios = 24;
 
@@ -158,8 +158,8 @@ class GpioManagerSifive {
 
   void interrupt(unsigned line) const {
     const auto &callback = callbacks[line];
-    if (callback.func != nullptr) {
-      callback.func(callback.arg);
+    if (callback) {
+      callback();
     }
   }
 

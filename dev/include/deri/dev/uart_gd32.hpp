@@ -75,6 +75,11 @@ class UsartGd32 {
     return false;
   }
 
+  bool checkRxIrq() {
+    using STAT_bits = mmio::USART_regs::STAT_bits;
+    return !!(flagsEnabledAndSet() & STAT_bits::RBNE);
+  }
+
   std::optional<std::byte> getRxByte() {
     using STAT_bits = mmio::USART_regs::STAT_bits;
     if (USART.STAT.any(STAT_bits::RBNE)) {

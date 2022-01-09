@@ -7,9 +7,7 @@
 
 #include <cstdio>
 
-void buttonCallback(uintptr_t id) {
-  printf("Callback for button %u\n", static_cast<unsigned>(id));
-}
+void buttonCallback(unsigned id) { printf("Callback for button %u\n", id); }
 
 void initLeds() {
   for (auto &&led : deri::bsp::config::leds) {
@@ -23,10 +21,11 @@ void initButtons() {
   for (auto &&button : deri::bsp::config::buttons) {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
-        button.gpio,
-        deri::dev::gpio::GpioInConfig::Trigger::RISING,
-        {.func = &buttonCallback, .arg = arg++});
+        button.gpio, deri::dev::gpio::GpioInConfig::Trigger::RISING, [arg]() {
+          buttonCallback(arg);
+        });
     deri::soc::GpioManager::enableInterrupt(button.gpio);
+    ++arg;
   }
 }
 

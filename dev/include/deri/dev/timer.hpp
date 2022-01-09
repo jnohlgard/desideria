@@ -3,8 +3,8 @@
  */
 
 #pragma once
-#include "deri/callback.hpp"
 #include "deri/dev/clock.hpp"
+#include "deri/function.hpp"
 #include "deri/irq.hpp"
 
 #include <array>
@@ -23,8 +23,8 @@ class TimerDriver {
   static constexpr auto max_value = TimerDevice::max_value;
   static constexpr auto num_channels = TimerDevice::num_channels;
 
-  using Callback = deri::Callback<void(Channel, uintptr_t)>;
-  using PeriodCallback = deri::Callback<void(uintptr_t)>;
+  using Callback = deri::Function<void(Channel)>;
+  using PeriodCallback = deri::Function<void()>;
 
   explicit TimerDriver(TimerDevice &timer) : timer(&timer) {}
   TimerDriver() = default;
@@ -137,15 +137,15 @@ void TimerDriver<TimerDeviceType>::setTickRateHz(
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::channelInterrupt(Channel channel) const {
   const auto &callback = channel_callbacks[static_cast<unsigned>(channel)];
-  if (callback.func != nullptr) {
-    callback.func(channel, callback.arg);
+  if (callback) {
+    callback(channel);
   }
 }
 
 template <class TimerDeviceType>
 void TimerDriver<TimerDeviceType>::periodInterrupt() const {
-  if (period_callback.func != nullptr) {
-    period_callback.func(period_callback.arg);
+  if (period_callback) {
+    period_callback();
   }
 }
 

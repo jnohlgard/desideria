@@ -35,8 +35,7 @@ class BenchContextSwitch {
     }
   }
   static void printEvent(deri::HighResolutionTimer::TimerManager &timer,
-                         deri::HighResolutionTimer::Schedulable &schedulable,
-                         uintptr_t /* arg */) {
+                         deri::HighResolutionTimer::Schedulable &schedulable) {
     static auto last_cycles = deri::arch::Perf::cycles();
     static auto last_inst = deri::arch::Perf::instructionsRetired();
     static auto last_update = deri::HighResolutionTimer::now();
@@ -90,7 +89,7 @@ void initTimer() {
   static deri::HighResolutionTimer::Schedulable print_event{
       .target = deri::HighResolutionTimer::count(
           deri::HighResolutionTimer::now() + 1000ms),
-      .callback = {.func = BenchContextSwitch::printEvent},
+      .callback = BenchContextSwitch::printEvent,
   };
   Logger::printf("Initial timer target = %lld, now = %lld\n",
                  print_event.target,

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "deri/dev/timer.hpp"
+#include "deri/function.hpp"
 #include "deri/irq.hpp"
 #include "deri/ordered_forward_list.hpp"
 
@@ -25,8 +26,7 @@ class TimerManager {
   using LowerCount = std::underlying_type_t<typename TimerDevice::Count>;
   enum class Frequency : unsigned long;
   struct Schedulable;
-  using TimerCallback =
-      Callback<void(TimerManager &, Schedulable &, uintptr_t)>;
+  using TimerCallback = Function<void(TimerManager &, Schedulable &)>;
   static constexpr auto num_channels = TimerDriver::num_channels;
 
   struct Schedulable : public ForwardListNode<Schedulable> {
@@ -59,14 +59,10 @@ class TimerManager {
     arch::CriticalSection cs;
     timer->setPeriod(
         static_cast<typename TimerDriver::Count>(TimerDriver::max_value));
-    timer->setCompareHandler(typename TimerDriver::Channel{0},
-                             {[](auto, uintptr_t arg) {
-                                auto *self =
-                                    reinterpret_cast<decltype(this)>(arg);
-                                auto now = self->read();
-                                self->update(now);
-                              },
-                              reinterpret_cast<uintptr_t>(this)});
+    timer->setCompareHandler(typename TimerDriver::Channel{0}, [this](auto) {
+      auto now = read();
+      update(now);
+    });
     timer->start();
     auto now = read();
     update(now);
@@ -116,7 +112,7 @@ class TimerManager {
       }
       // Remove expired timer, run callback
       queue.pop();
-      scheduled.callback.func(*this, scheduled, scheduled.callback.arg);
+      scheduled.callback(*this, scheduled);
     }
 
     // insert periodic_update into list
@@ -139,12 +135,8 @@ class TimerManager {
   LowerCount checkpoint{};
   std::atomic<Count> count{0};
   Schedulable periodic_update{
-      .callback =
-          {
-              .func = [](TimerManager &,
-                         Schedulable &,
-                         uintptr_t) { /* no-op to trigger an update */ },
-          },
+      .callback = [](TimerManager &,
+                     Schedulable &) { /* no-op to trigger an update */ },
   };
   bool in_update{false};
 };

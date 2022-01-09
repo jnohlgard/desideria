@@ -94,5 +94,6 @@ void UartSiFive::disableTxInterrupts() {
   using ie_bits = mmio::UART_regs::ie_bits;
   UART.ie &= ~ie_bits::txwm;
 }
+bool UartSiFive::checkRxIrq() { return true; }
 
 }  // namespace deri::dev::uart

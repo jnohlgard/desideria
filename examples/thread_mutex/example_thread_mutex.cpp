@@ -57,14 +57,16 @@ void initLeds() {
 }
 
 void initButtons() {
-  uintptr_t arg = 0;
+  unsigned arg = 0;
   for (auto &&button : config::buttons) {
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
-        button.gpio,
-        GpioManager::Trigger::RISING,
-        {.func = &ConsumerThread::callback, .arg = arg++});
+        button.gpio, GpioManager::Trigger::RISING, [arg] {
+          printf("Callback for button %u\n", arg);
+          ConsumerThread::mutex.unlock();
+        });
     GpioManager::enableInterrupt(button.gpio);
+    ++arg;
   }
 }
 

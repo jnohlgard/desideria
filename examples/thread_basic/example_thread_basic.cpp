@@ -42,10 +42,6 @@ struct ButtonThread {
     static std::array<ButtonThread, config::buttons.size()> instances;
     return instances[index];
   }
-  static void callback(uintptr_t id) {
-    printf("Callback for button %u\n", static_cast<unsigned>(id));
-    instance(id).button = true;
-  }
 };
 
 void initLeds() {
@@ -58,7 +54,7 @@ void initLeds() {
 
 void initButtons() {
   using deri::Thread;
-  uintptr_t arg = 0;
+  unsigned arg = 0;
   for (auto &&button : config::buttons) {
     auto &button_thread = ButtonThread::instance(arg);
     button_thread.id = arg;
@@ -70,10 +66,12 @@ void initButtons() {
     thread.start();
     deri::soc::gpio.initInput(button);
     deri::soc::gpio.setInterruptHandler(
-        button.gpio,
-        GpioTrigger::RISING,
-        {.func = &ButtonThread::callback, .arg = arg++});
+        button.gpio, GpioTrigger::RISING, [arg] {
+          printf("Callback for button %u\n", arg);
+          ButtonThread::instance(arg).button = true;
+        });
     GpioManager::enableInterrupt(button.gpio);
+    ++arg;
   }
 }
 

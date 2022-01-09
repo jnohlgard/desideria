@@ -19,7 +19,7 @@ deri::Mutex rx_signal{};
 
 deri::RingBuffer<std::byte, 16> rx_buffer;
 
-void onUartRx(std::byte data, uintptr_t) {
+void onUartRx(std::byte data) {
   if (rx_buffer.put(data)) {
     rx_signal.unlock();
   }
@@ -29,7 +29,7 @@ int main() {
   Logger::printf("UART RX tester\n");
   Logger::printf("Anything received over this UART will be reported back\n");
 
-  deri::bsp::console().setRxCallback({onUartRx});
+  deri::bsp::console().setRxCallback(onUartRx);
 
   rx_signal.lock();
   while (true) {
