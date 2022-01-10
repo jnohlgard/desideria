@@ -34,8 +34,11 @@ class Function<Return(Args...)> {
   template <class Callable>
   requires(!std::is_same_v<Callable, Function>) class Invoker {
    public:
-    static Return call(const void *ptr, Args... args) requires(
-        requires(Callable obj, Args... args) { obj(args...); }) {
+    static Return call(const void *ptr,
+                       Args... args) requires(requires(Callable obj,
+                                                       Args... args) {
+      { obj(args...) } -> std::convertible_to<Return>;
+    }) {
       auto *callable = std::launder(reinterpret_cast<const Callable *>(ptr));
       return (*callable)(args...);
     }
