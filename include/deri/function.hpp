@@ -17,9 +17,17 @@ namespace deri {
 template <class FunctionSignature>
 class Function;
 
-// Deduction guide
+// Deduction guides
 template <class Return, class... Args>
 Function(Return (*)(Args...)) -> Function<Return(Args...)>;
+
+template <class Callable, class... Args>
+requires(requires(Callable callable, Args... args) {
+  {
+    callable(args...)
+    } -> std::same_as<decltype(resultType(&Callable::operator()))>;
+}) Function(Callable)
+->Function<decltype(resultType(&Callable::operator()))(Args...)>;
 
 template <class Return, typename... Args>
 class Function<Return(Args...)> {
