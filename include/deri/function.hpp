@@ -17,11 +17,18 @@ namespace deri {
 template <class FunctionSignature>
 class Function;
 
+// Deduction guide
+template <class Return, class... Args>
+Function(Return (*)(Args...)) -> Function<Return(Args...)>;
+
 template <class Return, typename... Args>
 class Function<Return(Args...)> {
   using CallWrapped = Return(const void *, Args...);
   using WrappedFunction = Return(Args...);
   static constexpr auto max_size = 1 * sizeof(void *);
+  // We use the panic handler as a catchall for calling unset targets. The
+  // function signature does not match, but it will still print out all the
+  // arguments as part of the context dump
   static constexpr auto *default_call = panic;
 
   template <class Callable>
@@ -45,6 +52,8 @@ class Function<Return(Args...)> {
   Function() = default;
   Function(const Function &) = default;
   Function &operator=(const Function &) = default;
+  Function(Function &&) noexcept = default;
+  Function &operator=(Function &&) noexcept = default;
   ~Function() = default;
 
   Function(WrappedFunction *func) : call{UnwrapCall::call} {
