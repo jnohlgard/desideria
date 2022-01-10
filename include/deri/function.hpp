@@ -25,11 +25,12 @@ class Function<Return(Args...)> {
   static constexpr auto *default_call = panic;
 
   template <class Callable>
-  class Invoker {
+  requires(!std::is_same_v<Callable, Function>) class Invoker {
    public:
-    static Return call(const void *ptr, Args... args) {
+    static Return call(const void *ptr, Args... args) requires(
+        requires(Callable obj, Args... args) { obj(args...); }) {
       auto *callable = std::launder(reinterpret_cast<const Callable *>(ptr));
-      return callable->operator()(args...);
+      return (*callable)(args...);
     }
   };
   class UnwrapCall {
