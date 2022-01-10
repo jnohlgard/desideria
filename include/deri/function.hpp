@@ -19,8 +19,8 @@ class Function;
 
 template <class Return, typename... Args>
 class Function<Return(Args...)> {
-  using Call = Return(const void *, Args...);
-  using FunctionType = Return(Args...);
+  using CallWrapped = Return(const void *, Args...);
+  using WrappedFunction = Return(Args...);
   static constexpr auto max_size = 1 * sizeof(void *);
   static constexpr auto *default_call = panic;
 
@@ -35,8 +35,8 @@ class Function<Return(Args...)> {
   class UnwrapCall {
    public:
     static Return call(const void *ptr, Args... args) {
-      auto *func = reinterpret_cast<const FunctionType *>(ptr);
-      return func(args...);
+      auto *func = reinterpret_cast<WrappedFunction *const *>(ptr);
+      return (*func)(args...);
     }
   };
 
@@ -46,7 +46,9 @@ class Function<Return(Args...)> {
   Function &operator=(const Function &) = default;
   ~Function() = default;
 
-  Function(FunctionType *func) : call{UnwrapCall::call} {}
+  Function(WrappedFunction *func) : call{UnwrapCall::call} {
+    new (&inline_storage) WrappedFunction *{func};
+  }
 
   template <class Callable>
   requires(sizeof(Callable) <= max_size &&
@@ -58,12 +60,12 @@ class Function<Return(Args...)> {
   }
 
   explicit operator bool() const {
-    return call != reinterpret_cast<const Call *>(default_call);
+    return call != reinterpret_cast<const CallWrapped *>(default_call);
   }
 
   Return operator()(Args... args) const { call(&inline_storage, args...); }
 
-  Call *call{reinterpret_cast<const Call *>(default_call)};
+  CallWrapped *call{reinterpret_cast<const CallWrapped *>(default_call)};
   std::aligned_storage_t<max_size, alignof(void *)> inline_storage{};
 };
 }  // namespace deri
