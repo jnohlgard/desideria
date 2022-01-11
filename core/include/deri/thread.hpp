@@ -42,7 +42,7 @@ class Thread : public ForwardListNode<Thread> {
     RUNNING = 1,  // Must match the arch specific context switch code
     BLOCKED,
     MUTEX_WAIT,
-
+    ENDED,
   };
 
   template <class Compare = std::less_equal<>>
@@ -127,7 +127,10 @@ class Thread : public ForwardListNode<Thread> {
         name{name} {
     saved_context.setProgramCounter(initial_pc);
     saved_context.setStackPointer(stack_area);
+    saved_context.setReturnAddress(ended);
   }
+
+  [[noreturn]] static void ended();
 
   arch::SavedContext saved_context{};
   Priority priority{};

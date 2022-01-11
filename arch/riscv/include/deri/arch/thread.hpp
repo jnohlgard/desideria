@@ -31,6 +31,8 @@ struct SavedContext {
     sp = stack.data() + stack.size();
   }
 
+  void setReturnAddress(FunctionAddressRegister function) { ra = function; }
+
   void setArg0(auto *arg_0) { a0 = reinterpret_cast<IntRegister>(arg_0); }
 
   FunctionAddressRegister pc{};

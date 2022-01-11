@@ -31,6 +31,14 @@ void Thread::unblock() {
   Scheduler::unblock(*this);
 }
 
+void Thread::ended() {
+  auto &thread = Scheduler::activeThread();
+  thread.status = Status::ENDED;
+  while (true) {
+    Scheduler::block(thread);
+  }
+}
+
 void Scheduler::init() {
   using namespace deri::literals;
 
