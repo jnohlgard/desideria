@@ -87,16 +87,17 @@ template <class Logger, Level level>
 class LoggerStream {
  public:
   template <typename Value>
-  LoggerStream &operator<<(Value &&value) {
+  requires(!std::is_integral_v<std::remove_cvref_t<Value>>) LoggerStream &
+  operator<<(Value &&value) {
     Logger::template log<level>(value);
     return *this;
   }
 
-  LoggerStream &operator<<(std::signed_integral auto &&number) {
+  LoggerStream &operator<<(std::signed_integral auto number) {
     Logger::template log<level>("%d", number);
     return *this;
   }
-  LoggerStream &operator<<(std::unsigned_integral auto &&number) {
+  LoggerStream &operator<<(std::unsigned_integral auto number) {
     Logger::template log<level>("%u", number);
     return *this;
   }
