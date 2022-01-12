@@ -88,14 +88,15 @@ template <class Logger, Level level>
 class LoggerStream {
  public:
   template <typename Value>
-  requires(!std::is_integral_v<std::remove_cvref_t<Value>>) LoggerStream &
+  requires(
+      !std::is_integral_v<std::remove_cvref_t<Value>>) inline LoggerStream &
   operator<<(Value &&value) {
     Logger::template log<level>(value);
     return *this;
   }
 
   template <std::integral Integer>
-  LoggerStream &operator<<(Integer number) {
+  inline LoggerStream &operator<<(Integer number) {
     // we need a buffer that has room for this many chars:
     // ceil(log10(2) * Integer_bits) + 1 (sign)
     // 3 * Integer_bits / 8 is an approximation that works for 16, 32, 64 bit
@@ -109,8 +110,40 @@ class LoggerStream {
   }
 
   // Specialization to output characters as-is
-  LoggerStream &operator<<(char data) {
+  inline LoggerStream &operator<<(char data) {
     Logger::template log<level>(std::span(&data, sizeof(data)));
+    return *this;
+  }
+
+  template <typename Message>
+  requires(std::is_convertible_v<Message,
+                                 std::span<const char>>) inline LoggerStream &
+  operator()(Message &&message) {
+    Logger::template log<level>(message);
+    return *this;
+  }
+
+  template <typename ConstCharPtr>
+  [[gnu::format(__printf__, 2, 3)]] inline std::
+      enable_if_t<std::is_same_v<ConstCharPtr, const char *>, LoggerStream &>
+      operator()(ConstCharPtr format, ...) {
+    std::va_list args;
+    va_start(args, format);
+    Logger::template log<level>(format, args);
+    va_end(args);
+    return *this;
+  }
+
+  template <size_t length>
+  inline auto &operator()(char const (&message)[length]) {
+    Logger::template log<level>(message);
+    return *this;
+  }
+
+  inline auto &operator()(char fill, size_t count) {
+    for (auto k = 0; k < count; ++k) {
+      *this << fill;
+    }
     return *this;
   }
 };
@@ -166,78 +199,6 @@ class LoggerImpl {
     return {};
   }
 
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto critical(
-      ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::CRITICAL>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::CRITICAL>(format, args);
-    va_end(args);
-    return stream;
-  }
-
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto error(
-      ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::ERROR>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::ERROR>(format, args);
-    va_end(args);
-    return stream;
-  }
-
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto warning(
-      ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::WARNING>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::WARNING>(format, args);
-    va_end(args);
-    return stream;
-  }
-
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto info(ConstCharPtr format,
-                                                            ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::INFO>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::INFO>(format, args);
-    va_end(args);
-    return stream;
-  }
-
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto debug(
-      ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::DEBUG>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::DEBUG>(format, args);
-    va_end(args);
-    return stream;
-  }
-
-  template <typename ConstCharPtr>
-  [[gnu::format(__printf__, 1, 2)]] static inline auto trace(
-      ConstCharPtr format, ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<Level::TRACE>> {
-    std::va_list args;
-    va_start(args, format);
-    auto stream = log<Level::TRACE>(format, args);
-    va_end(args);
-    return stream;
-  }
-
   // Verbatim copy of the message string when there are no format arguments
   template <typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
@@ -258,36 +219,6 @@ class LoggerImpl {
     return {};
   }
 
-  template <size_t length>
-  static inline auto critical(char const (&message)[length]) {
-    return log<Level::CRITICAL>(message);
-  }
-
-  template <size_t length>
-  static inline auto error(char const (&message)[length]) {
-    return log<Level::ERROR>(message);
-  }
-
-  template <size_t length>
-  static inline auto warning(char const (&message)[length]) {
-    return log<Level::WARNING>(message);
-  }
-
-  template <size_t length>
-  static inline auto info(char const (&message)[length]) {
-    return log<Level::INFO>(message);
-  }
-
-  template <size_t length>
-  static inline auto debug(char const (&message)[length]) {
-    return log<Level::DEBUG>(message);
-  }
-
-  template <size_t length>
-  static inline auto trace(char const (&message)[length]) {
-    return log<Level::TRACE>(message);
-  }
-
   template <Level message_level, typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
   static inline Stream<message_level> log(Message &&message) {
@@ -297,46 +228,17 @@ class LoggerImpl {
     printf(std::forward<Message>(message));
     return {};
   }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto critical(Message &&message) {
-    return log<Level::CRITICAL>(std::forward<Message>(message));
-  }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto error(Message &&message) {
-    return log<Level::ERROR>(std::forward<Message>(message));
-  }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto warning(Message &&message) {
-    return log<Level::WARNING>(std::forward<Message>(message));
-  }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto info(Message &&message) {
-    return log<Level::INFO>(std::forward<Message>(message));
-  }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto debug(Message &&message) {
-    return log<Level::DEBUG>(std::forward<Message>(message));
-  }
-  template <typename Message>
-  requires std::is_convertible_v<Message, std::span<const char>>
-  static inline auto trace(Message &&message) {
-    return log<Level::TRACE>(std::forward<Message>(message));
-  }
 
   template <Level message_level>
   static inline Stream<message_level> log() {
     return {};
   }
-  static inline auto critical() { return log<Level::CRITICAL>(); }
-  static inline auto error() { return log<Level::ERROR>(); }
-  static inline auto info() { return log<Level::INFO>(); }
-  static inline auto debug() { return log<Level::DEBUG>(); }
-  static inline auto trace() { return log<Level::TRACE>(); }
+  static inline LoggerStream<LoggerImpl, Level::CRITICAL> critical{};
+  static inline LoggerStream<LoggerImpl, Level::ERROR> error{};
+  static inline LoggerStream<LoggerImpl, Level::WARNING> warning{};
+  static inline LoggerStream<LoggerImpl, Level::INFO> info{};
+  static inline LoggerStream<LoggerImpl, Level::DEBUG> debug{};
+  static inline LoggerStream<LoggerImpl, Level::TRACE> trace{};
 
   // Use the default log level if there is no definition of the given domain
   // config
