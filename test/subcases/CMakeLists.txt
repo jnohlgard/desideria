@@ -1,0 +1,4 @@
+add_executable(test_subcases test_subcases.cpp)
+deri_configure_target(test_subcases)
+target_link_libraries(test_subcases PRIVATE deri_testing)
+add_test(NAME subcases COMMAND test_subcases)
