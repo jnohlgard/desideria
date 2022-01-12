@@ -26,7 +26,6 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
   // In order to be able to count the branch decisions we need to have a
   // separate coordinate on each level of subcases.
   Test *enclosing_test{nullptr};
-  static constexpr auto indent = "        ";
   if (current_test == nullptr) {
     // Top-level test case, start over from the beginning
     next_subcase.fill(0);
@@ -40,7 +39,7 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
     }
     if (next_subcase[level] != current_test->subcase_counter++ || found_leaf) {
       // We are not targeting this subcase in this iteration
-      Logger::trace(std::span{indent, indent + level})
+      Logger::trace(' ', level)
           << "Not right now: " << level << " " << test.name << "\n";
       return;
     }
@@ -50,18 +49,16 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
   do {
     test.subcase_counter = 0;
     current_test = &test;
-    Logger::info(std::span{indent, indent + level})
-        << "Entering test " << test.name << "\n";
+    Logger::info(' ', level) << "Entering test " << test.name << "\n";
 
     test_function();
 
-    Logger::info(std::span{indent, indent + level})
-        << "Leaving test " << test.name << "\n";
+    Logger::info(' ', level) << "Leaving test " << test.name << "\n";
     // Run next subcase in the next iteration
     if (next_subcase[level] == test.subcase_counter) {
       // This test branch was completed
       found_leaf = true;
-      Logger::debug(std::span{indent, indent + level})
+      Logger::debug(' ', level)
           << "Completed " << level << " " << test.name << "\n";
       // Target the first branch in the next case on the parent level
       next_subcase[level] = 0;
