@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <charconv>
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -93,12 +94,23 @@ class LoggerStream {
     return *this;
   }
 
-  LoggerStream &operator<<(std::signed_integral auto number) {
-    Logger::template log<level>("%d", number);
+  template <std::integral Integer>
+  LoggerStream &operator<<(Integer number) {
+    // we need a buffer that has room for this many chars:
+    // ceil(log10(2) * Integer_bits) + 1 (sign)
+    // 3 * Integer_bits / 8 is an approximation that works for 16, 32, 64 bit
+    // integers, the max() is just to cover for 8 bit numbers
+    std::array<char, std::max(sizeof(Integer) * 3, 4u)> buf{};
+    if (auto [end_ptr, error] = std::to_chars(begin(buf), end(buf), number, 10);
+        error == std::errc()) {
+      Logger::template log<level>(std::span(begin(buf), end_ptr));
+    }
     return *this;
   }
-  LoggerStream &operator<<(std::unsigned_integral auto number) {
-    Logger::template log<level>("%u", number);
+
+  // Specialization to output characters as-is
+  LoggerStream &operator<<(char data) {
+    Logger::template log<level>(std::span(&data, sizeof(data)));
     return *this;
   }
 };
