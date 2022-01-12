@@ -156,19 +156,19 @@ class LoggerImpl {
   using Stream = LoggerStream<LoggerImpl<Domain, OutputClass>, level>;
 
   // printf-style logging methods
-  [[gnu::format(__printf__, 1, 0)]] static inline auto printf(
+  [[gnu::format(__printf__, 1, 0)]] static inline void printf(
       const char *format, std::va_list args) {
     Output::printf(format, args);
   }
 
   template <Level message_level>
-  [[gnu::format(__printf__, 1, 0)]] static inline Stream<message_level> log(
-      const char *format, std::va_list args) {
+  [[gnu::format(__printf__, 1, 0)]] static inline void log(const char *format,
+                                                           std::va_list args) {
     if (level<Domain>() < message_level) {
-      return {};
+      return;
     }
     printf(format, args);
-    return {};
+    return;
   }
 
   // These need to be templates in order to resolve the ambiguity between these
@@ -187,16 +187,15 @@ class LoggerImpl {
   template <Level message_level, typename ConstCharPtr>
   [[gnu::format(__printf__, 1, 2)]] static inline auto log(ConstCharPtr format,
                                                            ...)
-      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>,
-                          Stream<message_level>> {
+      -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
     if (level<Domain>() < message_level) {
-      return {};
+      return;
     }
     std::va_list args;
     va_start(args, format);
     printf(format, args);
     va_end(args);
-    return {};
+    return;
   }
 
   // Verbatim copy of the message string when there are no format arguments
@@ -211,26 +210,26 @@ class LoggerImpl {
   }
 
   template <Level message_level, size_t length>
-  static inline Stream<message_level> log(char const (&message)[length]) {
+  static inline void log(char const (&message)[length]) {
     if (level<Domain>() < message_level) {
-      return {};
+      return;
     }
     printf(message);
-    return {};
+    return;
   }
 
   template <Level message_level, typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
-  static inline Stream<message_level> log(Message &&message) {
+  static inline void log(Message &&message) {
     if (level<Domain>() < message_level) {
-      return {};
+      return;
     }
     printf(std::forward<Message>(message));
-    return {};
+    return;
   }
 
   template <Level message_level>
-  static inline Stream<message_level> log() {
+  static inline Stream<message_level> stream() {
     return {};
   }
   static inline LoggerStream<LoggerImpl, Level::CRITICAL> critical{};
