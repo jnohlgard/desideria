@@ -13,11 +13,6 @@ struct TestReport;
 
 namespace deri::test {
 using Logger = log::Logger<log::TestReport>;
-void check(bool result) {
-  if (!result) [[unlikely]] {
-    Runner::failed_check(Location::my_caller());
-  }
-}
 
 void Runner::runTest(Test &test, Function<void()> test_function) {
   // Depth-first iteration over all test case leaves.
@@ -25,11 +20,11 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
   // here the first time so we need to figure out the layout as we go.
   // In order to be able to count the branch decisions we need to have a
   // separate coordinate on each level of subcases.
-  Test *enclosing_test{nullptr};
   if (current_test == nullptr) {
     // Top-level test case, start over from the beginning
     next_subcase.fill(0);
     level = 0;
+    failed_before_current_iteration = checks.failed;
   } else {
     // This is a subcase of another case
     if (level >= next_subcase.size()) {
@@ -43,22 +38,20 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
           << "Not right now: " << level << " " << test.name << "\n";
       return;
     }
-    enclosing_test = current_test;
+    test.parent = current_test;
     ++level;
   }
   do {
     test.subcase_counter = 0;
     current_test = &test;
     Logger::info(' ', level) << "Entering test " << test.name << "\n";
-
     test_function();
-
     Logger::info(' ', level) << "Leaving test " << test.name << "\n";
     // Run next subcase in the next iteration
     if (next_subcase[level] == test.subcase_counter) {
       // This test branch was completed
       found_leaf = true;
-      Logger::debug(' ', level)
+      Logger::trace(' ', level)
           << "Completed " << level << " " << test.name << "\n";
       // Target the first branch in the next case on the parent level
       next_subcase[level] = 0;
@@ -67,16 +60,31 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
       }
       ++next_subcase[level - 1];
     }
-    if (enclosing_test != nullptr) {
+    if (test.parent != nullptr) {
       --level;
-      current_test = enclosing_test;
+      current_test = test.parent;
       break;
     }
+    if (failed_before_current_iteration == checks.failed) {
+      ++cases.passed;
+    } else {
+      ++cases.failed;
+    }
+    failed_before_current_iteration = checks.failed;
     found_leaf = false;
   } while (true);
 }
-
-void Runner::failed_check(Location location) {
-  // TODO: Remember location
+void Runner::checkPassed(Location location) {
+  Logger::info("Pass %p\n", location.ptr);
+  ++checks.passed;
 }
+void Runner::checkFailed(Location location) {
+  Logger::info("Fail %p\n", location.ptr);
+  ++checks.failed;
+  if (location_count < locations.size()) {
+    locations[location_count] = location;
+    ++location_count;
+  }
+}
+
 }  // namespace deri::test
