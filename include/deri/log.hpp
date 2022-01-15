@@ -229,9 +229,7 @@ class LoggerImpl {
   }
 
   template <Level message_level>
-  static inline Stream<message_level> stream() {
-    return {};
-  }
+  static inline Stream<message_level> stream{};
   static inline LoggerStream<LoggerImpl, Level::CRITICAL> critical{};
   static inline LoggerStream<LoggerImpl, Level::ERROR> error{};
   static inline LoggerStream<LoggerImpl, Level::WARNING> warning{};
