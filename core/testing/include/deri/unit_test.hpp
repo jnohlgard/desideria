@@ -51,6 +51,9 @@ class Runner {
 
   static void runTest(Test &test, Function<void()>);
 
+  template <class Stream>
+  static void summary(Stream &);
+
  private:
   static inline std::array<Location, max_locations> locations{};
   static inline size_t location_count{};
@@ -322,6 +325,36 @@ class Value<Contained> {
 };
 
 constexpr static Check check;
+void printTotals(auto &os, const Stats &stats) {
+  auto total = stats.failed + stats.passed + stats.skipped;
+  os << total << " total";
+  if (stats.passed > 0) {
+    os << " | " << stats.passed << " passed";
+  }
+  if (stats.failed > 0) {
+    os << " | " << stats.failed << " failed";
+  }
+  if (stats.skipped > 0) {
+    os << " | " << stats.skipped << " skipped";
+  }
+}
+
+template <class Stream>
+void Runner::summary(Stream &os) {
+  os << "========= TEST SUMMARY =========\n";
+  os << "Cases:  ";
+  printTotals(os, cases);
+  os << "\n";
+  os << "Checks: ";
+  printTotals(os, checks);
+  os << "\n";
+  os << "================================\n";
+}
+
+template <class Stream>
+void logTestSummary(Stream &os) {
+  Runner::summary(os);
+}
 
 }  // namespace deri::test
 
