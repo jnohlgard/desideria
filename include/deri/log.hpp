@@ -87,34 +87,6 @@ class LogToStdout {
 template <class Logger, Level level>
 class LoggerStream {
  public:
-  template <typename Value>
-  requires(
-      !std::is_integral_v<std::remove_cvref_t<Value>>) inline LoggerStream &
-  operator<<(Value &&value) {
-    Logger::template log<level>(value);
-    return *this;
-  }
-
-  template <std::integral Integer>
-  inline LoggerStream &operator<<(Integer number) {
-    // we need a buffer that has room for this many chars:
-    // ceil(log10(2) * Integer_bits) + 1 (sign)
-    // 3 * Integer_bits / 8 is an approximation that works for 16, 32, 64 bit
-    // integers, the max() is just to cover for 8 bit numbers
-    std::array<char, std::max(sizeof(Integer) * 3, 4u)> buf{};
-    if (auto [end_ptr, error] = std::to_chars(begin(buf), end(buf), number, 10);
-        error == std::errc()) {
-      Logger::template log<level>(std::span(begin(buf), end_ptr));
-    }
-    return *this;
-  }
-
-  // Specialization to output characters as-is
-  inline LoggerStream &operator<<(char data) {
-    Logger::template log<level>(std::span(&data, sizeof(data)));
-    return *this;
-  }
-
   template <typename Message>
   requires(std::is_convertible_v<Message,
                                  std::span<const char>>) inline LoggerStream &
@@ -148,9 +120,58 @@ class LoggerStream {
   }
 };
 
-template <typename Domain, class OutputClass>
+template <typename Value, class Logger, Level level>
+requires(std::is_convertible_v<
+         Value,
+         std::span<const char>>) inline LoggerStream<Logger, level>
+    &operator<<(LoggerStream<Logger, level> &os, Value &&value) {
+  Logger::template log<level>(value);
+  return os;
+}
+
+template <std::integral Integer, class Logger, Level level>
+inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
+                                               Integer number) {
+  if (!Logger::logEnabled(level)) {
+    return os;
+  }
+  // we need a buffer that has room for this many chars:
+  // ceil(log10(2) * Integer_bits) + 1 (sign)
+  // 3 * Integer_bits / 8 is an approximation that works for 16, 32, 64 bit
+  // integers, the max() is just to cover for 8 bit numbers
+  std::array<char, std::max(sizeof(Integer) * 3, 4u)> buf{};
+  if (auto [end_ptr, error] = std::to_chars(begin(buf), end(buf), number, 10);
+      error == std::errc()) {
+    Logger::template log<level>(std::span{begin(buf), end_ptr});
+  }
+  return os;
+}
+
+template <class Logger, Level level>
+inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
+                                               bool value) {
+  if (Logger::logEnabled(level)) {
+    if (value) {
+      Logger::template log<level>("true");
+    } else {
+      Logger::template log<level>("false");
+    }
+  }
+  return os;
+}
+
+// Specialization to output characters as-is
+template <class Logger, Level level>
+inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
+                                               char data) {
+  Logger::template log<level>(std::span(&data, sizeof(data)));
+  return os;
+}
+
+template <typename DomainConfig, class OutputClass>
 class LoggerImpl {
  public:
+  using Domain = DomainConfig;
   using Output = OutputClass;
   template <Level level>
   using Stream = LoggerStream<LoggerImpl<Domain, OutputClass>, level>;
@@ -164,11 +185,10 @@ class LoggerImpl {
   template <Level message_level>
   [[gnu::format(__printf__, 1, 0)]] static inline void log(const char *format,
                                                            std::va_list args) {
-    if (level<Domain>() < message_level) {
+    if (!logEnabled(message_level)) {
       return;
     }
     printf(format, args);
-    return;
   }
 
   // These need to be templates in order to resolve the ambiguity between these
@@ -188,7 +208,7 @@ class LoggerImpl {
   [[gnu::format(__printf__, 1, 2)]] static inline auto log(ConstCharPtr format,
                                                            ...)
       -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>> {
-    if (level<Domain>() < message_level) {
+    if (!logEnabled(message_level)) {
       return;
     }
     std::va_list args;
@@ -211,21 +231,19 @@ class LoggerImpl {
 
   template <Level message_level, size_t length>
   static inline void log(char const (&message)[length]) {
-    if (level<Domain>() < message_level) {
+    if (!logEnabled(message_level)) {
       return;
     }
     printf(message);
-    return;
   }
 
   template <Level message_level, typename Message>
   requires std::is_convertible_v<Message, std::span<const char>>
   static inline void log(Message &&message) {
-    if (level<Domain>() < message_level) {
+    if (!logEnabled(message_level)) {
       return;
     }
     printf(std::forward<Message>(message));
-    return;
   }
 
   template <Level message_level>
@@ -239,14 +257,18 @@ class LoggerImpl {
 
   // Use the default log level if there is no definition of the given domain
   // config
-  template <HasLevel Config>
-  static constexpr Level level() {
-    return Config::level;
-  }
   template <typename ConfigMissingLevel>
-  static constexpr Level level() {
+  static constexpr auto level() {
     return DefaultConfig::level;
   }
+  template <HasLevel Config>
+  static constexpr auto level() {
+    return Config::level;
+  }
+
+  static constexpr auto logLevel() { return level<Domain>(); }
+
+  static constexpr bool logEnabled(Level level) { return level <= logLevel(); }
 
   template <typename Label, Level level = Level::TRACE>
   class Tracer {
