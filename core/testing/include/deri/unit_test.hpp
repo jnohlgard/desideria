@@ -13,6 +13,9 @@
 #include <string_view>
 #include <type_traits>
 
+// Much inspiration for this framework was taken from Kris Jusiak's
+// UT: C++20 μ(micro)/Unit Testing Framework
+// https://boost-ext.github.io/ut/
 namespace deri::log {
 struct Check;
 struct Check : LogConfig<Level::INFO> {};
@@ -22,6 +25,7 @@ namespace deri::test {
 
 struct Location {
   const void *ptr;
+  // TODO: Use source_location when GCC 11 is widely available.
 
   [[gnu::always_inline]] inline static Location my_caller() {
     return {__builtin_extract_return_addr(__builtin_return_address(0))};
@@ -138,32 +142,22 @@ static inline constexpr auto evaluated(Value &&value) requires(
   return value.evaluate();
 }
 
-static inline constexpr auto evaluated(auto &&value) { return value; }
+template <typename Value>
+static inline constexpr auto &&evaluated(Value &&value) {
+  return std::forward<Value>(value);
+}
 
 class Check {
   using Logger = log::Logger<log::Check>;
 
  public:
   template <typename Snatched>
-  constexpr auto operator%(Snatched expression_beginning) const {
-    return Value<Snatched>{expression_beginning};
-  }
+  constexpr auto operator%(Snatched &&expression_beginning) const;
 
   static constexpr void updateRoot(const auto &new_root) {
     root_expression = static_cast<const void *>(&new_root);
   }
-  static constexpr void completeIfRoot(auto &expression) {
-    if (isThisRoot(expression)) {
-      if (auto result = evaluated(expression)) [[likely]] {
-        Runner::checkPassed(Location::my_caller());
-        Logger::debug << "Passed: " << expression << "\n";
-      } else [[unlikely]] {
-        Runner::checkFailed(Location::my_caller());
-        Logger::info << "Failed: " << expression << "\n";
-      }
-      root_expression = nullptr;
-    }
-  }
+  static constexpr void completeIfRoot(auto &expression);
 
  private:
   static constexpr bool isThisRoot(const auto &expression) {
@@ -254,7 +248,8 @@ constexpr auto binaryOp(Operation operation, Left &&lhs, Right &&rhs) {
   return BinaryOp<std::remove_reference_t<Left>,
                   std::remove_reference_t<Right>,
                   std::remove_reference_t<Operation>,
-                  Return>(operation, lhs, rhs);
+                  Return>(
+      operation, std::forward<Left>(lhs), std::forward<Right>(rhs));
 }
 
 template <std::integral Contained>
@@ -266,7 +261,7 @@ class Value<Contained> {
   constexpr Value(Contained value) : value(value) { Check::updateRoot(*this); }
   constexpr ~Value() { Check::completeIfRoot(*this); }
 
-  constexpr Contained evaluate() const { return value; }
+  constexpr const Contained &evaluate() const { return value; }
 
   constexpr auto operator+(auto rhs) const {
     return binaryOp(std::plus(), *this, rhs);
@@ -323,6 +318,69 @@ class Value<Contained> {
   Contained value;
   friend Check;
 };
+
+template <typename Contained>
+class Value<Contained *> {
+ public:
+  constexpr Value(const Value &other) : ptr(other.ptr) {
+    Check::updateRoot(*this);
+  }
+  constexpr Value(Contained *ptr) : ptr(ptr) { Check::updateRoot(*this); }
+  constexpr ~Value() { Check::completeIfRoot(*this); }
+
+  constexpr Contained *evaluate() const { return ptr; }
+
+  constexpr auto operator+(auto rhs) const {
+    return binaryOp(std::plus(), *this, rhs);
+  }
+  constexpr auto operator-(auto rhs) const {
+    return binaryOp(std::minus(), *this, rhs);
+  }
+
+  constexpr auto operator==(auto rhs) const {
+    return binaryOp(std::equal_to(), *this, rhs);
+  }
+  constexpr auto operator!=(auto rhs) const {
+    return binaryOp(std::not_equal_to(), *this, rhs);
+  }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+  constexpr auto operator||(auto rhs) const {
+    return binaryOp(std::logical_or(), *this, rhs);
+  }
+  // Removing logical AND to avoid accidental null pointer dereference in
+  // non-short-circuiting (ptr && ptr->value)
+  constexpr auto operator&&(auto rhs) const = delete;
+#pragma GCC diagnostic pop
+
+  template <class Stream>
+  friend inline Stream &operator<<(Stream &os, const Value<Contained *> &val) {
+    os << val.ptr;
+    return os;
+  }
+
+ private:
+  Contained *ptr;
+  friend Check;
+};
+
+constexpr void Check::completeIfRoot(auto &expression) {
+  if (isThisRoot(expression)) {
+    if (auto result = evaluated(expression)) [[likely]] {
+      Runner::checkPassed(Location::my_caller());
+      Logger::debug << "Passed: " << expression << "\n";
+    } else [[unlikely]] {
+      Runner::checkFailed(Location::my_caller());
+      Logger::info << "Failed: " << expression << "\n";
+    }
+    root_expression = nullptr;
+  }
+}
+template <typename Snatched>
+constexpr auto Check::operator%(Snatched &&expression_beginning) const {
+  return Value<Snatched>{std::forward<Snatched>(expression_beginning)};
+}
 
 constexpr static Check check;
 void printTotals(auto &os, const Stats &stats) {
