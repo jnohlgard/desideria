@@ -379,7 +379,8 @@ constexpr void Check::completeIfRoot(auto &expression) {
 }
 template <typename Snatched>
 constexpr auto Check::operator%(Snatched &&expression_beginning) const {
-  return Value<Snatched>{std::forward<Snatched>(expression_beginning)};
+  return Value<std::remove_reference_t<Snatched>>{
+      std::forward<Snatched>(expression_beginning)};
 }
 
 constexpr static Check check;
