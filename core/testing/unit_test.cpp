@@ -50,6 +50,14 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
     // Run next subcase in the next iteration
     if (next_subcase[level] == test.subcase_counter) {
       // This test branch was completed
+      if (!found_leaf) {
+        if (failed_before_current_iteration == checks.failed) {
+          ++cases.passed;
+        } else {
+          ++cases.failed;
+        }
+        failed_before_current_iteration = checks.failed;
+      }
       found_leaf = true;
       Logger::trace(' ', level)
           << "Completed " << level << " " << test.name << "\n";
@@ -65,12 +73,6 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
       current_test = test.parent;
       break;
     }
-    if (failed_before_current_iteration == checks.failed) {
-      ++cases.passed;
-    } else {
-      ++cases.failed;
-    }
-    failed_before_current_iteration = checks.failed;
     found_leaf = false;
   } while (true);
 }
