@@ -54,6 +54,7 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
         if (failed_before_current_iteration == checks.failed) {
           ++cases.passed;
         } else {
+          Logger::error << "Failed case: " << test.name << "\n";
           ++cases.failed;
         }
         failed_before_current_iteration = checks.failed;
@@ -81,7 +82,7 @@ void Runner::checkPassed(Location location) {
   ++checks.passed;
 }
 void Runner::checkFailed(Location location) {
-  Logger::info("Fail %p\n", location.ptr);
+  Logger::error("Fail %p\n", location.ptr);
   ++checks.failed;
   if (location_count < locations.size()) {
     locations[location_count] = location;
