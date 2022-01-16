@@ -5,12 +5,18 @@
 #pragma once
 
 #include "deri/function.hpp"
+#include "deri/log.hpp"
 
 #include <algorithm>
-#include <string_view>
 #include <concepts>
-#include <type_traits>
 #include <functional>
+#include <string_view>
+#include <type_traits>
+
+namespace deri::log {
+struct Check;
+struct Check : LogConfig<Level::INFO> {};
+}  // namespace deri::log
 
 namespace deri::test {
 
@@ -23,7 +29,6 @@ struct Location {
 };
 
 class Test;
-class Subcase;
 
 struct Stats {
   int failed{};
@@ -62,10 +67,13 @@ class Test {
  public:
   explicit Test(std::string_view name) : name{name} {}
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
   template <class Callable>
   inline void operator=(Callable &&callable) {
     Runner::runTest(*this, [&callable]() { callable(); });
   }
+#pragma GCC diagnostic pop
 
   std::string_view name{"<unnamed>"};
 
@@ -74,8 +82,6 @@ class Test {
   Test *parent{nullptr};
   friend Runner;
 };
-
-struct Expression {};
 
 class Check;
 template <typename Contained>
@@ -86,76 +92,57 @@ inline constexpr auto binaryOp(Operation operation, Left &&lhs, Right &&rhs);
 
 template <typename Left, typename Right, class Operation, typename Result>
 class BinaryOp;
-template <typename Left, typename Right, class Operation, typename Result>
-std::ostream &operator<<(std::ostream &,
-                         const BinaryOp<Left, Right, Operation, Result> &);
-template <typename Contained>
-std::ostream &operator<<(std::ostream &, const Value<Contained> &);
 
 namespace {
+using namespace std::string_view_literals;
 template <class Operation>
 static inline constexpr std::string_view as_string;
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::plus<>>{"+"};
+[[maybe_unused]] inline constexpr auto as_string<std::plus<>>{"+"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::minus<>>{"-"};
+[[maybe_unused]] inline constexpr auto as_string<std::minus<>>{"-"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::multiplies<>>{
-    "*"};
+[[maybe_unused]] inline constexpr auto as_string<std::multiplies<>>{"*"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::divides<>>{
-    "/"};
+[[maybe_unused]] inline constexpr auto as_string<std::divides<>>{"/"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::modulus<>>{
-    "%"};
+[[maybe_unused]] inline constexpr auto as_string<std::modulus<>>{"%"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::negate<>>{
-    "-"};
+[[maybe_unused]] inline constexpr auto as_string<std::negate<>>{"-"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view
-    as_string<std::logical_and<>>{"&&"};
+[[maybe_unused]] inline constexpr auto as_string<std::logical_and<>>{"&&"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::logical_or<>>{
-    "||"};
+[[maybe_unused]] inline constexpr auto as_string<std::logical_or<>>{"||"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view
-    as_string<std::logical_not<>>{"!"};
+[[maybe_unused]] inline constexpr auto as_string<std::logical_not<>>{"!"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::equal_to<>>{
-    "=="};
+[[maybe_unused]] inline constexpr auto as_string<std::equal_to<>>{"=="sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view
-    as_string<std::not_equal_to<>>{"!="};
+[[maybe_unused]] inline constexpr auto as_string<std::not_equal_to<>>{"!="sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::less<>>{"<"};
+[[maybe_unused]] inline constexpr auto as_string<std::less<>>{"<"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::less_equal<>>{
-    "<="};
+[[maybe_unused]] inline constexpr auto as_string<std::less_equal<>>{"<="sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view as_string<std::greater<>>{
-    ">"};
+[[maybe_unused]] inline constexpr auto as_string<std::greater<>>{">"sv};
 template <>
-[[maybe_unused]] inline constexpr std::string_view
-    as_string<std::greater_equal<>>{">="};
+[[maybe_unused]] inline constexpr auto as_string<std::greater_equal<>>{">="sv};
 }  // namespace
 
-namespace {
 template <typename Value>
-inline constexpr auto evaluated(Value &&value) requires(requires(Value value) {
-  value.evaluate();
-}) {
+static inline constexpr auto evaluated(Value &&value) requires(
+    requires(Value value) { value.evaluate(); }) {
   return value.evaluate();
 }
 
-inline constexpr auto evaluated(auto &&value) { return value; }
-}  // namespace
+static inline constexpr auto evaluated(auto &&value) { return value; }
 
 class Check {
+  using Logger = log::Logger<log::Check>;
+
  public:
   template <typename Snatched>
   constexpr auto operator%(Snatched expression_beginning) const {
-    // root_expression = nullptr;
-    // std::cout << "Check " << expression_beginning << std::endl;
     return Value<Snatched>{expression_beginning};
   }
 
@@ -166,8 +153,10 @@ class Check {
     if (isThisRoot(expression)) {
       if (auto result = evaluated(expression)) [[likely]] {
         Runner::checkPassed(Location::my_caller());
+        Logger::debug << "Passed: " << expression << "\n";
       } else [[unlikely]] {
         Runner::checkFailed(Location::my_caller());
+        Logger::info << "Failed: " << expression << "\n";
       }
       root_expression = nullptr;
     }
@@ -185,22 +174,14 @@ template <typename Left, typename Right, class Operation, typename Result>
 class BinaryOp {
  public:
   constexpr BinaryOp(const BinaryOp &other)
-      : lhs{other.lhs}, rhs{other.rhs}, value{other.value}, op{other.op} {
+      : lhs{other.lhs}, rhs{other.rhs}, op{other.op} {
     Check::updateRoot(*this);
-    // std::cout << this << " C- " << &other << ":" << other << std::endl;
   };
-  // BinaryOp(const BinaryOp &) = delete;
   constexpr BinaryOp(Operation op, auto &&lhs, auto &&rhs)
       : lhs(lhs), rhs(rhs), op(op) {
     Check::updateRoot(*this);
-    // std::cout << this << " @- " << &lhs << ":" << lhs << " " << to_string(op)
-    // << " " << &rhs << ":" << rhs << std::endl;
   }
-  constexpr ~BinaryOp() {
-    // std::cout << this << " ~- " << &lhs << ":" << lhs << " " << to_string(op)
-    // << " " << &rhs << ":" << rhs << std::endl;
-    Check::completeIfRoot(*this);
-  }
+  constexpr ~BinaryOp() { Check::completeIfRoot(*this); }
 
   constexpr Result evaluate() const {
     return op(evaluated(lhs), evaluated(rhs));
@@ -240,21 +221,28 @@ class BinaryOp {
   constexpr auto operator>=(auto rhs) const {
     return binaryOp(std::greater_equal(), *this, rhs);
   }
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
   constexpr auto operator||(auto rhs) const {
     return binaryOp(std::logical_or(), *this, rhs);
   }
   constexpr auto operator&&(auto rhs) const {
     return binaryOp(std::logical_and(), *this, rhs);
   }
+#pragma GCC diagnostic pop
+
+  template <class Stream>
+  friend inline Stream &operator<<(
+      Stream &os, const BinaryOp<Left, Right, Operation, Result> &bin) {
+    os << "(" << bin.lhs << " " << as_string<Operation> << " " << bin.rhs
+       << ")";
+    return os;
+  }
 
  private:
   Left lhs;
   Right rhs;
-  Result value;
   [[no_unique_address]] Operation op;
-
-  friend std::ostream &operator<<<>(std::ostream &, const BinaryOp &);
 };
 
 template <typename Left, typename Right, class Operation>
@@ -271,17 +259,9 @@ class Value<Contained> {
  public:
   constexpr Value(const Value &other) : value(other.value) {
     Check::updateRoot(*this);
-    // std::cout << this << " C " << &other << " " << value << std::endl;
   }
-  // Value(const Value&) = delete;
-  constexpr Value(Contained value) : value(value) {
-    Check::updateRoot(*this);
-    // std::cout << this << " @ " << std::boolalpha << value << std::endl;
-  }
-  constexpr ~Value() {
-    // std::cout << this << " ~ " << std::boolalpha << value << std::endl;
-    Check::completeIfRoot(*this);
-  }
+  constexpr Value(Contained value) : value(value) { Check::updateRoot(*this); }
+  constexpr ~Value() { Check::completeIfRoot(*this); }
 
   constexpr Contained evaluate() const { return value; }
 
@@ -319,31 +299,27 @@ class Value<Contained> {
   constexpr auto operator>=(auto rhs) const {
     return binaryOp(std::greater_equal(), *this, rhs);
   }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
   constexpr auto operator||(auto rhs) const {
     return binaryOp(std::logical_or(), *this, rhs);
   }
   constexpr auto operator&&(auto rhs) const {
     return binaryOp(std::logical_and(), *this, rhs);
   }
+#pragma GCC diagnostic pop
+
+  template <class Stream>
+  friend inline Stream &operator<<(Stream &os, const Value<Contained> &val) {
+    os << val.value;
+    return os;
+  }
 
  private:
   Contained value;
   friend Check;
-  friend std::ostream &operator<<<>(std::ostream &, const Value &);
 };
-
-template <typename Left, typename Right, class Operation, typename Result>
-std::ostream &operator<<(std::ostream &os,
-                         const BinaryOp<Left, Right, Operation, Result> &bin) {
-  os << "(" << bin.lhs << " " << as_string<Operation> << " " << bin.rhs << ")";
-  return os;
-}
-
-template <typename Contained>
-std::ostream &operator<<(std::ostream &os, const Value<Contained> &val) {
-  os << val.value;
-  return os;
-}
 
 constexpr static Check check;
 
