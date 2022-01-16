@@ -29,13 +29,15 @@ set(DERI_COMMON_CFLAGS
   # Use colored output even in Ninja
   -fdiagnostics-color=always
 
+  # Provide static stack usage information in .su files
+  -fstack-usage
   )
 
 string(JOIN " " CMAKE_C_FLAGS_INIT
   ${DERI_COMMON_CFLAGS}
 
   # Fast-out on old style function definitions.
-  # They cause unreadable error compiler errors on missing semicolons.
+  # They cause unreadable compiler errors on missing semicolons.
   # Worse yet they hide errors by accepting wildcard argument types.
   # (These flags only have meaning in C language)
   -Werror=strict-prototypes
