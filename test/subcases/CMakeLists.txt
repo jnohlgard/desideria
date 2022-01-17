@@ -1,4 +1,5 @@
 add_executable(test_subcases test_subcases.cpp)
 deri_configure_target(test_subcases)
 target_link_libraries(test_subcases PRIVATE deri_testing)
+target_link_options(test_subcases PUBLIC LINKER:--defsym=_main_stack_size=4096)
 add_test(NAME subcases COMMAND test_subcases)
