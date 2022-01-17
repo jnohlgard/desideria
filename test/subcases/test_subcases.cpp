@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Joakim Nohlgård <joakim@nohlgard.se>
+ * Copyright (C) 2022 Joakim Nohlgård <joakim@nohlgard.se>
  */
 
 #include "deri/log.hpp"
@@ -27,9 +27,9 @@ int main() {
   int count = 0;
   "Subcases"_test = [&count] {
     ++count;
-    //    auto actual = sut(12);
-    //    auto expected = 24;
-    //    Check<<actual == expected;
+    auto actual = sut(12);
+    auto expected = 24;
+    check % actual == expected;
     Logger::info("Before subcases\n");
     "subcase1"_test = [] {
       Logger::info(" First subcase\n");
@@ -58,5 +58,6 @@ int main() {
   check % count - 6 == 0 || false;
   test_false();
   test_true();
+  logTestSummary(Logger::error);
   return 0;
 }
