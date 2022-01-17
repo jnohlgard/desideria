@@ -99,6 +99,12 @@ class ForwardListNode {
     friend typename ForwardListNode<std::remove_const_t<Value>>::Iterator;
     friend typename ForwardListNode<const Value>::Iterator;
     friend ForwardList<Value>;
+
+    template <class Stream>
+    friend Stream &operator<<(Stream &os, const Iterator &it) {
+      os << &*it;
+      return os;
+    }
   };
 
   friend ForwardList<Value>;
