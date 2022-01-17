@@ -149,6 +149,32 @@ inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
 
 template <class Logger, Level level>
 inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
+                                               const void *ptr) {
+  if (Logger::logEnabled(level)) {
+    if (!ptr) {
+      Logger::template log<level>("(null)");
+    } else {
+      std::array<char, std::max(sizeof(ptr) * 2, 4u)> buf{};
+      if (auto [end_ptr, error] = std::to_chars(
+              begin(buf), end(buf), reinterpret_cast<uintptr_t>(ptr), 16);
+          error == std::errc()) {
+        Logger::template log<level>("0x");
+        Logger::template log<level>(std::span{begin(buf), end_ptr});
+      }
+    }
+  }
+  return os;
+}
+
+template <typename Target, class Logger, Level level>
+requires(!std::is_same_v<const Target, const char>) inline LoggerStream<Logger,
+                                                                        level>
+    &operator<<(LoggerStream<Logger, level> &os, const Target *ptr) {
+  return os << static_cast<const void *>(ptr);
+}
+
+template <class Logger, Level level>
+inline LoggerStream<Logger, level> &operator<<(LoggerStream<Logger, level> &os,
                                                bool value) {
   if (Logger::logEnabled(level)) {
     if (value) {
