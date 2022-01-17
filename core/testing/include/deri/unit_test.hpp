@@ -167,6 +167,8 @@ class Check {
   static inline const void *root_expression{};
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 template <typename Left, typename Right, class Operation, typename Result>
 class BinaryOp {
  public:
@@ -218,15 +220,12 @@ class BinaryOp {
   constexpr auto operator>=(auto rhs) const {
     return binaryOp(std::greater_equal(), *this, rhs);
   }
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
   constexpr auto operator||(auto rhs) const {
     return binaryOp(std::logical_or(), *this, rhs);
   }
   constexpr auto operator&&(auto rhs) const {
     return binaryOp(std::logical_and(), *this, rhs);
   }
-#pragma GCC diagnostic pop
 
   template <class Stream>
   friend inline Stream &operator<<(
@@ -241,6 +240,7 @@ class BinaryOp {
   Right rhs;
   [[no_unique_address]] Operation op;
 };
+#pragma GCC diagnostic pop
 
 template <typename Left, typename Right, class Operation>
 constexpr auto binaryOp(Operation operation, Left &&lhs, Right &&rhs) {
@@ -319,6 +319,8 @@ class Value<Contained> {
   friend Check;
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 template <typename Contained>
 class Value<Contained *> {
  public:
@@ -344,15 +346,12 @@ class Value<Contained *> {
     return binaryOp(std::not_equal_to(), *this, rhs);
   }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
   constexpr auto operator||(auto rhs) const {
     return binaryOp(std::logical_or(), *this, rhs);
   }
   // Removing logical AND to avoid accidental null pointer dereference in
   // non-short-circuiting (ptr && ptr->value)
   constexpr auto operator&&(auto rhs) const = delete;
-#pragma GCC diagnostic pop
 
   template <class Stream>
   friend inline Stream &operator<<(Stream &os, const Value<Contained *> &val) {
@@ -364,6 +363,7 @@ class Value<Contained *> {
   Contained *ptr;
   friend Check;
 };
+#pragma GCC diagnostic pop
 
 constexpr void Check::completeIfRoot(auto &expression) {
   if (isThisRoot(expression)) {
