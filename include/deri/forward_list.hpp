@@ -58,6 +58,17 @@ class ForwardListNode {
       operator++();
       return old;
     }
+    Iterator &operator+=(int distance) {
+      for (auto k = 0; k < distance; ++k) {
+        operator++();
+      }
+      return *this;
+    }
+    Iterator operator+(int distance) {
+      Iterator result{*this};
+      result += distance;
+      return result;
+    }
 
     constexpr static typename ForwardListNode<const Value>::Iterator end() {
       return {end_sentinel};
