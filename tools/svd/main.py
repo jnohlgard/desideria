@@ -182,6 +182,7 @@ def write_enum_definitions(output, periph, periph_type_names, indent=''):
         output.write(f'{indent} * Bit shifts for {"_".join(periph_type_names)} {reg.name}\n')
         output.write(f'{indent} */\n')
         output.write(f'{indent}enum class {enum_shift_type_name} : unsigned {{\n')
+        output.write(f'{indent}void IsBitShift({enum_shift_type_name});\n\n')
         indent = increase_indent(indent)
         for field in reg.fields:
             output.write(f'{indent}{field.name} = {field.bitOffset:>2},\n')
