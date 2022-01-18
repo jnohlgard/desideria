@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD_Schema_1_0.xsd">
+	<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+			xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd">
 		<vendor>Bouffalo Lab</vendor>
 		<vendorID>bouffalolab</vendorID>
 		<name>BL702</name>
@@ -14,12 +15,15 @@
 
 		<peripherals>
 			<peripheral>
-				<name>glb</name>
-				<description>glb.</description>
+				<name>GLB</name>
+				<description>Global control register</description>
 				<baseAddress>0x40000000</baseAddress>
-				<groupName>glb</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>GPIO</name>
+					<value>44</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -501,12 +505,6 @@
 						</fields>
 					</register>
 					<register>
-						<name>swrst_cfg3</name>
-						<description>swrst_cfg3.</description>
-						<addressOffset>0x1C</addressOffset>
-						<fields/>
-					</register>
-					<register>
 						<name>cgen_cfg0</name>
 						<description>cgen_cfg0.</description>
 						<addressOffset>0x20</addressOffset>
@@ -551,12 +549,6 @@
 								<msb>0</msb>
 							</field>
 						</fields>
-					</register>
-					<register>
-						<name>cgen_cfg3</name>
-						<description>cgen_cfg3.</description>
-						<addressOffset>0x2C</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>MBIST_CTL</name>
@@ -2740,12 +2732,6 @@
 						</fields>
 					</register>
 					<register>
-						<name>GPIO_CFGCTL31</name>
-						<description>GPIO_CFGCTL31.</description>
-						<addressOffset>0x184</addressOffset>
-						<fields/>
-					</register>
-					<register>
 						<name>GPIO_CFGCTL32</name>
 						<description>GPIO_CFGCTL32.</description>
 						<addressOffset>0x188</addressOffset>
@@ -2911,12 +2897,6 @@
 								<msb>0</msb>
 							</field>
 						</fields>
-					</register>
-					<register>
-						<name>GPIO_CFGCTL33</name>
-						<description>GPIO_CFGCTL33.</description>
-						<addressOffset>0x18C</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>GPIO_CFGCTL34</name>
@@ -3089,7 +3069,53 @@
 						<name>GPIO_CFGCTL35</name>
 						<description>GPIO_CFGCTL35.</description>
 						<addressOffset>0x194</addressOffset>
-						<fields/>
+						<fields>
+							<field>
+								<name>reg_gpio_40_oe</name>
+								<lsb>8</lsb>
+								<msb>8</msb>
+							</field>
+							<field>
+								<name>reg_gpio_39_oe</name>
+								<lsb>7</lsb>
+								<msb>7</msb>
+							</field>
+							<field>
+								<name>reg_gpio_38_oe</name>
+								<lsb>6</lsb>
+								<msb>6</msb>
+							</field>
+							<field>
+								<name>reg_gpio_37_oe</name>
+								<lsb>5</lsb>
+								<msb>5</msb>
+							</field>
+							<field>
+								<name>reg_gpio_36_oe</name>
+								<lsb>4</lsb>
+								<msb>4</msb>
+							</field>
+							<field>
+								<name>reg_gpio_35_oe</name>
+								<lsb>3</lsb>
+								<msb>3</msb>
+							</field>
+							<field>
+								<name>reg_gpio_34_oe</name>
+								<lsb>2</lsb>
+								<msb>2</msb>
+							</field>
+							<field>
+								<name>reg_gpio_33_oe</name>
+								<lsb>1</lsb>
+								<msb>1</msb>
+							</field>
+							<field>
+								<name>reg_gpio_32_oe</name>
+								<lsb>0</lsb>
+								<msb>0</msb>
+							</field>
+						</fields>
 					</register>
 					<register>
 						<name>GPIO_INT_MASK1</name>
@@ -4133,12 +4159,19 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>rf</name>
-				<description>rf.</description>
+				<name>MIX</name>
+				<description>RF mixed signal registers</description>
 				<baseAddress>0x40001000</baseAddress>
-				<groupName>rf</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>RF0</name>
+					<value>5</value>
+				</interrupt>
+				<interrupt>
+					<name>RF1</name>
+					<value>6</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -9190,10 +9223,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>gpip</name>
-				<description>gpip.</description>
+				<name>GPIP</name>
+				<description>General purpose DAC/ADC/ACOMP interface control</description>
 				<baseAddress>0x40002000</baseAddress>
-				<groupName>gpip</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -9422,10 +9454,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>sec_dbg</name>
+				<name>SEC_DBG</name>
 				<description>sec_dbg.</description>
 				<baseAddress>0x40003000</baseAddress>
-				<groupName>sec_dbg</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -9563,10 +9594,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>sec_eng</name>
-				<description>sec_eng.</description>
+				<name>SEC_ENG</name>
+				<description>Security engine, undocumented.</description>
 				<baseAddress>0x40004000</baseAddress>
-				<groupName>sec_eng</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -9574,6 +9604,30 @@
 					<size>0x1000</size>
 					<usage>registers</usage>
 				</addressBlock>
+				<interrupt>
+					<name>SEC_ENG0</name>
+					<value>9</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_ENG1</name>
+					<value>10</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_ENG2</name>
+					<value>11</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_ENG3</name>
+					<value>12</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_ENG4</name>
+					<value>13</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_ENG5</name>
+					<value>14</value>
+				</interrupt>
 				<registers>
 					<register>
 						<name>se_sha_0_ctrl</name>
@@ -10701,13 +10755,11 @@
 						<name>se_pka_0_rw</name>
 						<description>se_pka_0_rw.</description>
 						<addressOffset>0x340</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>se_pka_0_rw_burst</name>
 						<description>se_pka_0_rw_burst.</description>
 						<addressOffset>0x360</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>se_pka_0_ctrl_prot</name>
@@ -11051,10 +11103,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>tzc_sec</name>
+				<name>TZC_SEC</name>
 				<description>tzc_sec.</description>
 				<baseAddress>0x40005000</baseAddress>
-				<groupName>tzc_sec</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -11226,10 +11277,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>tzc_nsec</name>
+				<name>TZC_NSEC</name>
 				<description>tzc_nsec.</description>
 				<baseAddress>0x40006000</baseAddress>
-				<groupName>tzc_nsec</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -11404,7 +11454,6 @@
 				<name>ef_data_0</name>
 				<description>ef_data_0.</description>
 				<baseAddress>0x40007000</baseAddress>
-				<groupName>ef_data_0</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -11993,7 +12042,6 @@
 				<name>ef_data_1</name>
 				<description>ef_data_1.</description>
 				<baseAddress>0x40007000</baseAddress>
-				<groupName>ef_data_1</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -12198,49 +12246,41 @@
 						<name>reg_key_slot_10_w0</name>
 						<description>reg_key_slot_10_w0.</description>
 						<addressOffset>0xC0</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_10_w1</name>
 						<description>reg_key_slot_10_w1.</description>
 						<addressOffset>0xC4</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_10_w2</name>
 						<description>reg_key_slot_10_w2.</description>
 						<addressOffset>0xC8</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_10_w3</name>
 						<description>reg_key_slot_10_w3.</description>
 						<addressOffset>0xCC</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_11_w0</name>
 						<description>reg_key_slot_11_w0.</description>
 						<addressOffset>0xD0</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_11_w1</name>
 						<description>reg_key_slot_11_w1.</description>
 						<addressOffset>0xD4</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_11_w2</name>
 						<description>reg_key_slot_11_w2.</description>
 						<addressOffset>0xD8</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_key_slot_11_w3</name>
 						<description>reg_key_slot_11_w3.</description>
 						<addressOffset>0xDC</addressOffset>
-						<fields/>
 					</register>
 					<register>
 						<name>reg_data_1_lock</name>
@@ -12305,9 +12345,12 @@
 				<name>ef_ctrl</name>
 				<description>ef_ctrl.</description>
 				<baseAddress>0x40007000</baseAddress>
-				<groupName>ef_ctrl</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>EFUSE</name>
+					<value>26</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -12914,10 +12957,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>cci</name>
+				<name>CCI</name>
 				<description>cci.</description>
 				<baseAddress>0x40008000</baseAddress>
-				<groupName>cci</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -13039,10 +13081,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>l1c</name>
-				<description>l1c.</description>
+				<name>L1C</name>
+				<description>Cache control</description>
 				<baseAddress>0x40009000</baseAddress>
-				<groupName>l1c</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -13289,21 +13330,25 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>uart</name>
-				<description>uart.</description>
+				<name>UART0</name>
 				<baseAddress>0x4000A000</baseAddress>
-				<groupName>uart</groupName>
+				<groupName>UART</groupName>
+				<description>UART control</description>
+				<interrupt>
+					<name>UART0</name>
+					<value>29</value>
+				</interrupt>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
 					<register>
 						<name>utx_config</name>
-						<description>utx_config.</description>
+						<description>UART TX configuration register</description>
 						<addressOffset>0x0</addressOffset>
 						<fields>
 							<field>
@@ -13370,7 +13415,7 @@
 					</register>
 					<register>
 						<name>urx_config</name>
-						<description>urx_config.</description>
+						<description>UART RX configuration register</description>
 						<addressOffset>0x4</addressOffset>
 						<fields>
 							<field>
@@ -13432,7 +13477,7 @@
 					</register>
 					<register>
 						<name>uart_bit_prd</name>
-						<description>uart_bit_prd.</description>
+						<description>UART period control register</description>
 						<addressOffset>0x8</addressOffset>
 						<fields>
 							<field>
@@ -13449,7 +13494,7 @@
 					</register>
 					<register>
 						<name>data_config</name>
-						<description>data_config.</description>
+						<description>UART data configuration register</description>
 						<addressOffset>0xC</addressOffset>
 						<fields>
 							<field>
@@ -13461,7 +13506,7 @@
 					</register>
 					<register>
 						<name>utx_ir_position</name>
-						<description>utx_ir_position.</description>
+						<description>UART TX ir position control register</description>
 						<addressOffset>0x10</addressOffset>
 						<fields>
 							<field>
@@ -13478,7 +13523,7 @@
 					</register>
 					<register>
 						<name>urx_ir_position</name>
-						<description>urx_ir_position.</description>
+						<description>UART RX ir position control register</description>
 						<addressOffset>0x14</addressOffset>
 						<fields>
 							<field>
@@ -13490,7 +13535,7 @@
 					</register>
 					<register>
 						<name>urx_rto_timer</name>
-						<description>urx_rto_timer.</description>
+						<description>RTO interrupt control register</description>
 						<addressOffset>0x18</addressOffset>
 						<fields>
 							<field>
@@ -13502,7 +13547,7 @@
 					</register>
 					<register>
 						<name>uart_sw_mode</name>
-						<description>uart_sw_mode.</description>
+						<description>UART SW mode configuration register</description>
 						<addressOffset>0x1C</addressOffset>
 						<fields>
 							<field>
@@ -13737,7 +13782,7 @@
 					</register>
 					<register>
 						<name>uart_status</name>
-						<description>uart_status.</description>
+						<description>UART status control register</description>
 						<addressOffset>0x30</addressOffset>
 						<fields>
 							<field>
@@ -13754,7 +13799,7 @@
 					</register>
 					<register>
 						<name>sts_urx_abr_prd</name>
-						<description>sts_urx_abr_prd.</description>
+						<description>Auto baud detection control register</description>
 						<addressOffset>0x34</addressOffset>
 						<fields>
 							<field>
@@ -13771,7 +13816,7 @@
 					</register>
 					<register>
 						<name>uart_fifo_config_0</name>
-						<description>uart_fifo_config_0.</description>
+						<description>UART FIFO configuration register0</description>
 						<addressOffset>0x80</addressOffset>
 						<fields>
 							<field>
@@ -13818,7 +13863,7 @@
 					</register>
 					<register>
 						<name>uart_fifo_config_1</name>
-						<description>uart_fifo_config_1.</description>
+						<description>UART FIFO configuration register1</description>
 						<addressOffset>0x84</addressOffset>
 						<fields>
 							<field>
@@ -13845,7 +13890,7 @@
 					</register>
 					<register>
 						<name>uart_fifo_wdata</name>
-						<description>uart_fifo_wdata.</description>
+						<description>UART FIFO write data</description>
 						<addressOffset>0x88</addressOffset>
 						<fields>
 							<field>
@@ -13857,7 +13902,7 @@
 					</register>
 					<register>
 						<name>uart_fifo_rdata</name>
-						<description>uart_fifo_rdata.</description>
+						<description>UART FIFO read data</description>
 						<addressOffset>0x8C</addressOffset>
 						<fields>
 							<field>
@@ -13869,16 +13914,29 @@
 					</register>
 				</registers>
 			</peripheral>
+			<peripheral derivedFrom="UART0">
+				<name>UART1</name>
+				<baseAddress>0x4000A100</baseAddress>
+				<interrupt>
+					<name>UART1</name>
+					<value>30</value>
+				</interrupt>
+			</peripheral>
+
 			<peripheral>
-				<name>spi</name>
-				<description>spi.</description>
+				<name>SPI</name>
+				<description>SPI master/slave control</description>
 				<baseAddress>0x4000A200</baseAddress>
-				<groupName>spi</groupName>
+				<groupName>SPI</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>SPI</name>
+					<value>27</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -14252,15 +14310,19 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>i2c</name>
-				<description>i2c.</description>
+				<name>I2C</name>
+				<description>I2C control</description>
 				<baseAddress>0x4000A300</baseAddress>
-				<groupName>i2c</groupName>
+				<groupName>I2C</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>I2C</name>
+					<value>32</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -14669,15 +14731,19 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>pwm</name>
-				<description>pwm.</description>
+				<name>PWM</name>
+				<description>Pulse Width Modulation *5 control</description>
 				<baseAddress>0x4000A400</baseAddress>
-				<groupName>pwm</groupName>
+				<groupName>PWM</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>PWM</name>
+					<value>34</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -15236,15 +15302,31 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>timer</name>
-				<description>timer.</description>
+				<name>TIMER</name>
+				<description>Timer control</description>
 				<baseAddress>0x4000A500</baseAddress>
 				<groupName>timer</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>TIMER0</name>
+					<value>35</value>
+				</interrupt>
+				<interrupt>
+					<name>TIMER1</name>
+					<value>36</value>
+				</interrupt>
+				<interrupt>
+					<name>TIMER2</name>
+					<value>37</value>
+				</interrupt>
+				<interrupt>
+					<name>TIMER3</name>
+					<value>38</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -15808,15 +15890,22 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>ir</name>
-				<description>ir.</description>
+				<name>IR</name>
+				<description>IR Remote control</description>
 				<baseAddress>0x4000A600</baseAddress>
-				<groupName>ir</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>IR0</name>
+					<value>19</value>
+				</interrupt>
+				<interrupt>
+					<name>IR1</name>
+					<value>20</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -16257,15 +16346,14 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>cks</name>
-				<description>cks.</description>
+				<name>CKS</name>
+				<description>Checksum</description>
 				<baseAddress>0x4000A700</baseAddress>
-				<groupName>cks</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -16313,15 +16401,19 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>qdec</name>
-				<description>qdec.</description>
+				<name>QDEC0</name>
+				<description>Quadrature decoder control</description>
 				<baseAddress>0x4000A800</baseAddress>
-				<groupName>qdec</groupName>
+				<groupName>QDEC</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>QDEC0</name>
+					<value>40</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x40</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -16492,16 +16584,35 @@
 					</register>
 				</registers>
 			</peripheral>
+			<peripheral derivedFrom="QDEC0">
+				<name>QDEC1</name>
+				<baseAddress>0x4000A840</baseAddress>
+				<interrupt>
+					<name>QDEC1</name>
+					<value>41</value>
+				</interrupt>
+			</peripheral>
+			<peripheral derivedFrom="QDEC0">
+				<name>QDEC2</name>
+				<baseAddress>0x4000A880</baseAddress>
+				<interrupt>
+					<name>QDEC2</name>
+					<value>42</value>
+				</interrupt>
+			</peripheral>
 			<peripheral>
-				<name>kys</name>
-				<description>kys.</description>
+				<name>KYS</name>
+				<description>Key-scan control</description>
 				<baseAddress>0x4000AB00</baseAddress>
-				<groupName>kys</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>KYS</name>
+					<value>39</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -16613,17 +16724,21 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>i2s</name>
-				<description>i2s.</description>
+				<name>I2S</name>
+				<description>I2S control</description>
 				<baseAddress>0x4000AA00</baseAddress>
-				<groupName>i2s</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>I2S</name>
+					<value>18</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x100</size>
 					<usage>registers</usage>
 				</addressBlock>
+
 				<registers>
 					<register>
 						<name>i2s_config</name>
@@ -16934,10 +17049,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>cam</name>
+				<name>CAM</name>
 				<description>cam.</description>
 				<baseAddress>0x4000AD00</baseAddress>
-				<groupName>cam</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -17795,10 +17909,9 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>mjpeg</name>
+				<name>MJPEG</name>
 				<description>mjpeg.</description>
 				<baseAddress>0x4000AE00</baseAddress>
-				<groupName>mjpeg</groupName>
 				<size>32</size>
 				<access>read-write</access>
 				<addressBlock>
@@ -19007,12 +19120,15 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>sf_ctrl</name>
-				<description>sf_ctrl.</description>
+				<name>SF_CTRL</name>
+				<description>Flash/pSRAM QSPI control</description>
 				<baseAddress>0x4000B000</baseAddress>
-				<groupName>sf_ctrl</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>FLASH</name>
+					<value>23</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -19214,7 +19330,7 @@
 								<msb>24</msb>
 							</field>
 							<field>
-								<name>sf_if_0_dat_rw  </name>
+								<name>sf_if_0_dat_rw</name>
 								<lsb>23</lsb>
 								<msb>23</msb>
 							</field>
@@ -19310,7 +19426,7 @@
 								<msb>24</msb>
 							</field>
 							<field>
-								<name>sf_if_1_dat_rw  </name>
+								<name>sf_if_1_dat_rw</name>
 								<lsb>23</lsb>
 								<msb>23</msb>
 							</field>
@@ -19940,7 +20056,7 @@
 								<msb>24</msb>
 							</field>
 							<field>
-								<name>sf_if_2_dat_rw  </name>
+								<name>sf_if_2_dat_rw</name>
 								<lsb>23</lsb>
 								<msb>23</msb>
 							</field>
@@ -20082,7 +20198,7 @@
 								<msb>24</msb>
 							</field>
 							<field>
-								<name>sf_if_4_dat_rw  </name>
+								<name>sf_if_4_dat_rw</name>
 								<lsb>23</lsb>
 								<msb>23</msb>
 							</field>
@@ -20802,12 +20918,15 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>dma</name>
-				<description>dma.</description>
+				<name>DMA</name>
+				<description>DMA control</description>
 				<baseAddress>0x40007000</baseAddress>
-				<groupName>dma</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>DMA</name>
+					<value>15</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -22240,15 +22359,18 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>emac</name>
-				<description>emac.</description>
+				<name>EMAC</name>
+				<description>Ethernet MAC control</description>
 				<baseAddress>0x4000D000</baseAddress>
-				<groupName>emac</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>EMAC</name>
+					<value>22</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x800</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -22676,15 +22798,18 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>usb</name>
-				<description>usb.</description>
+				<name>USB</name>
+				<description>USB control</description>
 				<baseAddress>0x4000D800</baseAddress>
-				<groupName>usb</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>USB</name>
+					<value>21</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
-					<size>0x1000</size>
+					<size>0x400</size>
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
@@ -24782,12 +24907,15 @@
 				</registers>
 			</peripheral>
 			<peripheral>
-				<name>pds</name>
-				<description>pds.</description>
+				<name>PDS</name>
+				<description>Sleep control (Power Down Sleep)</description>
 				<baseAddress>0x4000E000</baseAddress>
-				<groupName>pds</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>PDS</name>
+					<value>50</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -25835,11 +25963,18 @@
 			</peripheral>
 			<peripheral>
 				<name>HBN</name>
-				<description>HBN.</description>
+				<description>Deep sleep control (Hibernate)</description>
 				<baseAddress>0x4000F000</baseAddress>
-				<groupName>HBN</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>HBN0</name>
+					<value>51</value>
+				</interrupt>
+				<interrupt>
+					<name>HBN1</name>
+					<value>52</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -26430,6 +26565,10 @@
 				<groupName>AON</groupName>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>BROWNOUT</name>
+					<value>53</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
