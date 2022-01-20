@@ -21,8 +21,36 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>GPIO</name>
-					<value>44</value>
+					<name>GPIO_INT0</name>
+					<value>60</value>
+				</interrupt>
+				<interrupt>
+					<name>TOUCH</name>
+					<value>61</value>
+				</interrupt>
+				<interrupt>
+					<name>BMX_ERR</name>
+					<value>16</value>
+				</interrupt>
+				<interrupt>
+					<name>BMX_TO</name>
+					<value>17</value>
+				</interrupt>
+				<interrupt>
+					<name>L1C_BMX_ERR</name>
+					<value>18</value>
+				</interrupt>
+				<interrupt>
+					<name>L1C_BMX_TO</name>
+					<value>19</value>
+				</interrupt>
+				<interrupt>
+					<name>SEC_BMX_ERR</name>
+					<value>20</value>
+				</interrupt>
+				<interrupt>
+					<name>DMA_BMX_ERR</name>
+					<value>24</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -4165,12 +4193,12 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>RF0</name>
-					<value>5</value>
+					<name>RF_TOP_INT0</name>
+					<value>21</value>
 				</interrupt>
 				<interrupt>
-					<name>RF1</name>
-					<value>6</value>
+					<name>RF_TOP_INT0</name>
+					<value>22</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -9223,11 +9251,69 @@
 				</registers>
 			</peripheral>
 			<peripheral>
+				<name>M154</name>
+				<description>MAC 802.15.4 control</description>
+				<baseAddress>0x4c000000</baseAddress>
+				<size>32</size>
+				<access>read-write</access>
+				<interrupt>
+					<name>M154_REQ_ENH_ACK</name>
+					<value>63</value>
+				</interrupt>
+				<interrupt>
+					<name>M154</name>
+					<value>64</value>
+				</interrupt>
+				<interrupt>
+					<name>M154_AES</name>
+					<value>65</value>
+				</interrupt>
+				<addressBlock>
+					<offset>0</offset>
+					<size>0x1000</size>
+					<usage>registers</usage>
+				</addressBlock>
+				<registers>
+					<register>
+						<name>tx_buffer[%s]</name>
+						<description>transmit data buffer</description>
+						<addressOffset>0x200</addressOffset>
+						<dim>0x40</dim>
+						<dimIncrement>4</dimIncrement>
+						<fields>
+							<field>
+								<name>data</name>
+								<lsb>0</lsb>
+								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>rx_buffer[%s]</name>
+						<description>received data buffer</description>
+						<addressOffset>0x400</addressOffset>
+						<dim>0x40</dim>
+						<dimIncrement>4</dimIncrement>
+						<fields>
+							<field>
+								<name>data</name>
+								<lsb>0</lsb>
+								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+				</registers>
+			</peripheral>
+			<peripheral>
 				<name>GPIP</name>
 				<description>General purpose DAC/ADC/ACOMP interface control</description>
 				<baseAddress>0x40002000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>GPADC_DMA</name>
+					<value>41</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -9605,28 +9691,28 @@
 					<usage>registers</usage>
 				</addressBlock>
 				<interrupt>
-					<name>SEC_ENG0</name>
-					<value>9</value>
+					<name>SEC_GMAC</name>
+					<value>25</value>
 				</interrupt>
 				<interrupt>
-					<name>SEC_ENG1</name>
-					<value>10</value>
+					<name>SEC_CDET</name>
+					<value>26</value>
 				</interrupt>
 				<interrupt>
-					<name>SEC_ENG2</name>
-					<value>11</value>
+					<name>SEC_PKA</name>
+					<value>27</value>
 				</interrupt>
 				<interrupt>
-					<name>SEC_ENG3</name>
-					<value>12</value>
+					<name>SEC_TRNG</name>
+					<value>28</value>
 				</interrupt>
 				<interrupt>
-					<name>SEC_ENG4</name>
-					<value>13</value>
+					<name>SEC_AES</name>
+					<value>29</value>
 				</interrupt>
 				<interrupt>
-					<name>SEC_ENG5</name>
-					<value>14</value>
+					<name>SEC_SHA</name>
+					<value>30</value>
 				</interrupt>
 				<registers>
 					<register>
@@ -12349,7 +12435,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>EFUSE</name>
-					<value>26</value>
+					<value>42</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -13336,7 +13422,7 @@
 				<description>UART control</description>
 				<interrupt>
 					<name>UART0</name>
-					<value>29</value>
+					<value>45</value>
 				</interrupt>
 				<size>32</size>
 				<access>read-write</access>
@@ -13919,7 +14005,7 @@
 				<baseAddress>0x4000A100</baseAddress>
 				<interrupt>
 					<name>UART1</name>
-					<value>30</value>
+					<value>46</value>
 				</interrupt>
 			</peripheral>
 
@@ -13932,7 +14018,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>SPI</name>
-					<value>27</value>
+					<value>43</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -14318,7 +14404,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>I2C</name>
-					<value>32</value>
+					<value>48</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -14739,7 +14825,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>PWM</name>
-					<value>34</value>
+					<value>50</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -15309,20 +15395,16 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>TIMER0</name>
-					<value>35</value>
+					<name>TIMER_CH0</name>
+					<value>52</value>
 				</interrupt>
 				<interrupt>
-					<name>TIMER1</name>
-					<value>36</value>
+					<name>TIMER_CH1</name>
+					<value>53</value>
 				</interrupt>
 				<interrupt>
-					<name>TIMER2</name>
-					<value>37</value>
-				</interrupt>
-				<interrupt>
-					<name>TIMER3</name>
-					<value>38</value>
+					<name>TIMER_WDT</name>
+					<value>54</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -15896,12 +15978,12 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>IR0</name>
-					<value>19</value>
+					<name>IRTX</name>
+					<value>35</value>
 				</interrupt>
 				<interrupt>
-					<name>IR1</name>
-					<value>20</value>
+					<name>IRRX</name>
+					<value>36</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -16409,7 +16491,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>QDEC0</name>
-					<value>40</value>
+					<value>56</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -16589,7 +16671,7 @@
 				<baseAddress>0x4000A840</baseAddress>
 				<interrupt>
 					<name>QDEC1</name>
-					<value>41</value>
+					<value>57</value>
 				</interrupt>
 			</peripheral>
 			<peripheral derivedFrom="QDEC0">
@@ -16597,7 +16679,7 @@
 				<baseAddress>0x4000A880</baseAddress>
 				<interrupt>
 					<name>QDEC2</name>
-					<value>42</value>
+					<value>58</value>
 				</interrupt>
 			</peripheral>
 			<peripheral>
@@ -16608,7 +16690,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>KYS</name>
-					<value>39</value>
+					<value>55</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -16731,7 +16813,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>I2S</name>
-					<value>18</value>
+					<value>34</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -17054,6 +17136,10 @@
 				<baseAddress>0x4000AD00</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>CAM</name>
+					<value>33</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -17914,6 +18000,10 @@
 				<baseAddress>0x4000AE00</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
+				<interrupt>
+					<name>MJPEG</name>
+					<value>32</value>
+				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
 					<size>0x1000</size>
@@ -19126,8 +19216,8 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>FLASH</name>
-					<value>23</value>
+					<name>SF_CTRL</name>
+					<value>39</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -20924,8 +21014,8 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>DMA</name>
-					<value>15</value>
+					<name>DMA_ALL</name>
+					<value>31</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -22366,7 +22456,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>EMAC</name>
-					<value>22</value>
+					<value>38</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -22805,7 +22895,7 @@
 				<access>read-write</access>
 				<interrupt>
 					<name>USB</name>
-					<value>21</value>
+					<value>37</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -24913,8 +25003,8 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>PDS</name>
-					<value>50</value>
+					<name>PDS_WAKEUP</name>
+					<value>66</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -25968,12 +26058,12 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>HBN0</name>
-					<value>51</value>
+					<name>HBN_OUT0</name>
+					<value>67</value>
 				</interrupt>
 				<interrupt>
-					<name>HBN1</name>
-					<value>52</value>
+					<name>HBN_OUT1</name>
+					<value>68</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
@@ -26566,8 +26656,8 @@
 				<size>32</size>
 				<access>read-write</access>
 				<interrupt>
-					<name>BROWNOUT</name>
-					<value>53</value>
+					<name>BOR</name>
+					<value>69</value>
 				</interrupt>
 				<addressBlock>
 					<offset>0</offset>
