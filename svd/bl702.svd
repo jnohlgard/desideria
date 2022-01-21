@@ -9248,6 +9248,23 @@
 							</field>
 						</fields>
 					</register>
+					<register>
+						<name>rssi</name>
+						<addressOffset>0x3fc</addressOffset>
+						<fields>
+							<field>
+								<name>rssi</name>
+								<lsb>8</lsb>
+								<msb>15</msb>
+								<description>RSSI of received frame, RSSI in dBm = 5 - rssi_bits</description>
+							</field>
+							<field>
+								<name>crc</name>
+								<lsb>8</lsb>
+								<msb>23</msb>
+							</field>
+						</fields>
+					</register>
 				</registers>
 			</peripheral>
 			<peripheral>
@@ -9274,6 +9291,68 @@
 					<usage>registers</usage>
 				</addressBlock>
 				<registers>
+					<register>
+						<name>pan_short_addr</name>
+						<description>PAN ID and short address</description>
+						<addressOffset>0xcc</addressOffset>
+						<fields>
+							<field>
+								<name>pan</name>
+								<lsb>16</lsb>
+								<msb>31</msb>
+							</field>
+							<field>
+								<name>short_addr</name>
+								<lsb>0</lsb>
+								<msb>15</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>long_addr</name>
+						<description>Long address</description>
+						<addressOffset>0xd0</addressOffset>
+						<dim>2</dim>
+						<dimIncrement>4</dimIncrement>
+						<fields>
+							<field>
+								<name>addr</name>
+								<lsb>0</lsb>
+								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>pan_short_addr2</name>
+						<description>Second PAN ID and short address</description>
+						<addressOffset>0xd8</addressOffset>
+						<fields>
+							<field>
+								<name>pan</name>
+								<lsb>16</lsb>
+								<msb>31</msb>
+							</field>
+							<field>
+								<name>short_addr</name>
+								<lsb>0</lsb>
+								<msb>15</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>long_addr2</name>
+						<description>Second long address</description>
+						<addressOffset>0xdc</addressOffset>
+						<dim>2</dim>
+						<dimIncrement>4</dimIncrement>
+						<fields>
+							<field>
+								<name>addr</name>
+								<lsb>0</lsb>
+								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
 					<register>
 						<name>tx_buffer[%s]</name>
 						<description>transmit data buffer</description>
@@ -9324,15 +9403,32 @@
 					</register>
 					<register>
 						<name>rx_buffer[%s]</name>
-						<description>received data buffer, frame length is found in the last byte</description>
+						<description>received data buffer</description>
 						<addressOffset>0x400</addressOffset>
-						<dim>0x40</dim>
+						<dim>0x3f</dim>
 						<dimIncrement>4</dimIncrement>
 						<fields>
 							<field>
 								<name>data</name>
 								<lsb>0</lsb>
 								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>rx_len_crc</name>
+						<description>Length and CRC of received frame</description>
+						<addressOffset>0x3fc</addressOffset>
+						<fields>
+							<field>
+								<name>len</name>
+								<lsb>24</lsb>
+								<msb>31</msb>
+							</field>
+							<field>
+								<name>crc</name>
+								<lsb>8</lsb>
+								<msb>23</msb>
 							</field>
 						</fields>
 					</register>
