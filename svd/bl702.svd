@@ -9289,8 +9289,42 @@
 						</fields>
 					</register>
 					<register>
+						<name>tx_data_rate</name>
+						<description>TX data rate</description>
+						<addressOffset>0x300</addressOffset>
+						<fields>
+							<field>
+								<name>data_rate</name>
+								<lsb>0</lsb>
+								<msb>9</msb>
+								<enumeratedValues>
+									<enumeratedValue>
+										<name>DATA_RATE_250K</name>
+										<description>250 kbit/s</description>
+										<value>0xa7</value>
+									</enumeratedValue>
+									<enumeratedValue>
+										<name>DATA_RATE_500K</name>
+										<description>500 kbit/s</description>
+										<value>0x1e1</value>
+									</enumeratedValue>
+									<enumeratedValue>
+										<name>DATA_RATE_1M</name>
+										<description>1000 kbit/s</description>
+										<value>0x228</value>
+									</enumeratedValue>
+									<enumeratedValue>
+										<name>DATA_RATE_2M</name>
+										<description>2000 kbit/s</description>
+										<value>0x3f6</value>
+									</enumeratedValue>
+								</enumeratedValues>
+							</field>
+						</fields>
+					</register>
+					<register>
 						<name>rx_buffer[%s]</name>
-						<description>received data buffer</description>
+						<description>received data buffer, frame length is found in the last byte</description>
 						<addressOffset>0x400</addressOffset>
 						<dim>0x40</dim>
 						<dimIncrement>4</dimIncrement>
@@ -9299,6 +9333,18 @@
 								<name>data</name>
 								<lsb>0</lsb>
 								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>rx_data_rate</name>
+						<description>used in lmac154_getRxDataRate</description>
+						<addressOffset>0x500</addressOffset>
+						<fields>
+							<field>
+								<name>data_rate</name>
+								<lsb>0</lsb>
+								<msb>1</msb>
 							</field>
 						</fields>
 					</register>
