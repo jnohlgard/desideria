@@ -9504,6 +9504,10 @@
 					<size>0x1000</size>
 					<usage>registers</usage>
 				</addressBlock>
+				<interrupt>
+					<name>GPADC_DMA</name>
+					<value>41</value>
+				</interrupt>
 				<registers>
 					<register>
 						<name>gpadc_config</name>
