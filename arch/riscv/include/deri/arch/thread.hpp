@@ -74,7 +74,9 @@ struct SavedContext {
   /**
    * Names of the registers, in the order the fields appear in @c SavedContext
    */
-  static inline const std::array register_names = {
+  // need to explicitly specify type as const char *const in order to put this
+  // array in ROM (.rodata) instead of RAM (.data), even with constexpr
+  static inline constexpr std::array<const char *const, 35> register_names = {
       "mepc", "ra", "sp", "gp", "tp", "t0",      "t1",    "t2",    "s0",
       "s1",   "a0", "a1", "a2", "a3", "a4",      "a5",    "a6",    "a7",
       "s2",   "s3", "s4", "s5", "s6", "s7",      "s8",    "s9",    "s10",
