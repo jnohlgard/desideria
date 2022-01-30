@@ -9730,7 +9730,7 @@
 			</peripheral>
 			<peripheral>
 				<name>SEC_DBG</name>
-				<description>sec_dbg.</description>
+				<description>Security Debug</description>
 				<baseAddress>0x40003000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
@@ -9870,7 +9870,7 @@
 			</peripheral>
 			<peripheral>
 				<name>SEC_ENG</name>
-				<description>Security engine, undocumented.</description>
+				<description>Security Engine</description>
 				<baseAddress>0x40004000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
@@ -11379,7 +11379,7 @@
 			</peripheral>
 			<peripheral>
 				<name>TZC_SEC</name>
-				<description>tzc_sec.</description>
+				<description>Trustzone control security</description>
 				<baseAddress>0x40005000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
@@ -11553,7 +11553,7 @@
 			</peripheral>
 			<peripheral>
 				<name>TZC_NSEC</name>
-				<description>tzc_nsec.</description>
+				<description>Trustzone control non-security</description>
 				<baseAddress>0x40006000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
@@ -19400,7 +19400,7 @@
 			</peripheral>
 			<peripheral>
 				<name>SF_CTRL</name>
-				<description>Flash/pSRAM QSPI control</description>
+				<description>Flash/pSRAM control</description>
 				<baseAddress>0x4000B000</baseAddress>
 				<size>32</size>
 				<access>read-write</access>
