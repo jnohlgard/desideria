@@ -59,6 +59,9 @@ def decrease_indent(indent):
 
 def strip_instance_numbering(name):
     """Removing instance numbering or array notations from the end of a name"""
+    if re.search(r'\d\d$', name) is not None:
+        # Workaround for module name M154 in BL70x
+        return name
     name = re.sub(r'(\[\d*\])|(\d*)$', r'', name)
     return name
 
@@ -182,12 +185,12 @@ def write_enum_definitions(output, periph, periph_type_names, indent=''):
         output.write(f'{indent} * Bit shifts for {"_".join(periph_type_names)} {reg.name}\n')
         output.write(f'{indent} */\n')
         output.write(f'{indent}enum class {enum_shift_type_name} : unsigned {{\n')
-        output.write(f'{indent}void IsBitShift({enum_shift_type_name});\n\n')
         indent = increase_indent(indent)
         for field in reg.fields:
             output.write(f'{indent}{field.name} = {field.bitOffset:>2},\n')
         indent = decrease_indent(indent)
-        output.write(f'{indent}}};\n\n')
+        output.write(f'{indent}}};\n')
+        output.write(f'{indent}void IsBitShift({enum_shift_type_name});\n\n')
 
 
 def write_field_accessors(output, enum_type_name, field, indent=''):
@@ -379,7 +382,7 @@ def generate_all_files(device, basedir):
         print(f'Generating class definition for {name} from {periph.name}')
         with open(os.path.join(include_path, f'{name}.hpp'), 'w') as fd:
             write_heading_comment(fd)
-            fd.write(f'#include "deri/registers.h"\n')
+            fd.write(f'#include "deri/registers.hpp"\n')
             fd.write(f'#include <cstdint>\n')
             fd.write(f'\nnamespace deri::mmio {{\n')
             write_periph_class(fd, periph, name=periph_struct(name))
@@ -392,19 +395,6 @@ def generate_all_files(device, basedir):
             write_enum_definitions(fd, periph, [name])
             write_struct_offsetof_static_asserts(fd, periph, [name])
             fd.write(f'}}\n')
-
-    with open(os.path.join(include_path, f'peripherals.hpp'), 'w') as fd:
-        write_heading_comment(fd)
-        fd.write(f'\nnamespace deri::mmio {{\n')
-        fd.write(f'\n// Forward declarations of MMIO peripheral register maps\n')
-        for name, periph in periph_types.items():
-            write_regs_declaration(fd, name)
-        fd.write(f'\n// MMIO peripheral instances\n')
-        fd.write(f'// These symbols need to be provided by the linker scripts\n')
-        for periph in device.peripherals:
-            basename = periph.derivedFrom.deri_typename if periph.derivedFrom is not None else periph.deri_typename
-            write_periph_declaration(fd, basename, periph.name)
-        fd.write(f'}}\n')
 
     with open(os.path.join(include_path, f'interrupts.hpp'), 'w') as fd:
         write_heading_comment(fd)
