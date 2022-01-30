@@ -9292,6 +9292,37 @@
 				</addressBlock>
 				<registers>
 					<register>
+						<name>csma</name>
+						<description>Enable CSMA on TX</description>
+						<addressOffset>0x90</addressOffset>
+						<fields>
+							<field>
+								<name>enable</name>
+								<lsb>0</lsb>
+								<msb>0</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>csma_be</name>
+						<description>CSMA backoff exponent</description>
+						<addressOffset>0x94</addressOffset>
+						<fields>
+							<field>
+								<name>max</name>
+								<lsb>20</lsb>
+								<msb>23</msb>
+								<description>Maximum backoff exponent, valid range [3, 8]</description>
+							</field>
+							<field>
+								<name>min</name>
+								<lsb>16</lsb>
+								<msb>19</msb>
+								<description>Minimum backoff exponent, valid range [0, max]</description>
+							</field>
+						</fields>
+					</register>
+					<register>
 						<name>pan_short_addr</name>
 						<description>PAN ID and short address</description>
 						<addressOffset>0xcc</addressOffset>
@@ -9357,12 +9388,24 @@
 						<name>tx_buffer[%s]</name>
 						<description>transmit data buffer</description>
 						<addressOffset>0x200</addressOffset>
-						<dim>0x40</dim>
+						<dim>0x3f</dim>
 						<dimIncrement>4</dimIncrement>
 						<fields>
 							<field>
 								<name>data</name>
 								<lsb>0</lsb>
+								<msb>31</msb>
+							</field>
+						</fields>
+					</register>
+					<register>
+						<name>tx_len</name>
+						<description>TX frame length, including 2 extra bytes (checksum?)</description>
+						<addressOffset>0x2fc</addressOffset>
+						<fields>
+							<field>
+								<name>frame_length</name>
+								<lsb>24</lsb>
 								<msb>31</msb>
 							</field>
 						</fields>
