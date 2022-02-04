@@ -5,8 +5,10 @@
 #include "deri/log.hpp"
 #include "deri/arch/thread.hpp"
 
+#include <string_view>
+
 #define DECLARE_CAUSE(description, label) \
-  static const char *DESC_##label = description;
+  static constexpr auto DESC_##label = std::string_view(description);
 
 #include "riscv/csr/encoding.h"
 
@@ -16,7 +18,7 @@ struct Kernel;
 
 namespace deri::arch {
 
-const std::array mcause_descriptions = {
+constexpr std::array mcause_descriptions = {
     DESC_CAUSE_MISALIGNED_FETCH,
     DESC_CAUSE_FETCH_ACCESS,
     DESC_CAUSE_ILLEGAL_INSTRUCTION,
@@ -92,7 +94,7 @@ const std::array mcause_descriptions = {
     if (mcause < 0) {
       Logger::printf("Unhandled interrupt on hart %lu\n", hartid);
     } else {
-      auto description = "unknown";
+      auto description = std::string_view("unknown");
       if ((mcause & 0xff) == CAUSE_BREAKPOINT) {
         do_ebreak = false;
       }
