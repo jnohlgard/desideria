@@ -40,7 +40,7 @@ template <>
 struct HardwareMap<mmio::USART1>
     : public detail::HardwareMapDefinition<mmio::USART1,
                                            Clock::APB1::USART1EN,
-                                           Irq::IRQ::USART0> {};
+                                           Irq::IRQ::USART1> {};
 template <>
 struct HardwareMap<mmio::USART2>
     : public detail::HardwareMapDefinition<mmio::USART2,
