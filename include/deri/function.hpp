@@ -37,7 +37,7 @@ class Function<Return(Args...)> {
   // We use the panic handler as a catchall for calling unset targets. The
   // function signature does not match, but it will still print out all the
   // arguments as part of the context dump
-  static constexpr auto *default_call = panic;
+  static constexpr CallWrapped *default_call = [](const void *, Args...) { panic (); };
 
   template <class Callable>
   requires(!std::is_same_v<Callable, Function>) class Invoker {
@@ -86,7 +86,7 @@ class Function<Return(Args...)> {
 
   Return operator()(Args... args) const { call(&inline_storage, args...); }
 
-  CallWrapped *call{reinterpret_cast<const CallWrapped *>(default_call)};
+  CallWrapped *call{default_call};
   std::aligned_storage_t<max_size, alignof(void *)> inline_storage{};
 };
 }  // namespace deri
