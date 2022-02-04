@@ -99,10 +99,12 @@ class LoggerStream {
   [[gnu::format(__printf__, 2, 3)]] inline std::
       enable_if_t<std::is_same_v<ConstCharPtr, const char *>, LoggerStream &>
       operator()(ConstCharPtr format, ...) {
-    std::va_list args;
-    va_start(args, format);
-    Logger::template log<level>(format, args);
-    va_end(args);
+    if (Logger::logEnabled(level)) {
+      std::va_list args;
+      va_start(args, format);
+      Logger::template log<level>(format, args);
+      va_end(args);
+    }
     return *this;
   }
 
