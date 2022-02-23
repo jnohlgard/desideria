@@ -13,7 +13,10 @@
 
 namespace deri::log {
 struct RcuGd32;
-}
+// Error logging disabled by default. Change this level when messing around with
+// clock prescaler settings if your board does not boot.
+struct RcuGd32 : Config<Level::CRITICAL> {};
+}  // namespace deri::log
 
 namespace deri::dev::clock {
 

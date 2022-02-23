@@ -288,7 +288,7 @@ constexpr RcuGd32::CFG0_bits RcuGd32::PrescalerConfig::bits() const {
   auto ahb_bits = ahbBits(ahb);
   CFG0_bits cfg0{};
   if (!ahb_bits.has_value()) {
-    Logger::error("Invalid AHB prescaler setting %u\n", ahb);
+    Logger::error << "Invalid AHB prescaler setting " << ahb;
     panic();
   }
   cfg0 |= *ahb_bits;
