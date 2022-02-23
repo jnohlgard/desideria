@@ -5,8 +5,6 @@ RISC-V is the only architecture currently implemented.
 Building
 ========
 
-Only Longan Nano and Seeedstudio GD32VF1 dev board are working right now.
-
 The preferred toolchain is the Sifive GNU embedded toolchain from https://www.sifive.com/software
 
 Tested with CMake 3.21, might still work with 3.19 but not tested anymore.
@@ -21,6 +19,26 @@ Flash using whatever tools you normally use. The binaries will be found under `.
 e.g. `./build/examples/hello_libc/example_hello_libc.elf`
 
 There are .bin and .hex files as well for flash tools that do not support loading .elf files.
+
+Supported boards
+================
+
+Working:
+
+ - Seeedstudio GD32VF1 development board
+ - Sipeed Longan Nano
+ - Sparkfun Red-V Redboard
+
+In progress:
+
+ - Bouffalo Labs BL702 (XT-ZB1 dev board)
+ - Bouffalo Labs BL602
+ - Hosted environment (running as a Linux executable)
+
+Future:
+
+ - ARM?
+ - ESP32-C3
 
 Repository layout
 =================
