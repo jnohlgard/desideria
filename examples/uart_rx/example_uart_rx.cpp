@@ -26,8 +26,8 @@ void onUartRx(std::byte data) {
 }
 
 int main() {
-  Logger::printf("UART RX tester\n");
-  Logger::printf("Anything received over this UART will be reported back\n");
+  Logger::print("UART RX tester\n");
+  Logger::print("Anything received over this UART will be reported back\n");
 
   deri::bsp::console().setRxCallback(onUartRx);
 
@@ -35,7 +35,7 @@ int main() {
   while (true) {
     rx_signal.lock();
     while (auto data = rx_buffer.get()) {
-      Logger::printf("RX: %02x '%c'\n",
+      Logger::print("RX: %02x '%c'\n",
                      static_cast<unsigned>(*data),
                      static_cast<char>(*data));
     }

@@ -30,7 +30,7 @@ void buttonCallback(uintptr_t id) {
   auto now = Timer::now().time_since_epoch();
   long now_ticks = now.count();
   auto now_ms(std::chrono::duration_cast<std::chrono::milliseconds>(now));
-  Logger::printf("Callback for button %u at time %ld ms (%ld ticks)\n",
+  Logger::print("Callback for button %u at time %ld ms (%ld ticks)\n",
                  static_cast<unsigned>(id),
                  static_cast<long>(now_ms.count()),
                  now_ticks);
@@ -103,8 +103,8 @@ void initTimers() {
 }
 
 int main() {
-  Logger::printf("High level timer example\n");
-  Logger::printf("Each timer tick is %ld / %ld seconds\n",
+  Logger::print("High level timer example\n");
+  Logger::print("Each timer tick is %ld / %ld seconds\n",
                  static_cast<long>(Timer::period::num),
                  static_cast<long>(Timer::period::den));
   initLeds();
@@ -116,7 +116,7 @@ int main() {
       asm volatile("" ::: "memory");
     }
     unsigned num_updates = ScheduledLed::num_updates.exchange(0);
-    Logger::printf("after %4u updates: %ld: %10ld %ld: %10ld %ld: %10ld\n",
+    Logger::print("after %4u updates: %ld: %10ld %ld: %10ld %ld: %10ld\n",
                    num_updates,
                    static_cast<long>(schedulables[0].timeout),
                    static_cast<long>(schedulables[0].last_event),

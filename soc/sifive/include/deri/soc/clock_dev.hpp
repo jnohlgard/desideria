@@ -12,7 +12,7 @@
 
 namespace deri::log {
 struct Clock;
-struct Clock : public LogConfig<Level::INFO> {};
+struct Clock : public Config<Level::INFO> {};
 }  // namespace deri::log
 
 namespace deri::mmio {

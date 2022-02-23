@@ -12,7 +12,7 @@ int sut(int num) { return 2 * num; }
 namespace log {
 using namespace deri::log;
 struct Test;
-struct Test : LogConfig<Level::INFO> {};
+struct Test : Config<Level::INFO> {};
 }  // namespace log
 
 using Logger = deri::log::Logger<log::Test>;
@@ -51,7 +51,7 @@ int main() {
     "sub4"_test = [] { Logger::info(" in 4\n"); };
     Logger::info("After subcases\n");
   };
-  Logger::info("Top level was called ") << count << " times\n";
+  Logger::info << "Top level was called " << count << " times\n";
   check % count == 4 + 2;  // number of leaf nodes in the tree above
   check % count < 10;
   check % count > 1;

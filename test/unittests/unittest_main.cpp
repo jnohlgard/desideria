@@ -10,7 +10,7 @@ using namespace deri::test;
 namespace log {
 using namespace deri::log;
 struct Test;
-struct Test : LogConfig<Level::INFO> {};
+struct Test : Config<Level::INFO> {};
 }  // namespace log
 
 using Logger = deri::log::Logger<log::Test>;

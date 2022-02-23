@@ -17,7 +17,7 @@
 #include "logging_conf.hpp"
 #endif
 
-namespace deri::log2 {
+namespace deri::log {
 enum class Level : int {
   OFF = -1,
   CRITICAL = 0,
@@ -104,13 +104,14 @@ class Stream {
     va_end(args);
   }
 
-  inline void operator()(char fill, size_t count) {
+  inline Stream &operator()(char fill, size_t count) {
     std::array<char, 8> buf{fill};
     while (count > buf.size()) {
       Output::write(buf);
       count -= buf.size();
     }
     Output::write(std::span<const char>{buf.data(), count});
+    return *this;
   }
 };
 
@@ -132,7 +133,9 @@ class Stream<void> {
                                                            ...)
       -> std::enable_if_t<std::is_same_v<ConstCharPtr, const char *>, void> {}
 
-  inline void operator()(char fill, size_t count) {}
+  inline Stream &operator()(char fill, size_t count) {
+    return *this;
+  }
 };
 
 template <Level message_level, class Domain>
@@ -200,9 +203,47 @@ inline constexpr auto &operator<<(Stream<Output> &os, Integer number) {
 
 // Add to_char(float) when there is a use case for it.
 
-}  // namespace deri::log2
+template <class Output>
+inline Stream<Output> &operator<<(Stream<Output> &os, const void *ptr) {
+  if (!ptr) {
+    os("(null)");
+  } else {
+    std::array<char, std::max(sizeof(ptr) * 2, 4u)> buf{};
+    if (auto [end_ptr, error] = std::to_chars(
+            begin(buf), end(buf), reinterpret_cast<uintptr_t>(ptr), 16);
+        error == std::errc{}) {
+      os("0x");
+      os(std::span{begin(buf), end_ptr});
+    }
+  }
+  return os;
+}
 
-namespace deri::log {
+template <typename Target, class Output>
+requires(!std::is_same_v<const Target, const char>) inline Stream<Output>
+    &operator<<(Stream<Output> &os, const Target *ptr) {
+  return os << static_cast<const void *>(ptr);
+}
+
+template <class Output>
+inline Stream<Output> &operator<<(Stream<Output> &os, bool value) {
+  if (value) {
+    os("true");
+  } else {
+    os("false");
+  }
+  return os;
+}
+
+// Specialization to output characters as-is
+template <class Output>
+inline Stream<Output> &operator<<(Stream<Output> &os, char data) {
+  os(std::span(&data, 1));
+  return os;
+}
+}  // namespace deri::log
+
+namespace deri::logold {
 enum class Level : int {
   OFF = -1,
   CRITICAL = 0,
@@ -515,4 +556,4 @@ class LoggerImpl {
   }
 };
 
-}  // namespace deri::log
+}  // namespace deri::logold

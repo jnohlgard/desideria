@@ -51,7 +51,7 @@ class BenchContextSwitch {
     long cycles_per_count = cycles_diff / count_now;
     long inst_per_count = inst_diff / count_now;
 
-    Logger::printf(
+    Logger::print(
         "%lu context switches in %ld us (%ld core cycles, %ld instructions). "
         "%ld cycles per "
         "switch, %ld instructions per switch\n",
@@ -91,7 +91,7 @@ void initTimer() {
           deri::HighResolutionTimer::now() + 1000ms),
       .callback = BenchContextSwitch::printEvent,
   };
-  Logger::printf("Initial timer target = %lld, now = %lld\n",
+  Logger::print("Initial timer target = %lld, now = %lld\n",
                  print_event.target,
                  deri::HighResolutionTimer::now().time_since_epoch().count());
   deri::HighResolutionTimer::schedule(print_event);
@@ -99,7 +99,7 @@ void initTimer() {
 
 void baseline() {
   static constexpr long unsigned baseline_count = 50000u;
-  Logger::printf("Testing %lu no-op context switches as baseline\n",
+  Logger::print("Testing %lu no-op context switches as baseline\n",
                  baseline_count);
   auto last_update = deri::HighResolutionTimer::now();
   auto last_cycles = deri::arch::Perf::cycles();
@@ -119,7 +119,7 @@ void baseline() {
   long inst_diff = now_inst - last_inst;
   auto cycles_per_count = cycles_diff / baseline_count;
   auto inst_per_count = inst_diff / baseline_count;
-  Logger::printf(
+  Logger::print(
       "%lu no-op context switches in %ld us (%ld core cycles, %ld "
       "instructions). %lu cycles per switch, %lu instructions per switch\n",
       baseline_count,
@@ -136,19 +136,19 @@ void measureTimer() {
     deri::arch::waitForInterrupt();
     ++wakeups;
   }
-  Logger::printf("%u wakeups during idle\n", wakeups);
+  Logger::print("%u wakeups during idle\n", wakeups);
 }
 
 int main() {
-  Logger::printf("Context switch benchmark\n");
-  Logger::printf("HighResolutionTimer resolution: %lld ticks in 1000ms\n",
+  Logger::print("Context switch benchmark\n");
+  Logger::print("HighResolutionTimer resolution: %lld ticks in 1000ms\n",
                  deri::HighResolutionTimer::count(1000ms));
   baseline();
-  Logger::printf(
+  Logger::print(
       "measure twice without switching to get timer instruction overhead\n");
   initTimer();
   measureTimer();
-  Logger::printf("Start two threads to switch between\n");
+  Logger::print("Start two threads to switch between\n");
   initThreads();
   deri::Scheduler::yield();
   while (true) {

@@ -18,7 +18,7 @@
 // https://boost-ext.github.io/ut/
 namespace deri::log {
 struct Check;
-struct Check : LogConfig<Level::INFO> {};
+struct Check : Config<Level::INFO> {};
 }  // namespace deri::log
 
 namespace deri::test {

@@ -8,7 +8,7 @@
 
 namespace deri::log {
 struct TestReport;
-// struct TestReport : LogConfig<Level::TRACE> {};
+// struct TestReport : Config<Level::TRACE> {};
 }  // namespace deri::log
 
 namespace deri::test {
@@ -28,7 +28,7 @@ void Runner::runTest(Test &test, Function<void()> test_function) {
   } else {
     // This is a subcase of another case
     if (level >= next_subcase.size()) {
-      Logger::critical("Too many nested levels of test cases (")
+      Logger::critical << "Too many nested levels of test cases ("
           << level << ")\n";
       return;
     }
