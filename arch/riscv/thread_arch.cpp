@@ -92,7 +92,7 @@ constexpr std::array mcause_descriptions = {
   if (context.pc != 0) {
     long mcause = read_csr(mcause);
     if (mcause < 0) {
-      Logger::printf("Unhandled interrupt on hart %lu\n", hartid);
+      Logger::critical << "Unhandled interrupt on hart " << hartid << "\n";
     } else {
       auto description = std::string_view("unknown");
       if ((mcause & 0xff) == CAUSE_BREAKPOINT) {
@@ -101,10 +101,10 @@ constexpr std::array mcause_descriptions = {
       if ((mcause & 0xff) < mcause_descriptions.size()) {
         description = mcause_descriptions[mcause & 0xff];
       }
-      Logger::printf("Exception on hart %lu: %s\n", hartid, description);
+      Logger::critical << "Exception on hart " << hartid << ": " << description << "\n";
     }
   }
-  Logger::critical("Context dump on hart %lu:\n", hartid);
+  Logger::critical << "Context dump on hart " << hartid << ":\n";
   auto saved_registers = reinterpret_cast<const void *const *>(&context);
   for (unsigned k = 0; k < SavedContext::register_names.size(); ++k) {
     Logger::critical(
@@ -113,7 +113,7 @@ constexpr std::array mcause_descriptions = {
   Logger::critical("mscratch: %p\n",
                    reinterpret_cast<const void *>(read_csr(mscratch)));
   if (do_ebreak) {
-    Logger::critical("Break for debugger...\n");
+    Logger::critical << "Break for debugger...\n";
     asm volatile("ebreak" ::: "memory");
   }
 }
